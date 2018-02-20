@@ -26,5 +26,5 @@ class requester:
             url += self.markers[i]
             url += '%20OR%20'
         url += self.markers[len(self.markers) - 1]
-        url += ')&from=0&size=10000'
+        url += ')&from=0&size=1000'
         return url
