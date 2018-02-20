@@ -2,13 +2,10 @@ import requests
 
 class requester:
     #
-    def __init__(self, A, B, cmpGood):
+    def __init__(self, A, B):
         self.objA = A
         self.objB = B
-        if(cmpGood):
-            self.markers = ['better', 'easier', 'faster', 'nicer', 'wiser', 'cooler', 'decent', 'safer', 'superior', 'solid', 'terrific']
-        else:
-            self.markers = ['worse', 'harder', 'slower', 'poorly', 'uglier', 'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
+        self.markers = ['better', 'easier', 'faster', 'nicer', 'wiser', 'cooler', 'decent', 'safer', 'superior', 'solid', 'terrific', 'worse', 'harder', 'slower', 'poorly', 'uglier', 'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
 
     def req(self):
         url = self.buildString()
