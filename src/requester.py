@@ -7,8 +7,9 @@ def req(objA, objB, aspect):
     r = requests.get(url)
     hits = r.json()['hits']['hits']
     sentences = []
-    for i in range(0, len(hits) - 1):
+    for i in range(0, len(hits)):
         sentences.append(hits[i]['_source']['text'])
+        print (hits[i]['_source']['text'])
     return sentences
 
 def buildString(objA, objB, aspect):
@@ -17,7 +18,7 @@ def buildString(objA, objB, aspect):
     url += '%20AND%20'
     url += objB
     url += '%20AND%20('
-    for i in range(0, len(markers) - 2):
+    for i in range(0, len(markers) - 1):
         url += markers[i]
         url += '%20OR%20'
     url += markers[len(markers) - 1]
