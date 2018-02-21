@@ -1,6 +1,7 @@
 import requests
 import requester
 import sentenceAnalyzer
+import sentenceClearer
 from flask import Flask
 from flask import request
 
@@ -16,6 +17,7 @@ def cam():
     objectB = request.args.get('objectB')
     aspect = request.args.get('aspect')
     allSentences = requester.req(objectA, objectB, aspect) #list of all sentences containing objectA, objectB and a marker.
+    allSentences = sentenceClearer.clearSentences(allSentences)
     aPoints = 0 #counts how many times objA won a sentence.
     bPoints = 0 #counts how many times objB won a sentence.
     aSentences = [] #collects all sentences objA has won.
