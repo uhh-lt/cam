@@ -2,8 +2,8 @@ import requests
 
 markers = ['better', 'easier', 'faster', 'nicer', 'wiser', 'cooler', 'decent', 'safer', 'superior', 'solid', 'terrific', 'worse', 'harder', 'slower', 'poorly', 'uglier', 'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
 
-def req(objA, objB):
-    url = buildString(objA, objB)
+def req(objA, objB, aspect):
+    url = buildString(objA, objB, aspect)
     r = requests.get(url)
     hits = r.json()['hits']['hits']
     sentences = []
@@ -11,7 +11,7 @@ def req(objA, objB):
         sentences.append(hits[i]['_source']['text'])
     return sentences
 
-def buildString(objA, objB):
+def buildString(objA, objB, aspect):
     url = 'http://localhost:9222/commoncrawl2/_search?q=text:'
     url += objA
     url += '%20AND%20'

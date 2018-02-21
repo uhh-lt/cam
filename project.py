@@ -15,7 +15,7 @@ def cam():
     object1 = request.args.get('object1')
     object2 = request.args.get('object2')
     aspect = request.args.get('aspect')
-    r = requester.req(object1, object2)
+    r = requester.req(object1, object2, aspect)
     printString = ''
     for i in range (0, len(r) - 1):
         printString += r[i]
