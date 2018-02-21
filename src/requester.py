@@ -22,5 +22,5 @@ def buildString(objA, objB, aspect):
         url += markers[i]
         url += '%20OR%20'
     url += markers[len(markers) - 1]
-    url += ')&from=0&size=10'
+    url += ')&from=0&size=100'
     return url
