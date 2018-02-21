@@ -1,10 +1,9 @@
 import requests
 import json
-import requester
-import sentenceAnalyzer
-import sentenceClearer
-from flask import Flask
-from flask import request
+import elastic_searcher
+import sentence_analyzer
+import sentence_clearer
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -14,21 +13,27 @@ def com():
 
 @app.route('/cam', methods=['GET'])
 def cam():
+    
+    result = {}
+    result ['key'] = 9  
+    
+    json.dumps(result)
+
     objectA = request.args.get('objectA')
     objectB = request.args.get('objectB')
     aspect = request.args.get('aspect')
-    allSentences = requester.req(objectA, objectB, aspect) #list of all sentences containing objectA, objectB and a marker.
-    allSentences = sentenceClearer.clearSentences(allSentences)
+    allSentences = elastic_searcher.req(objectA, objectB, aspect) #list of all sentences containing objectA, objectB and a marker.
+    allSentences = sentence_clearer.clearSentences(allSentences)
     aPoints = 0 #counts how many times objA won a sentence.
     bPoints = 0 #counts how many times objB won a sentence.
     aSentences = [] #collects all sentences objA has won.
     bSentences = [] #collects all sentences objB has won.
     for s in allSentences:
-        result = sentenceAnalyzer.analyze(s, objectA, objectB)
-        if result == objectA: #objectA won the sentence
+        result = sentence_analyzer.is_better_than(s, objectA, objectB)
+        if result: #objectA won the sentence
             aPoints += 1
             aSentences.append(s)
-        elif result == objectB: #objectB won the sentence
+        elif not result: #objectB won the sentence
             bPoints += 1
             bSentences.append(s)
     printString = 'Our results suggest that ' #result String to be built and to be shown on the website.

@@ -1,5 +1,6 @@
 
-negRemovers = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'did not', 'could not', 'was not', 'have not', 'would not'
+negRemovers = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 
+'did not', 'could not', 'was not', 'have not', 'would not', 
 'didnt', 'couldnt', 'wasnt', 'havent', 'wouldnt']
 
 def clearSentences(sentences):

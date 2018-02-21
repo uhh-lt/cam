@@ -1,11 +1,13 @@
 import requests
 import json
 
-markers = ['better', 'easier', 'faster', 'nicer', 'wiser', 'cooler', 'decent', 'safer', 'superior', 'solid', 'terrific', 'worse', 'harder', 'slower', 'poorly', 'uglier', 'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
+markers = ['better', 'easier', 'faster', 'nicer', 'wiser', 'cooler', 'decent', 'safer', 'superior', 'solid', 
+'terrific', 'worse', 'harder', 'slower', 'poorly', 'uglier', 'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
 
 def req(objA, objB, aspect):
     url = buildString(objA, objB, aspect)
     r = requests.get(url)
+    print(r.text)
     hits = r.json()['hits']['hits']
     sentences = []
     for i in range(0, len(hits)):
