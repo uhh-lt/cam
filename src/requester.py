@@ -13,14 +13,10 @@ def req(objA, objB, aspect):
     return sentences
 
 def buildString(objA, objB, aspect):
-    url = 'http://localhost:9222/commoncrawl2/_search?q=text:'
-    url += objA
-    url += '%20AND%20'
-    url += objB
-    url += '%20AND%20('
+    url = 'http://localhost:9222/commoncrawl2/_search?q=text:{} AND {} AND {} AND'.format(objA, objB, aspect)
     for i in range(0, len(markers) - 1):
         url += markers[i]
         url += '%20OR%20'
     url += markers[len(markers) - 1]
-    url += ')&from=0&size=100'
+    url += ')&from=0&size=10'
     return url
