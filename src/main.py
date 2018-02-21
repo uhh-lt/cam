@@ -22,12 +22,13 @@ def cam():
     bSentences = [] #collects all sentences objB has won.
     for s in allSentences:
         result = elastic_searcher.is_better_than(s, objectA, objectB)
-        if result: #objectA won the sentence
-            aPoints += 1
-            aSentences.append(s)
-        elif not result: #objectB won the sentence
-            bPoints += 1
-            bSentences.append(s)
+        if result is not None: #sentence is usable
+            if result: #objectA won the sentence
+                aPoints += 1
+                aSentences.append(s)
+            elif not result: #objectB won the sentence
+                bPoints += 1
+                bSentences.append(s)
     result = {}
     result ['object 1'] = objectA
     result ['object 2'] = objectB

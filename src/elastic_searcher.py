@@ -20,7 +20,7 @@ def buildString(objA, objB, aspect):
         url += markers[i]
         url += '%20OR%20'
     url += markers[len(markers) - 1]
-    url += ')&from=0&size=100'
+    url += ')&from=0&size=1000'
     print(url)
     return url
 
@@ -86,4 +86,5 @@ def clearSentences(sentences):
             for neg in negRemovers:
                 if neg in s:
                     sentences.remove(s)
+                    break
     return sentences
