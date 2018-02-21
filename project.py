@@ -1,7 +1,8 @@
 import requests
-from requester import requester
+import requester
 from flask import Flask
 from flask import request
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -14,10 +15,10 @@ def cam():
     object1 = request.args.get('object1')
     object2 = request.args.get('object2')
     aspect = request.args.get('aspect')
-    r = requester(object1, object2)
+    r = requester.req(object1, object2)
     printString = ''
-    for i in range (0, len(r.req()) - 1):
-        printString += r.req()[i]
+    for i in range (0, len(r) - 1):
+        printString += r[i]
         printString += '<br/>'
     return(printString)
 
