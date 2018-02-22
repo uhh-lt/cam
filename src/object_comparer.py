@@ -19,6 +19,12 @@ def find_winner(sentences, objA, objB):
                 bPoints += 1
                 bSentences.append(s)
     result = {}
+    if aPoints > bPoints:
+        result['winner'] = objA
+    elif bPoints > aPoints:
+        result['winner'] = objB
+    else:
+        result['winner'] = None
     result['object 1'] = objA
     result['object 2'] = objB
     result['score object 1'] = aPoints
