@@ -1,4 +1,5 @@
 import constants
+import aspect_getter
 
 
 def find_winner(sentences, objA, objB):
@@ -29,6 +30,8 @@ def find_winner(sentences, objA, objB):
     result['object 2'] = objB
     result['score object 1'] = aPoints
     result['score object 2'] = bPoints
+    result['main aspects object 1'] = aspect_getter.extract_main_aspects(aSentences, objA, objB)
+    result['main aspects object 2'] = aspect_getter.extract_main_aspects(bSentences, objA, objB)
     result['object a sentences'] = aSentences
     result['object b sentences'] = bSentences
     return result
