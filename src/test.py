@@ -40,7 +40,7 @@ class Test(unittest.TestCase):
 
     '''
     Testing if the removal of the sentences containing '?' and negations from
-    the list of constants works (clear_sentences method)
+    the list of constants  works (clear_sentences method)
     '''
     def test_clear_sentences1(self):
         s = ['Dog is worse than cat?']
