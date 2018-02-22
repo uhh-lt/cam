@@ -17,7 +17,7 @@ def build_object_urlpart(objA, objB, aspect):
     '''
     url = constants.HOST  # name of the host
     url += constants.ESCC2  # Elastic Search commoncrawl2
-    url = '{}%20AND%20{}'.format(
+    url += '{}%20AND%20{}'.format(
         objA, objB)  # add the objects to look for
     return url
 

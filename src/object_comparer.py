@@ -1,6 +1,33 @@
 import constants
 
 
+def find_winner(sentences, objA, objB):
+    '''
+
+    '''
+    aPoints = 0  # counts how many times objA won a sentence.
+    bPoints = 0  # counts how many times objB won a sentence.
+    aSentences = []  # collects all sentences objA has won.
+    bSentences = []  # collects all sentences objB has won.
+    for s in sentences:
+        result = is_better_than(s, objA, objB)
+        if result is not None:  # sentence is usable
+            if result:  # objectA won the sentence
+                aPoints += 1
+                aSentences.append(s)
+            elif not result:  # objectB won the sentence
+                bPoints += 1
+                bSentences.append(s)
+    result = {}
+    result['object 1'] = objA
+    result['object 2'] = objB
+    result['score object 1'] = aPoints
+    result['score object 2'] = bPoints
+    result['object a sentences'] = aSentences
+    result['object b sentences'] = bSentences
+    return result
+
+
 def is_better_than(sentence, objA, objB):
     '''
     Analyzes a sentence that contains two given objects. Returns True if the sentence
