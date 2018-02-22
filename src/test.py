@@ -31,6 +31,13 @@ class Test(unittest.TestCase):
     def test_is_better_than7(self):
         self.assertTrue(is_better_than('Dog is worse than cat', 'cat', 'dog'))
 
+    def test_is_better_than8(self):
+        self.assertEqual(is_better_than('Dog is a cat solid', 'cat', 'dog'), None)
+
+    def test_is_better_than9(self):
+        self.assertEqual(is_better_than('This tortoise sculpture is made of hammer formed copper sheet metal and filled solid with concrete.', 'hammer', 'tortoise'), None)
+            
+
     '''
     Testing if the removal of the sentences containing '?' and negations from
     the list of constants works (clear_sentences method)
@@ -45,6 +52,11 @@ class Test(unittest.TestCase):
         s = clear_sentences(s)
         self.assertFalse('Dog didn\'t look better than cat' in s)  
         self.assertTrue(s)
+    
+    def test_clear_sentences3(self):
+        s = ['snowboarding is harder to learn but easier to master than skiing']
+        s = clear_sentences(s)
+        self.assertFalse(s)
 
     '''
     Testing if all parts of the find_winner method work properly
