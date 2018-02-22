@@ -24,7 +24,9 @@ def cam():
     '''
     objectA = request.args.get('objectA').lower()
     objectB = request.args.get('objectB').lower()
-    aspect = request.args.get('aspect').lower()
+    aspect = request.args.get('aspect')
+    if(aspect is not None):
+        aspect = aspect.lower()
     # json obj with all ES hits containing objectA, objectB and a marker.
     all_hits = es_requester.request_es(objectA, objectB, aspect)
     # list of all sentences containing objectA, objectB and a marker.
