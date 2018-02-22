@@ -43,14 +43,18 @@ def is_better_than(sentence, objA, objB):
     objB:       String
                 the second object to be compared to the first.
     '''
+    sentence = sentence.lower()
     aPos = sentence.find(objA)  # position of objectA in sentence
+    print (aPos)
     bPos = sentence.find(objB)  # position of objectB in sentence
+    print (bPos)
     if aPos < bPos:
         # looks for a 'not' between A and B
         n = sentence.find('not', aPos, bPos)
     else:
         # looks for a 'not' between B and A
         n = sentence.find('not', bPos, aPos)
+    print (n)
     for s in constants.BETTER_MARKERS:  # look for a betterMarker
         pos = sentence.find(s)
         if pos != -1:  # found a betterMarker in sentence

@@ -11,5 +11,5 @@ def extract_sentences(es_json):
     hits = es_json.json()['hits']['hits']
     sentences = []
     for i in range(0, len(hits)):
-        sentences.append(hits[i]['_source']['text'])
+        sentences.append(hits[i]['_source']['text'].lower())
     return sentences

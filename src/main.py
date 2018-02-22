@@ -10,21 +10,21 @@ app = Flask(__name__)
 
 
 @app.route("/")
-'''
-Main route containing the UI expecting the objects and aspects (WIP).
-'''
 def com():
+    '''
+    Main route containing the UI expecting the objects and aspects (WIP).
+    '''
     return ('Until the UI is finished, try CAM by opening ../cam?objectA=OBJA&objectB=OBJB&aspect=ASP replacing OBJA, OBJB and ASP with your desired values.')
 
 
 @app.route('/cam', methods=['GET'])
-'''
-Route to be visited after a user clicked the 'compare' button.
-'''
 def cam():
-    objectA = request.args.get('objectA')
-    objectB = request.args.get('objectB')
-    aspect = request.args.get('aspect')
+    '''
+    Route to be visited after a user clicked the 'compare' button.
+    '''
+    objectA = request.args.get('objectA').lower()
+    objectB = request.args.get('objectB').lower()
+    aspect = request.args.get('aspect').lower()
     # json obj with all ES hits containing objectA, objectB and a marker.
     all_hits = es_requester.request_es(objectA, objectB, aspect)
     # list of all sentences containing objectA, objectB and a marker.
