@@ -22,9 +22,8 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
-<<<<<<< HEAD
-    objectA = request.args.get('objectA').lower()
-    objectB = request.args.get('objectB').lower()
+    objectA = Argument(request.args.get('objectA').lower())
+    objectB = Argument(request.args.get('objectB').lower())
     aspects = {}
     i = 1
     while i is not False:
@@ -42,16 +41,6 @@ def cam():
             i += 1
         else:
             i = False
-=======
-    objectA = Argument(request.args.get('objectA').lower())
-    objectB = Argument(request.args.get('objectB').lower())
-    
-    #objectA = request.args.get('objectA').lower()
-    #objectB = request.args.get('objectB').lower()
-    aspect = request.args.get('aspect')
-    if(aspect is not None):
-        aspect = aspect.lower()
->>>>>>> d3a3427b6e6b0e5cef48e7f5df91f8bd0e028bdc
     # json obj with all ES hits containing objectA, objectB and a marker.
     all_hits = es_requester.request_es(objectA, objectB)
     # list of all sentences containing objectA, objectB and a marker.
