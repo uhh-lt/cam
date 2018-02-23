@@ -23,8 +23,11 @@ def cam():
     '''
     Route to be visited after a user clicked the 'compare' button.
     '''
-    objectA = request.args.get('objectA').lower()
-    objectB = request.args.get('objectB').lower()
+    objectA = Argument(request.args.get('objectA').lower())
+    objectB = Argument(request.args.get('objectB').lower())
+    
+    #objectA = request.args.get('objectA').lower()
+    #objectB = request.args.get('objectB').lower()
     aspect = request.args.get('aspect')
     if(aspect is not None):
         aspect = aspect.lower()
@@ -37,6 +40,23 @@ def cam():
     # find the winner of the two objects
     final_dict = object_comparer.find_winner(all_sentences, objectA, objectB)
     return jsonify(final_dict)
+
+class Argument:
+    """Argument Class"""
+    def __init__(self, name):
+        self.name = name
+        self.points = 0
+        self.sentences = []
+    
+    def set_name(self, name):
+        self.name = name
+
+    def add_points(self, points):
+        self.points += points
+    
+    def add_sentence(self, sentence):
+        self.sentences.append(sentence)
+    
 
 
 if __name__ == "__main__":

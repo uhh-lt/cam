@@ -6,34 +6,34 @@ def find_winner(sentences, objA, objB):
     '''
 
     '''
-    aPoints = 0  # counts how many times objA won a sentence.
-    bPoints = 0  # counts how many times objB won a sentence.
-    aSentences = []  # collects all sentences objA has won.
-    bSentences = []  # collects all sentences objB has won.
+    #aPoints = 0  # counts how many times objA won a sentence.
+    #bPoints = 0  # counts how many times objB won a sentence.
+    #aSentences = []  # collects all sentences objA has won.
+    #bSentences = []  # collects all sentences objB has won.
     for s in sentences:
         a_won = is_better_than(s, objA, objB)
         if a_won is not None:  # sentence is usable
             if a_won:  # objectA won the sentence
-                aPoints += 1
-                aSentences.append(s)
+                objA.add_points(1)
+                objA.add_sentence(s)
             elif not a_won:  # objectB won the sentence
-                bPoints += 1
-                bSentences.append(s)
+                objB.add_points(1)
+                objB.add_sentence(s)
     final_dict = {}
-    if aPoints > bPoints:
-        final_dict['winner'] = objA
-    elif bPoints > aPoints:
-        final_dict['winner'] = objB
+    if objA.points > objB.points:
+        final_dict['winner'] = objA.name
+    elif objB.points > objA.points:
+        final_dict['winner'] = objB.name
     else:
         final_dict['winner'] = None
-    final_dict['object 1'] = objA
-    final_dict['object 2'] = objB
-    final_dict['score object 1'] = aPoints
-    final_dict['score object 2'] = bPoints
-    final_dict['main aspects object 1'] = aspect_getter.extract_main_aspects(aSentences, objA, objB)
-    final_dict['main aspects object 2'] = aspect_getter.extract_main_aspects(bSentences, objA, objB)
-    final_dict['object a sentences'] = aSentences
-    final_dict['object b sentences'] = bSentences
+    final_dict['object 1'] = objA.name
+    final_dict['object 2'] = objB.name
+    final_dict['score object 1'] = objA.points
+    final_dict['score object 2'] = objB.points
+    final_dict['main aspects object 1'] = aspect_getter.extract_main_aspects(objA.sentences, objA.name, objB.name)
+    final_dict['main aspects object 2'] = aspect_getter.extract_main_aspects(objB.sentences, objA.name, objB.name)
+    final_dict['object a sentences'] = objA.sentences
+    final_dict['object b sentences'] = objB.sentences
     return final_dict
 
 
@@ -53,8 +53,8 @@ def is_better_than(sentence, objA, objB):
                 the second object to be compared to the first.
     '''
     sentence = sentence.lower()
-    aPos = sentence.find(objA)  # position of objectA in sentence
-    bPos = sentence.find(objB)  # position of objectB in sentence
+    aPos = sentence.find(objA.name)  # position of objectA in sentence
+    bPos = sentence.find(objB.name)  # position of objectB in sentence
     if aPos < bPos:
         # looks for a 'not' between A and B
         n = sentence.find('not', aPos, bPos)
