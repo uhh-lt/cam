@@ -44,7 +44,7 @@ def cam():
     # list of all sentences containing objectA, objectB and a marker.
     all_sentences = es_sentence_extracter.extract_sentences(all_hits)
     # removing sentences that can't be properly analyzed
-    all_sentences = sentence_clearer.clear_sentences(all_sentences)
+    all_sentences = sentence_clearer.clear_sentences(all_sentences, objectA, objectB)
     # find the winner of the two objects
     final_dict = object_comparer.find_winner(
         all_sentences, objectA, objectB, aspects)
