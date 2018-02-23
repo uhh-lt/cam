@@ -13,7 +13,8 @@ def extract_main_aspects(sentences, objA, objB):
     for s in sentences:
         wordlist = re.compile('[A-Za-z]+').findall(s)
         for w in wordlist:
-            if w not in constants.STOPWORDS and w not in constants.MARKERS and w != objA and w != objB and w not in constants.NON_ASPECTS and w not in constants.NUMBER_STRINGS:
+            if w not in constants.STOPWORDS and w not in constants.MARKERS and w != objA and \
+            w != objB and w not in constants.NON_ASPECTS and w not in constants.NUMBER_STRINGS:
                 if w in worddict:
                     worddict[w] += 1
                 else:
