@@ -11,30 +11,30 @@ def find_winner(sentences, objA, objB):
     aSentences = []  # collects all sentences objA has won.
     bSentences = []  # collects all sentences objB has won.
     for s in sentences:
-        result = is_better_than(s, objA, objB)
-        if result is not None:  # sentence is usable
-            if result:  # objectA won the sentence
+        a_won = is_better_than(s, objA, objB)
+        if a_won is not None:  # sentence is usable
+            if a_won:  # objectA won the sentence
                 aPoints += 1
                 aSentences.append(s)
-            elif not result:  # objectB won the sentence
+            elif not a_won:  # objectB won the sentence
                 bPoints += 1
                 bSentences.append(s)
-    result = {}
+    final_dict = {}
     if aPoints > bPoints:
-        result['winner'] = objA
+        final_dict['winner'] = objA
     elif bPoints > aPoints:
-        result['winner'] = objB
+        final_dict['winner'] = objB
     else:
-        result['winner'] = None
-    result['object 1'] = objA
-    result['object 2'] = objB
-    result['score object 1'] = aPoints
-    result['score object 2'] = bPoints
-    result['main aspects object 1'] = aspect_getter.extract_main_aspects(aSentences, objA, objB)
-    result['main aspects object 2'] = aspect_getter.extract_main_aspects(bSentences, objA, objB)
-    result['object a sentences'] = aSentences
-    result['object b sentences'] = bSentences
-    return result
+        final_dict['winner'] = None
+    final_dict['object 1'] = objA
+    final_dict['object 2'] = objB
+    final_dict['score object 1'] = aPoints
+    final_dict['score object 2'] = bPoints
+    final_dict['main aspects object 1'] = aspect_getter.extract_main_aspects(aSentences, objA, objB)
+    final_dict['main aspects object 2'] = aspect_getter.extract_main_aspects(bSentences, objA, objB)
+    final_dict['object a sentences'] = aSentences
+    final_dict['object b sentences'] = bSentences
+    return final_dict
 
 
 def is_better_than(sentence, objA, objB):
