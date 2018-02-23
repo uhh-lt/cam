@@ -39,3 +39,10 @@ def remove_negations(sentences):
                 sentences.remove(s)
                 break
     return sentences
+
+def remove_double_markers(sentences):
+    '''
+    Removes sentences having both positive and negative markers between the objects
+    '''
+    for s in sentences:
+        
