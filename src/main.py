@@ -52,15 +52,13 @@ def cam():
 
 
 class Argument:
-    """Argument Class"""
-
+    '''
+    Argument Class
+    '''
     def __init__(self, name):
         self.name = name
         self.points = 0
         self.sentences = []
-
-    def set_name(self, name):
-        self.name = name
 
     def add_points(self, points):
         self.points += points
@@ -73,15 +71,8 @@ class Aspect:
     '''
     Aspect Class
     '''
-
     def __init__(self, name, weight):
         self.name = name
-        self.weight = weight
-
-    def set_name(self, name):
-        self.name = name
-
-    def set_weight(self, weight):
         self.weight = weight
 
 
