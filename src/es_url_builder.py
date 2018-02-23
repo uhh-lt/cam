@@ -1,7 +1,7 @@
 import constants
 
 
-def build_object_urlpart(objA, objB, aspect):
+def build_object_urlpart(objA, objB):
     '''
     Builds the part of the URL containing the host name, the Elastic Search type and the objects to look for.
 
