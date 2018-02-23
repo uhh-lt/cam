@@ -1,20 +1,27 @@
 import constants
-import aspect_getter
+import aspect_searcher
 
 
-def find_winner(sentences, objA, objB):
+def find_winner(sentences, objA, objB, aspects):
     '''
 
     '''
     for s in sentences:
         a_won = is_better_than(s, objA, objB)
         if a_won is not None:  # sentence is usable
+            s_contains_aspect = aspect_searcher.find_aspect(s, aspects)
             if a_won:  # objectA won the sentence
-                objA.add_points(1)
-                objA.add_sentence(s)
+                if s_contains_aspect:
+                    objA.add_points(aspects[s_contains_aspect])
+                else:
+                    objA.add_points(1)
+                objA.add_sentences(s)
             elif not a_won:  # objectB won the sentence
-                objB.add_points(1)
-                objB.add_sentence(s)
+                if s_contains_aspect:
+                    objB.add_points(aspects[s_contains_aspect])
+                else:
+                    objB.add_points(1)
+                objB.add_sentences(s)
     final_dict = {}
     if objA.points > objB.points:
         final_dict['winner'] = objA.name
