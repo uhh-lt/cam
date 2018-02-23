@@ -24,3 +24,7 @@ def extract_main_aspects(stringlist, objA, objB):
         result[k] = worddict[k]
         worddict.pop(k)
     return result
+
+
+def find_aspect(sentence, aspects):
+    
