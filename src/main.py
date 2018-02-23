@@ -22,6 +22,7 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
+<<<<<<< HEAD
     objectA = request.args.get('objectA').lower()
     objectB = request.args.get('objectB').lower()
     aspects = {}
@@ -41,6 +42,16 @@ def cam():
             i += 1
         else:
             i = False
+=======
+    objectA = Argument(request.args.get('objectA').lower())
+    objectB = Argument(request.args.get('objectB').lower())
+    
+    #objectA = request.args.get('objectA').lower()
+    #objectB = request.args.get('objectB').lower()
+    aspect = request.args.get('aspect')
+    if(aspect is not None):
+        aspect = aspect.lower()
+>>>>>>> d3a3427b6e6b0e5cef48e7f5df91f8bd0e028bdc
     # json obj with all ES hits containing objectA, objectB and a marker.
     all_hits = es_requester.request_es(objectA, objectB)
     # list of all sentences containing objectA, objectB and a marker.
@@ -50,6 +61,23 @@ def cam():
     # find the winner of the two objects
     final_dict = object_comparer.find_winner(all_sentences, objectA, objectB, aspects)
     return jsonify(final_dict)
+
+class Argument:
+    """Argument Class"""
+    def __init__(self, name):
+        self.name = name
+        self.points = 0
+        self.sentences = []
+    
+    def set_name(self, name):
+        self.name = name
+
+    def add_points(self, points):
+        self.points += points
+    
+    def add_sentence(self, sentence):
+        self.sentences.append(sentence)
+    
 
 
 if __name__ == "__main__":

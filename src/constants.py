@@ -13,7 +13,7 @@ NEGATIONS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t
                 'did not', 'could not', 'was not', 'have not', 'would not', 'can not'
                 'didnt', 'couldnt', 'wasnt', 'havent', 'wouldnt' 'cannot']
 HOSTNAME = 'http://localhost:9222/'
-ESCC2 = 'commoncrawl2/_search?q=text:'
+CRAWL_DATA_REPOS = 'commoncrawl2/_search?q=text:'
 STOPWORDS = set(stopwords.words('english'))
 NON_ASPECTS = ['come', 'much', 'good', 'even', 'think', 'would', 'well', 'like', 'also', 'nice', 'great', 'made', 'could']
 NUMBER_STRINGS = []
