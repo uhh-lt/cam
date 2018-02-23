@@ -7,7 +7,7 @@ MARKERS = ['better', 'easier', 'faster', 'nicer', 'wiser', 'cooler', 'decent', '
            'worse', 'harder', 'slower', 'poorly', 'uglier', 'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
 POSITIVE_MARKERS = ['better', 'easier', 'faster', 'nicer', 'wiser',
                   'cooler', 'decent', 'safer', 'superior', 'solid', 'terrific']
-POSITIVE_MARKERS = ['worse', 'harder', 'slower', 'poorly', 'uglier',
+NEGATIVE_MARKERS = ['worse', 'harder', 'slower', 'poorly', 'uglier',
                  'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
 NEGATIONS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t'
                 'did not', 'could not', 'was not', 'have not', 'would not', 'can not'
