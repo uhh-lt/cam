@@ -6,10 +6,6 @@ def find_winner(sentences, objA, objB, aspects):
     '''
 
     '''
-    #aPoints = 0  # counts how many times objA won a sentence.
-    #bPoints = 0  # counts how many times objB won a sentence.
-    #aSentences = []  # collects all sentences objA has won.
-    #bSentences = []  # collects all sentences objB has won.
     for s in sentences:
         a_won = is_better_than(s, objA, objB)
         if a_won is not None:  # sentence is usable
