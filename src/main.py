@@ -7,6 +7,7 @@ import object_comparer
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
+app.config["JSON_SORT_KEYS"] = False
 
 
 @app.route("/")
@@ -34,8 +35,8 @@ def cam():
     # removing sentences that can't be properly analyzed
     all_sentences = sentence_clearer.clear_sentences(all_sentences)
     # find the winner of the two objects
-    result = object_comparer.find_winner(all_sentences, objectA, objectB)
-    return json.dumps(result)
+    final_dict = object_comparer.find_winner(all_sentences, objectA, objectB)
+    return jsonify(final_dict)
 
 
 if __name__ == "__main__":
