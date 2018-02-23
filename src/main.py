@@ -33,12 +33,8 @@ def cam():
         wght += str(i)
         inputasp = request.args.get(asp)
         inputwght = request.args.get(wght)
-        if inputasp is not None:
-            asp = Aspect(inputasp.lower())
-            if inputwght is not None:
-                asp.set_weight(int(inputwght))
-            else:
-                asp.set_weight(1)
+        if inputasp is not None and inputwght is not None:
+            asp = Aspect(inputasp.lower(), int(inputwght))
             aspects.append(asp)
             i += 1
         else:
@@ -78,9 +74,9 @@ class Aspect:
     Aspect Class
     '''
 
-    def __init__(self, name):
+    def __init__(self, name, weight):
         self.name = name
-        self.weight = 0
+        self.weight = weight
 
     def set_name(self, name):
         self.name = name
