@@ -7,7 +7,6 @@ import object_comparer
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-app.config["JSON_SORT_KEYS"] = False
 
 
 @app.route("/")
@@ -21,21 +20,35 @@ def com():
 @app.route('/cam', methods=['GET'])
 def cam():
     '''
-    Route to be visited after a user clicked the 'compare' button.
+    to be visited after a user clicked the 'compare' button.
     '''
     objectA = request.args.get('objectA').lower()
     objectB = request.args.get('objectB').lower()
-    aspect = request.args.get('aspect')
-    if(aspect is not None):
-        aspect = aspect.lower()
+    aspects = {}
+    i = 1
+    while i is not False:
+        asp = 'aspect'
+        asp += str(i)
+        wght = 'weight'
+        wght += str(i)
+        inputasp = request.args.get(asp)
+        inputwght = request.args.get(wght)
+        if inputasp is not None:
+            if inputwght is not None:
+                aspects[inputasp.lower()] = int(inputwght)
+            else:
+                aspects[inputasp.lower()] = 1
+            i += 1
+        else:
+            i = False
     # json obj with all ES hits containing objectA, objectB and a marker.
-    all_hits = es_requester.request_es(objectA, objectB, aspect)
+    all_hits = es_requester.request_es(objectA, objectB)
     # list of all sentences containing objectA, objectB and a marker.
     all_sentences = es_sentence_extracter.extract_sentences(all_hits)
     # removing sentences that can't be properly analyzed
     all_sentences = sentence_clearer.clear_sentences(all_sentences)
     # find the winner of the two objects
-    final_dict = object_comparer.find_winner(all_sentences, objectA, objectB)
+    final_dict = object_comparer.find_winner(all_sentences, objectA, objectB, aspects)
     return jsonify(final_dict)
 
 
