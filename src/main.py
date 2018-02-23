@@ -22,8 +22,8 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
-    objectA = Argument(request.args.get('objectA').lower())
-    objectB = Argument(request.args.get('objectB').lower())
+    objectA = Argument(request.args.get('objectA').lower().strip())
+    objectB = Argument(request.args.get('objectB').lower().strip())
     aspects = []
     i = 1
     while i is not False:
