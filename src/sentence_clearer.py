@@ -40,15 +40,19 @@ def remove_negations(sentences):
                 sentences.remove(s)
                 break
     return sentences
-
-<<<<<<< HEAD
-def remove_double_markers(sentences):
+'''
+def remove_double_markers(sentences, objA, objB):
     '''
     Removes sentences having both positive and negative markers between the objects
     '''
     for s in sentences:
+        posA = s.find(objA.name)
+        posB = s.find(objB.name)
+        pos_one = min(posA, posB)
+        pos_two = max(posA, posB)
+        for marker in constants.POSITIVE_MARKERS:
+ '''           
         
-=======
 
 def remove_wrong_marker_positions(sentences, objA, objB):
     '''
@@ -71,4 +75,3 @@ def remove_wrong_marker_positions(sentences, objA, objB):
         if no_marker_found:
             sentences.remove(s)
     return sentences
->>>>>>> 6aca1a5c6da8a9ff528c45e49d9eb3f6796105fb
