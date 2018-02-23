@@ -4,27 +4,39 @@ import aspect_searcher
 
 def find_winner(sentences, objA, objB, aspects):
     '''
+    Finds the winner of two objects for a given list of sentences and aspects.
 
+    sentences:  List
+                list of sentences
+
+    objA:       Argument
+                the first competing object
+
+    objB:       Argument
+                the second competing object
+
+    aspects:    List
+                list of Aspects
     '''
     for s in sentences:
         a_won = is_better_than(s, objA, objB)
-        if a_won is not None:  # sentence is usable
-            s_contains_aspects = aspect_searcher.find_aspects(s, aspects)
-            if a_won:  # objectA won the sentence
-                if s_contains_aspects:
-                    for aspect in s_contains_aspects:
-                        objA.add_points(aspect.weight)
-                else:
-                    objA.add_points(1)
-                objA.add_sentence(s)
-            elif not a_won:  # objectB won the sentence
-                if s_contains_aspects:
-                    for aspect in s_contains_aspects:
-                        objB.add_points(aspect.weight)
-                else:
-                    objB.add_points(1)
-                objB.add_sentence(s)
-    final_dict = {}
+        # the aspects the user entered that are contained in the sentence
+        s_contains_aspects = aspect_searcher.find_aspects(s, aspects)
+        if a_won:  # objectA won the sentence
+            if s_contains_aspects:
+                for aspect in s_contains_aspects:
+                    objA.add_points(aspect.weight)
+            else:
+                objA.add_points(1)
+            objA.add_sentence(s)
+        elif not a_won:  # objectB won the sentence
+            if s_contains_aspects:
+                for aspect in s_contains_aspects:
+                    objB.add_points(aspect.weight)
+            else:
+                objB.add_points(1)
+            objB.add_sentence(s)
+    final_dict = {}  # the dictionary to be returned
     if objA.points > objB.points:
         final_dict['winner'] = objA.name
     elif objB.points > objA.points:
@@ -35,8 +47,10 @@ def find_winner(sentences, objA, objB, aspects):
     final_dict['object 2'] = objB.name
     final_dict['score object 1'] = objA.points
     final_dict['score object 2'] = objB.points
-    final_dict['main aspects object 1'] = aspect_searcher.extract_main_aspects(objA.sentences, objA.name, objB.name)
-    final_dict['main aspects object 2'] = aspect_searcher.extract_main_aspects(objB.sentences, objA.name, objB.name)
+    final_dict['main aspects object 1'] = aspect_searcher.extract_main_aspects(
+        objA.sentences, objA.name, objB.name)
+    final_dict['main aspects object 2'] = aspect_searcher.extract_main_aspects(
+        objB.sentences, objA.name, objB.name)
     final_dict['object a sentences'] = objA.sentences
     final_dict['object b sentences'] = objB.sentences
     return final_dict
