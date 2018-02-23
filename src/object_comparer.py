@@ -58,23 +58,20 @@ def is_better_than(sentence, objA, objB):
                 the second object to be compared to the first.
     '''
     sentence = sentence.lower()
-    aPos = sentence.find(objA.name)  # position of objectA in sentence
-    bPos = sentence.find(objB.name)  # position of objectB in sentence
-    if aPos < bPos:
-        # looks for a 'not' between A and B
-        n = sentence.find('not', aPos, bPos)
-    else:
-        # looks for a 'not' between B and A
-        n = sentence.find('not', bPos, aPos)
+    a_pos = sentence.find(objA.name)  # position of objectA in sentence
+    b_pos = sentence.find(objB.name)  # position of objectB in sentence
+    first_pos = min(a_pos, b_pos)
+    second_pos = max(a_pos, b_pos)
+    n = sentence.find('not', first_pos, second_pos)
     for s in constants.POSITIVE_MARKERS:  # look for a betterMarker
         pos = sentence.find(s)
-        if pos != -1:  # found a betterMarker in sentence
-            if (pos < aPos and pos > bPos):  # betterMarker is between B and A
+        if pos != -1 and pos > first_pos and pos < second_pos:  # found a betterMarker in sentence
+            if first_pos == b_pos:  # betterMarker is between B and A
                 if n != -1:  # a 'not' exists between the objects
                     return True
                 else:
                     return False
-            elif (pos > aPos and pos < bPos):  # betterMarker is between A and B
+            else:  # betterMarker is between A and B
                 if n != -1:  # a 'not' exists between the objects
                     return False
                 else:
@@ -82,14 +79,13 @@ def is_better_than(sentence, objA, objB):
     for s in constants.POSITIVE_MARKERS:  # look for a worseMarker
         pos = sentence.find(s)
         if pos != -1:  # found a worseMarker in sentence
-            if (pos < aPos and pos > bPos):  # worseMarker is between B and A
+            if (pos < a_pos and pos > b_pos):  # worseMarker is between B and A
                 if n != -1:  # a 'not' exists between the objects
                     return False
                 else:
                     return True
-            elif (pos > aPos and pos < bPos):  # worseMarker is between A and B
+            elif (pos > a_pos and pos < b_pos):  # worseMarker is between A and B
                 if n != -1:  # a 'not' exists between the objects
                     return True
                 else:
                     return False
-    return None  # no better or worse marker was found between both objects
