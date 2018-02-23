@@ -61,7 +61,7 @@ def is_better_than(sentence, objA, objB):
     else:
         # looks for a 'not' between B and A
         n = sentence.find('not', bPos, aPos)
-    for s in constants.BETTER_MARKERS:  # look for a betterMarker
+    for s in constants.POSITIVE_MARKERS:  # look for a betterMarker
         pos = sentence.find(s)
         if pos != -1:  # found a betterMarker in sentence
             if (pos < aPos and pos > bPos):  # betterMarker is between B and A
@@ -74,7 +74,7 @@ def is_better_than(sentence, objA, objB):
                     return False
                 else:
                     return True
-    for s in constants.WORSE_MARKERS:  # look for a worseMarker
+    for s in constants.POSITIVE_MARKERS:  # look for a worseMarker
         pos = sentence.find(s)
         if pos != -1:  # found a worseMarker in sentence
             if (pos < aPos and pos > bPos):  # worseMarker is between B and A

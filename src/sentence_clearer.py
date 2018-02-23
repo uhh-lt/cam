@@ -34,7 +34,7 @@ def remove_negations(sentences):
                 a list of sentences
     '''
     for s in sentences:
-        for neg in constants.NEG_REMOVERS:
+        for neg in constants.NEGATIONS:
             if neg in s:
                 sentences.remove(s)
                 break

@@ -15,7 +15,7 @@ def build_object_urlpart(objA, objB, aspect):
             a specific aspect that plays a special role while analyzing the result.
             Note that this is currently WIP and not actually implemented.
     '''
-    url = constants.HOST  # name of the host
+    url = constants.HOSTNAME  # name of the host
     url += constants.ESCC2  # Elastic Search commoncrawl2
     url += '{}%20AND%20{}'.format(
         objA, objB)  # add the objects to look for

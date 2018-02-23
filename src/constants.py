@@ -5,14 +5,14 @@ from nltk.corpus import stopwords
 
 MARKERS = ['better', 'easier', 'faster', 'nicer', 'wiser', 'cooler', 'decent', 'safer', 'superior', 'solid', 'terrific',
            'worse', 'harder', 'slower', 'poorly', 'uglier', 'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
-BETTER_MARKERS = ['better', 'easier', 'faster', 'nicer', 'wiser',
+POSITIVE_MARKERS = ['better', 'easier', 'faster', 'nicer', 'wiser',
                   'cooler', 'decent', 'safer', 'superior', 'solid', 'terrific']
-WORSE_MARKERS = ['worse', 'harder', 'slower', 'poorly', 'uglier',
+POSITIVE_MARKERS = ['worse', 'harder', 'slower', 'poorly', 'uglier',
                  'poorer', 'lousy', 'nastier', 'inferior', 'mediocre']
-NEG_REMOVERS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t'
+NEGATIONS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t'
                 'did not', 'could not', 'was not', 'have not', 'would not', 'can not'
                 'didnt', 'couldnt', 'wasnt', 'havent', 'wouldnt' 'cannot']
-HOST = 'http://localhost:9222/'
+HOSTNAME = 'http://localhost:9222/'
 ESCC2 = 'commoncrawl2/_search?q=text:'
 STOPWORDS = set(stopwords.words('english'))
 NON_ASPECTS = ['come', 'much', 'good', 'even', 'think', 'would', 'well', 'like', 'also', 'nice', 'great', 'made', 'could']
