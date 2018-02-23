@@ -22,14 +22,9 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
-<<<<<<< HEAD
-    objectA = request.args.get('objectA').lower()
-    objectB = request.args.get('objectB').lower()
-=======
     objectA = Argument(request.args.get('objectA').lower())
     objectB = Argument(request.args.get('objectB').lower())
->>>>>>> 6ea3d366236e683b91d74a236907f7bc4709e9d0
-    aspects = {}
+    aspects = []
     i = 1
     while i is not False:
         asp = 'aspect'
@@ -39,10 +34,12 @@ def cam():
         inputasp = request.args.get(asp)
         inputwght = request.args.get(wght)
         if inputasp is not None:
+            asp = Aspect(inputasp.lower())
             if inputwght is not None:
-                aspects[inputasp.lower()] = int(inputwght)
+                asp.set_weight(int(inputwght))
             else:
-                aspects[inputasp.lower()] = 1
+                asp.set_weight(1)
+            aspects.append(asp)
             i += 1
         else:
             i = False
@@ -53,25 +50,43 @@ def cam():
     # removing sentences that can't be properly analyzed
     all_sentences = sentence_clearer.clear_sentences(all_sentences)
     # find the winner of the two objects
-    final_dict = object_comparer.find_winner(all_sentences, objectA, objectB, aspects)
+    final_dict = object_comparer.find_winner(
+        all_sentences, objectA, objectB, aspects)
     return jsonify(final_dict)
+
 
 class Argument:
     """Argument Class"""
+
     def __init__(self, name):
         self.name = name
         self.points = 0
         self.sentences = []
-    
+
     def set_name(self, name):
         self.name = name
 
     def add_points(self, points):
         self.points += points
-    
+
     def add_sentence(self, sentence):
         self.sentences.append(sentence)
-    
+
+
+class Aspect:
+    '''
+    Aspect Class
+    '''
+
+    def __init__(self, name):
+        self.name = name
+        self.weight = 0
+
+    def set_name(self, name):
+        self.name = name
+
+    def set_weight(self, weight):
+        self.weight = weight
 
 
 if __name__ == "__main__":
