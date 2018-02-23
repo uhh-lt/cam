@@ -63,7 +63,7 @@ class Test(unittest.TestCase):
     '''
     def test_find_winner1(self):
         s = ['Dog is better than cat', 'Cat is definitely better than dog', 'Dogs is way better than cat']
-        result = find_winner(s, 'dog', 'cat')
+        result = find_winner(s, 'dog', 'cat', [])
         self.assertEqual(result['object 1'], 'dog')
         self.assertEqual(result['object 2'], 'cat')
         self.assertEqual(result['score object 1'], 2)
