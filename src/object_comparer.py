@@ -37,8 +37,8 @@ def find_winner(sentences, objA, objB, aspects):
     final_dict['object 2'] = objB.name
     final_dict['score object 1'] = objA.points
     final_dict['score object 2'] = objB.points
-    final_dict['main aspects object 1'] = aspect_getter.extract_main_aspects(objA.sentences, objA.name, objB.name)
-    final_dict['main aspects object 2'] = aspect_getter.extract_main_aspects(objB.sentences, objA.name, objB.name)
+    final_dict['main aspects object 1'] = aspect_searcher.extract_main_aspects(objA.sentences, objA.name, objB.name)
+    final_dict['main aspects object 2'] = aspect_searcher.extract_main_aspects(objB.sentences, objA.name, objB.name)
     final_dict['object a sentences'] = objA.sentences
     final_dict['object b sentences'] = objB.sentences
     return final_dict
