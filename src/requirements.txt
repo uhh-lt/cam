@@ -1,0 +1,4 @@
+Flask
+nltk
+requests
+inflect
