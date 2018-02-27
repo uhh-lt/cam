@@ -21,6 +21,7 @@ def extract_main_aspects(sentences, objA, objB):
     '''
         wordlist = re.compile('[A-Za-z]+').findall(s)
         for w in wordlist:
+            w = w.lower()
             # check if w is "useful" as an aspect
             if w not in constants.STOPWORDS and w not in constants.MARKERS and w != objA and \
                     w != objB and w not in constants.NON_ASPECTS and w not in constants.NUMBER_STRINGS:
@@ -30,9 +31,10 @@ def extract_main_aspects(sentences, objA, objB):
                     worddict[w] = 1
     result = {}
     for _i in range(0, 10):  # return the top 10 aspects
-        k = max(worddict, key=worddict.get)
-        result[k] = worddict[k]
-        worddict.pop(k)
+        if worddict:
+            k = max(worddict, key=worddict.get)
+            result[k] = worddict[k]
+            worddict.pop(k)
     return result
 
 

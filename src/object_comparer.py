@@ -1,5 +1,6 @@
 import constants
 import aspect_searcher
+import marker_searcher
 
 
 def find_winner(sentences, objA, objB, aspects):
@@ -51,8 +52,8 @@ def find_winner(sentences, objA, objB, aspects):
         objA.sentences, objA.name, objB.name)
     final_dict['main aspects object 2'] = aspect_searcher.extract_main_aspects(
         objB.sentences, objA.name, objB.name)
-    final_dict['object a sentences'] = objA.sentences
-    final_dict['object b sentences'] = objB.sentences
+    final_dict['object 1 sentences'] = objA.sentences
+    final_dict['object 2 sentences'] = objB.sentences
     return final_dict
 
 
@@ -76,30 +77,19 @@ def is_better_than(sentence, objA, objB):
     b_pos = sentence.find(objB.name)  # position of objectB in sentence
     first_pos = min(a_pos, b_pos)
     second_pos = max(a_pos, b_pos)
-    n = sentence.find('not', first_pos, second_pos)
-    for s in constants.POSITIVE_MARKERS:  # look for a betterMarker
-        pos = sentence.find(s)
-        if pos != -1 and pos > first_pos and pos < second_pos:  # found a betterMarker in sentence
-            if first_pos == b_pos:  # betterMarker is between B and A
-                if n != -1:  # a 'not' exists between the objects
-                    return True
-                else:
-                    return False
-            else:  # betterMarker is between A and B
-                if n != -1:  # a 'not' exists between the objects
-                    return False
-                else:
-                    return True
-    for s in constants.POSITIVE_MARKERS:  # look for a worseMarker
-        pos = sentence.find(s)
-        if pos != -1:  # found a worseMarker in sentence
-            if first_pos == b_pos:  # worseMarker is between B and A
-                if n != -1:  # a 'not' exists between the objects
-                    return False
-                else:
-                    return True
-            else:  # worseMarker is between A and B
-                if n != -1:  # a 'not' exists between the objects
-                    return True
-                else:
-                    return False
+    opp_pos = marker_searcher.get_marker_pos(sentence, first_pos, second_pos, constants.OPPOSITE_MARKERS)
+    positive_pos = marker_searcher.get_marker_pos(sentence, first_pos, second_pos, constants.POSITIVE_MARKERS)
+    if positive_pos != -1: # there's a positive marker, check if a won
+        return objA_wins_sentence(sentence, first_pos, second_pos, a_pos, b_pos, opp_pos, positive_pos)
+        # we can return because there's never both markers in a sentence
+    negative_pos = marker_searcher.get_marker_pos(sentence, first_pos, second_pos, constants.NEGATIVE_MARKERS)
+    # we're only here if there's no positive marker, so there must be negative one
+    return not objA_wins_sentence(sentence, first_pos, second_pos, a_pos, b_pos, opp_pos, negative_pos)
+
+def objA_wins_sentence(sentence, first_pos, second_pos, a_pos, b_pos, opp_pos, marker_pos):
+    if opp_pos != -1:
+        if first_pos < opp_pos < marker_pos:
+            return False if first_pos == a_pos else True # example: a is not better than b
+    else:
+        return True if first_pos == a_pos else False # example> a is better than b
+        

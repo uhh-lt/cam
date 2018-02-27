@@ -1,4 +1,5 @@
 import constants
+import marker_searcher
 
 
 def clear_sentences(sentences, objA, objB):
@@ -10,7 +11,7 @@ def clear_sentences(sentences, objA, objB):
     '''
     sentences = remove_questions(sentences)
     sentences = remove_negations(sentences)
-    sentences = remove_wrong_marker_positions(sentences, objA, objB)
+    sentences = remove_wrong_structures(sentences, objA, objB)
     return sentences
 
 
@@ -40,28 +41,26 @@ def remove_negations(sentences):
                 sentences.remove(s)
                 break
     return sentences
+     
 
-          
-        
-
-def remove_wrong_marker_positions(sentences, objA, objB):
+def remove_wrong_structures(sentences, objA, objB):
     '''
-    Removes sentences in which no marker is between the objects from a list of sentences.
+    Removes sentences 1: in which no marker is between the objects from a list of sentences;
+                      2: in which the marker is not between the objects.
 
     sentences:  list
                 a list of sentences
     '''
     for s in sentences:
-        posA = s.find(objA.name)
-        posB = s.find(objB.name)
-        pos_first = min(posA, posB)
-        pos_second = max(posA, posB)
-        no_marker_found = True
-        for marker in constants.MARKERS:
-            pos_marker = s.find(marker)
-            if pos_marker > pos_first and pos_marker < pos_second:
-                no_marker_found = False
-                break
-        if no_marker_found:
+        aPos = s.find(objA.name)
+        bPos = s.find(objB.name)
+        if aPos == -1 and bPos == -1:
+            sentences.remove(s)
+            return sentences
+        pos_first = min(aPos, bPos)
+        pos_second = max(aPos, bPos)
+        has_pos_marker = marker_searcher.has_marker(s, pos_first, pos_second, constants.POSITIVE_MARKERS)
+        has_neg_marker = marker_searcher.has_marker(s, pos_first, pos_second, constants.NEGATIVE_MARKERS)
+        if (has_pos_marker and has_neg_marker) or (not has_pos_marker and not has_neg_marker):
             sentences.remove(s)
     return sentences
