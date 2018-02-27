@@ -47,3 +47,36 @@
     </div>
   </div>
 </div>
+<br>
+<br>
+<br>
+<br>
+<p *ngIf="resshow" class="text-center">The results:</p>
+<br>
+<br>
+<table *ngIf="resshow" class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">{{object_A}}</th>
+      <th scope="col">{{object_B}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Winner</th>
+      <td *ngIf="!A_won">X</td>
+      <td *ngIf="!B_won">X</td>
+    </tr>
+    <tr>
+      <th scope="row">Score</th>
+      <td>{{A_score}}</td>
+      <td>{{B_score}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Main aspects</th>
+      <td>{{A_mainaspects}}</td>
+      <td>{{B_mainaspects}}</td>
+    </tr>
+  </tbody>
+</table>
