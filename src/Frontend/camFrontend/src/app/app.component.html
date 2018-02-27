@@ -1,4 +1,49 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<router-outlet>
-</router-outlet>
-
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <p class="text-right">object 1: </p>
+    </div>
+    <div class="col-sm">
+      <input #objA>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <p class="text-right">object 2:</p>
+    </div>
+    <div class="col-sm">
+      <input #objB>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <p class="text-right">aspect:</p>
+    </div>
+    <div class="col-sm">
+      <input #asp>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+      <p class="text-right">weight:</p>
+    </div>
+    <div class="col-sm">
+      <input #wght>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm text-center">
+      <button (click)="addAspect(asp.value, wght.value)">Add aspect</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm text-center">
+      <p>chosen aspects: {{aspects}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm text-center">
+      <button (click)="compare(objA.value, objB.value)">Compare</button>
+    </div>
+  </div>
+</div>
