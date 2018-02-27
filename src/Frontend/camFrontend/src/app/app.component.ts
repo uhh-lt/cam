@@ -1,32 +1,67 @@
 import { Component, Inject } from "@angular/core";
-import { Http } from "@angular/http";
+import { HttpClient } from "@angular/common/http";
 import "rxjs/add/operator/toPromise";
+
+import { map } from "rxjs/operators";
 
 @Component({
   selector: "app-root",
-  template: `
-  <p>object 1: </p><input #objA>
-  <p>object 2:</p><input #objB>
-  <p>aspect:</p><input #asp>
-  <p>weight:</p><input #wght>
-  <button (click)="addAspect(asp.value, wght.value)">Add aspect</button>
-  <p>chosen aspects: {{aspects}}</p>
-  <button (click)="compare(objA.value, objB.value)">Compare</button>
-  {{json}}`,
+  templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
   title = "CAM";
   aspects = "";
   aspectList = {};
-  json = "";
+  json = { "object 1": "test", "object 2": "test2" };
+  results = {};
+  resshow = false;
+  object_A = "";
+  object_B = "";
+  A_won = false;
+  B_won = false;
+  A_score = 0;
+  B_score = 0;
+  A_mainaspects = "";
+  B_mainaspects = "";
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
-  compare(objA, objB, aspectList) {
-    console.log(this.buildURL(objA, objB, aspectList));
-    return this.http.get(this.buildURL(objA, objB, aspectList));
+  compare(objA, objB) {
+    this.http
+      .get(this.buildURL(objA, objB, this.aspectList))
+      .subscribe(async res => {
+        await this.saveResult(res);
+      });
   }
+
+  saveResult(result) {
+    this.results = result;
+    this.resshow = true;
+    this.object_A = this.results["object 1"];
+    this.object_B = this.results["object 2"];
+    this.A_score = this.results["score object 1"];
+    this.B_score = this.results["score object 2"];
+    if (this.A_score > this.B_score) {
+      this.A_won = true;
+    } else if (this.A_score < this.B_score) {
+      this.B_won = true;
+    } else {
+      this.A_won = true;
+      this.B_won = true;
+    } /* main aspects not working yet
+    let aspA = result["main aspects object 1"].keys;
+    console.log(aspA);
+    let aspB = result["main aspects object 2"].keys;
+    for (const key of aspA) {
+      this.A_mainaspects += `${key}(${result["main aspects object 1"][key]}), `;
+    }
+    for (const key of aspB) {
+      this.B_mainaspects += `${key}(${result["main aspects object 2"][key]}), `;
+    }
+    console.log(this.A_mainaspects); */
+  }
+
   buildURL(objA, objB, aspectList) {
     let URL = this.buildObjURL(objA, objB);
     URL += this.addAspectURL(aspectList);
@@ -34,16 +69,15 @@ export class AppComponent {
   }
 
   buildObjURL(objA, objB) {
-    return `http://127.0.0.1:5000/cam?objectA=${objA}&objectB=${objB}`;
+    return `http://localhost:5000/cam?objectA=${objA}&objectB=${objB}`;
   }
 
   addAspectURL(aspectList) {
     let url_part = ``;
     let i = 1;
-    Object.keys(aspectList).forEach(key => {
-      url_part += `&aspect${i}=${key}&weight${i}=${aspectList[key]}`;
-      i++;
-    });
+    Object.entries(aspectList).forEach(
+      ([key, value]) => (url_part += `&aspect${i}=${key}&weight${i++}=${value}`)
+    );
     return url_part;
   }
 
@@ -53,10 +87,5 @@ export class AppComponent {
     }
     this.aspects += `${aspect}(${weight})`;
     this.aspectList[aspect] = weight;
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error("An error occurred", error); // for demo purposes only
-    return Promise.reject(error.message || error);
   }
 }
