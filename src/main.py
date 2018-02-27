@@ -5,8 +5,10 @@ import es_sentence_extracter
 import sentence_clearer
 import object_comparer
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/")
@@ -37,7 +39,8 @@ def cam():
     # list of all sentences containing objectA, objectB and a marker.
     all_sentences = es_sentence_extracter.extract_sentences(all_hits)
     # removing sentences that can't be properly analyzed
-    all_sentences = sentence_clearer.clear_sentences(all_sentences, objectA, objectB)
+    all_sentences = sentence_clearer.clear_sentences(
+        all_sentences, objectA, objectB)
     # find the winner of the two objects
     final_dict = object_comparer.find_winner(
         all_sentences, objectA, objectB, aspects)
@@ -48,6 +51,7 @@ class Argument:
     '''
     Argument Class
     '''
+
     def __init__(self, name):
         self.name = name
         self.points = 0
@@ -64,6 +68,7 @@ class Aspect:
     '''
     Aspect Class
     '''
+
     def __init__(self, name, weight):
         self.name = name
         self.weight = weight
