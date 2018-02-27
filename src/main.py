@@ -10,13 +10,6 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def com():
-    '''
-    Main route containing the UI expecting the objects and aspects (WIP).
-    '''
-    return ('Until the UI is finished, try CAM by opening ../cam?objectA=OBJA&objectB=OBJB&aspect=ASP replacing OBJA, OBJB and ASP with your desired values.')
-
-
 @app.route('/cam', methods=['GET'])
 def cam():
     '''
