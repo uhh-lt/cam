@@ -15,10 +15,6 @@ def extract_main_aspects(sentences, objA, objB):
     worddict = {}  # stores all words as keys and the number of times they've been found as values
     for s in sentences:
         # find all words in the sentence
-    '''
-    wordlist = word_tokenize('This \'is a . test; some-thing')
-    wordlist = [word for word in wordlist if len(word) > 1]
-    '''
         wordlist = re.compile('[A-Za-z]+').findall(s)
         for w in wordlist:
             w = w.lower()
