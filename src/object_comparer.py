@@ -20,22 +20,22 @@ def find_winner(sentences, objA, objB, aspects):
                 list of Aspects
     '''
     for s in sentences:
-        a_won = is_better_than(s, objA, objB)
+        comp_result = what_is_better(s, objA, objB)
         # the aspects the user entered that are contained in the sentence
-        s_contains_aspects = aspect_searcher.find_aspects(s, aspects)
-        if a_won:  # objectA won the sentence
-            if s_contains_aspects:
-                for aspect in s_contains_aspects:
+        contained_aspects = aspect_searcher.find_aspects(s, aspects)
+        if comp_result['winner'] == objA:  # objectA won the sentence
+            if contained_aspects:
+                for aspect in contained_aspects:
                     objA.add_points(aspect.weight)
-            else:
-                objA.add_points(1)
+            else: 
+                objA.add_points(comp_result['marker_cnt']) # multiple markers, multiple points
             objA.add_sentence(s)
-        elif not a_won:  # objectB won the sentence
-            if s_contains_aspects:
-                for aspect in s_contains_aspects:
+        else:  # objectB won the sentence
+            if contained_aspects:
+                for aspect in contained_aspects:
                     objB.add_points(aspect.weight)
             else:
-                objB.add_points(1)
+                objB.add_points(comp_result['marker_cnt'])
             objB.add_sentence(s)
     final_dict = {}  # the dictionary to be returned
     if objA.points > objB.points:
@@ -57,11 +57,10 @@ def find_winner(sentences, objA, objB, aspects):
     return final_dict
 
 
-def is_better_than(sentence, objA, objB):
+def what_is_better(sentence, objA, objB):
     '''
-    Analyzes a sentence that contains two given objects. Returns True if the sentence
-    suggests that objA is better than objB, False if it suggests the opposite and
-    None if the sentence doesn't suggest a clear answer.
+    Analyzes a sentence that contains two given objects. Returns object containing winner
+    and a boolean marking multiple markers.
     Currently only sentences are supported that are built in the form of
         ... object ... marker ... object ...
 
@@ -73,23 +72,28 @@ def is_better_than(sentence, objA, objB):
                 the second object to be compared to the first.
     '''
     sentence = sentence.lower()
-    a_pos = sentence.find(objA.name)  # position of objectA in sentence
-    b_pos = sentence.find(objB.name)  # position of objectB in sentence
+    ''' TODO this is called also in sentence_clearer.remove_wrong_structure -> should refactor '''
+    result = {}
+    a_pos = sentence.find(objA.name)  # position of objectA in sentence, spaces to not find objname as part of different word
+    b_pos = sentence.find(objB.name)  # position of objectB in sentence, spaces to not find objname as part of different word
     first_pos = min(a_pos, b_pos)
     second_pos = max(a_pos, b_pos)
     opp_pos = marker_searcher.get_marker_pos(sentence, first_pos, second_pos, constants.OPPOSITE_MARKERS)
     positive_pos = marker_searcher.get_marker_pos(sentence, first_pos, second_pos, constants.POSITIVE_MARKERS)
     if positive_pos != -1: # there's a positive marker, check if a won
-        return objA_wins_sentence(sentence, first_pos, second_pos, a_pos, b_pos, opp_pos, positive_pos)
+        result['marker_cnt'] = marker_searcher.get_marker_count(sentence, first_pos, second_pos, constants.POSITIVE_MARKERS)
+        result['winner'] = objA if objA_wins_sentence(first_pos, a_pos, opp_pos, positive_pos) else objB
+        return result
         # we can return because there's never both markers in a sentence
     negative_pos = marker_searcher.get_marker_pos(sentence, first_pos, second_pos, constants.NEGATIVE_MARKERS)
+    result['marker_cnt'] = marker_searcher.get_marker_count(sentence, first_pos, second_pos, constants.NEGATIVE_MARKERS)
     # we're only here if there's no positive marker, so there must be negative one
-    return not objA_wins_sentence(sentence, first_pos, second_pos, a_pos, b_pos, opp_pos, negative_pos)
+    result['winner'] = objB if objA_wins_sentence(first_pos, a_pos, opp_pos, negative_pos) else objA
+    return result
 
-def objA_wins_sentence(sentence, first_pos, second_pos, a_pos, b_pos, opp_pos, marker_pos):
+def objA_wins_sentence(first_pos, a_pos, opp_pos, marker_pos):
     if opp_pos != -1:
         if first_pos < opp_pos < marker_pos:
             return False if first_pos == a_pos else True # example: a is not better than b
     else:
         return True if first_pos == a_pos else False # example> a is better than b
-        
