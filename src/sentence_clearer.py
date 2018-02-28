@@ -22,8 +22,11 @@ def remove_questions(sentences):
     sentences:  list
                 a list of sentences
     '''
+    sentences_to_delete = []
     for s in sentences:
         if '?' in s:
+            sentences_to_delete.append(s)
+    for s in sentences_to_delete:
             sentences.remove(s)
     return sentences
 
@@ -35,11 +38,14 @@ def remove_negations(sentences):
     sentences:  list
                 a list of sentences
     '''
+    sentences_to_delete = []
     for s in sentences:
         for neg in constants.NEGATIONS:
             if neg in s:
-                sentences.remove(s)
+                sentences_to_delete.append(s)
                 break
+    for s in sentences_to_delete:
+            sentences.remove(s)
     return sentences
      
 
@@ -51,16 +57,19 @@ def remove_wrong_structures(sentences, objA, objB):
     sentences:  list
                 a list of sentences
     '''
+    sentences_to_delete = []
     for s in sentences:
         aPos = s.find(objA.name)
         bPos = s.find(objB.name)
         if aPos == -1 and bPos == -1:
-            sentences.remove(s)
-            return sentences
+            sentences_to_delete.append(s)
+            continue
         pos_first = min(aPos, bPos)
         pos_second = max(aPos, bPos)
         has_pos_marker = marker_searcher.has_marker(s, pos_first, pos_second, constants.POSITIVE_MARKERS)
         has_neg_marker = marker_searcher.has_marker(s, pos_first, pos_second, constants.NEGATIVE_MARKERS)
         if (has_pos_marker and has_neg_marker) or (not has_pos_marker and not has_neg_marker):
+            sentences_to_delete.append(s)
+    for s in sentences_to_delete:
             sentences.remove(s)
     return sentences
