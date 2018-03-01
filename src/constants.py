@@ -11,14 +11,14 @@ POSITIVE_MARKERS = ['better', 'easier', 'faster', 'nicer', 'wiser',
 NEGATIVE_MARKERS = ['worse', 'harder', 'slower', 'poorly', 'uglier',
                     'poorer', 'lousy', 'nastier', 'inferior', 'mediocre', 'lame']
 NEGATIONS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t'
-                'did not', 'could not', 'was not', 'have not', 'would not', 'can not'
-                'didnt', 'couldnt', 'wasnt', 'havent', 'wouldnt', 'cannot']
+             'did not', 'could not', 'was not', 'have not', 'would not', 'can not'
+             'didnt', 'couldnt', 'wasnt', 'havent', 'wouldnt', 'cannot']
 OPPOSITE_MARKERS = ['not', 'no']
 HOSTNAME = 'http://localhost:9222/'
 CRAWL_DATA_REPOS = 'commoncrawl2/_search?q=text:'
 STOPWORDS = set(stopwords.words('english'))
-NON_ASPECTS = ['come', 'much', 'good', 'even', 'think', 'would',
-               'well', 'like', 'also', 'nice', 'great', 'made', 'could']
+NON_LINKS = ['come', 'much', 'good', 'even', 'think', 'would', 'make', 'yes', 'get',
+               'well', 'like', 'also', 'nice', 'great', 'made', 'could', 'some']
 NUMBER_STRINGS = []
 p = inflect.engine()
 for i in range(0, 1000):
