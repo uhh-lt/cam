@@ -1,35 +1,39 @@
 <table class='table borderless'>
   <tbody>
     <tr>
-      <th class='text-center' colspan=3 style='font-size: 40px'>Comparative Argument Machine</th>
+      <th class='text-center' colspan=3 style='font-size: 50px'>Comparative Argument Machine</th>
     </tr>
     <tr>
       <td class='text-right'>
         <input placeholder='enter the first object' #objA [(ngModel)]='object_A' style='font-size: 20px'>
       </td>
-      <td class='align-middle text-center'>versus</td>
+      <td class='align-middle text-center' style='font-size: 16px'>versus</td>
       <td>
         <input placeholder='enter the second object' #objB [(ngModel)]='object_B' style='font-size: 20px'>
       </td>
     </tr>
+    <tr>
+      <td class='text-right' style='font-size: 17px'>Enter aspects below:</td>
+      <td></td>
+      <td style='font-size: 17px'>Aspect importance:</td>
+    </tr>
     <tr *ngFor='let aspect of aspects'>
       <td class='text-right'>
-        <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]'>
+        <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' style='font-size: 17px'>
       </td>
       <td class='text-center'>
         <button (click)='removeAspect(aspect)' type='button' class='btn btn-primary'>
           <span class='glyphicon glyphicon-minus' aria-hidden='true'></span>
         </button>
       </td>
-      <td class='text-center'>
-        importance of this aspect
+      <td>
         <div class='slidecontainer'>
           <input type='range' min='1' max='5' value='1' class='slider' id='weight{{aspect}}' [(ngModel)]='weightDict[aspect]'>
         </div>
       </td>
     </tr>
     <tr>
-      <td class='text-right'>Add another aspect</td>
+      <td class='text-right' style='font-size: 17px'>Add another aspect</td>
       <td class='text-center'>
         <button (click)='addAspect()' type='button' class='btn btn-primary'>
           <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
@@ -82,10 +86,18 @@
       <td>{{winner_sentex[0]}}</td>
       <td>{{loser_sentex[0]}}</td>
     </tr>
-    <tr *ngFor='let i of [1,2,3,4,5,6,7,8,9]'>
+    <tr *ngFor='let i of sentence_show_numberlist'>
       <th scope='row'></th>
       <td>{{winner_sentex[i]}}</td>
       <td>{{loser_sentex[i]}}</td>
     </tr>
   </tbody>
 </table>
+<button (click)='show_more_sentences()' type='button' class='btn btn-primary' *ngIf='resshow'>
+  Show more sentences
+</button>
+<br>
+<br>
+<br>
+<br>
+<br>
