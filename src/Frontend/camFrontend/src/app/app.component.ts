@@ -29,6 +29,7 @@ export class AppComponent {
   loser_links = ''; // stores the main links of the second object
   winner_sentex = {}; // stores some example sentences for the first object
   loser_sentex = {}; // stores some example sentences for the second object
+  sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   constructor(private http: HttpClient) {}
 
@@ -44,6 +45,7 @@ export class AppComponent {
     this.winner_sentex = {};
     this.loser_sentex = {};
     const finalAspDict = {};
+    this.sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     // read the aspects entered by the user and store them with their weight
     for (const aspect of this.aspects) {
       finalAspDict[this.aspectDict[aspect]] = this.weightDict[aspect];
@@ -263,6 +265,18 @@ export class AppComponent {
       }
     } else {
       this.aspectDict[this.aspects[0]] = '';
+    }
+  }
+
+  show_more_sentences() {
+    let i = 0;
+    while (i < 10) {
+      this.sentence_show_numberlist.push(
+        this.sentence_show_numberlist[
+          this.sentence_show_numberlist.length - 1
+        ] + 1
+      );
+      i++;
     }
   }
 }
