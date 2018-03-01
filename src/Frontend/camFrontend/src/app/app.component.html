@@ -1,44 +1,44 @@
-<table class="table borderless">
+<table class='table borderless'>
   <tbody>
     <tr>
-      <th class="text-center" colspan=3 style="font-size: 40px">Comparative Argument Machine</th>
+      <th class='text-center' colspan=3 style='font-size: 40px'>Comparative Argument Machine</th>
     </tr>
     <tr>
-      <td class="text-right">
-        <input placeholder="enter the first object" #objA [(ngModel)]="object_A" style="font-size: 20px">
+      <td class='text-right'>
+        <input placeholder='enter the first object' #objA [(ngModel)]='object_A' style='font-size: 20px'>
       </td>
-      <td class="align-middle text-center">versus</td>
+      <td class='align-middle text-center'>versus</td>
       <td>
-        <input placeholder="enter the second object" #objB [(ngModel)]="object_B" style="font-size: 20px">
+        <input placeholder='enter the second object' #objB [(ngModel)]='object_B' style='font-size: 20px'>
       </td>
     </tr>
-    <tr *ngFor="let aspect of aspects">
-      <td class="text-right">
-        <input placeholder="enter an aspect" id="asp{{aspect}}" [(ngModel)]="aspectDict[aspect]">
+    <tr *ngFor='let aspect of aspects'>
+      <td class='text-right'>
+        <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]'>
       </td>
-      <td class="text-center">
-        <button (click)="removeAspect(aspect)" type="button" class="btn btn-primary">
-          <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+      <td class='text-center'>
+        <button (click)='removeAspect(aspect)' type='button' class='btn btn-primary'>
+          <span class='glyphicon glyphicon-minus' aria-hidden='true'></span>
         </button>
       </td>
-      <td class="text-center">
+      <td class='text-center'>
         importance of this aspect
-        <div class="slidecontainer">
-          <input type="range" min="1" max="5" value="1" class="slider" id="weight{{aspect}}" [(ngModel)]="weightDict[aspect]">
+        <div class='slidecontainer'>
+          <input type='range' min='1' max='5' value='1' class='slider' id='weight{{aspect}}' [(ngModel)]='weightDict[aspect]'>
         </div>
       </td>
     </tr>
     <tr>
-      <td class="text-right">Add another aspect</td>
-      <td class="text-center">
-        <button (click)="addAspect()" type="button" class="btn btn-primary">
-          <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+      <td class='text-right'>Add another aspect</td>
+      <td class='text-center'>
+        <button (click)='addAspect()' type='button' class='btn btn-primary'>
+          <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
         </button>
       </td>
     </tr>
     <tr>
-      <th class="text-center" colspan=3>
-        <button (click)="compare()" type="button" class="btn btn-primary btn-lg" [disabled]="!objectsEntered()">
+      <th class='text-center' colspan=3>
+        <button (click)='compare()' type='button' class='btn btn-primary btn-lg' [disabled]='!objectsEntered()'>
           Compare!
         </button>
       </th>
@@ -47,45 +47,45 @@
 </table>
 <br>
 <br>
-<p *ngIf="loadshow" class="text-center" style="font-size: 20px">Loading, please wait ...</p>
+<p *ngIf='loadshow' class='text-center' style='font-size: 20px'>Loading, please wait ...</p>
 <br>
 <br>
-<p *ngIf="resshow" class="text-center" style="font-size: 25px">The results:</p>
+<p *ngIf='resshow' class='text-center' style='font-size: 25px'>The results:</p>
 <br>
 <br>
-<table *ngIf="resshow" class="table">
+<table *ngIf='resshow' class='table'>
   <thead>
     <tr>
-      <th scope="col"></th>
-      <th scope="col" class="text-center" style="font-size: 17px">{{object_A}}</th>
-      <th scope="col" class="text-center" style="font-size: 17px">{{object_B}}</th>
+      <th width='10%' scope='col'></th>
+      <th width='45%' scope='col' class='text-center' style='font-size: 17px'>{{winner_obj}}</th>
+      <th width='45%' scope='col' class='text-center' style='font-size: 17px'>{{loser_obj}}</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">Winner</th>
-      <td class="text-center">{{A_won}}</td>
-      <td class="text-center">{{B_won}}</td>
+      <th scope='row'></th>
+      <td class='text-center' bgcolor='green'>Winner</td>
+      <td class='text-center'></td>
     </tr>
     <tr>
-      <th scope="row">Score</th>
-      <td class="text-center">{{A_score}}</td>
-      <td class="text-center">{{B_score}}</td>
+      <th scope='row'>Score</th>
+      <td class='text-center'>{{winner_score}}</td>
+      <td class='text-center'>{{loser_score}}</td>
     </tr>
     <tr>
-      <th scope="row">Main aspects</th>
-      <td>{{A_mainaspects}}</td>
-      <td>{{B_mainaspects}}</td>
+      <th scope='row'>Linked to</th>
+      <td>{{winner_links}}</td>
+      <td>{{loser_links}}</td>
     </tr>
     <tr>
-      <th scope="row">Sentence examples</th>
-      <td>{{A_sentex[0]}}</td>
-      <td>{{B_sentex[0]}}</td>
+      <th scope='row'>Sentence examples</th>
+      <td>{{winner_sentex[0]}}</td>
+      <td>{{loser_sentex[0]}}</td>
     </tr>
-    <tr *ngFor="let i of [1,2,3,4,5,6,7,8,9]">
-      <th scope="row"></th>
-      <td>{{A_sentex[i]}}</td>
-      <td>{{B_sentex[i]}}</td>
+    <tr *ngFor='let i of [1,2,3,4,5,6,7,8,9]'>
+      <th scope='row'></th>
+      <td>{{winner_sentex[i]}}</td>
+      <td>{{loser_sentex[i]}}</td>
     </tr>
   </tbody>
 </table>
