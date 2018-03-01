@@ -27,6 +27,7 @@ def find_winner(sentences, objA, objB, aspects):
             if contained_aspects:
                 for aspect in contained_aspects:
                     objA.add_points(aspect.weight)
+                    objA.add_points(comp_result['marker_cnt'])
             else:
                 # multiple markers, multiple points
                 objA.add_points(comp_result['marker_cnt'])
@@ -35,6 +36,7 @@ def find_winner(sentences, objA, objB, aspects):
             if contained_aspects:
                 for aspect in contained_aspects:
                     objB.add_points(aspect.weight)
+                    objA.add_points(comp_result['marker_cnt'])
             else:
                 objB.add_points(comp_result['marker_cnt'])
             objB.add_sentence(s)
