@@ -1,11 +1,8 @@
 import re
 import constants
-import re
-import nltk
-from nltk.tokenize import word_tokenize
 
 
-def extract_main_aspects(sentences, objA, objB):
+def extract_main_links(sentences, objA, objB):
     '''
     Extracts the most common words from a list of strings.
 
@@ -18,15 +15,15 @@ def extract_main_aspects(sentences, objA, objB):
         wordlist = re.compile('[A-Za-z]+').findall(s)
         for w in wordlist:
             w = w.lower()
-            # check if w is "useful" as an aspect
+            # check if w is "useful" as a links
             if w not in constants.STOPWORDS and w not in constants.MARKERS and w != objA and \
-                    w != objB and w not in constants.NON_ASPECTS and w not in constants.NUMBER_STRINGS:
+                    w != objB and w not in constants.NON_LINKS and w not in constants.NUMBER_STRINGS:
                 if w in worddict:
                     worddict[w] += 1
                 else:
                     worddict[w] = 1
     result = {}
-    for _i in range(0, 10):  # return the top 10 aspects
+    for _i in range(0, 10):  # return the top 10 links
         if worddict:
             k = max(worddict, key=worddict.get)
             result[k] = worddict[k]
