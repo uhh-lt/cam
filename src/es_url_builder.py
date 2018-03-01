@@ -35,5 +35,5 @@ def add_marker_urlpart(url):
         url += constants.MARKERS[i]
         url += '%20OR%20'
     url += constants.MARKERS[len(constants.MARKERS) - 1]
-    url += ')&from=0&size=1000'
+    url += ')&from=0&size=10000'
     return url
