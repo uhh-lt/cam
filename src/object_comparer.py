@@ -1,6 +1,7 @@
 import constants
 import aspect_searcher
 import marker_searcher
+import link_extracter
 
 
 def find_winner(sentences, objA, objB, aspects):
@@ -51,9 +52,9 @@ def find_winner(sentences, objA, objB, aspects):
     final_dict['object 2'] = objB.name
     final_dict['score object 1'] = objA.points
     final_dict['score object 2'] = objB.points
-    final_dict['main links object 1'] = aspect_searcher.extract_main_links(
+    final_dict['main links object 1'] = link_extracter.extract_main_links(
         objA.sentences, objA.name, objB.name)
-    final_dict['main links object 2'] = aspect_searcher.extract_main_links(
+    final_dict['main links object 2'] = link_extracter.extract_main_links(
         objB.sentences, objA.name, objB.name)
     final_dict['object 1 sentences'] = objA.sentences
     final_dict['object 2 sentences'] = objB.sentences
