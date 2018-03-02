@@ -27,8 +27,8 @@ MARKERS_THAN = ['better', 'easier', 'faster', 'nicer', 'cooler', 'safer', 'worse
 # list of all positive and negative markers without than used for comparing the objects
 MARKERS_WO_THAN = ['\'superior to\'', '\'inferior to\'']
 # sentences containing a negation between the objects will have their result reversed
-NEGATIONS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t',
-             'did not', 'could not', 'was not', 'have not', 'would not', 'can not',
+NEGATIONS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t', 'isn\'t',
+             'did not', 'could not', 'was not', 'have not', 'would not', 'can not', 'is not',
              'didnt', 'couldnt', 'wasnt', 'havent', 'wouldnt', 'cannot']
 # sentences containing one of these markers will have their result reversed
 OPPOSITE_MARKERS = ['not', 'no', 'nor']
