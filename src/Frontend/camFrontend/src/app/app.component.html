@@ -33,7 +33,7 @@
       </td>
     </tr>
     <tr>
-      <td class='text-right' style='font-size: 17px'>Add another aspect</td>
+      <td></td>
       <td class='text-center'>
         <button (click)='addAspect()' type='button' class='btn btn-primary'>
           <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
@@ -61,39 +61,39 @@
   <thead>
     <tr>
       <th width='10%' scope='col'></th>
-      <th width='45%' scope='col' class='text-center' style='font-size: 17px'>{{winner_obj}}</th>
-      <th width='45%' scope='col' class='text-center' style='font-size: 17px'>{{loser_obj}}</th>
+      <th width='45%' scope='col' class='text-center' style='font-size: 19px'>{{winner_obj}}</th>
+      <th width='45%' scope='col' class='text-center' style='font-size: 19px'>{{loser_obj}}</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th scope='row'></th>
-      <td class='text-center' bgcolor='green'>Winner</td>
+      <td class='text-center' bgcolor='green' style='font-size: 17px'>Winner</td>
       <td class='text-center'></td>
     </tr>
     <tr>
-      <th scope='row'>Score</th>
-      <td class='text-center'>{{winner_score}}</td>
-      <td class='text-center'>{{loser_score}}</td>
+      <th scope='row' style='font-size: 17px'>Score</th>
+      <td class='text-center' style='font-size: 17px'>{{winner_score}}</td>
+      <td class='text-center' style='font-size: 17px'>{{loser_score}}</td>
     </tr>
     <tr>
-      <th scope='row'>Linked to</th>
-      <td>{{winner_links}}</td>
-      <td>{{loser_links}}</td>
+      <th scope='row' style='font-size: 17px'>Linked to</th>
+      <td style='font-size: 17px'>{{winner_links}}</td>
+      <td style='font-size: 17px'>{{loser_links}}</td>
     </tr>
     <tr>
-      <th scope='row'>Sentence examples</th>
-      <td>{{winner_sentex[0]}}</td>
-      <td>{{loser_sentex[0]}}</td>
+      <th scope='row' style='font-size: 17px'>Sentence examples</th>
+      <td style='font-size: 17px'>{{winner_sentex[0]}}</td>
+      <td style='font-size: 17px'>{{loser_sentex[0]}}</td>
     </tr>
     <tr *ngFor='let i of sentence_show_numberlist'>
       <th scope='row'></th>
-      <td>{{winner_sentex[i]}}</td>
-      <td>{{loser_sentex[i]}}</td>
+      <td style='font-size: 17px'>{{winner_sentex[i]}}</td>
+      <td style='font-size: 17px'>{{loser_sentex[i]}}</td>
     </tr>
   </tbody>
 </table>
-<button (click)='show_more_sentences()' type='button' class='btn btn-primary' *ngIf='resshow'>
+<button (click)='show_more_sentences()' type='button' class='btn btn-primary btn-lg' *ngIf='resshow'>
   Show more sentences
 </button>
 <br>
