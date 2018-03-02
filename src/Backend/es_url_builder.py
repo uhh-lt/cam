@@ -48,5 +48,5 @@ def add_marker_urlpart(url):
         url += '%20then\")%20OR%20'
     url += '(\"'
     url += constants.MARKERS_THAN[len(constants.MARKERS_THAN) - 1]
-    url += '%20then\"))&from=0&size=1000'
+    url += '%20then\"))&from=0&size=10000'
     return url
