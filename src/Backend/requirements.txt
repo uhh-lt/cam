@@ -1,4 +1,17 @@
-Flask
-nltk
-requests
-inflect
+#pip3
+apt install python3-pip
+#Flask with Flask-CORS
+pip3 install Flask
+pip3 install -U flask-cors
+#NLTK with stopwords and word_tokenizer
+pip3 install -U nltk
+python3
+import nltk
+nltk.download('stopwords')
+nltk.download('punkt')
+#Pipenv
+pip3 install pipenv
+#Requests
+pipenv install requests
+#inflect
+pip3 install inflect
