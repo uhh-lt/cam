@@ -15,7 +15,7 @@ def build_object_urlpart(objA, objB):
             a specific aspect that plays a special role while analyzing the result.
             Note that this is currently WIP and not actually implemented.
     '''
-    url = constants.HOSTNAME  # name of the host
+    url = constants.ES_HOSTNAME  # name of the host
     url += constants.CRAWL_DATA_REPOS  # Elastic Search commoncrawl2
     url += '{}%20AND%20{}'.format(
         objA.name, objB.name)  # add the objects to look for
@@ -31,9 +31,22 @@ def add_marker_urlpart(url):
     '''
     url += '%20AND%20('
     # markers are separated with OR
-    for i in range(0, len(constants.MARKERS) - 1):
-        url += constants.MARKERS[i]
+    for i in range(0, len(constants.MARKERS_WO_THAN)):
+        url += constants.MARKERS_WO_THAN[i]
         url += '%20OR%20'
-    url += constants.MARKERS[len(constants.MARKERS) - 1]
-    url += ')&from=0&size=10000'
+    for i in range(0, len(constants.MARKERS_THAN)):
+        url += '('
+        url += constants.MARKERS_THAN[i]
+        url += '%20AND%20than)%20OR%20'
+    for i in range(0, len(constants.MARKERS_THAN)):
+        url += '(\"'
+        url += constants.MARKERS_THAN[i]
+        url += '%20alternative%20to\")%20OR%20'
+    for i in range(0, len(constants.MARKERS_THAN) - 1):
+        url += '(\"'
+        url += constants.MARKERS_THAN[i]
+        url += '%20then\")%20OR%20'
+    url += '(\"'
+    url += constants.MARKERS_THAN[len(constants.MARKERS_THAN) - 1]
+    url += '%20then\"))&from=0&size=1000'
     return url

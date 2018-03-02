@@ -35,9 +35,9 @@ def cam():
         else:
             i = False
     # json obj with all ES hits containing objectA, objectB and a marker.
-    all_hits = es_requester.request_es(objectA, objectB)
+    json_compl = es_requester.request_es(objectA, objectB)
     # list of all sentences containing objectA, objectB and a marker.
-    all_sentences = es_sentence_extracter.extract_sentences(all_hits)
+    all_sentences = es_sentence_extracter.extract_sentences(json_compl)
     # removing sentences that can't be properly analyzed
     all_sentences = sentence_clearer.clear_sentences(
         all_sentences, objectA, objectB)

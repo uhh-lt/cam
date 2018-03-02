@@ -20,6 +20,9 @@ def find_winner(sentences, objA, objB, aspects):
     aspects:    List
                 list of Aspects
     '''
+    max_sentscore = 0
+    for key in sentences:
+        max_sentscore = max(max_sentscore, sentences[key])
     for s in sentences:
         comp_result = what_is_better(s, objA, objB)
         # the aspects the user entered that are contained in the sentence
@@ -27,19 +30,25 @@ def find_winner(sentences, objA, objB, aspects):
         if comp_result['winner'] == objA:  # objectA won the sentence
             if contained_aspects:
                 for aspect in contained_aspects:
-                    objA.add_points(aspect.weight)
-                    objA.add_points(comp_result['marker_cnt'])
+                    objA.add_points(
+                        (sentences[s] / max_sentscore) * aspect.weight)
+                    objA.add_points(
+                        (sentences[s] / max_sentscore) * comp_result['marker_cnt'])
             else:
                 # multiple markers, multiple points
-                objA.add_points(comp_result['marker_cnt'])
+                objA.add_points(
+                    (sentences[s] / max_sentscore) * comp_result['marker_cnt'])
             objA.add_sentence(s)
         else:  # objectB won the sentence
             if contained_aspects:
                 for aspect in contained_aspects:
-                    objB.add_points(aspect.weight)
-                    objA.add_points(comp_result['marker_cnt'])
+                    objB.add_points(
+                        (sentences[s] / max_sentscore) * aspect.weight)
+                    objA.add_points(
+                        (sentences[s] / max_sentscore) * comp_result['marker_cnt'])
             else:
-                objB.add_points(comp_result['marker_cnt'])
+                objB.add_points(
+                    (sentences[s] / max_sentscore) * comp_result['marker_cnt'])
             objB.add_sentence(s)
     final_dict = {}  # the dictionary to be returned
     if objA.points > objB.points:
@@ -86,13 +95,15 @@ def what_is_better(sentence, objA, objB):
     second_pos = max(a_pos, b_pos)
     opp_pos = marker_searcher.get_marker_pos(
         sentence, first_pos, second_pos, constants.OPPOSITE_MARKERS)
+    neg_pos = marker_searcher.get_marker_pos(
+        sentence, first_pos, second_pos, constants.NEGATIONS)
     positive_pos = marker_searcher.get_marker_pos(
         sentence, first_pos, second_pos, constants.POSITIVE_MARKERS)
     if positive_pos != -1:  # there's a positive marker, check if a won
         result['marker_cnt'] = marker_searcher.get_marker_count(
             sentence, first_pos, second_pos, constants.POSITIVE_MARKERS)
         result['winner'] = objA if objA_wins_sentence(
-            first_pos, a_pos, opp_pos, positive_pos) else objB
+            first_pos, a_pos, opp_pos, neg_pos, positive_pos) else objB
         return result
         # we can return because there's never both markers in a sentence
     negative_pos = marker_searcher.get_marker_pos(
@@ -101,13 +112,17 @@ def what_is_better(sentence, objA, objB):
         sentence, first_pos, second_pos, constants.NEGATIVE_MARKERS)
     # we're only here if there's no positive marker, so there must be negative one
     result['winner'] = objB if objA_wins_sentence(
-        first_pos, a_pos, opp_pos, negative_pos) else objA
+        first_pos, a_pos, opp_pos, neg_pos, negative_pos) else objA
     return result
 
 
-def objA_wins_sentence(first_pos, a_pos, opp_pos, marker_pos):
+def objA_wins_sentence(first_pos, a_pos, opp_pos, neg_pos, marker_pos):
     if opp_pos != -1:
         if first_pos < opp_pos < marker_pos:
             return False if first_pos == a_pos else True  # example: a is not better than b
+    elif neg_pos != -1:
+        if first_pos < neg_pos < marker_pos:
+            # example: a couldn't be better than b
+            return False if first_pos == a_pos else True
     else:
-        return True if first_pos == a_pos else False  # example> a is better than b
+        return True if first_pos == a_pos else False  # example: a is better than b
