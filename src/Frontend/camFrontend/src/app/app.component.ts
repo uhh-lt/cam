@@ -23,17 +23,17 @@ export class AppComponent {
   aspects = [1]; // the rows of aspects currently shown in the UI
   aspectDict = {}; // the aspects currently entered
   weightDict = { 1: 1 }; // the weightings of the aspects currently chosen with the sliders
-  resshow = false; // boolean that checks if the result table should be shown
   loadshow = false; // boolean that checks if the loading screen should be shown
+  resshow = false; // boolean that checks if the result table should be shown
+  rescount = 0; // total amount of sentences used for comparison
   object_A = ''; // the first object currently entered
   object_B = ''; // the second object currently entered
   winner_obj = ''; // the first object of the results shown
   loser_obj = ''; // the second object of the results shown
-  winner_score = 0; // stores the score of the first object
-  loser_score = 0; // stores the score of the second object
-  winner_links = ''; // stores the main links of the first object
-  loser_links = ''; // stores the main links of the second object
-  both_links = ''; // stores the main links both objects have in common
+  winner_score = ''; // stores the score of the first object
+  loser_score = ''; // stores the score of the second object
+  winner_links = []; // stores the main links of the first object
+  loser_links = []; // stores the main links of the second object
   winner_sentex = {}; // stores some example sentences for the first object
   loser_sentex = {}; // stores some example sentences for the second object
   sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -47,9 +47,9 @@ export class AppComponent {
     this.loadshow = true; // show the loading screen
     // reset everything to its default and hide the result table
     this.resshow = false;
-    this.winner_links = '';
-    this.loser_links = '';
-    this.both_links = '';
+    this.rescount = 0;
+    this.winner_links = [];
+    this.loser_links = [];
     this.winner_sentex = {};
     this.loser_sentex = {};
     const finalAspDict = {};
@@ -75,6 +75,8 @@ export class AppComponent {
    */
   saveResult(result) {
     this.resshow = true; // show the result table
+    this.rescount =
+      result['object 1 sentences'].length + result['object 2 sentences'].length;
     const a_won = result['score object 1'] > result['score object 2'];
     // save the winner
     if (a_won) {
@@ -86,139 +88,61 @@ export class AppComponent {
     }
     // save the scores
     if (a_won) {
-      this.winner_score = result['score object 1'];
-      this.loser_score = result['score object 2'];
+      this.winner_score = (
+        result['score object 1'] /
+        (result['score object 1'] + result['score object 2']) *
+        100
+      ).toFixed(2);
+      this.loser_score = (
+        result['score object 2'] /
+        (result['score object 1'] + result['score object 2']) *
+        100
+      ).toFixed(2);
     } else {
-      this.winner_score = result['score object 2'];
-      this.loser_score = result['score object 1'];
+      this.winner_score = (
+        result['score object 2'] /
+        (result['score object 1'] + result['score object 2']) *
+        100
+      ).toFixed(2);
+      this.loser_score = (
+        result['score object 1'] /
+        (result['score object 1'] + result['score object 2']) *
+        100
+      ).toFixed(2);
     }
     // sort the main links for both objects by their values and save them
     if (a_won) {
-      const A_linkkeys = Object.keys(result['main links object 1']);
-      for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
-        let maxi = 0;
-        let maxkey = '';
-        for (const key of A_linkkeys) {
-          if (result['main links object 1'][key] > maxi) {
-            maxi = result['main links object 1'][key];
-            maxkey = key;
-          }
-        }
-        if (A_linkkeys.length > 0) {
-          this.winner_links += `${maxkey}(${maxi})`;
-          const index = A_linkkeys.indexOf(maxkey, 0);
-          if (index > -1) {
-            A_linkkeys.splice(index, 1);
-          }
-          this.winner_links += `, `;
-        } else {
-          break;
-        }
+      for (const link of result['main links object 1']) {
+        this.winner_links.push(link);
       }
-      const B_linkkeys = Object.keys(result['main links object 2']);
-      for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
-        let maxi = 0;
-        let maxkey = '';
-        for (const key of B_linkkeys) {
-          if (result['main links object 2'][key] > maxi) {
-            maxi = result['main links object 2'][key];
-            maxkey = key;
-          }
-        }
-        if (B_linkkeys.length > 0) {
-          this.loser_links += `${maxkey}(${maxi})`;
-          const index = B_linkkeys.indexOf(maxkey, 0);
-          if (index > -1) {
-            B_linkkeys.splice(index, 1);
-          }
-          this.loser_links += `, `;
-        } else {
-          break;
-        }
+      for (const link of result['main links object 2']) {
+        this.loser_links.push(link);
       }
     } else {
-      const A_linkkeys = Object.keys(result['main links object 1']);
-      for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
-        let maxi = 0;
-        let maxkey = '';
-        for (const key of A_linkkeys) {
-          if (result['main links object 1'][key] > maxi) {
-            maxi = result['main links object 1'][key];
-            maxkey = key;
-          }
-        }
-        if (A_linkkeys.length > 0) {
-          this.loser_links += `${maxkey}(${maxi})`;
-          const index = A_linkkeys.indexOf(maxkey, 0);
-          if (index > -1) {
-            A_linkkeys.splice(index, 1);
-          }
-          this.loser_links += `, `;
-        } else {
-          break;
-        }
+      for (const link of result['main links object 1']) {
+        this.loser_links.push(link);
       }
-      const B_linkkeys = Object.keys(result['main links object 2']);
-      for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
-        let maxi = 0;
-        let maxkey = '';
-        for (const key of B_linkkeys) {
-          if (result['main links object 2'][key] > maxi) {
-            maxi = result['main links object 2'][key];
-            maxkey = key;
-          }
-        }
-        if (B_linkkeys.length > 0) {
-          this.winner_links += `${maxkey}(${maxi})`;
-          const index = B_linkkeys.indexOf(maxkey, 0);
-          if (index > -1) {
-            B_linkkeys.splice(index, 1);
-          }
-          this.winner_links += `, `;
-        } else {
-          break;
-        }
-      }
-    }
-    // save the main links both objects have in common
-    const both_linkkeys = Object.keys(result['main links both']);
-    for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
-      let maxi = 0;
-      let maxkey = '';
-      for (const key of both_linkkeys) {
-        if (result['main links both'][key] > maxi) {
-          maxi = result['main links both'][key];
-          maxkey = key;
-        }
-      }
-      if (both_linkkeys.length > 0) {
-        this.both_links += `${maxkey}(${maxi})`;
-        const index = both_linkkeys.indexOf(maxkey, 0);
-        if (index > -1) {
-          both_linkkeys.splice(index, 1);
-        }
-        this.both_links += `, `;
-      } else {
-        break;
+      for (const link of result['main links object 2']) {
+        this.winner_links.push(link);
       }
     }
     // save the sentences each of the objects has won
     let i = 0;
     if (a_won) {
       for (const sentence of result['object 1 sentences']) {
-        this.winner_sentex[i++] = sentence;
+        this.winner_sentex[i++] = `<mark>${sentence}</mark>`;
       }
       i = 0;
       for (const sentence of result['object 2 sentences']) {
-        this.loser_sentex[i++] = sentence;
+        this.loser_sentex[i++] = `<mark>${sentence}</mark>`;
       }
     } else {
       for (const sentence of result['object 1 sentences']) {
-        this.loser_sentex[i++] = sentence;
+        this.loser_sentex[i++] = `<mark>${sentence}</mark>`;
       }
       i = 0;
       for (const sentence of result['object 2 sentences']) {
-        this.winner_sentex[i++] = sentence;
+        this.winner_sentex[i++] = `<mark>${sentence}</mark>`;
       }
     }
     this.loadshow = false; // hide the loading screen
