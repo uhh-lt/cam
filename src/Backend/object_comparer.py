@@ -57,17 +57,15 @@ def find_winner(sentences, objA, objB, aspects):
     elif objB.points > objA.points:
         final_dict['winner'] = objB.name
     else:
-        final_dict['winner'] = None
+        final_dict['winner'] = 'No winner found'
     final_dict['object 1'] = objA.name
     final_dict['object 2'] = objB.name
     final_dict['score object 1'] = objA.points
     final_dict['score object 2'] = objB.points
-    final_dict['main links object 1'] = link_extracter.extract_main_links(
-        objA.sentences, objB.sentences, objA.name, objB.name)['A']
-    final_dict['main links object 2'] = link_extracter.extract_main_links(
-        objA.sentences, objB.sentences, objA.name, objB.name)['B']
-    final_dict['main links both'] = link_extracter.extract_main_links(
-        objA.sentences, objB.sentences, objA.name, objB.name)['both']
+    linked_words = link_extracter.extract_main_links(
+        objA.sentences, objB.sentences, objA.name, objB.name)
+    final_dict['main links object 1'] = linked_words['A']
+    final_dict['main links object 2'] = linked_words['B']
     final_dict['object 1 sentences'] = objA.sentences
     final_dict['object 2 sentences'] = objB.sentences
     return final_dict
