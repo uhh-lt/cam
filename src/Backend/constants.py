@@ -9,14 +9,13 @@ CRAWL_DATA_REPOS = 'commoncrawl2/_search?q=text:'
 
 
 # list of all positive markers used for comparing the objects
-POSITIVE_MARKERS = ['better', 'easier', 'faster', 'nicer', 'cooler', 'safer', 'superior to',
-                    'more accessible', 'greater', 'simpler', 'smoother', 'lighter', 'quicker',
-                    'friendlier', 'less complicated', 'more recommended', 'more experienced',
-                    'smarter', 'cleverer', 'more intuitive', 'more secure', 'finer']
+POSITIVE_MARKERS = ['better', 'easier', 'faster', 'nicer', 'cooler', 'safer', 'superior',
+                    'accessible', 'greater', 'simpler', 'smoother', 'lighter', 'quicker',
+                    'friendlier', 'complicated', 'recommended', 'experienced', 'smarter',
+                    'cleverer', 'intuitive', 'secure', 'finer']
 # list of all negative markers used for comparing the objects
-NEGATIVE_MARKERS = ['worse', 'harder', 'slower', 'poorer', 'inferior to', 'more complicated',
-                    'less accessible', 'less recommended', 'less experienced', 'less intuitive',
-                    'less secure']
+NEGATIVE_MARKERS = ['worse', 'harder', 'slower', 'poorer', 'inferior to', 'complicated',
+                    'accessible', 'recommended', 'experienced', 'intuitive', 'secure']
 # list of all positive and negative markers with than used for comparing the objects
 MARKERS_THAN = ['better', 'easier', 'faster', 'nicer', 'cooler', 'safer', 'worse', 'harder',
                 'slower', 'poorer', '\'more accessible\'', 'greater', 'simpler', 'smoother',
