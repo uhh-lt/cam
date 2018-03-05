@@ -40,34 +40,22 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
                 else:
                     worddictB[w] = 1
     result = {}
-    resultA = {}
-    resultB = {}
-    resultBoth = {}
-    resultBothTemp = {}
+    resultA = []
+    resultB = []
     # return the top 10 links for A, B and both
-    while (len(resultA.keys()) < 10 and len(resultB.keys()) < 10):
+    for key in worddictA:
+        if key in worddictB:
+            worddictA[key] = worddictA[key] / worddictB[key]
+            worddictB[key] = worddictB[key] / worddictA[key]
+    while (len(resultA) < 10 and len(resultB) < 10 and (worddictA or worddictB)):
         if worddictA:
             maxA = max(worddictA, key=worddictA.get)
-            resultA[maxA] = worddictA[maxA]
+            resultA.append(maxA)
             worddictA.pop(maxA)
         if worddictB:
             maxB = max(worddictB, key=worddictB.get)
-            resultB[maxB] = worddictB[maxB]
+            resultB.append(maxB)
             worddictB.pop(maxB)
-        for key in resultA:
-            if key in resultB:
-                resultBothTemp[key] = resultA[key] + resultB[key]
-        for key in resultBothTemp:
-            if key in resultA:
-                resultA.pop(key)
-            if key in resultB:
-                resultB.pop(key)
     result['A'] = resultA
     result['B'] = resultB
-    for _i in range(0, 10):
-        if resultBothTemp:
-            maxBoth = max(resultBothTemp, key=resultBothTemp.get)
-            resultBoth[maxBoth] = resultBothTemp[maxBoth]
-            resultBothTemp.pop(maxBoth)
-    result['both'] = resultBoth
     return result
