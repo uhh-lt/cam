@@ -9,7 +9,7 @@
       </td>
       <td class='align-middle text-center' style='font-size: 16px'>versus</td>
       <td>
-        <input placeholder='enter the second object' #objB [(ngModel)]='object_B' style='font-size: 20px'>
+        <input placeholder='enter the second object' #objB [(ngModel)]='object_B' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
       </td>
     </tr>
     <tr>
@@ -19,7 +19,8 @@
     </tr>
     <tr *ngFor='let aspect of aspects'>
       <td class='text-right'>
-        <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' style='font-size: 17px'>
+        <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' style='font-size: 17px'
+          (keyup.enter)='compIfEntered()'>
       </td>
       <td class='text-center'>
         <button (click)='removeAspect(aspect)' type='button' class='btn btn-primary'>
@@ -28,7 +29,7 @@
       </td>
       <td>
         <div class='slidecontainer'>
-          <input type='range' min='1' max='5' value='1' class='slider' id='weight{{aspect}}' [(ngModel)]='weightDict[aspect]'>
+          <input type='range' min='1' max='5' value='1' class='slider' id='weight{{aspect}}' [(ngModel)]='weightDict[aspect]' (keyup.enter)='compIfEntered()'>
         </div>
       </td>
     </tr>
@@ -54,7 +55,7 @@
 <p *ngIf='loadshow' class='text-center' style='font-size: 20px'>Loading, please wait ...</p>
 <br>
 <br>
-<p *ngIf='resshow' class='text-center' style='font-size: 25px'>The results:</p>
+<p *ngIf='resshow' class='text-center' style='font-size: 25px'>Result (based on {{rescount}} sentences):</p>
 <br>
 <br>
 <table *ngIf='resshow' class='table'>
@@ -69,25 +70,25 @@
     <tr>
       <th scope='row'></th>
       <td class='text-center' bgcolor='green' style='font-size: 17px'>Winner</td>
-      <td class='text-center'></td>
+      <td class='text-center' bgcolor='red' style='font-size: 17px'>Loser</td>
     </tr>
     <tr>
       <th scope='row' style='font-size: 17px'>Score</th>
-      <td class='text-center' style='font-size: 17px'>{{winner_score}}</td>
-      <td class='text-center' style='font-size: 17px'>{{loser_score}}</td>
+      <td class='text-center' style='font-size: 17px'>{{winner_score}} %</td>
+      <td class='text-center' style='font-size: 17px'>{{loser_score}} %</td>
     </tr>
     <tr>
-      <th scope='row' style='font-size: 17px'>Linked words exclusive to this object</th>
-      <td style='font-size: 17px'>{{winner_links}}</td>
-      <td style='font-size: 17px'>{{loser_links}}</td>
-    </tr>
-    <tr>
-      <th scope='row' style='font-size: 17px'>Linked words both objects have in common</th>
-      <td style='font-size: 17px' colspan="2" class="text-center">{{both_links}}</td>
+      <th scope='row' style='font-size: 17px'>Linked words</th>
+      <td style='font-size: 17px'>
+        <li *ngFor='let link of winner_links'>{{link}}</li>
+      </td>
+      <td style='font-size: 17px'>
+        <li *ngFor='let link of loser_links'>{{link}}</li>
+      </td>
     </tr>
     <tr>
       <th scope='row' style='font-size: 17px'>Sentence examples</th>
-      <td style='font-size: 17px'>{{winner_sentex[0]}}</td>
+      <td style='font-size: 17px' [(innerHtml)]="winner_sentex[0]"></td>
       <td style='font-size: 17px'>{{loser_sentex[0]}}</td>
     </tr>
     <tr *ngFor='let i of sentence_show_numberlist'>
