@@ -60,9 +60,9 @@
 <table *ngIf='resshow' class='table'>
   <thead>
     <tr>
-      <th width='10%' scope='col'></th>
-      <th width='45%' scope='col' class='text-center' style='font-size: 19px'>{{winner_obj}}</th>
-      <th width='45%' scope='col' class='text-center' style='font-size: 19px'>{{loser_obj}}</th>
+      <th width='20%' scope='col'></th>
+      <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{winner_obj}}</th>
+      <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{loser_obj}}</th>
     </tr>
   </thead>
   <tbody>
@@ -78,12 +78,12 @@
     </tr>
     <tr>
       <th scope='row' style='font-size: 17px'>Linked words exclusive to this object</th>
-      <td style='font-size: 17px'>{{both_links}}</td>
+      <td style='font-size: 17px'>{{winner_links}}</td>
+      <td style='font-size: 17px'>{{loser_links}}</td>
     </tr>
     <tr>
       <th scope='row' style='font-size: 17px'>Linked words both objects have in common</th>
-      <td style='font-size: 17px'>{{winner_links}}</td>
-      <td style='font-size: 17px'>{{loser_links}}</td>
+      <td style='font-size: 17px' colspan="2" class="text-center">{{both_links}}</td>
     </tr>
     <tr>
       <th scope='row' style='font-size: 17px'>Sentence examples</th>

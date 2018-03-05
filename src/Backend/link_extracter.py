@@ -26,6 +26,19 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
                     worddictA[w] += 1
                 else:
                     worddictA[w] = 1
+    for s in sentencesB:
+        # find all words in the sentence
+        wordlist = re.compile('[A-Za-z]+').findall(s)
+        for w in wordlist:
+            w = w.lower()
+            # check if w is "useful" as a links
+            if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
+                    constants.NEGATIVE_MARKERS and w != objA and w != objB and w not in \
+                    constants.NON_LINKS and w not in constants.NUMBER_STRINGS:
+                if w in worddictB:
+                    worddictB[w] += 1
+                else:
+                    worddictB[w] = 1
     result = {}
     resultA = {}
     resultB = {}
@@ -41,15 +54,20 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
             maxB = max(worddictB, key=worddictB.get)
             resultB[maxB] = worddictB[maxB]
             worddictB.pop(maxB)
-        for key in worddictA:
-            if key in worddictB.keys():
+        for key in resultA:
+            if key in resultB:
                 resultBothTemp[key] = resultA[key] + resultB[key]
+        for key in resultBothTemp:
+            if key in resultA:
                 resultA.pop(key)
+            if key in resultB:
                 resultB.pop(key)
     result['A'] = resultA
     result['B'] = resultB
     for _i in range(0, 10):
-        maxBoth = max(resultBothTemp, key=resultBothTemp.get)
-        resultBoth[maxBoth] = resultBothTemp[maxBoth]
-        resultBothTemp.pop(maxBoth)
+        if resultBothTemp:
+            maxBoth = max(resultBothTemp, key=resultBothTemp.get)
+            resultBoth[maxBoth] = resultBothTemp[maxBoth]
+            resultBothTemp.pop(maxBoth)
+    result['both'] = resultBoth
     return result
