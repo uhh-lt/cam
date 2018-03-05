@@ -1,3 +1,6 @@
+import re
+
+
 def has_marker(sentence, pos_first, pos_second, markers):
     '''
     checks if any one of a given list of markers exists in
@@ -32,9 +35,11 @@ def get_marker_pos(sentence, pos_first, pos_second, markers):
     markers:    list of markers
     the markers of which any one must be found.
     '''
+    pos_marker = -1
     for m in markers:
-        pos_marker = sentence.find(m)
-        if pos_marker != -1:
+        wordlist = re.compile('[A-Za-z]+').findall(sentence)
+        if m in wordlist:
+            pos_marker = wordlist.index(m)
             if pos_first < pos_marker < pos_second:
                 break  # found a marker between the objects
             else:
@@ -55,10 +60,12 @@ def get_marker_count(sentence, pos_first, pos_second, markers):
     markers:    list of markers
     the markers of which any one must be found.
     '''
+    pos_marker = -1
     cnt = 0
     for m in markers:
-        pos_marker = sentence.find(m)
-        if pos_marker != -1:
+        wordlist = re.compile('[A-Za-z]+').findall(sentence)
+        if m in wordlist:
+            pos_marker = wordlist.index(m)
             if pos_first < pos_marker < pos_second:
                 cnt += 1
     return cnt

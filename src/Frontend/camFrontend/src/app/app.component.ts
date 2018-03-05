@@ -16,7 +16,8 @@ export class AppComponent {
   title = 'CAM';
   /**
    *  The name of the server. Change this to 'http://127.0.0.1:5000/cam' if you want to communicate
-   *  with your locally hosted server instead.
+   *  with your locally hosted server instead, to 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
+   *  if you want to communicate with ltdemos.
    */
   HOSTNAME = 'http://127.0.0.1:5000/cam';
   aspects = [1]; // the rows of aspects currently shown in the UI
@@ -55,7 +56,9 @@ export class AppComponent {
     this.sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     // read the aspects entered by the user and store them with their weight
     for (const aspect of this.aspects) {
-      finalAspDict[this.aspectDict[aspect]] = this.weightDict[aspect];
+      if (this.aspectDict[aspect] !== undefined) {
+        finalAspDict[this.aspectDict[aspect]] = this.weightDict[aspect];
+      }
     }
     // read the objects entered, build the URL and start the search request
     this.http
@@ -269,6 +272,13 @@ export class AppComponent {
    */
   objectsEntered() {
     return this.object_A !== '' && this.object_B !== '';
+  }
+
+  compIfEntered() {
+    console.log('enter');
+    if (this.objectsEntered()) {
+      this.compare();
+    }
   }
 
   /**

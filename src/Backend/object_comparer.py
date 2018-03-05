@@ -2,6 +2,7 @@ import constants
 import aspect_searcher
 import marker_searcher
 import link_extracter
+import re
 
 
 def find_winner(sentences, objA, objB, aspects):
@@ -90,9 +91,14 @@ def what_is_better(sentence, objA, objB):
     ''' TODO this is called also in sentence_clearer.remove_wrong_structure -> should refactor '''
     result = {}
     # position of objectA in sentence, spaces to not find objname as part of different word
-    a_pos = sentence.find(objA.name)
+    wordlist = re.compile('[A-Za-z]+').findall(sentence)
+    a_pos = 0
+    if objA.name in wordlist:
+        a_pos = wordlist.index(objA.name)
     # position of objectB in sentence, spaces to not find objname as part of different word
-    b_pos = sentence.find(objB.name)
+    b_pos = 0
+    if objB.name in wordlist:
+        b_pos = wordlist.index(objB.name)
     first_pos = min(a_pos, b_pos)
     second_pos = max(a_pos, b_pos)
     opp_pos = marker_searcher.get_marker_pos(

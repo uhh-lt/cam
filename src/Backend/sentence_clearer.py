@@ -1,5 +1,6 @@
 import constants
 import marker_searcher
+import re
 
 
 def clear_sentences(sentences, objA, objB):
@@ -40,8 +41,13 @@ def remove_wrong_structures(sentences, objA, objB):
     '''
     sentences_to_delete = []
     for s in sentences:
-        aPos = s.find(objA.name)
-        bPos = s.find(objB.name)
+        wordlist = re.compile('[A-Za-z]+').findall(s)
+        aPos = -1
+        if objA.name in wordlist:
+            aPos = wordlist.index(objA.name)
+        bPos = -1
+        if objB.name in wordlist:
+            bPos = wordlist.index(objB.name)
         if aPos == -1 and bPos == -1:
             sentences_to_delete.append(s)
             continue
