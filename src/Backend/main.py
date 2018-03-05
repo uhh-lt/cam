@@ -1,7 +1,6 @@
 import requests
 import json
 import es_requester
-import es_sentence_extracter
 import sentence_clearer
 import object_comparer
 from flask import Flask, request, jsonify
@@ -37,7 +36,7 @@ def cam():
     # json obj with all ES hits containing objectA, objectB and a marker.
     json_compl = es_requester.request_es(objectA, objectB)
     # list of all sentences containing objectA, objectB and a marker.
-    all_sentences = es_sentence_extracter.extract_sentences(json_compl)
+    all_sentences = es_requester.extract_sentences(json_compl)
     # removing sentences that can't be properly analyzed
     all_sentences = sentence_clearer.clear_sentences(
         all_sentences, objectA, objectB)
