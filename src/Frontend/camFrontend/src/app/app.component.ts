@@ -32,6 +32,7 @@ export class AppComponent {
   loser_score = 0; // stores the score of the second object
   winner_links = ''; // stores the main links of the first object
   loser_links = ''; // stores the main links of the second object
+  both_links = ''; // stores the main links both objects have in common
   winner_sentex = {}; // stores some example sentences for the first object
   loser_sentex = {}; // stores some example sentences for the second object
   sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -47,6 +48,7 @@ export class AppComponent {
     this.resshow = false;
     this.winner_links = '';
     this.loser_links = '';
+    this.both_links = '';
     this.winner_sentex = {};
     this.loser_sentex = {};
     const finalAspDict = {};
@@ -89,42 +91,42 @@ export class AppComponent {
     }
     // sort the main links for both objects by their values and save them
     if (a_won) {
-      const A_aspkeys = Object.keys(result['main links object 1']);
+      const A_linkkeys = Object.keys(result['main links object 1']);
       for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
         let maxi = 0;
         let maxkey = '';
-        for (const key of A_aspkeys) {
+        for (const key of A_linkkeys) {
           if (result['main links object 1'][key] > maxi) {
             maxi = result['main links object 1'][key];
             maxkey = key;
           }
         }
-        if (A_aspkeys.length > 0) {
+        if (A_linkkeys.length > 0) {
           this.winner_links += `${maxkey}(${maxi})`;
-          const index = A_aspkeys.indexOf(maxkey, 0);
+          const index = A_linkkeys.indexOf(maxkey, 0);
           if (index > -1) {
-            A_aspkeys.splice(index, 1);
+            A_linkkeys.splice(index, 1);
           }
           this.winner_links += `, `;
         } else {
           break;
         }
       }
-      const B_aspkeys = Object.keys(result['main links object 2']);
+      const B_linkkeys = Object.keys(result['main links object 2']);
       for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
         let maxi = 0;
         let maxkey = '';
-        for (const key of B_aspkeys) {
+        for (const key of B_linkkeys) {
           if (result['main links object 2'][key] > maxi) {
             maxi = result['main links object 2'][key];
             maxkey = key;
           }
         }
-        if (B_aspkeys.length > 0) {
+        if (B_linkkeys.length > 0) {
           this.loser_links += `${maxkey}(${maxi})`;
-          const index = B_aspkeys.indexOf(maxkey, 0);
+          const index = B_linkkeys.indexOf(maxkey, 0);
           if (index > -1) {
-            B_aspkeys.splice(index, 1);
+            B_linkkeys.splice(index, 1);
           }
           this.loser_links += `, `;
         } else {
@@ -132,47 +134,69 @@ export class AppComponent {
         }
       }
     } else {
-      const A_aspkeys = Object.keys(result['main links object 1']);
+      const A_linkkeys = Object.keys(result['main links object 1']);
       for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
         let maxi = 0;
         let maxkey = '';
-        for (const key of A_aspkeys) {
+        for (const key of A_linkkeys) {
           if (result['main links object 1'][key] > maxi) {
             maxi = result['main links object 1'][key];
             maxkey = key;
           }
         }
-        if (A_aspkeys.length > 0) {
+        if (A_linkkeys.length > 0) {
           this.loser_links += `${maxkey}(${maxi})`;
-          const index = A_aspkeys.indexOf(maxkey, 0);
+          const index = A_linkkeys.indexOf(maxkey, 0);
           if (index > -1) {
-            A_aspkeys.splice(index, 1);
+            A_linkkeys.splice(index, 1);
           }
           this.loser_links += `, `;
         } else {
           break;
         }
       }
-      const B_aspkeys = Object.keys(result['main links object 2']);
+      const B_linkkeys = Object.keys(result['main links object 2']);
       for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
         let maxi = 0;
         let maxkey = '';
-        for (const key of B_aspkeys) {
+        for (const key of B_linkkeys) {
           if (result['main links object 2'][key] > maxi) {
             maxi = result['main links object 2'][key];
             maxkey = key;
           }
         }
-        if (B_aspkeys.length > 0) {
+        if (B_linkkeys.length > 0) {
           this.winner_links += `${maxkey}(${maxi})`;
-          const index = B_aspkeys.indexOf(maxkey, 0);
+          const index = B_linkkeys.indexOf(maxkey, 0);
           if (index > -1) {
-            B_aspkeys.splice(index, 1);
+            B_linkkeys.splice(index, 1);
           }
           this.winner_links += `, `;
         } else {
           break;
         }
+      }
+    }
+    // save the main links both objects have in common
+    const both_linkkeys = Object.keys(result['main links both']);
+    for (const _i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]) {
+      let maxi = 0;
+      let maxkey = '';
+      for (const key of both_linkkeys) {
+        if (result['main links both'][key] > maxi) {
+          maxi = result['main links both'][key];
+          maxkey = key;
+        }
+      }
+      if (both_linkkeys.length > 0) {
+        this.both_links += `${maxkey}(${maxi})`;
+        const index = both_linkkeys.indexOf(maxkey, 0);
+        if (index > -1) {
+          both_linkkeys.splice(index, 1);
+        }
+        this.both_links += `, `;
+      } else {
+        break;
       }
     }
     // save the sentences each of the objects has won
