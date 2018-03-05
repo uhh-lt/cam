@@ -14,6 +14,11 @@ showing the UI, reading the input and requesting the Elastic Search.
 })
 export class AppComponent {
   title = 'CAM';
+  /**
+   *  The name of the server. Change this to 'http://127.0.0.1:5000/cam' if you want to communicate
+   *  with your locally hosted server instead.
+   */
+  HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
   aspects = [1]; // the rows of aspects currently shown in the UI
   aspectDict = {}; // the aspects currently entered
   weightDict = { 1: 1 }; // the weightings of the aspects currently chosen with the sliders
@@ -214,7 +219,7 @@ export class AppComponent {
    * @returns the first part of the URL
    */
   buildObjURL(objA, objB) {
-    return `http://localhost:5000/cam?objectA=${objA}&objectB=${objB}`;
+    return `${this.HOSTNAME}?objectA=${objA}&objectB=${objB}`;
   }
 
   /**
