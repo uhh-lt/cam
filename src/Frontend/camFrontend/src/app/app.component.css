@@ -7,3 +7,19 @@
   width: 100%; /* Full-width */
   height: 25px; /* Specified height */
 }
+
+.winner {
+  background-color: green;
+}
+
+.loser {
+  background-color: red;
+}
+
+.aspect {
+  background-color: aquamarine;
+}
+
+.link {
+  background-color: grey;
+}

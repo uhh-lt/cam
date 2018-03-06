@@ -1,108 +1,186 @@
-<table class='table borderless'>
-  <tbody>
-    <tr>
-      <th class='text-center' colspan=3 style='font-size: 50px'>Comparative Argument Machine</th>
-    </tr>
-    <tr>
-      <td class='text-right'>
-        <input placeholder='enter the first object' #objA [(ngModel)]='object_A' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
-      </td>
-      <td class='align-middle text-center' style='font-size: 16px'>versus</td>
-      <td>
-        <input placeholder='enter the second object' #objB [(ngModel)]='object_B' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
-      </td>
-    </tr>
-    <tr>
-      <td class='text-right' style='font-size: 17px'>Enter aspects below:</td>
-      <td></td>
-      <td style='font-size: 17px'>Aspect importance:</td>
-    </tr>
-    <tr *ngFor='let aspect of aspects'>
-      <td class='text-right'>
-        <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' style='font-size: 17px'
-          (keyup.enter)='compIfEntered()'>
-      </td>
-      <td class='text-center'>
-        <button (click)='removeAspect(aspect)' type='button' class='btn btn-primary'>
-          <span class='glyphicon glyphicon-minus' aria-hidden='true'></span>
-        </button>
-      </td>
-      <td>
-        <div class='slidecontainer'>
-          <input type='range' min='1' max='5' value='1' class='slider' id='weight{{aspect}}' [(ngModel)]='weightDict[aspect]' (keyup.enter)='compIfEntered()'>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td></td>
-      <td class='text-center'>
-        <button (click)='addAspect()' type='button' class='btn btn-primary'>
-          <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
-        </button>
-      </td>
-    </tr>
-    <tr>
-      <th class='text-center' colspan=3>
-        <button (click)='compare()' type='button' class='btn btn-primary btn-lg' [disabled]='!objectsEntered()'>
-          Compare!
-        </button>
-      </th>
-    </tr>
-  </tbody>
-</table>
-<br>
-<br>
-<p *ngIf='loadshow' class='text-center' style='font-size: 20px'>Loading, please wait ...</p>
-<br>
-<br>
-<p *ngIf='resshow' class='text-center' style='font-size: 25px'>Result (based on {{rescount}} sentences):</p>
-<br>
-<br>
-<table *ngIf='resshow' class='table'>
-  <thead>
-    <tr>
-      <th width='20%' scope='col'></th>
-      <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{winner_obj}}</th>
-      <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{loser_obj}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope='row'></th>
-      <td class='text-center' bgcolor='green' style='font-size: 17px'>Winner</td>
-      <td class='text-center' bgcolor='red' style='font-size: 17px'>Loser</td>
-    </tr>
-    <tr>
-      <th scope='row' style='font-size: 17px'>Score</th>
-      <td class='text-center' style='font-size: 17px'>{{winner_score}} %</td>
-      <td class='text-center' style='font-size: 17px'>{{loser_score}} %</td>
-    </tr>
-    <tr>
-      <th scope='row' style='font-size: 17px'>Linked words</th>
-      <td style='font-size: 17px'>
-        <li *ngFor='let link of winner_links'>{{link}}</li>
-      </td>
-      <td style='font-size: 17px'>
-        <li *ngFor='let link of loser_links'>{{link}}</li>
-      </td>
-    </tr>
-    <tr>
-      <th scope='row' style='font-size: 17px'>Sentence examples</th>
-      <td style='font-size: 17px' [(innerHtml)]="winner_sentex[0]"></td>
-      <td style='font-size: 17px'>{{loser_sentex[0]}}</td>
-    </tr>
-    <tr *ngFor='let i of sentence_show_numberlist'>
-      <th scope='row'></th>
-      <td style='font-size: 17px'>{{winner_sentex[i]}}</td>
-      <td style='font-size: 17px'>{{loser_sentex[i]}}</td>
-    </tr>
-  </tbody>
-</table>
-<button (click)='show_more_sentences()' type='button' class='btn btn-primary btn-lg' *ngIf='resshow'>
-  Show more sentences
-</button>
-<br>
-<br>
-<br>
-<br>
-<br>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img src="https://www.inf.uni-hamburg.de/5546980/lt-logo-640x361-a989c770e22911cea480ffbbbd42e7c4d5429b43.png" width="150"
+        height="80" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.inf.uni-hamburg.de/en/inst/ab/lt/home.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/uhh-lt/cam-hci">GitHub</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="api.html">API</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.inf.uni-hamburg.de/en/inst/ab/lt/people/alexander-panchenko.html">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <table class='table borderless'>
+    <tbody>
+      <tr>
+        <th class='text-center' colspan=3 style='font-size: 50px'>Comparative Argument Machine</th>
+      </tr>
+      <tr>
+        <td class='text-right'>
+          <input placeholder='enter the first object' #objA [(ngModel)]='object_A' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
+        </td>
+        <td class='align-middle text-center' style='font-size: 16px'>versus</td>
+        <td>
+          <input placeholder='enter the second object' #objB [(ngModel)]='object_B' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
+        </td>
+      </tr>
+      <tr>
+        <td class='text-right' style='font-size: 17px'>Enter aspects below:</td>
+        <td></td>
+        <td style='font-size: 17px'>Aspect importance:</td>
+      </tr>
+      <tr *ngFor='let aspect of aspects'>
+        <td class='text-right'>
+          <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' style='font-size: 17px'
+            (keyup.enter)='compIfEntered()'>
+        </td>
+        <td class='text-center'>
+          <button (click)='removeAspect(aspect)' type='button' class='btn btn-primary'>
+            <span class='glyphicon glyphicon-minus' aria-hidden='true'></span>
+          </button>
+        </td>
+        <td>
+          <div class='slidecontainer'>
+            <input type='range' min='1' max='5' value='1' class='slider' id='weight{{aspect}}' [(ngModel)]='weightDict[aspect]' (keyup.enter)='compIfEntered()'>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class='text-center'>
+          <button (click)='addAspect()' type='button' class='btn btn-primary'>
+            <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <th class='text-center' colspan=3>
+          <button (click)='compare()' type='button' class='btn btn-primary btn-lg' [disabled]='!objectsEntered()'>
+            Compare!
+          </button>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <br>
+  <p *ngIf='loadshow' class='text-center' style='font-size: 20px'>Loading, please wait ...</p>
+  <br>
+  <br>
+  <p *ngIf='resshow' class='text-center' style='font-size: 25px'>Result (based on {{rescount}} sentences):</p>
+  <br>
+  <br>
+  <table *ngIf='resshow' class='table'>
+    <thead>
+      <tr>
+        <th width='20%' scope='col'></th>
+        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{winner_obj}}</th>
+        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{loser_obj}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope='row'></th>
+        <td class='text-center' bgcolor='green' style='font-size: 17px'>Winner</td>
+        <td class='text-center' bgcolor='red' style='font-size: 17px'>Loser</td>
+      </tr>
+      <tr>
+        <th scope='row' style='font-size: 17px'>Score</th>
+        <td class='text-center' style='font-size: 17px'>{{winner_score}} %</td>
+        <td class='text-center' style='font-size: 17px'>{{loser_score}} %</td>
+      </tr>
+      <tr>
+        <th scope='row' style='font-size: 17px'>Linked words</th>
+        <td style='font-size: 17px'>
+          <li *ngFor='let link of winner_links'>{{link}}</li>
+        </td>
+        <td style='font-size: 17px'>
+          <li *ngFor='let link of loser_links'>{{link}}</li>
+        </td>
+      </tr>
+      <tr>
+        <th scope='row' style='font-size: 17px'>Sentence examples</th>
+        <td style='font-size: 17px'>
+          <span *ngFor='let part of winner_sentex[0][1]'>
+            <span class="link">{{winner_sentex[0][0][part]['link']}}</span>
+            <span class="aspect">{{winner_sentex[0][0][part]['aspect']}}</span>
+            <span class="winner">{{winner_sentex[0][0][part]['winner']}}</span>
+            <span class="loser">{{winner_sentex[0][0][part]['loser']}}</span>
+            <span class="noHL">{{winner_sentex[0][0][part]['noHL']}} </span>
+          </span>
+        </td>
+        <td style='font-size: 17px'>
+          <span *ngFor='let part of loser_sentex[0][1]'>
+            <span class="link">{{loser_sentex[0][0][part]['link']}}</span>
+            <span class="aspect">{{loser_sentex[0][0][part]['aspect']}}</span>
+            <span class="winner">{{loser_sentex[0][0][part]['winner']}}</span>
+            <span class="loser">{{loser_sentex[0][0][part]['loser']}}</span>
+            <span class="noHL">{{loser_sentex[0][0][part]['noHL']}} </span>
+          </span>
+        </td>
+      </tr>
+      <tr *ngFor='let i of sentence_show_numberlist'>
+        <th scope='row'></th>
+        <td style='font-size: 17px'>
+          <span *ngFor='let part of winner_sentex[i][1]'>
+            <span class="link">{{winner_sentex[i][0][part]['link']}}</span>
+            <span class="aspect">{{winner_sentex[i][0][part]['aspect']}}</span>
+            <span class="winner">{{winner_sentex[i][0][part]['winner']}}</span>
+            <span class="loser">{{winner_sentex[i][0][part]['loser']}}</span>
+            <span class="noHL">{{winner_sentex[i][0][part]['noHL']}} </span>
+          </span>
+        </td>
+        <td style='font-size: 17px'>
+          <span *ngFor='let part of loser_sentex[i][1]'>
+            <span class="link">{{loser_sentex[i][0][part]['link']}}</span>
+            <span class="aspect">{{loser_sentex[i][0][part]['aspect']}}</span>
+            <span class="winner">{{loser_sentex[i][0][part]['winner']}}</span>
+            <span class="loser">{{loser_sentex[i][0][part]['loser']}}</span>
+            <span class="noHL">{{loser_sentex[i][0][part]['noHL']}} </span>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)='show_more_sentences()' type='button' class='btn btn-primary btn-lg' *ngIf='resshow'>
+    Show more sentences
+  </button>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; // needed for the http.get method
+import { UrlBuilderComponent } from './url-builder/url-builder.component';
+
 /**
  * UI for the Comparative Argument Machine. Currently everything is done by this one class --
 showing the UI, reading the input and requesting the Elastic Search.
@@ -13,15 +15,11 @@ showing the UI, reading the input and requesting the Elastic Search.
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @Input() urlbuilder: UrlBuilderComponent;
   title = 'CAM';
-  /**
-   *  The name of the server. Change this to 'http://127.0.0.1:5000/cam' if you want to communicate
-   *  with your locally hosted server instead, to 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
-   *  if you want to communicate with ltdemos.
-   */
-  HOSTNAME = 'http://127.0.0.1:5000/cam';
   aspects = [1]; // the rows of aspects currently shown in the UI
   aspectDict = {}; // the aspects currently entered
+  finalAspDict = {}; // holds all aspects after compare() was called
   weightDict = { 1: 1 }; // the weightings of the aspects currently chosen with the sliders
   loadshow = false; // boolean that checks if the loading screen should be shown
   resshow = false; // boolean that checks if the result table should be shown
@@ -52,17 +50,23 @@ export class AppComponent {
     this.loser_links = [];
     this.winner_sentex = {};
     this.loser_sentex = {};
-    const finalAspDict = {};
+    this.finalAspDict = {};
     this.sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     // read the aspects entered by the user and store them with their weight
     for (const aspect of this.aspects) {
       if (this.aspectDict[aspect] !== undefined) {
-        finalAspDict[this.aspectDict[aspect]] = this.weightDict[aspect];
+        this.finalAspDict[this.aspectDict[aspect]] = this.weightDict[aspect];
       }
     }
     // read the objects entered, build the URL and start the search request
     this.http
-      .get(this.buildURL(this.object_A, this.object_B, finalAspDict))
+      .get(
+        this.urlbuilder.buildURL(
+          this.object_A,
+          this.object_B,
+          this.finalAspDict
+        )
+      )
       .subscribe(async res => {
         await this.saveResult(res);
       });
@@ -130,63 +134,65 @@ export class AppComponent {
     let i = 0;
     if (a_won) {
       for (const sentence of result['object 1 sentences']) {
-        this.winner_sentex[i++] = `<mark>${sentence}</mark>`;
+        this.winner_sentex[i++] = this.getCluster(sentence);
       }
       i = 0;
       for (const sentence of result['object 2 sentences']) {
-        this.loser_sentex[i++] = `<mark>${sentence}</mark>`;
+        this.loser_sentex[i++] = this.getCluster(sentence);
       }
     } else {
       for (const sentence of result['object 1 sentences']) {
-        this.loser_sentex[i++] = `<mark>${sentence}</mark>`;
+        this.loser_sentex[i++] = this.getCluster(sentence);
       }
       i = 0;
       for (const sentence of result['object 2 sentences']) {
-        this.winner_sentex[i++] = `<mark>${sentence}</mark>`;
+        this.winner_sentex[i++] = this.getCluster(sentence);
       }
     }
     this.loadshow = false; // hide the loading screen
   }
 
-  /**
-   * Builds the URL needed for communicating with the server and requesting the search.
-   *
-   * @param objA the first object entered by the user
-   * @param objB the second object entered by the user
-   * @param aspectList the list of aspects with their weights entered by the user
-   * @returns the URL
-   */
-  buildURL(objA, objB, aspectList) {
-    let URL = this.buildObjURL(objA, objB);
-    URL += this.addAspectURL(aspectList);
-    return URL;
-  }
-
-  /**
-   * Builds the first part of the URL containing the host address and the objects entered.
-   *
-   * @param objA the first object entered by the user
-   * @param objB the second object entered by the user
-   * @returns the first part of the URL
-   */
-  buildObjURL(objA, objB) {
-    return `${this.HOSTNAME}?objectA=${objA}&objectB=${objB}`;
-  }
-
-  /**
-   * Adds a URL part containing the aspects entered by the user to an already existing first part
-   * of a URL.
-   *
-   * @param aspectList the list of aspects with their weights entered by the user
-   * @returns the second part of the URL
-   */
-  addAspectURL(aspectList) {
-    let url_part = ``;
-    let i = 1;
-    Object.entries(aspectList).forEach(
-      ([key, value]) => (url_part += `&aspect${i}=${key}&weight${i++}=${value}`)
-    );
-    return url_part;
+  getCluster(sentence) {
+    const wordList = sentence.match(/([A-Za-z]+)/g);
+    const highlightList = this.winner_links
+      .concat(this.loser_links)
+      .concat(Object.keys(this.finalAspDict));
+    highlightList.push(this.object_A);
+    highlightList.push(this.object_B);
+    const retDict = {};
+    let i = 0;
+    for (const word of wordList) {
+      if (highlightList.includes(word)) {
+        retDict[i] = { noHL: '' };
+        if (this.winner_links.includes(word)) {
+          retDict[i++] = { link: [word] };
+          continue;
+        }
+        retDict[i] = { link: '' };
+        if (this.loser_links.includes(word)) {
+          retDict[i++] = { link: [word] };
+          continue;
+        }
+        retDict[i] = { link: '' };
+        if (Object.keys(this.finalAspDict).includes(word)) {
+          retDict[i++] = { aspect: [word] };
+          continue;
+        }
+        retDict[i] = { aspect: '' };
+        if (word === this.object_A) {
+          retDict[i++] = { winner: [word] };
+          continue;
+        }
+        retDict[i] = { winner: '' };
+        retDict[i++] = { loser: [word] };
+        continue;
+      }
+      retDict[i++] = { noHL: [word] };
+    }
+    const retList = [];
+    retList.push(retDict);
+    retList.push(Array.from(Array(wordList.length).keys()));
+    return retList;
   }
 
   /**
@@ -199,7 +205,6 @@ export class AppComponent {
   }
 
   compIfEntered() {
-    console.log('enter');
     if (this.objectsEntered()) {
       this.compare();
     }
