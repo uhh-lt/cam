@@ -11,7 +11,7 @@ export class UrlBuilderComponent implements OnInit {
    *  with your locally hosted server instead, to 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
    *  if you want to communicate with ltdemos.
    */
-  HOSTNAME = 'http://127.0.0.1:5000/cam';
+  HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
 
   constructor() {}
 
