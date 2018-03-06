@@ -15,7 +15,6 @@ showing the UI, reading the input and requesting the Elastic Search.
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @Input() urlbuilder: UrlBuilderComponent;
   title = 'CAM';
   aspects = [1]; // the rows of aspects currently shown in the UI
   aspectDict = {}; // the aspects currently entered
@@ -36,7 +35,10 @@ export class AppComponent {
   loser_sentex = {}; // stores some example sentences for the second object
   sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private urlbuilder: UrlBuilderComponent
+  ) {}
 
   /**
    * Reads the input from the UI, starts the search request and calls the save method.
@@ -44,14 +46,7 @@ export class AppComponent {
   compare() {
     this.loadshow = true; // show the loading screen
     // reset everything to its default and hide the result table
-    this.resshow = false;
-    this.rescount = 0;
-    this.winner_links = [];
-    this.loser_links = [];
-    this.winner_sentex = {};
-    this.loser_sentex = {};
-    this.finalAspDict = {};
-    this.sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    this.reset();
     // read the aspects entered by the user and store them with their weight
     for (const aspect of this.aspects) {
       if (this.aspectDict[aspect] !== undefined) {
@@ -73,9 +68,24 @@ export class AppComponent {
   }
 
   /**
+   * reset everything to its default and hide the result table.
+   *
+   */
+  reset() {
+    this.resshow = false;
+    this.rescount = 0;
+    this.winner_links = [];
+    this.loser_links = [];
+    this.winner_sentex = {};
+    this.loser_sentex = {};
+    this.finalAspDict = {};
+    this.sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  }
+
+  /**
    * Saves the search result so that they can be shown in the UI.
    *
-   * @param result the search results that should be saved
+   * @param result the search results to be saved
    */
   saveResult(result) {
     this.resshow = true; // show the result table

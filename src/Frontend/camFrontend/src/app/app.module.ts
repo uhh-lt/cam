@@ -10,7 +10,7 @@ import { UrlBuilderComponent } from './url-builder/url-builder.component';
 @NgModule({
   declarations: [AppComponent, UrlBuilderComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule],
-  providers: [],
+  providers: [UrlBuilderComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
