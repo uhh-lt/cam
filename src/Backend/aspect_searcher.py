@@ -3,7 +3,7 @@ import re
 
 def find_aspects(sentence, aspects):
     '''
-    Searches for one of the aspects the user entered within a given sentence.
+    Searches for the aspects the user entered within a given sentence.
 
     sentence:   String
                 the sentence which shall be scanned for aspects
