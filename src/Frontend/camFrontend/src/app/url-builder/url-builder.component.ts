@@ -11,7 +11,8 @@ export class UrlBuilderComponent implements OnInit {
    *  with your locally hosted server instead, to 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
    *  if you want to communicate with ltdemos.
    */
-  HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
+  HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
+  HOSTNAME_ML = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
 
   constructor() {}
 
@@ -23,10 +24,17 @@ export class UrlBuilderComponent implements OnInit {
    * @param objA the first object entered by the user
    * @param objB the second object entered by the user
    * @param aspectList the list of aspects with their weights entered by the user
+   * @param model the backend model to be used for the comparison
    * @returns the URL
    */
-  buildURL(objA, objB, aspectList) {
-    let URL = this.buildObjURL(objA, objB);
+  buildURL(objA, objB, aspectList, model) {
+    let hostname = '';
+    if (model === 'default') {
+      hostname = this.HOSTNAME_DEFAULT;
+    } else if (model === 'machine_learning') {
+      hostname = this.HOSTNAME_ML;
+    }
+    let URL = this.buildObjURL(objA, objB, hostname);
     URL += this.addAspectURL(aspectList);
     return URL;
   }
@@ -38,8 +46,8 @@ export class UrlBuilderComponent implements OnInit {
    * @param objB the second object entered by the user
    * @returns the first part of the URL
    */
-  buildObjURL(objA, objB) {
-    return `${this.HOSTNAME}?objectA=${objA}&objectB=${objB}`;
+  buildObjURL(objA, objB, hostname) {
+    return `${hostname}?objectA=${objA}&objectB=${objB}`;
   }
 
   /**
