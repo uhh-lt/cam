@@ -6,10 +6,19 @@ from nltk import word_tokenize
 
 def extract_main_links(sentencesA, sentencesB, objA, objB):
     '''
-    Extracts the most common words from a list of strings.
+    Extracts the most common nouns for two lists of strings.
 
-    sentences:  List
-                list of strings
+    sentencesA: List
+                list of strings containing the sentences for object A
+
+    sentencesB: List
+                list of strings containing the sentences for object B
+
+    objA:       Argument
+                the first object to be compared
+
+    objB:       Argument
+                the second object to be compared
     '''
     # stores all words for object A as keys and the number of times they've been found as values
     worddictA = {}
@@ -18,7 +27,7 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     for s in sentencesA:
         taglist = tag_sentence(s)
         for tag in taglist:
-            if tag[1].startswith('NN'):
+            if tag[1].startswith('NN'):  # is the word a noun?
                 w = tag[0].lower()
                 # check if w is "useful" as a linked word
                 if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
@@ -31,7 +40,7 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     for s in sentencesB:
         taglist = tag_sentence(s)
         for tag in taglist:
-            if tag[1].startswith('NN'):
+            if tag[1].startswith('NN'):  # is the word a noun?
                 w = tag[0].lower()
                 # check if w is "useful" as a linked word
                 if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
@@ -44,11 +53,12 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     result = {}
     resultA = []
     resultB = []
-    for word in worddictA: # add ratios
+    # add ratios (frequency of the word in sentences of A divided by frequency in B)
+    for word in worddictA:
         if word in worddictB:
             worddictA[word] = worddictA[word] / worddictB[word]
             worddictB[word] = worddictB[word] / worddictA[word]
-    # return the top 10 links for A, B and both
+    # return the top 10 links for A and B
     while (len(resultA) < 10 and len(resultB) < 10 and (worddictA or worddictB)):
         if worddictA:
             maxA = max(worddictA, key=worddictA.get)
