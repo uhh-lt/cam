@@ -9,8 +9,8 @@ def find_winner(sentences, objA, objB, aspects):
     '''
     Finds the winner of two objects for a given list of sentences and aspects.
 
-    sentences:  List
-                list of sentences
+    sentences:  Dictionary
+                dictionary containing sentences
 
     objA:       Argument
                 the first competing object
