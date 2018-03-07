@@ -1,5 +1,7 @@
 import constants
 import re
+import nltk
+from nltk import word_tokenize
 
 
 def extract_main_links(sentencesA, sentencesB, objA, objB):
@@ -43,10 +45,24 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     resultA = []
     resultB = []
     # return the top 10 links for A, B and both
-    for key in worddictA:
-        if key in worddictB:
-            worddictA[key] = worddictA[key] / worddictB[key]
-            worddictB[key] = worddictB[key] / worddictA[key]
+    rem_temp_list_A = []
+    rem_temp_list_B = []
+    for word in worddictA:
+        tag = nltk.pos_tag(word)[0][1]
+        if not tag.startswith('NN'):
+            rem_temp_list_A.append(word)
+    for word in rem_temp_list_A:
+        worddictA.pop(word)
+    for word in worddictB:
+        tag = nltk.pos_tag(word)[0][1]
+        if not tag.startswith('NN'):
+            rem_temp_list_B.append(word)
+    for word in rem_temp_list_B:
+        worddictB.pop(word)
+    for word in worddictA:
+        if word in worddictB:
+            worddictA[word] = worddictA[word] / worddictB[word]
+            worddictB[word] = worddictB[word] / worddictA[word]
     while (len(resultA) < 10 and len(resultB) < 10 and (worddictA or worddictB)):
         if worddictA:
             maxA = max(worddictA, key=worddictA.get)
