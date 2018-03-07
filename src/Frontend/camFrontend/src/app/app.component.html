@@ -142,44 +142,31 @@
       </tr>
       <tr>
         <th scope='row' style='font-size: 17px'>Sentence examples</th>
-        <td style='font-size: 17px'>
-          <span *ngFor='let part of winner_sentex[0][1]'>
-            <span class="link">{{winner_sentex[0][0][part]['link']}}</span>
-            <span class="aspect">{{winner_sentex[0][0][part]['aspect']}}</span>
-            <span class="winner">{{winner_sentex[0][0][part]['winner']}}</span>
-            <span class="loser">{{winner_sentex[0][0][part]['loser']}}</span>
-            <span class="noHL">{{winner_sentex[0][0][part]['noHL']}} </span>
-          </span>
+        <td>
+          <table class='table' *ngFor='let i of sentence_show_numberlist_winner'>
+            <tr style='font-size: 17px'>
+              <span *ngFor='let part of winner_sentex[i][1]'>
+                <span class="link">{{winner_sentex[i][0][part]['link']}}</span>
+                <span class="aspect">{{winner_sentex[i][0][part]['aspect']}}</span>
+                <span class="winner">{{winner_sentex[i][0][part]['winner']}}</span>
+                <span class="loser">{{winner_sentex[i][0][part]['loser']}}</span>
+                <span class="noHL">{{winner_sentex[i][0][part]['noHL']}} </span>
+              </span>
+            </tr>
+          </table>
         </td>
-        <td style='font-size: 17px'>
-          <span *ngFor='let part of loser_sentex[0][1]'>
-            <span class="link">{{loser_sentex[0][0][part]['link']}}</span>
-            <span class="aspect">{{loser_sentex[0][0][part]['aspect']}}</span>
-            <span class="winner">{{loser_sentex[0][0][part]['winner']}}</span>
-            <span class="loser">{{loser_sentex[0][0][part]['loser']}}</span>
-            <span class="noHL">{{loser_sentex[0][0][part]['noHL']}} </span>
-          </span>
-        </td>
-      </tr>
-      <tr *ngFor='let i of sentence_show_numberlist'>
-        <th scope='row'></th>
-        <td style='font-size: 17px'>
-          <span *ngFor='let part of winner_sentex[i][1]'>
-            <span class="link">{{winner_sentex[i][0][part]['link']}}</span>
-            <span class="aspect">{{winner_sentex[i][0][part]['aspect']}}</span>
-            <span class="winner">{{winner_sentex[i][0][part]['winner']}}</span>
-            <span class="loser">{{winner_sentex[i][0][part]['loser']}}</span>
-            <span class="noHL">{{winner_sentex[i][0][part]['noHL']}} </span>
-          </span>
-        </td>
-        <td style='font-size: 17px'>
-          <span *ngFor='let part of loser_sentex[i][1]'>
-            <span class="link">{{loser_sentex[i][0][part]['link']}}</span>
-            <span class="aspect">{{loser_sentex[i][0][part]['aspect']}}</span>
-            <span class="winner">{{loser_sentex[i][0][part]['winner']}}</span>
-            <span class="loser">{{loser_sentex[i][0][part]['loser']}}</span>
-            <span class="noHL">{{loser_sentex[i][0][part]['noHL']}} </span>
-          </span>
+        <td>
+          <table class='table' *ngFor='let i of sentence_show_numberlist_loser'>
+            <tr style='font-size: 17px'>
+              <span *ngFor='let part of loser_sentex[i][1]'>
+                <span class="link">{{loser_sentex[i][0][part]['link']}}</span>
+                <span class="aspect">{{loser_sentex[i][0][part]['aspect']}}</span>
+                <span class="winner">{{loser_sentex[i][0][part]['winner']}}</span>
+                <span class="loser">{{loser_sentex[i][0][part]['loser']}}</span>
+                <span class="noHL">{{loser_sentex[i][0][part]['noHL']}} </span>
+              </span>
+            </tr>
+          </table>
         </td>
       </tr>
     </tbody>

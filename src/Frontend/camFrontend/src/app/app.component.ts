@@ -36,7 +36,8 @@ export class AppComponent {
   winner_sentex = {}; // stores some example sentences for the first object
   loser_sentex = {}; // stores some example sentences for the second object
   // sentences beyond the first to be shown for each object
-  sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  sentence_show_numberlist_winner = [];
+  sentence_show_numberlist_loser = [];
 
   constructor(
     private http: HttpClient,
@@ -86,7 +87,8 @@ export class AppComponent {
     this.winner_sentex = {};
     this.loser_sentex = {};
     this.finalAspDict = {};
-    this.sentence_show_numberlist = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    this.sentence_show_numberlist_winner = [];
+    this.sentence_show_numberlist_loser = [];
   }
 
   /**
@@ -104,7 +106,15 @@ export class AppComponent {
     this.saveScores(result, a_won);
     this.saveLinkedWords(result, a_won);
     this.saveSentences(result, a_won);
+    this.setSentenceShow();
     this.loadshow = false; // hide the loading screen
+  }
+
+  setSentenceShow() {
+    const minW = Math.min(9, Object.keys(this.winner_sentex).length);
+    const minL = Math.min(9, Object.keys(this.loser_sentex).length);
+    this.sentence_show_numberlist_winner = Array.from(Array(minW).keys());
+    this.sentence_show_numberlist_loser = Array.from(Array(minL).keys());
   }
 
   /**
@@ -293,14 +303,39 @@ export class AppComponent {
    *
    */
   show_more_sentences() {
-    let i = 0;
-    while (i < 10) {
-      this.sentence_show_numberlist.push(
-        this.sentence_show_numberlist[
-          this.sentence_show_numberlist.length - 1
+    let i1 = 0;
+    const minW = Math.min(
+      10,
+      Object.keys(this.winner_sentex).length -
+        this.sentence_show_numberlist_winner[
+          this.sentence_show_numberlist_winner.length - 1
+        ] -
+        1
+    );
+    while (i1 < minW) {
+      this.sentence_show_numberlist_winner.push(
+        this.sentence_show_numberlist_winner[
+          this.sentence_show_numberlist_winner.length - 1
         ] + 1
       );
-      i++;
+      i1++;
+    }
+    let i2 = 0;
+    const minL = Math.min(
+      10,
+      Object.keys(this.winner_sentex).length -
+        this.sentence_show_numberlist_winner[
+          this.sentence_show_numberlist_winner.length - 1
+        ] -
+        1
+    );
+    while (i2 < minL) {
+      this.sentence_show_numberlist_winner.push(
+        this.sentence_show_numberlist_winner[
+          this.sentence_show_numberlist_winner.length - 1
+        ] + 1
+      );
+      i2++;
     }
   }
 }
