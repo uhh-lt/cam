@@ -102,7 +102,7 @@ class Test(unittest.TestCase):
         self.assertEqual(result['object 2'], self.objB.name)
         self.assertEqual(result['score object 1'], 2)
         self.assertEqual(result['score object 2'], 1)
-        self.assertEqual(result['main links object 1'], ['dogs', 'way'])
+        self.assertEqual(result['main links object 1'], ['way', 'dogs'])
         self.assertEqual(result['main links object 2'], [])
         self.assertEqual(result['object 1 sentences'], [
                          'Dog is better than cat', 'Dogs are way better than cat'])
