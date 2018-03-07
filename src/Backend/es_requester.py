@@ -12,10 +12,6 @@ def request_es(objA, objB):
 
     objB:   String
             another object to be searched via Elastic Search
-
-    aspect: String
-            a specific aspect that plays a special role while analyzing the result.
-            Note that this is currently WIP and not actually implemented.
     '''
     url = build_object_urlpart(objA, objB)
     url = add_marker_urlpart(url)
@@ -24,7 +20,8 @@ def request_es(objA, objB):
 
 def extract_sentences(es_json):
     '''
-    Extracts the sentences from an Elastic Search commoncrawl2 json result.
+    Extracts the sentences from an Elastic Search commoncrawl2 json result. (This is the default
+    and can be changed in constants.py)
 
     es_json:    Dictionary
                 the JSON object resulting from Elastic Search commoncrawl2
@@ -46,13 +43,9 @@ def build_object_urlpart(objA, objB):
 
     objB:   String
             another object to be searched via Elastic Search
-
-    aspect: String
-            a specific aspect that plays a special role while analyzing the result.
-            Note that this is currently WIP and not actually implemented.
     '''
     url = constants.ES_HOSTNAME  # name of the host
-    url += constants.CRAWL_DATA_REPOS  # Elastic Search commoncrawl2
+    url += constants.CRAWL_DATA_REPOS  # Elastic Search request type
     url += '{}%20AND%20{}'.format(
         objA.name, objB.name)  # add the objects to look for
     return url
