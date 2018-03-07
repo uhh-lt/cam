@@ -84,13 +84,23 @@
             <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
           </button>
         </td>
+        <td></td>
       </tr>
       <tr>
-        <th class='text-center' colspan=3>
+        <td>
+          <div ng-app="myApp" ng-controller="myCtrl" class="text-right">
+            <select class="select-option" [(ngModel)]="selectedModel">
+              <option class='option' selected value="default">Default</option>
+              <option class='option' value="machine_learning">Machine Learning</option>
+            </select>
+          </div>
+        </td>
+        <th class='text-center'>
           <button (click)='compare()' type='button' class='btn btn-primary btn-lg' [disabled]='!objectsEntered()'>
             Compare!
           </button>
         </th>
+        <td></td>
       </tr>
     </tbody>
   </table>
