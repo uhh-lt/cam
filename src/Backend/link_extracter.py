@@ -16,49 +16,55 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     # stores all words for object B as keys and the number of times they've been found as values
     worddictB = {}
     for s in sentencesA:
-        # find all words in the sentence
-        wordlist = re.compile('[A-Za-z]+').findall(s)
-        for w in wordlist:
-            w = w.lower()
-            # check if w is "useful" as a links
-            if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
-                    constants.NEGATIVE_MARKERS and w != objA and w != objB and w not in \
-                    constants.NON_LINKS and w not in constants.NUMBER_STRINGS:
-                if w in worddictA:
-                    worddictA[w] += 1
-                else:
-                    worddictA[w] = 1
+        taglist = tag_sentence(s)
+        for tag in taglist:
+            if tag[1].startswith('NN'):
+                w = tag[0].lower()
+                # check if w is "useful" as a linked word
+                if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
+                        constants.NEGATIVE_MARKERS and w != objA and w != objB and w not in \
+                        constants.NON_LINKS and w not in constants.NUMBER_STRINGS:
+                    if w in worddictA:
+                        worddictA[w] += 1
+                    else:
+                        worddictA[w] = 1
     for s in sentencesB:
-        # find all words in the sentence
-        wordlist = re.compile('[A-Za-z]+').findall(s)
-        for w in wordlist:
-            w = w.lower()
-            # check if w is "useful" as a links
-            if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
-                    constants.NEGATIVE_MARKERS and w != objA and w != objB and w not in \
-                    constants.NON_LINKS and w not in constants.NUMBER_STRINGS:
-                if w in worddictB:
-                    worddictB[w] += 1
-                else:
-                    worddictB[w] = 1
+        taglist = tag_sentence(s)
+        for tag in taglist:
+            if tag[1].startswith('NN'):
+                w = tag[0].lower()
+                # check if w is "useful" as a linked word
+                if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
+                        constants.NEGATIVE_MARKERS and w != objA and w != objB and w not in \
+                        constants.NON_LINKS and w not in constants.NUMBER_STRINGS:
+                    if w in worddictB:
+                        worddictB[w] += 1
+                    else:
+                        worddictB[w] = 1
     result = {}
     resultA = []
     resultB = []
     # return the top 10 links for A, B and both
+    '''
     rem_temp_list_A = []
     rem_temp_list_B = []
     for word in worddictA:
-        tag = nltk.pos_tag(word)[0][1]
+        tag = nltk.pos_tag([word])[0][1]
         if not tag.startswith('NN'):
             rem_temp_list_A.append(word)
     for word in rem_temp_list_A:
         worddictA.pop(word)
     for word in worddictB:
-        tag = nltk.pos_tag(word)[0][1]
+        tag = nltk.pos_tag([word])[0][1]
+        if word == "beautiful":
+            print(word)
+            print(tag)
+            print
         if not tag.startswith('NN'):
             rem_temp_list_B.append(word)
     for word in rem_temp_list_B:
         worddictB.pop(word)
+    '''
     for word in worddictA:
         if word in worddictB:
             worddictA[word] = worddictA[word] / worddictB[word]
@@ -75,3 +81,12 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     result['A'] = resultA
     result['B'] = resultB
     return result
+
+
+def tag_sentence(sentence):
+    # remove special characters
+    s_rem = re.sub('[^a-zA-Z0-9 ]', ' ', sentence)
+    # find all words in the sentence
+    wordlist = word_tokenize(s_rem)
+    taglist = nltk.pos_tag(wordlist)
+    return taglist
