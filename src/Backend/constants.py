@@ -31,6 +31,7 @@ NEGATIONS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t
              'didnt', 'couldnt', 'wasnt', 'havent', 'wouldnt', 'cannot']
 # sentences containing one of these markers will have their result reversed
 OPPOSITE_MARKERS = ['not', 'no', 'nor']
+# words in this list aren't considered to be interesting for the list of linked words
 STOPWORDS = set(stopwords.words('english'))
 # words in this list aren't considered to be interesting for the list of linked words
 NON_LINKS = ['come', 'much', 'good', 'even', 'think', 'would', 'make', 'yes', 'get', 'well',
