@@ -44,31 +44,11 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     result = {}
     resultA = []
     resultB = []
-    # return the top 10 links for A, B and both
-    '''
-    rem_temp_list_A = []
-    rem_temp_list_B = []
-    for word in worddictA:
-        tag = nltk.pos_tag([word])[0][1]
-        if not tag.startswith('NN'):
-            rem_temp_list_A.append(word)
-    for word in rem_temp_list_A:
-        worddictA.pop(word)
-    for word in worddictB:
-        tag = nltk.pos_tag([word])[0][1]
-        if word == "beautiful":
-            print(word)
-            print(tag)
-            print
-        if not tag.startswith('NN'):
-            rem_temp_list_B.append(word)
-    for word in rem_temp_list_B:
-        worddictB.pop(word)
-    '''
-    for word in worddictA:
+    for word in worddictA: # add ratios
         if word in worddictB:
             worddictA[word] = worddictA[word] / worddictB[word]
             worddictB[word] = worddictB[word] / worddictA[word]
+    # return the top 10 links for A, B and both
     while (len(resultA) < 10 and len(resultB) < 10 and (worddictA or worddictB)):
         if worddictA:
             maxA = max(worddictA, key=worddictA.get)
