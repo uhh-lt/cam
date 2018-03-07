@@ -21,6 +21,7 @@ export class AppComponent {
   aspectDict = {}; // the aspects currently entered
   finalAspDict = {}; // holds all aspects after compare() was called
   weightDict = { 1: 1 }; // the weightings of the aspects currently chosen with the sliders
+  selectedModel = 'default'; // the comparison model to be used
   loadshow = false; // boolean that checks if the loading screen should be shown
   resshow = false; // boolean that checks if the result table should be shown
   rescount = 0; // total amount of sentences used for comparison
@@ -64,7 +65,8 @@ export class AppComponent {
         this.urlbuilder.buildURL(
           this.object_A,
           this.object_B,
-          this.finalAspDict
+          this.finalAspDict,
+          this.selectedModel
         )
       )
       .subscribe(async res => {
@@ -105,6 +107,10 @@ export class AppComponent {
     this.loadshow = false; // hide the loading screen
   }
 
+  /**
+   * Save the trimmed objects that were entered after compare() was called.
+   *
+   */
   saveObjects() {
     this.object_A = this.object_A.trim();
     this.object_B = this.object_B.trim();
