@@ -1,6 +1,6 @@
 import requests
 import json
-import constants
+from constants import ES_HOSTNAME, CRAWL_DATA_REPOS, MARKERS_WO_THAN, MARKERS_THAN
 
 
 def request_es(obj_a, obj_b):
@@ -29,8 +29,7 @@ def extract_sentences(es_json):
     hits = es_json.json()['hits']['hits']
     sentences = {}
     for i in range(0, len(hits)):
-        sentences[hits[i]['_source']
-                  ['text'].lower()] = hits[i]['_score']
+        sentences[hits[i]['_source']['text'].lower()] = hits[i]['_score']
     return sentences
 
 
@@ -44,10 +43,10 @@ def build_object_urlpart(obj_a, obj_b):
     obj_b:   String
             another object to be searched via Elastic Search
     '''
-    url = constants.ES_HOSTNAME  # name of the host
-    url += constants.CRAWL_DATA_REPOS  # Elastic Search request type
-    url += '{}%20AND%20{}'.format(
-        obj_a.name, obj_b.name)  # add the objects to look for
+    url = ES_HOSTNAME  # name of the host
+    url += CRAWL_DATA_REPOS  # Elastic Search request type
+    # add the objects to look for
+    url += '{}%20AND%20{}'.format(obj_a.name, obj_b.name)
     return url
 
 
@@ -60,22 +59,22 @@ def add_marker_urlpart(url):
     '''
     url += '%20AND%20('
     # markers are separated with OR
-    for i in range(0, len(constants.MARKERS_WO_THAN)):
-        url += constants.MARKERS_WO_THAN[i]
+    for i in range(0, len(MARKERS_WO_THAN)):
+        url += MARKERS_WO_THAN[i]
         url += '%20OR%20'
-    for i in range(0, len(constants.MARKERS_THAN)):
+    for i in range(0, len(MARKERS_THAN)):
         url += '('
-        url += constants.MARKERS_THAN[i]
+        url += MARKERS_THAN[i]
         url += '%20AND%20than)%20OR%20'
-    for i in range(0, len(constants.MARKERS_THAN)):
+    for i in range(0, len(MARKERS_THAN)):
         url += '(\"'
-        url += constants.MARKERS_THAN[i]
+        url += MARKERS_THAN[i]
         url += '%20alternative%20to\")%20OR%20'
-    for i in range(0, len(constants.MARKERS_THAN) - 1):
+    for i in range(0, len(MARKERS_THAN) - 1):
         url += '(\"'
-        url += constants.MARKERS_THAN[i]
+        url += MARKERS_THAN[i]
         url += '%20then\")%20OR%20'
     url += '(\"'
-    url += constants.MARKERS_THAN[len(constants.MARKERS_THAN) - 1]
+    url += MARKERS_THAN[len(MARKERS_THAN) - 1]
     url += '%20then\"))&from=0&size=10000'
     return url

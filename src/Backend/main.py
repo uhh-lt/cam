@@ -1,8 +1,8 @@
 import requests
 import json
-import es_requester
-import sentence_clearer
-import object_comparer
+from es_requester import request_es, extract_sentences
+from sentence_clearer import clear_sentences
+from object_comparer import find_winner
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -16,8 +16,8 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
-    objectA = Argument(request.args.get('objectA').lower().strip())
-    objectB = Argument(request.args.get('objectB').lower().strip())
+    obj_a = Argument(request.args.get('objectA').lower().strip())
+    obj_b = Argument(request.args.get('objectB').lower().strip())
     aspects = []
     i = 1
     while i is not False:
@@ -33,22 +33,20 @@ def cam():
             i += 1
         else:
             i = False
-    # json obj with all ES hits containing objectA, objectB and a marker.
-    json_compl = es_requester.request_es(objectA, objectB)
-    # list of all sentences containing objectA, objectB and a marker.
-    all_sentences = es_requester.extract_sentences(json_compl)
+    # json obj with all ES hits containing obj_a, obj_b and a marker.
+    json_compl = request_es(obj_a, obj_b)
+    # list of all sentences containing obj_a, obj_b and a marker.
+    all_sentences = extract_sentences(json_compl)
     # removing sentences that can't be properly analyzed
-    all_sentences = sentence_clearer.clear_sentences(
-        all_sentences, objectA, objectB)
+    all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
     # find the winner of the two objects
-    final_dict = object_comparer.find_winner(
-        all_sentences, objectA, objectB, aspects)
+    final_dict = find_winner(all_sentences, obj_a, obj_b, aspects)
     return jsonify(final_dict)
 
 
 class Argument:
     '''
-    Argument Class
+    Argument Class for the objects to be compared
     '''
 
     def __init__(self, name):
@@ -65,7 +63,7 @@ class Argument:
 
 class Aspect:
     '''
-    Aspect Class
+    Aspect Class for the user entered aspects
     '''
 
     def __init__(self, name, weight):

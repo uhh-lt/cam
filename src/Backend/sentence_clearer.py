@@ -1,26 +1,32 @@
-import constants
-import marker_searcher
+from constants import POSITIVE_MARKERS, NEGATIVE_MARKERS
+from marker_searcher import has_marker
 import re
 
 
-def clear_sentences(sentences, objA, objB):
+def clear_sentences(sentences, obj_a, obj_b):
     '''
-    Removes sentences which (currently) cannot be properly analyzed from a list of sentences.
+    Removes sentences which (currently) cannot be properly analyzed from a dictionary of sentences.
 
-    sentences:  list
-                a list of sentences
+    sentences:  dictionary
+                a dictionary of sentences
+
+    obj_a:      Argument
+                the first object to be compared
+
+    obj_b:      Argument
+                the second object to be compared
     '''
     sentences = remove_questions(sentences)
-    sentences = remove_wrong_structures(sentences, objA, objB)
+    sentences = remove_wrong_structures(sentences, obj_a, obj_b)
     return sentences
 
 
 def remove_questions(sentences):
     '''
-    Removes questions from a list of sentences.
+    Removes questions from a dictionary of sentences.
 
-    sentences:  list
-                a list of sentences
+    sentences:  dictionary
+                a dictionary of sentences
     '''
     sentences_to_delete = []
     for s in sentences:
@@ -31,32 +37,36 @@ def remove_questions(sentences):
     return sentences
 
 
-def remove_wrong_structures(sentences, objA, objB):
+def remove_wrong_structures(sentences, obj_a, obj_b):
     '''
-    Removes sentences 1: in which no marker is between the objects from a list of sentences;
-                      2: in which the marker is not between the objects.
+    Removes sentences 1: in which no marker is between the objects
+                      2: in which there are both positive and negative markers between the objects
 
-    sentences:  list
-                a list of sentences
+    sentences:  dictionary
+                a dictionary of sentences
+
+    obj_a:      Argument
+                the first object to be compared
+
+    obj_b:      Argument
+                the second object to be compared
     '''
     sentences_to_delete = []
     for s in sentences:
         wordlist = re.compile('[A-Za-z]+').findall(s)
-        aPos = -1
-        if objA.name in wordlist:
-            aPos = wordlist.index(objA.name)
-        bPos = -1
-        if objB.name in wordlist:
-            bPos = wordlist.index(objB.name)
-        if aPos == -1 and bPos == -1:
+        a_pos = -1
+        if obj_a.name in wordlist:
+            a_pos = wordlist.index(obj_a.name)
+        b_pos = -1
+        if obj_b.name in wordlist:
+            b_pos = wordlist.index(obj_b.name)
+        if a_pos == -1 and b_pos == -1:
             sentences_to_delete.append(s)
             continue
-        pos_first = min(aPos, bPos)
-        pos_second = max(aPos, bPos)
-        has_pos_marker = marker_searcher.has_marker(
-            s, pos_first, pos_second, constants.POSITIVE_MARKERS)
-        has_neg_marker = marker_searcher.has_marker(
-            s, pos_first, pos_second, constants.NEGATIVE_MARKERS)
+        pos_first = min(a_pos, b_pos)
+        pos_second = max(a_pos, b_pos)
+        has_pos_marker = has_marker(s, pos_first, pos_second, POSITIVE_MARKERS)
+        has_neg_marker = has_marker(s, pos_first, pos_second, NEGATIVE_MARKERS)
         if (has_pos_marker and has_neg_marker) or (not has_pos_marker and not has_neg_marker):
             sentences_to_delete.append(s)
     for s in sentences_to_delete:

@@ -103,8 +103,8 @@ class Test(unittest.TestCase):
         self.assertEqual(result['score object 1'], 2)
         self.assertEqual(result['score object 2'], 1)
         self.assertEqual(
-            sorted(result['main links object 1']), sorted(['way', 'dogs']))
-        self.assertEqual(result['main links object 2'], [])
+            sorted(result['extracted aspects object 1']), sorted(['way', 'dogs']))
+        self.assertEqual(result['extracted aspects object 2'], [])
         self.assertEqual(sorted(result['object 1 sentences']), sorted([
                          'Dog is better than cat', 'Dogs are way better than cat']))
         self.assertEqual(sorted(result['object 2 sentences']), sorted([

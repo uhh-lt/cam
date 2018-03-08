@@ -21,49 +21,49 @@ def extract_main_links(sentencesA, sentencesB, obj_a, obj_b):
                 the second object to be compared
     '''
     # stores all words for object A as keys and the number of times they've been found as values
-    worddictA = {}
+    worddict_a = {}
     # stores all words for object B as keys and the number of times they've been found as values
-    worddictB = {}
+    worddict_b = {}
     for s in sentencesA:
         taglist = tag_sentence(s)
         for tag in taglist:
             if tag[1].startswith('NN'):  # is the word a noun?
                 w = tag[0].lower()
                 if is_useful(w, obj_a, obj_b):
-                    if w in worddictA:
-                        worddictA[w] += 1
+                    if w in worddict_a:
+                        worddict_a[w] += 1
                     else:
-                        worddictA[w] = 1
+                        worddict_a[w] = 1
     for s in sentencesB:
         taglist = tag_sentence(s)
         for tag in taglist:
             if tag[1].startswith('NN'):  # is the word a noun?
                 w = tag[0].lower()
                 if is_useful(w, obj_a, obj_b):
-                    if w in worddictB:
-                        worddictB[w] += 1
+                    if w in worddict_b:
+                        worddict_b[w] += 1
                     else:
-                        worddictB[w] = 1
+                        worddict_b[w] = 1
     result = {}
-    resultA = []
-    resultB = []
+    result_a = []
+    result_b = []
     # add ratios (frequency of the word in sentences of A divided by frequency in B)
-    for word in worddictA:
-        if word in worddictB:
-            worddictA[word] = worddictA[word] / worddictB[word]
-            worddictB[word] = worddictB[word] / worddictA[word]
+    for word in worddict_a:
+        if word in worddict_b:
+            worddict_a[word] = worddict_a[word] / worddict_b[word]
+            worddict_b[word] = worddict_b[word] / worddict_a[word]
     # return the top 10 links for A and B
-    while (len(resultA) < 10 and len(resultB) < 10 and (worddictA or worddictB)):
-        if worddictA:
-            maxA = max(worddictA, key=worddictA.get)
-            resultA.append(maxA)
-            worddictA.pop(maxA)
-        if worddictB:
-            maxB = max(worddictB, key=worddictB.get)
-            resultB.append(maxB)
-            worddictB.pop(maxB)
-    result['A'] = resultA
-    result['B'] = resultB
+    while (len(result_a) < 10 and len(result_b) < 10 and (worddict_a or worddict_b)):
+        if worddict_a:
+            maxA = max(worddict_a, key=worddict_a.get)
+            result_a.append(maxA)
+            worddict_a.pop(maxA)
+        if worddict_b:
+            maxB = max(worddict_b, key=worddict_b.get)
+            result_b.append(maxB)
+            worddict_b.pop(maxB)
+    result['A'] = result_a
+    result['B'] = result_b
     return result
 
 

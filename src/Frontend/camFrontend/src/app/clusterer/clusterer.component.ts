@@ -1,9 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: "app-clusterer",
-  templateUrl: "./clusterer.component.html",
-  styleUrls: ["./clusterer.component.css"]
+  selector: 'app-clusterer',
+  templateUrl: './clusterer.component.html',
+  styleUrls: ['./clusterer.component.css']
 })
 export class ClustererComponent implements OnInit {
   constructor() {}
@@ -48,27 +48,27 @@ export class ClustererComponent implements OnInit {
       if (highlightList.includes(word)) {
         // word needs to be highlighted
         // find the right highlight class for the word
-        retDict[i] = { noHL: "" };
+        retDict[i] = { noHL: '' };
         if (winner_links.includes(word)) {
           retDict[i++] = { link: [word] };
           continue;
         }
-        retDict[i] = { link: "" };
+        retDict[i] = { link: '' };
         if (loser_links.includes(word)) {
           retDict[i++] = { link: [word] };
           continue;
         }
-        retDict[i] = { link: "" };
+        retDict[i] = { link: '' };
         if (Object.keys(finalAspDict).includes(word)) {
           retDict[i++] = { aspect: [word] };
           continue;
         }
-        retDict[i] = { aspect: "" };
+        retDict[i] = { aspect: '' };
         if (word === object_A) {
           retDict[i++] = { winner: [word] };
           continue;
         }
-        retDict[i] = { winner: "" };
+        retDict[i] = { winner: '' };
         retDict[i++] = { loser: [word] };
         continue;
       }
