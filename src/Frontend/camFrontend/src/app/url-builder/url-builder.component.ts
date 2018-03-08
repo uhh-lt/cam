@@ -12,7 +12,7 @@ export class UrlBuilderComponent implements OnInit {
    *  if you want to communicate with ltdemos.
    */
   HOSTNAME_DEFAULT = 'http://127.0.0.1:5000/cam';
-  HOSTNAME_ML = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
+  HOSTNAME_ML = 'http://127.0.0.1:5000/cam';
 
   constructor() {}
 
