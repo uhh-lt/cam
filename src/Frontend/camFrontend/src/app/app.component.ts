@@ -182,17 +182,17 @@ export class AppComponent {
    */
   saveLinkedWords(result, a_won) {
     if (a_won) {
-      for (const link of result['main links object 1']) {
+      for (const link of result['extracted aspects object 1']) {
         this.winner_links.push(link);
       }
-      for (const link of result['main links object 2']) {
+      for (const link of result['extracted aspects object 2']) {
         this.loser_links.push(link);
       }
     } else {
-      for (const link of result['main links object 1']) {
+      for (const link of result['extracted aspects object 1']) {
         this.loser_links.push(link);
       }
-      for (const link of result['main links object 2']) {
+      for (const link of result['extracted aspects object 2']) {
         this.winner_links.push(link);
       }
     }
@@ -213,8 +213,8 @@ export class AppComponent {
           this.winner_links,
           this.loser_links,
           this.finalAspDict,
-          this.object_A,
-          this.object_B
+          this.winner_obj,
+          this.loser_obj
         );
       }
       i = 0;
@@ -224,8 +224,8 @@ export class AppComponent {
           this.winner_links,
           this.loser_links,
           this.finalAspDict,
-          this.object_A,
-          this.object_B
+          this.winner_obj,
+          this.loser_obj
         );
       }
     } else {
@@ -235,8 +235,8 @@ export class AppComponent {
           this.winner_links,
           this.loser_links,
           this.finalAspDict,
-          this.object_A,
-          this.object_B
+          this.winner_obj,
+          this.loser_obj
         );
       }
       i = 0;
@@ -246,8 +246,8 @@ export class AppComponent {
           this.winner_links,
           this.loser_links,
           this.finalAspDict,
-          this.object_A,
-          this.object_B
+          this.winner_obj,
+          this.loser_obj
         );
       }
     }
