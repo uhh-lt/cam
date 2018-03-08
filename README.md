@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/uhh-lt/cam-hci.svg?branch=master)](https://travis-ci.org/uhh-lt/cam-hci)
+# Overview
+
 # 1. Installing dependencies
 
 ## Backend
