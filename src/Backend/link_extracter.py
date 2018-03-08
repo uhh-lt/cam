@@ -1,10 +1,10 @@
-import constants
 import re
 import nltk
 from nltk import word_tokenize
+from constants import STOPWORDS, POSITIVE_MARKERS, NEGATIVE_MARKERS, NON_LINKS, NUMBER_STRINGS
 
 
-def extract_main_links(sentencesA, sentencesB, objA, objB):
+def extract_main_links(sentencesA, sentencesB, obj_a, obj_b):
     '''
     Extracts the most common nouns for two lists of strings.
 
@@ -14,10 +14,10 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     sentencesB: List
                 list of strings containing the sentences for object B
 
-    objA:       Argument
+    obj_a:       Argument
                 the first object to be compared
 
-    objB:       Argument
+    obj_b:       Argument
                 the second object to be compared
     '''
     # stores all words for object A as keys and the number of times they've been found as values
@@ -29,10 +29,7 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
         for tag in taglist:
             if tag[1].startswith('NN'):  # is the word a noun?
                 w = tag[0].lower()
-                # check if w is "useful" as a linked word
-                if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
-                        constants.NEGATIVE_MARKERS and w != objA and w != objB and w not in \
-                        constants.NON_LINKS and w not in constants.NUMBER_STRINGS:
+                if is_useful(w, obj_a, obj_b):
                     if w in worddictA:
                         worddictA[w] += 1
                     else:
@@ -42,10 +39,7 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
         for tag in taglist:
             if tag[1].startswith('NN'):  # is the word a noun?
                 w = tag[0].lower()
-                # check if w is "useful" as a linked word
-                if w not in constants.STOPWORDS and w not in constants.POSITIVE_MARKERS and w not in \
-                        constants.NEGATIVE_MARKERS and w != objA and w != objB and w not in \
-                        constants.NON_LINKS and w not in constants.NUMBER_STRINGS:
+                if is_useful(w, obj_a, obj_b):
                     if w in worddictB:
                         worddictB[w] += 1
                     else:
@@ -73,7 +67,29 @@ def extract_main_links(sentencesA, sentencesB, objA, objB):
     return result
 
 
+def is_useful(word, obj_a, obj_b):
+    '''
+    Checks if the word is useful; that is, it's not one of the stopwords, markers, number strings
+    or non links or one of the objects.
+
+    word:   String
+            the word to check
+
+    obj_a:  String
+            one of the two objects
+
+    obj_b:  String
+            the second object
+    '''
+    return word not in STOPWORDS and word not in POSITIVE_MARKERS and word not in NEGATIVE_MARKERS \
+        and word != obj_a and word != obj_b and word not in NON_LINKS and word not in NUMBER_STRINGS
+
+
 def tag_sentence(sentence):
+    '''
+    Returns a list of tags for each word of the sentence. A tag is a combination of the word and
+    its part of speech coded as an NLTK tag, for example ('apple', 'NN').
+    '''
     # remove special characters
     s_rem = re.sub('[^a-zA-Z0-9 ]', ' ', sentence)
     # find all words in the sentence

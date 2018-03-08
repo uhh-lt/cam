@@ -323,16 +323,16 @@ export class AppComponent {
     let i2 = 0;
     const minL = Math.min(
       10,
-      Object.keys(this.winner_sentex).length -
-        this.sentence_show_numberlist_winner[
-          this.sentence_show_numberlist_winner.length - 1
+      Object.keys(this.loser_sentex).length -
+        this.sentence_show_numberlist_loser[
+          this.sentence_show_numberlist_loser.length - 1
         ] -
         1
     );
     while (i2 < minL) {
-      this.sentence_show_numberlist_winner.push(
-        this.sentence_show_numberlist_winner[
-          this.sentence_show_numberlist_winner.length - 1
+      this.sentence_show_numberlist_loser.push(
+        this.sentence_show_numberlist_loser[
+          this.sentence_show_numberlist_loser.length - 1
         ] + 1
       );
       i2++;

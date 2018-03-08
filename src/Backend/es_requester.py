@@ -3,17 +3,17 @@ import json
 import constants
 
 
-def request_es(objA, objB):
+def request_es(obj_a, obj_b):
     '''
     Sends a request to Elastic Search and returns the result as a JSON object.
 
-    objA:   String
+    obj_a:   String
             an object to be searched via Elastic Search
 
-    objB:   String
+    obj_b:   String
             another object to be searched via Elastic Search
     '''
-    url = build_object_urlpart(objA, objB)
+    url = build_object_urlpart(obj_a, obj_b)
     url = add_marker_urlpart(url)
     return requests.get(url)
 
@@ -34,20 +34,20 @@ def extract_sentences(es_json):
     return sentences
 
 
-def build_object_urlpart(objA, objB):
+def build_object_urlpart(obj_a, obj_b):
     '''
     Builds the part of the URL containing the host name, the Elastic Search type and the objects to look for.
 
-    objA:   String
+    obj_a:   String
             an object to be searched via Elastic Search
 
-    objB:   String
+    obj_b:   String
             another object to be searched via Elastic Search
     '''
     url = constants.ES_HOSTNAME  # name of the host
     url += constants.CRAWL_DATA_REPOS  # Elastic Search request type
     url += '{}%20AND%20{}'.format(
-        objA.name, objB.name)  # add the objects to look for
+        obj_a.name, obj_b.name)  # add the objects to look for
     return url
 
 

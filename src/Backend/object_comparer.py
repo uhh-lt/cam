@@ -86,7 +86,6 @@ def what_is_better(sentence, objA, objB):
                 the second object to be compared to the first.
     '''
     sentence = sentence.lower()
-    ''' TODO this is called also in sentence_clearer.remove_wrong_structure -> should refactor '''
     result = {}
     # position of objectA in sentence, spaces to not find objname as part of different word
     wordlist = re.compile('[A-Za-z]+').findall(sentence)
