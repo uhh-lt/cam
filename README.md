@@ -1,5 +1,12 @@
 [![Build Status](https://travis-ci.org/uhh-lt/cam-hci.svg?branch=master)](https://travis-ci.org/uhh-lt/cam-hci)
+
 # Overview
+
+This implementation of the Comparative Argument Machine (CAM) was part of a three-week-project at the University of Hamburg. It was one of a few different language technology projects to be realized within this time. As a starting point for a bigger scientific project the goal was to make CAM be able to compare two objects via a large database. The main goal of the CAM project will be the comparison based on understanding of natural language and also to output natural language sentences as a result.
+
+If you want to learn more about the project or help to develop it, feel free to visit its page on GitHub:
+
+<https://github.com/uhh-lt/cam-hci>
 
 # 1. Installing dependencies
 
@@ -26,7 +33,17 @@
 
     npm install angular
 
-# 2. Launching the program
+# 2. Changing the default hostnames and search type
+
+## Communication between frontend and backend
+
+On default, the backend is running on a localhost. If you want to change this, maybe because you deployed the project to another server, change all HOSTNAME constants (like HOSTNAME_DEFAULT) in ./src/Frontend/camFrontend/src/app/url-builder/url-builder.component.ts.
+
+## Communication between backend and search request server; search type
+
+On default, the search request server is connected via SSH on port 9222. If you have a different server you want to do the search requests on, change ES_HOSTNAME in ./src/Backend/constants.py. The default search type is commoncrawl2 of Elastic Search. If you want to change this, change CRAWL_DATA_REPOS in the same file.
+
+# 3. Launching the program
 
 ## Backend
 
