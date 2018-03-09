@@ -14,10 +14,10 @@ def extract_main_links(sentencesA, sentencesB, obj_a, obj_b):
     sentencesB: List
                 list of strings containing the sentences for object B
 
-    obj_a:       Argument
+    obj_a:      Argument
                 the first object to be compared
 
-    obj_b:       Argument
+    obj_b:      Argument
                 the second object to be compared
     '''
     # stores all words for object A as keys and the number of times they've been found as values
@@ -75,14 +75,15 @@ def is_useful(word, obj_a, obj_b):
     word:   String
             the word to check
 
-    obj_a:  String
+    obj_a:  Argument
             one of the two objects
 
-    obj_b:  String
+    obj_b:  Argument
             the second object
     '''
     return word not in STOPWORDS and word not in POSITIVE_MARKERS and word not in NEGATIVE_MARKERS \
-        and word != obj_a and word != obj_b and word not in NON_LINKS and word not in NUMBER_STRINGS
+        and word != obj_a.name and word != obj_b.name and word not in NON_LINKS and word not in \
+        NUMBER_STRINGS
 
 
 def tag_sentence(sentence):
