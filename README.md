@@ -49,7 +49,9 @@ In a shell within the Backend directory, start via:
 
 Directly receive search results from the backend (provided as a JSON object) via this URL:
 
-    http://127.0.0.1:5000/cam?objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight1=WEIGHT1
+    http://127.0.0.1:5000/cam?fs=FS&objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight1=WEIGHT1
+
+replace `FS` with false if you want to do the default search, or with true if you want to do a fast search.
 
 replace `OBJA` and `OBJB` with the objects you want to compare, e. g. `OBJA` with dog and `OBJB` with cat. These are both mandatory.
 
@@ -63,7 +65,7 @@ add as many aspects/weights as you want as long as you follow these rules:
 
 example for a good URL:
 
-<http://127.0.0.1:5000/cam?objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1>
+<http://127.0.0.1:5000/cam?fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1>
 
 ## Frontend
 
