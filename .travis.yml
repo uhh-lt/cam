@@ -6,6 +6,7 @@ python:
   - "3.6"
   - "pypy"
 install:
+  - easy_install distribute
   - pip install -r requirements.txt
   - python -m nltk.downloader stopwords
   - python -m nltk.downloader punkt
