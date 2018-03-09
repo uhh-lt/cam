@@ -79,7 +79,7 @@ def build_final_dict(obj_a, obj_b):
     final_dict['score object 1'] = obj_a.points
     final_dict['score object 2'] = obj_b.points
     linked_words = extract_main_links(
-        obj_a.sentences, obj_b.sentences, obj_a.name, obj_b.name)
+        obj_a.sentences, obj_b.sentences, obj_a, obj_b)
     final_dict['extracted aspects object 1'] = linked_words['A']
     final_dict['extracted aspects object 2'] = linked_words['B']
     final_dict['object 1 sentences'] = obj_a.sentences
