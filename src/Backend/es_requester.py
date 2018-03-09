@@ -3,7 +3,7 @@ import json
 from constants import ES_HOSTNAME, CRAWL_DATA_REPOS, MARKERS_WO_THAN, MARKERS_THAN
 
 
-def request_es(obj_a, obj_b):
+def request_es(fast_search, obj_a, obj_b):
     '''
     Sends a request to Elastic Search and returns the result as a JSON object.
 
@@ -14,7 +14,7 @@ def request_es(obj_a, obj_b):
             another object to be searched via Elastic Search
     '''
     url = build_object_urlpart(obj_a, obj_b)
-    url = add_marker_urlpart(url)
+    url = add_marker_urlpart(url, fast_search)
     return requests.get(url)
 
 
@@ -43,6 +43,8 @@ def build_object_urlpart(obj_a, obj_b):
     obj_b:   String
             another object to be searched via Elastic Search
     '''
+    if(obj_a.name == '' or obj_b.name == ''):
+        raise ValueError('Please enter both objects!')
     url = ES_HOSTNAME  # name of the host
     url += CRAWL_DATA_REPOS  # Elastic Search request type
     # add the objects to look for
@@ -50,7 +52,7 @@ def build_object_urlpart(obj_a, obj_b):
     return url
 
 
-def add_marker_urlpart(url):
+def add_marker_urlpart(url, fast_search):
     '''
     Adds to an existing Elastic Search URL part the markers that shall compare the objects.
 
@@ -76,5 +78,8 @@ def add_marker_urlpart(url):
         url += '%20then\")%20OR%20'
     url += '(\"'
     url += MARKERS_THAN[len(MARKERS_THAN) - 1]
-    url += '%20then\"))&from=0&size=10000'
+    if fast_search == 'false':
+        url += '%20then\"))&from=0&size=10000'
+    else:
+        url += '%20then\"))&from=0&size=500'
     return url
