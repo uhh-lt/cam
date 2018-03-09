@@ -16,6 +16,7 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
+    fast_search = request.args.get('fs')
     obj_a = Argument(request.args.get('objectA').lower().strip())
     obj_b = Argument(request.args.get('objectB').lower().strip())
     aspects = []
@@ -34,7 +35,7 @@ def cam():
         else:
             i = False
     # json obj with all ES hits containing obj_a, obj_b and a marker.
-    json_compl = request_es(obj_a, obj_b)
+    json_compl = request_es(fast_search, obj_a, obj_b)
     # list of all sentences containing obj_a, obj_b and a marker.
     all_sentences = extract_sentences(json_compl)
     # removing sentences that can't be properly analyzed
@@ -50,7 +51,7 @@ class Argument:
     '''
 
     def __init__(self, name):
-        self.name = name
+        self.name = name.lower()
         self.points = 0
         self.sentences = []
 
@@ -67,7 +68,7 @@ class Aspect:
     '''
 
     def __init__(self, name, weight):
-        self.name = name
+        self.name = name.lower()
         self.weight = weight
 
 
