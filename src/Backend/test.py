@@ -1,7 +1,10 @@
 import unittest
 from object_comparer import what_is_better, find_winner
 from sentence_clearer import clear_sentences, remove_wrong_structures
-from main import Argument
+from main import Argument, Aspect
+from aspect_searcher import find_aspects
+from es_requester import build_object_urlpart
+from link_extracter import extract_main_links
 
 
 class Test(unittest.TestCase):
@@ -49,10 +52,9 @@ class Test(unittest.TestCase):
 
     '''
     Testing if the removal of the following sentences work:
-    1.containing '?' 
-    2.containing negations from the list of constants 
-    3.containing two markers of different types between the objects
-    4.containing no markers between the object
+    1.containing '?'
+    2.containing two markers of different types between the objects
+    3.containing no markers between the object
     '''
 
     def test_clear_sentences1(self):
@@ -110,6 +112,49 @@ class Test(unittest.TestCase):
         self.assertEqual(sorted(result['object 2 sentences']), sorted([
                          'Cat is beautiful better than dog']))
         self.assertEqual(result['winner'], self.objA.name)
+
+    '''
+    Test if all aspects are correctly extracted.
+    '''
+
+    def test_find_aspects1(self):
+        s = 'ObjA is better than ObjB because of lower pollution, lower price and higher speed.'
+        aspect1 = Aspect('pollution', 5)
+        aspect2 = Aspect('price', 1)
+        aspect3 = Aspect('wurstsalat', 1)
+        self.assertEqual(find_aspects(
+            s, [aspect1, aspect2, aspect3]), [aspect1, aspect2])
+        self.assertTrue(Aspect('speed', 1)
+                        not in find_aspects(s, [aspect1, aspect2]))
+
+    def test_find_aspects2(self):
+        s = ''
+        aspect1 = Aspect('pollution', 5)
+        aspect2 = Aspect('price', 1)
+        self.assertFalse(find_aspects(
+            s, [aspect1, aspect2]))
+
+    def test_build_object_urlpart1(self):
+        obj_a = Argument('ape')
+        obj_b = Argument('gorilla')
+        self.assertEqual(build_object_urlpart(
+            obj_a, obj_b), 'http://localhost:9222/commoncrawl2/_search?q=text:ape%20AND%20gorilla')
+
+    def test_build_object_urlpart2(self):
+        obj_a = Argument('')
+        obj_b = Argument('gorilla')
+        with self.assertRaises(ValueError) as context:
+            build_object_urlpart(obj_a, obj_b)
+
+        self.assertTrue('Please enter both objects!' in str(context.exception))
+
+    def test_extract_main_links(self):
+        sentencesA = ['ObjA is better than ObjB because of more time']
+        sentencesB = ['ObjA is worse than ObjB because of less power']
+        obj_a = Argument('ObjA')
+        obj_b = Argument('ObjB')
+        self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
+                         'A': ['time'], 'B': ['power']})
 
 
 if __name__ == '__main__':
