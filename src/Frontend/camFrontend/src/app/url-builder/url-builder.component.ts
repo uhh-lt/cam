@@ -27,14 +27,14 @@ export class UrlBuilderComponent implements OnInit {
    * @param model the backend model to be used for the comparison
    * @returns the URL
    */
-  buildURL(objA, objB, aspectList, model) {
+  buildURL(objA, objB, aspectList, model, fastSearch) {
     let hostname = '';
     if (model === 'default') {
       hostname = this.HOSTNAME_DEFAULT;
     } else if (model === 'machine_learning') {
       hostname = this.HOSTNAME_ML;
     }
-    let URL = this.buildObjURL(objA, objB, hostname);
+    let URL = this.buildObjURL(objA, objB, hostname, fastSearch);
     URL += this.addAspectURL(aspectList);
     return URL;
   }
@@ -46,8 +46,8 @@ export class UrlBuilderComponent implements OnInit {
    * @param objB the second object entered by the user
    * @returns the first part of the URL
    */
-  buildObjURL(objA, objB, hostname) {
-    return `${hostname}?objectA=${objA}&objectB=${objB}`;
+  buildObjURL(objA, objB, hostname, fastSearch) {
+    return `${hostname}?fs=${fastSearch}&objectA=${objA}&objectB=${objB}`;
   }
 
   /**

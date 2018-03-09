@@ -22,13 +22,14 @@ export class AppComponent {
   finalAspDict = {}; // holds all aspects after compare() was called
   weightDict = { 1: 1 }; // the weightings of the aspects currently chosen with the sliders
   selectedModel = 'default'; // the comparison model to be used
+  fastSearch = false; // the possibility to do a fast comparison
   loadshow = false; // boolean that checks if the loading screen should be shown
   resshow = false; // boolean that checks if the result table should be shown
   rescount = 0; // total amount of sentences used for comparison
   object_A = ''; // the first object currently entered
   object_B = ''; // the second object currently entered
-  winner_obj = ''; // the first object of the results shown
-  loser_obj = ''; // the second object of the results shown
+  winner_obj = ''; // the winning object of the results shown
+  loser_obj = ''; // the losing object of the results shown
   winner_score = ''; // stores the score of the first object
   loser_score = ''; // stores the score of the second object
   winner_links = []; // stores the main links of the first object
@@ -67,7 +68,8 @@ export class AppComponent {
           this.object_A,
           this.object_B,
           this.finalAspDict,
-          this.selectedModel
+          this.selectedModel,
+          this.fastSearch
         )
       )
       .subscribe(async res => {
@@ -76,7 +78,7 @@ export class AppComponent {
   }
 
   /**
-   * reset everything to its default and hide the result table.
+   * reset all results to its default and hide the result table.
    *
    */
   reset() {
@@ -89,6 +91,16 @@ export class AppComponent {
     this.finalAspDict = {};
     this.sentence_show_numberlist_winner = [];
     this.sentence_show_numberlist_loser = [];
+  }
+
+  resetInput() {
+    this.object_A = '';
+    this.object_B = '';
+    for (const aspect of Object.keys(this.aspectDict)) {
+      this.aspectDict[aspect] = '';
+    }
+    this.aspects = [1];
+    this.fastSearch = false;
   }
 
   /**
@@ -110,6 +122,11 @@ export class AppComponent {
     this.loadshow = false; // hide the loading screen
   }
 
+  /**
+   * Sets the amount of initially shown sentence examples for each object. The default is 10 for
+   * each, but if an object has less than 10 sentences, it's set to this amount instead.
+   *
+   */
   setSentenceShow() {
     const minW = Math.min(9, Object.keys(this.winner_sentex).length);
     const minL = Math.min(9, Object.keys(this.loser_sentex).length);
@@ -299,7 +316,8 @@ export class AppComponent {
   }
 
   /**
-   * Shows 10 more sentences in the result table.
+   * Shows 10 more sentences in the result table for both objects or, if an object has less than 10
+   * sentences left to be shown, instead only the remaining sentences will be added.
    *
    */
   show_more_sentences() {

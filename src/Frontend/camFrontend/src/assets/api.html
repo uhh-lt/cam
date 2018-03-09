@@ -61,11 +61,13 @@
     <br>
     <br>
     <p>The base URL is:</p>
-    <p>http://ltdemos.informatik.uni-hamburg.de/cam-api?objectA=*OBJA*&objectB=*OBJB*&aspect1=*ASP1*&weight1=*WEIGHT1*</p>
-    <p>replace *OBJA* and *OBJB* with the objects you want to compare, e. g. *OBJA* with dog and *OBJB* with cat. These are
+    <p>http://ltdemos.informatik.uni-hamburg.de/cam-api?fs=FS&objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight1=WEIGHT1</p>
+    <p>replace FS with true if you want to do a fast comparison or with false if you want to do a default comparison which
+      is more accurate but takes longer. This is mandatory.</p>
+    <p>replace OBJA and OBJB with the objects you want to compare, e. g. OBJA with dog and OBJB with cat. These are
       both mandatory.</p>
-    <p>replace *ASP1* and *WEIGHT1* with an aspect you want to include in the search requests and the weight you want to have
-      it, e. g. *ASP1* with price and *WEIGHT1* with 5.</p>
+    <p>replace ASP1 and WEIGHT1 with an aspect you want to include in the search requests and the weight you want to have
+      it, e. g. ASP1 with price and WEIGHT1 with 5.</p>
     <p>add as many aspects/weights as you want as long as you follow these rules:</p>
     <ul>
       <li>you always have to enter both an aspect and its weight. you can't enter one without the other.</li>
@@ -79,7 +81,7 @@
         negative values or values close to an Integer overflow as they can produce unexpected results.</li>
     </ul>
     <p>example for a good URL:</p>
-    <a href="http://ltdemos.informatik.uni-hamburg.de/cam-api?objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1">http://ltdemos.informatik.uni-hamburg.de/cam-api?objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1</a>
+    <a href="http://ltdemos.informatik.uni-hamburg.de/cam-api?fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1">http://ltdemos.informatik.uni-hamburg.de/cam-api?objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1</a>
   </div>
 
   <script src="./jquery.min.js"></script>

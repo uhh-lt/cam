@@ -1,37 +1,37 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-  <div class="container">
-    <a class="navbar-brand" href="#">
-      <img src="https://www.inf.uni-hamburg.de/5546980/lt-logo-640x361-a989c770e22911cea480ffbbbd42e7c4d5429b43.png" width="150"
-        height="80" alt="">
+<nav class='navbar navbar-expand-lg navbar-dark bg-dark fixed-top'>
+  <div class='container'>
+    <a class='navbar-brand' href='#'>
+      <img src='https://www.inf.uni-hamburg.de/5546980/lt-logo-640x361-a989c770e22911cea480ffbbbd42e7c4d5429b43.png' width='150'
+        height='80' alt=''>
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
-      aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive'
+      aria-expanded='false' aria-label='Toggle navigation'>
+      <span class='navbar-toggler-icon'></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home
-            <span class="sr-only">(current)</span>
+    <div class='collapse navbar-collapse' id='navbarResponsive'>
+      <ul class='navbar-nav ml-auto'>
+        <li class='nav-item active'>
+          <a class='nav-link' href='#'>Home
+            <span class='sr-only'>(current)</span>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./assets/about.html">About</a>
+        <li class='nav-item'>
+          <a class='nav-link' href='./assets/about.html'>About</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="https://github.com/uhh-lt/cam-hci">GitHub</a>
+        <li class='nav-item'>
+          <a class='nav-link' href='https://github.com/uhh-lt/cam-hci'>GitHub</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./assets/api.html">API</a>
+        <li class='nav-item'>
+          <a class='nav-link' href='./assets/api.html'>API</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="./assets/contact.html">Contact</a>
+        <li class='nav-item'>
+          <a class='nav-link' href='./assets/contact.html'>Contact</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-<div class="container">
+<div class='container'>
   <br>
   <br>
   <br>
@@ -87,11 +87,11 @@
         <td></td>
       </tr>
       <tr>
-        <td>
-          <div ng-app="myApp" ng-controller="myCtrl" class="text-right">
-            <select class="select-option" [(ngModel)]="selectedModel">
-              <option class='option' selected value="default">Default</option>
-              <option class='option' value="machine_learning">Machine Learning</option>
+        <td class='align-middle'>
+          <div ng-app='myApp' ng-controller='myCtrl' class='text-right'>
+            <select class='select-option' [(ngModel)]='selectedModel'>
+              <option class='option' selected value='default'>Default</option>
+              <option class='option' value='machine_learning'>Machine Learning</option>
             </select>
           </div>
         </td>
@@ -100,6 +100,15 @@
             Compare!
           </button>
         </th>
+        <td class='align-middle'><label><input type='checkbox' [(ngModel)]='fastSearch'> Faster Search</label></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class='text-center'>
+          <button (click)='resetInput()' type='button' class='btn btn-primary'>
+            Reset
+          </button>
+        </td>
         <td></td>
       </tr>
     </tbody>
@@ -146,11 +155,11 @@
           <table class='table' *ngFor='let i of sentence_show_numberlist_winner'>
             <tr style='font-size: 17px'>
               <span *ngFor='let part of winner_sentex[i][1]'>
-                <span class="link">{{winner_sentex[i][0][part]['link']}}</span>
-                <span class="aspect">{{winner_sentex[i][0][part]['aspect']}}</span>
-                <span class="winner">{{winner_sentex[i][0][part]['winner']}}</span>
-                <span class="loser">{{winner_sentex[i][0][part]['loser']}}</span>
-                <span class="noHL">{{winner_sentex[i][0][part]['noHL']}} </span>
+                <span class='link'>{{winner_sentex[i][0][part]['link']}}</span>
+                <span class='aspect'>{{winner_sentex[i][0][part]['aspect']}}</span>
+                <span class='winner'>{{winner_sentex[i][0][part]['winner']}}</span>
+                <span class='loser'>{{winner_sentex[i][0][part]['loser']}}</span>
+                <span class='noHL'>{{winner_sentex[i][0][part]['noHL']}} </span>
               </span>
             </tr>
           </table>
@@ -159,11 +168,11 @@
           <table class='table' *ngFor='let i of sentence_show_numberlist_loser'>
             <tr style='font-size: 17px'>
               <span *ngFor='let part of loser_sentex[i][1]'>
-                <span class="link">{{loser_sentex[i][0][part]['link']}}</span>
-                <span class="aspect">{{loser_sentex[i][0][part]['aspect']}}</span>
-                <span class="winner">{{loser_sentex[i][0][part]['winner']}}</span>
-                <span class="loser">{{loser_sentex[i][0][part]['loser']}}</span>
-                <span class="noHL">{{loser_sentex[i][0][part]['noHL']}} </span>
+                <span class='link'>{{loser_sentex[i][0][part]['link']}}</span>
+                <span class='aspect'>{{loser_sentex[i][0][part]['aspect']}}</span>
+                <span class='winner'>{{loser_sentex[i][0][part]['winner']}}</span>
+                <span class='loser'>{{loser_sentex[i][0][part]['loser']}}</span>
+                <span class='noHL'>{{loser_sentex[i][0][part]['noHL']}} </span>
               </span>
             </tr>
           </table>
