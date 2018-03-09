@@ -4,19 +4,15 @@
 
 This implementation of the Comparative Argument Machine (CAM) was part of a three-week-project at the University of Hamburg. It was one of a few different language technology projects to be realized within this time. As a starting point for a bigger scientific project the goal was to make CAM be able to compare two objects via a large database. The main goal of the CAM project will be the comparison based on understanding of natural language and also to output natural language sentences as a result.
 
-If you want to learn more about the project or help to develop it, feel free to visit its page on GitHub:
-
-<https://github.com/uhh-lt/cam-hci>
+If you want to learn more about the project or help to develop it, feel free to contact us. A live demo is [available online](http://ltdemos.informatik.uni-hamburg.de/cam/).
 
 # 1. Installing dependencies
 
 ## Backend
 
-### Download Python 3:
+[Download Python 3](https://www.python.org/downloads)
 
-<https://www.python.org/downloads/>
-
-### In a shell, install requirements:
+In a shell, install requirements:
 
     pip install -r requirements.txt
     python -m nltk.downloader stopwords
@@ -25,11 +21,9 @@ If you want to learn more about the project or help to develop it, feel free to 
 
 ## Frontend
 
-### Download nodejs with npm:
+[Download nodejs with npm](https://nodejs.org/en/)
 
-<https://nodejs.org/en/>
-
-### In a shell, install Angular:
+In a shell, install Angular:
 
     npm install angular
 
@@ -47,19 +41,19 @@ On default, the search request server is connected via SSH on port 9222. If you 
 
 ## Backend
 
-### In a shell within the Backend directory, start via:
+In a shell within the Backend directory, start via:
 
     python main.py
 
-(a local server is started that can be addressed via http://127.0.0.1:5000)
+(a local server is started that can be addressed via <http://127.0.0.1:5000>)
 
-### Directly receive search results from the backend (provided as a JSON object) via this URL:
+Directly receive search results from the backend (provided as a JSON object) via this URL:
 
-<http://127.0.0.1:5000/cam?objectA=*OBJA*&objectB=*OBJB*&aspect1=*ASP1*&weight1=*WEIGHT1*>
+    http://127.0.0.1:5000/cam?objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight1=WEIGHT1
 
-replace _OBJA_ and _OBJB_ with the objects you want to compare, e. g. _OBJA_ with dog and _OBJB_ with cat. These are both mandatory.
+replace `OBJA` and `OBJB` with the objects you want to compare, e. g. `OBJA` with dog and `OBJB` with cat. These are both mandatory.
 
-replace _ASP1_ and _WEIGHT1_ with an aspect you want to include in the search requests and the weight you want to have it, e. g. _ASP1_ with price and _WEIGHT1_ with 5.
+replace `ASP1` and `WEIGHT1` with an aspect you want to include in the search requests and the weight you want to have it, e. g. `ASP1` with price and `WEIGHT1` with 5.
 add as many aspects/weights as you want as long as you follow these rules:
 
 * you always have to enter both an aspect and its weight. you can't enter one without the other.
@@ -73,7 +67,7 @@ example for a good URL:
 
 ## Frontend
 
-### In a shell within the Frontend/cam-frontend directory, start via:
+In a shell within the Frontend/cam-frontend directory, start via:
 
     ng serve -o
 
