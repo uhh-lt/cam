@@ -1,6 +1,5 @@
 Flask
 flask-cors
 nltk
-pipenv
 requests
 inflect
