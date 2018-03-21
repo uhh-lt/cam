@@ -44,7 +44,7 @@ export class AppComponent {
     private http: HttpClient,
     private urlbuilder: UrlBuilderComponent,
     private clusterer: ClustererComponent
-  ) {}
+  ) { }
 
   /**
    * Reads the input from the UI, starts the search request and calls the save method.
@@ -325,15 +325,15 @@ export class AppComponent {
     const minW = Math.min(
       10,
       Object.keys(this.winner_sentex).length -
-        this.sentence_show_numberlist_winner[
-          this.sentence_show_numberlist_winner.length - 1
-        ] -
-        1
+      this.sentence_show_numberlist_winner[
+      this.sentence_show_numberlist_winner.length - 1
+      ] -
+      1
     );
     while (i1 < minW) {
       this.sentence_show_numberlist_winner.push(
         this.sentence_show_numberlist_winner[
-          this.sentence_show_numberlist_winner.length - 1
+        this.sentence_show_numberlist_winner.length - 1
         ] + 1
       );
       i1++;
@@ -342,15 +342,15 @@ export class AppComponent {
     const minL = Math.min(
       10,
       Object.keys(this.loser_sentex).length -
-        this.sentence_show_numberlist_loser[
-          this.sentence_show_numberlist_loser.length - 1
-        ] -
-        1
+      this.sentence_show_numberlist_loser[
+      this.sentence_show_numberlist_loser.length - 1
+      ] -
+      1
     );
     while (i2 < minL) {
       this.sentence_show_numberlist_loser.push(
         this.sentence_show_numberlist_loser[
-          this.sentence_show_numberlist_loser.length - 1
+        this.sentence_show_numberlist_loser.length - 1
         ] + 1
       );
       i2++;
