@@ -1,12 +1,12 @@
-import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule } from '@angular/common/http';
 
-import { AppComponent } from "./app.component";
-import { UrlBuilderComponent } from "./url-builder/url-builder.component";
-import { ClustererComponent } from "./clusterer/clusterer.component";
+import { AppComponent } from './app.component';
+import { UrlBuilderComponent } from './url-builder/url-builder.component';
+import { ClustererComponent } from './clusterer/clusterer.component';
 
 @NgModule({
   declarations: [AppComponent, UrlBuilderComponent, ClustererComponent],
