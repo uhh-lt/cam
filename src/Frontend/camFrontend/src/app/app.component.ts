@@ -36,7 +36,7 @@ export class AppComponent {
   loser_links = []; // stores the main links of the second object
   winner_sentex = {}; // stores some example sentences for the first object
   loser_sentex = {}; // stores some example sentences for the second object
-  // sentences beyond the first to be shown for each object
+  // sentences to be shown for each object
   sentence_show_numberlist_winner = [];
   sentence_show_numberlist_loser = [];
 
