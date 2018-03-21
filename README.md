@@ -25,7 +25,9 @@ In a shell, install requirements:
 
 In a shell, install Angular:
 
-    npm install angular
+    cd cam
+    npm install
+    npm start
 
 # 2. Changing the default hostnames and search type
 
