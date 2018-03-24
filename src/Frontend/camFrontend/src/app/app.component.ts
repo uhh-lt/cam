@@ -116,7 +116,7 @@ export class AppComponent {
     const a_won = result['score object 1'] > result['score object 2']; // did object A win?
     this.saveWinner(result, a_won);
     this.saveScores(result, a_won);
-    this.saveLinkedWords(result, a_won);
+    this.saveExtractedAspects(result, a_won);
     this.saveSentences(result, a_won);
     this.setSentenceShow();
     this.loadshow = false; // hide the loading screen
@@ -192,12 +192,12 @@ export class AppComponent {
   }
 
   /**
-   * Save the words linked to each object.
+   * Save the extracted aspects for each object.
    *
    * @param result search result of Elastic Search
    * @param a_won did object A win?
    */
-  saveLinkedWords(result, a_won) {
+  saveExtractedAspects(result, a_won) {
     if (a_won) {
       for (const link of result['extracted aspects object 1']) {
         this.winner_links.push(link);
