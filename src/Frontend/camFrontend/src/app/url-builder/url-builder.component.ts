@@ -14,9 +14,9 @@ export class UrlBuilderComponent implements OnInit {
   HOSTNAME_DEFAULT = 'http://127.0.0.1:5000/cam';
   HOSTNAME_ML = 'http://127.0.0.1:5000/cam';
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
