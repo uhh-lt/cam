@@ -14,4 +14,4 @@ import { ClustererComponent } from './clusterer/clusterer.component';
   providers: [UrlBuilderComponent, ClustererComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
