@@ -6,9 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./clusterer.component.css']
 })
 export class ClustererComponent implements OnInit {
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   /**
    * Clusters a sentence, extracting all words and their highlight class. This is needed for
@@ -46,29 +46,23 @@ export class ClustererComponent implements OnInit {
     let i = 0;
     for (const word of wordList) {
       if (highlightList.includes(word)) {
-        // word needs to be highlighted
-        // find the right highlight class for the word
-        retDict[i] = { noHL: '' };
-        if (winner_links.includes(word)) {
-          retDict[i++] = { link: [word] };
-          continue;
-        }
-        retDict[i] = { link: '' };
-        if (loser_links.includes(word)) {
-          retDict[i++] = { link: [word] };
-          continue;
-        }
-        retDict[i] = { link: '' };
+        // word needs to be highlighted; find the right highlight class
         if (Object.keys(finalAspDict).includes(word)) {
           retDict[i++] = { aspect: [word] };
           continue;
         }
-        retDict[i] = { aspect: '' };
+        if (winner_links.includes(word)) {
+          retDict[i++] = { link: [word] };
+          continue;
+        }
+        if (loser_links.includes(word)) {
+          retDict[i++] = { link: [word] };
+          continue;
+        }
         if (word === object_A) {
           retDict[i++] = { winner: [word] };
           continue;
         }
-        retDict[i] = { winner: '' };
         retDict[i++] = { loser: [word] };
         continue;
       }
