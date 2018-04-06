@@ -1,0 +1,41 @@
+Start evaluating:
+
+with 0.1 as treshold:
+wrong: 25 vs. right: 246
+90.77490774907749% were right
+
+with 0.2 as treshold:
+wrong: 34 vs. right: 237
+87.45387453874538% were right
+
+with 0.3 as treshold:
+wrong: 38 vs. right: 233
+85.97785977859779% were right
+
+with 0.4 as treshold:
+wrong: 46 vs. right: 225
+83.02583025830258% were right
+
+with 0.5 as treshold:
+wrong: 65 vs. right: 206
+76.01476014760148% were right
+
+with 0.6 as treshold:
+wrong: 100 vs. right: 171
+63.09963099630996% were right
+
+with 0.7 as treshold:
+wrong: 143 vs. right: 128
+47.23247232472325% were right
+
+with 0.8 as treshold:
+wrong: 182 vs. right: 89
+32.84132841328413% were right
+
+with 0.9 as treshold:
+wrong: 221 vs. right: 50
+18.45018450184502% were right
+
+with 1 as treshold:
+wrong: 258 vs. right: 13
+4.797047970479705% were right
