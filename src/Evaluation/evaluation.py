@@ -1,5 +1,6 @@
 import csv
 
+
 def calculateLabel(winnerTreshold, scoreA, scoreB):
     tresholdLabel = ''
     if scoreA > scoreB:
@@ -11,8 +12,9 @@ def calculateLabel(winnerTreshold, scoreA, scoreB):
 
     if tresholdLabel == '':
         tresholdLabel = 'NONE'
-    
+
     return tresholdLabel
+
 
 def loadFromCSV(fileName):
     listCSV = []
@@ -23,6 +25,7 @@ def loadFromCSV(fileName):
     listCSV.pop(0)
     return listCSV
 
+
 def main():
     print('Start evaluating:')
 
@@ -30,30 +33,94 @@ def main():
     preprocessed = loadFromCSV('./csv/preprocessed_dataset.csv')
     objectList2 = [['object_a', 'object_b', 'requested_label', 'gold_label']]
 
-    rightCount = 0
-    wrongCount = 0
-    i = 0
-    for pair in requestedLabels:
-        goldLabel = preprocessed[i][2]
-        requestedLabel = calculateLabel(WINNER_TRESHOLD, float(pair[2]), float(pair[3]))
-        objectList2.append([pair[0], pair[1], requestedLabel, goldLabel])
+    for i in range(1, 11, 1):
+        treshold = 0.1*i
+        totalRight = 0
+        totalWrong = 0
 
-        if requestedLabel == goldLabel:
-            rightCount += 1
-        else:
-            wrongCount += 1
+        betterTP = 0
+        betterFP = 0
+        betterTN = 0
+        betterFN = 0
 
-        i += 1
+        worseTP = 0
+        worseFP = 0
+        worseTN = 0
+        worseFN = 0
 
-    with open('./csv/evaluated_with_t_' + str(WINNER_TRESHOLD) + '.csv', 'w', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerows(objectList2)
+        noneTP = 0
+        noneFP = 0
+        noneTN = 0
+        noneFN = 0
 
-    print('with ' + str(WINNER_TRESHOLD) + ' as treshold:')
-    print('wrong: ' + str(wrongCount) + ' vs. right: ' + str(rightCount))
-    print(str(rightCount*100/(rightCount+wrongCount)) + '% were right')
+        index = 0
+        for pair in requestedLabels:
+            goldLabel = preprocessed[index][2]
+            requestedLabel = calculateLabel(
+                treshold, float(pair[2]), float(pair[3]))
+            objectList2.append([pair[0], pair[1], requestedLabel, goldLabel])
 
 
-WINNER_TRESHOLD = 0.1
+            if requestedLabel == goldLabel:
+                totalRight += 1
+                if requestedLabel == 'BETTER':
+                    betterTP += 1
+                elif requestedLabel == 'WORSE':
+                    worseTP += 1
+                else:
+                    noneTP += 1
+            else:
+                totalWrong += 1
+                if requestedLabel == 'BETTER':
+                    betterFP += 1
+                elif requestedLabel == 'WORSE':
+                    worseFP += 1
+                else:
+                    noneFP += 1
+
+            if goldLabel != 'BETTER' and requestedLabel != 'BETTER':
+                betterTN += 1
+            if goldLabel != 'WORSE' and requestedLabel != 'WORSE':
+                worseTN += 1
+            if goldLabel != 'NONE' and requestedLabel != 'NONE':
+                noneTN += 1
+
+            if goldLabel == 'BETTER' and requestedLabel != 'BETTER':
+                betterFN += 1
+            if goldLabel == 'WORSE' and requestedLabel != 'WORSE':
+                worseFN += 1
+            if goldLabel == 'NONE' and requestedLabel != 'NONE':
+                noneFN += 1
+            index += 1
+
+        # with open('./csv/evaluated_with_t_' + str(treshold) + '.csv', 'w', newline='') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerows(objectList2)
+
+        print('with ' + str(treshold) + ' as treshold:')
+        print('wrong: ' + str(totalWrong) + ' vs. right: ' + str(totalRight))
+        print('In Total ' + str(totalRight*100 /
+                                (totalRight+totalWrong)) + '% were right')
+
+        betterDivide = betterTP + betterTN + betterFP + betterFN
+        bAccuracy = '1'
+        if betterDivide > 0:
+            bAccuracy = str((betterTP + betterTN)/betterDivide)
+        print('BETTER-Accuracy: ' + bAccuracy)
+
+        worseDivide = worseTP + worseTN + worseFP + worseFN
+        wAccuracy = '1'
+        if worseDivide > 0:
+            wAccuracy = str((worseTP + worseTN)/worseDivide)
+        print('WORSE-Accuracy: ' + wAccuracy)
+
+        noneDivide = noneTP + noneTN + worseFP + worseFN
+        nAccuracy = '1'
+        if noneDivide > 0:
+            nAccuracy = str((noneTP + noneTN)/noneDivide)
+        print('NONE-Accuracy: ' + nAccuracy)
+
+        print('')
+
+
 main()
-
