@@ -32,9 +32,10 @@ def main():
     requestedLabels = loadFromCSV('./csv/requested_labels.csv')
     preprocessed = loadFromCSV('./csv/preprocessed_dataset.csv')
     objectList2 = [['object_a', 'object_b', 'requested_label', 'gold_label']]
+    evaluation = [['treshold', 'wrong', 'right', 'total_percent_right', 'better_accuracy', 'worse_accuracy', 'none_accuracy']]
 
     for i in range(1, 11, 1):
-        treshold = 0.1*i
+        treshold = round(0.1*i,1)
         totalRight = 0
         totalWrong = 0
 
@@ -97,30 +98,36 @@ def main():
         #     writer = csv.writer(f)
         #     writer.writerows(objectList2)
 
-        print('with ' + str(treshold) + ' as treshold:')
-        print('wrong: ' + str(totalWrong) + ' vs. right: ' + str(totalRight))
-        print('In Total ' + str(totalRight*100 /
-                                (totalRight+totalWrong)) + '% were right')
-
         betterDivide = betterTP + betterTN + betterFP + betterFN
         bAccuracy = '1'
         if betterDivide > 0:
-            bAccuracy = str((betterTP + betterTN)/betterDivide)
-        print('BETTER-Accuracy: ' + bAccuracy)
+            bAccuracy = round((betterTP + betterTN)/betterDivide,2)
 
         worseDivide = worseTP + worseTN + worseFP + worseFN
         wAccuracy = '1'
         if worseDivide > 0:
-            wAccuracy = str((worseTP + worseTN)/worseDivide)
-        print('WORSE-Accuracy: ' + wAccuracy)
+            wAccuracy = round((worseTP + worseTN)/worseDivide,2)
 
         noneDivide = noneTP + noneTN + worseFP + worseFN
         nAccuracy = '1'
         if noneDivide > 0:
-            nAccuracy = str((noneTP + noneTN)/noneDivide)
-        print('NONE-Accuracy: ' + nAccuracy)
+            nAccuracy = round((noneTP + noneTN)/noneDivide,2)
 
+        totalPercentRight = round(totalRight*100/(totalRight+totalWrong),2)
+
+        evaluation.append([treshold, totalWrong, totalRight, totalPercentRight, bAccuracy, wAccuracy, nAccuracy])
+
+        print('with ' + str(treshold) + ' as treshold:')
+        print('wrong: ' + str(totalWrong) + ' vs. right: ' + str(totalRight))
+        print('In Total ' + str(totalPercentRight) + '% were right')
+        print('BETTER-Accuracy: ' + str(bAccuracy))
+        print('WORSE-Accuracy: ' + str(wAccuracy))
+        print('NONE-Accuracy: ' + str(nAccuracy))
         print('')
+
+    with open('./csv/evaluation.csv', 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(evaluation)
 
 
 main()
