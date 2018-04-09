@@ -23,8 +23,7 @@ def tag_sentence(sentence):
     its part of speech coded as an NLTK tag, for example ('apple', 'NN').
     '''
     # remove special characters
-    # s_rem = re.sub('[^a-zA-Z0-9 ]', ' ', sentence)
-    s_rem = sentence
+    s_rem = re.sub('[^a-zA-Z0-9 ]', ' ', sentence)
     # find all words in the sentence
     wordlist = word_tokenize(s_rem)
     taglist = nltk.pos_tag(wordlist)
@@ -32,28 +31,40 @@ def tag_sentence(sentence):
 
 
 def collectAspectsPerTriple(objectList):
-    pairSentences = {}
+    tripleSentences = {}
+    pairs = set()
 
     for objects in objectList:
         objectA = objects[0]
         objectB = objects[1]
         label = objects[2]
         sentence = objects[3]
-        pair = objectA + ',' + objectB + ',' + label
-        inversePair = objectB + ',' + objectA + ',' + buildInverseLabel(label)
 
-        if pair in pairSentences and inversePair not in pairSentences:
-            pairSentences[pair].update(
-                generateAspects(sentence, objectA, objectB))
-        elif pair not in pairSentences and inversePair in pairSentences:
-            pairSentences[inversePair].update(
-                generateAspects(sentence, objectA, objectB))
+        pair = objectA + ',' + objectB
+        inversePair = objectB + ',' + objectA
+        triple = pair + ',' + label
+        inverseTriple = inversePair + ',' + buildInverseLabel(label)
+
+        aspects = generateAspects(sentence, objectA, objectB)
+
+        if triple in tripleSentences:
+            tripleSentences[triple].update(aspects)
+        elif inverseTriple in tripleSentences:
+            tripleSentences[inverseTriple].update(aspects)
+        elif pair in pairs:
+            tripleSentences[triple] = set(aspects)
+        elif inversePair in pairs:
+            tripleSentences[inverseTriple] = set(aspects)
         else:
-            pairSentences[pair] = set()
-            pairSentences[pair].update(
-                generateAspects(sentence, objectA, objectB))
+            pairs.add(pair)
+            tripleSentences[triple] = set(aspects)
 
-    return pairSentences
+    return [tripleSentences, pairs]
+
+
+def filterCommonAspects(listA, listB, listC):
+    listA = list(set(listA).difference(listB))
+    return list(set(listA).difference(listC))
 
 
 def buildInverseLabel(label):
@@ -78,7 +89,26 @@ def generateAspects(sentence, objectA, objectB):
 def main():
     objectList = extractData()
 
-    tripleAspects = collectAspectsPerTriple(objectList)
+    triplesAndPairs = collectAspectsPerTriple(objectList)
+    tripleAspects = triplesAndPairs[0]
+    pairs = triplesAndPairs[1]
+
+    print(len(pairs))
+    for pair in pairs:
+        betterTriple = pair + ',BETTER'
+        worseTriple = pair + ',WORSE'
+        noneTriple = pair + ',NONE'
+        betterAspects = tripleAspects[betterTriple] if betterTriple in tripleAspects else []
+        worseAspects = tripleAspects[worseTriple] if worseTriple in tripleAspects else []
+        noneAspects = tripleAspects[noneTriple] if noneTriple in tripleAspects else []
+
+        if betterTriple in tripleAspects:
+            tripleAspects[betterTriple]  = filterCommonAspects(betterAspects, worseAspects, noneAspects)
+        if worseTriple in tripleAspects:
+            tripleAspects[worseTriple] = filterCommonAspects(worseAspects, betterAspects, noneAspects)
+        if noneTriple in tripleAspects:
+            tripleAspects[noneTriple] = filterCommonAspects(noneAspects, worseAspects, betterAspects)
+
     triples = []
     header = ['object_a', 'object_b', 'label']
     maxAspects = 0
@@ -95,7 +125,7 @@ def main():
     for i in range(0, maxAspects, 1):
         header.append('aspect_' + str(i))
 
-    triples.sort(key=operator.itemgetter(0, 1))
+    triples.sort(key=operator.itemgetter(0, 1, 2))
     triples.insert(0, header)
 
     with open('./csv/preprocessed_dataset.csv', 'w', newline='', encoding="UTF-8") as f:
