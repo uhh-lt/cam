@@ -1,5 +1,9 @@
 import csv
 import operator
+import re
+import nltk
+from nltk import word_tokenize
+import time
 
 
 def extractData():
@@ -8,82 +12,97 @@ def extractData():
         csvReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in csvReader:
             objectList.append(
-                [row[2].lower().strip(), row[3].lower().strip(), row[9].strip()])
+                [row[2].lower().strip(), row[3].lower().strip(), row[9].strip(), row[17]])
     objectList.pop(0)
     return objectList
 
 
-def countUnicPairLabels(objectList):
-    unicPairs = set()
-    betterPairCount = {}
-    worsePairCount = {}
-    nonePairCount = {}
+def tag_sentence(sentence):
+    '''
+    Returns a list of tags for each word of the sentence. A tag is a combination of the word and
+    its part of speech coded as an NLTK tag, for example ('apple', 'NN').
+    '''
+    # remove special characters
+    # s_rem = re.sub('[^a-zA-Z0-9 ]', ' ', sentence)
+    s_rem = sentence
+    # find all words in the sentence
+    wordlist = word_tokenize(s_rem)
+    taglist = nltk.pos_tag(wordlist)
+    return taglist
+
+
+def collectAspectsPerTriple(objectList):
+    pairSentences = {}
 
     for objects in objectList:
-        pair = objects[0] + ',' + objects[1]
-        unicPairs.add(pair)
+        objectA = objects[0]
+        objectB = objects[1]
+        label = objects[2]
+        sentence = objects[3]
+        pair = objectA + ',' + objectB + ',' + label
+        inversePair = objectB + ',' + objectA + ',' + buildInverseLabel(label)
 
-        if objects[2] == 'BETTER':
-            count(betterPairCount, pair)
-        elif objects[2] == 'WORSE':
-            count(worsePairCount, pair)
+        if pair in pairSentences and inversePair not in pairSentences:
+            pairSentences[pair].update(
+                generateAspects(sentence, objectA, objectB))
+        elif pair not in pairSentences and inversePair in pairSentences:
+            pairSentences[inversePair].update(
+                generateAspects(sentence, objectA, objectB))
         else:
-            count(nonePairCount, pair)
+            pairSentences[pair] = set()
+            pairSentences[pair].update(
+                generateAspects(sentence, objectA, objectB))
 
-    return [unicPairs, betterPairCount, worsePairCount, nonePairCount]
-
-
-def count(pairs, pair):
-    if pair in pairs:
-        pairs[pair] += 1
-    else:
-        pairs[pair] = 1
-    return pairs
+    return pairSentences
 
 
-def calculateLabel(pairsCounts):
-    pairs = []
+def buildInverseLabel(label):
+    if label == 'BETTER':
+        label = 'WORSE'
+    elif label == 'WORSE':
+        label = 'BETTER'
+    return label
 
-    for pair in pairsCounts[0]:
-        betterCount = 0
-        worseCount = 0
-        nonCount = 0
 
-        if pair in pairsCounts[1]:
-            betterCount = pairsCounts[1][pair]
-        if pair in pairsCounts[2]:
-            worseCount = pairsCounts[2][pair]
-        if pair in pairsCounts[3]:
-            nonCount = pairsCounts[3][pair]
+def generateAspects(sentence, objectA, objectB):
+    taglist = tag_sentence(sentence)
+    aspects = []
+    for tag in taglist:
+        possibleAspect = tag[0].lower()
+        if tag[1].startswith('NN') and possibleAspect != objectA and possibleAspect != objectB:
+            aspects.append(possibleAspect)
 
-        maximum = max(betterCount, worseCount, nonCount)
-        label = ''
-        if betterCount == maximum:
-            label = 'BETTER'
-        elif worseCount == maximum:
-            label = 'WORSE'
-        else:
-            label = 'NONE'
-
-        objects = [x for x in pair.split(',')]
-        pairs.append([objects[0], objects[1], label,
-                      betterCount, worseCount, nonCount], )
-
-    return pairs
+    return aspects
 
 
 def main():
     objectList = extractData()
-    pairsCounts = countUnicPairLabels(objectList)
-    pairs = calculateLabel(pairsCounts)
 
-    pairs.sort(key=operator.itemgetter(0))
-    pairs.insert(0, ['object_a', 'object_b', 'label',
-                     'BETTER_count', 'WORSE_count', 'NONE_count'])
+    tripleAspects = collectAspectsPerTriple(objectList)
+    triples = []
+    header = ['object_a', 'object_b', 'label']
+    maxAspects = 0
+    for triple, aspects in tripleAspects.items():
+        numberOfAspects = len(aspects)
+        # if numberOfAspects == 0:      # Filter out trible with no aspects
+        #     print(triple)
+        #     continue
+        if maxAspects < numberOfAspects:
+            maxAspects = numberOfAspects
+        triples.append([x for x in triple.split(',')])
+        triples[len(triples)-1].extend(aspects)
 
-    with open('./csv/preprocessed_dataset.csv', 'w', newline='') as f:
+    for i in range(0, maxAspects, 1):
+        header.append('aspect_' + str(i))
+
+    triples.sort(key=operator.itemgetter(0, 1))
+    triples.insert(0, header)
+
+    with open('./csv/preprocessed_dataset.csv', 'w', newline='', encoding="UTF-8") as f:
         writer = csv.writer(f)
-        writer.writerows(pairs)
+        writer.writerows(triples)
 
 
+start_time = time.time()
 main()
+print("--- %s seconds ---" % (time.time() - start_time))
