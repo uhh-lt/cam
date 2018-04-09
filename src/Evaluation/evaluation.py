@@ -61,7 +61,6 @@ def main():
                 treshold, float(pair[2]), float(pair[3]))
             objectList2.append([pair[0], pair[1], requestedLabel, goldLabel])
 
-
             if requestedLabel == goldLabel:
                 totalRight += 1
                 if requestedLabel == 'BETTER':
@@ -99,17 +98,17 @@ def main():
         #     writer.writerows(objectList2)
 
         betterDivide = betterTP + betterTN + betterFP + betterFN
-        bAccuracy = '1'
+        bAccuracy = '1.0'
         if betterDivide > 0:
             bAccuracy = round((betterTP + betterTN)/betterDivide,2)
 
         worseDivide = worseTP + worseTN + worseFP + worseFN
-        wAccuracy = '1'
+        wAccuracy = '1.0'
         if worseDivide > 0:
             wAccuracy = round((worseTP + worseTN)/worseDivide,2)
 
         noneDivide = noneTP + noneTN + worseFP + worseFN
-        nAccuracy = '1'
+        nAccuracy = '1.0'
         if noneDivide > 0:
             nAccuracy = round((noneTP + noneTN)/noneDivide,2)
 
