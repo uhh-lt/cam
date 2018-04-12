@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { HttpRequestService } from './http-request.service';
+import { HTTPRequestService } from './http-request.service';
 
-describe('HttpRequestService', () => {
+describe('HTTPRequestService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [HttpRequestService]
+      providers: [HTTPRequestService]
     });
   });
 
-  it('should be created', inject([HttpRequestService], (service: HttpRequestService) => {
+  it('should be created', inject([HTTPRequestService], (service: HTTPRequestService) => {
     expect(service).toBeTruthy();
   }));
 });

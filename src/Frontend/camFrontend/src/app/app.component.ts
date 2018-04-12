@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { UrlBuilderService } from './shared/url-builder.service';
 import { ClustererService } from './shared/clusterer.service';
-import { HttpRequestService } from './shared/http-request.service';
+import { HTTPRequestService } from './shared/http-request.service';
 
 /**
  * UI for the Comparative Argument Machine. Currently everything is done by this one class --
@@ -41,7 +41,7 @@ export class AppComponent {
   sentence_show_numberlist_loser = [];
 
   constructor(private urlbuilderService: UrlBuilderService, private clustererService: ClustererService,
-    private httpRequestService: HttpRequestService) { }
+    private httpRequestService: HTTPRequestService) { }
 
   /**
    * Reads the input from the UI, starts the search request and calls the save method.
@@ -61,10 +61,10 @@ export class AppComponent {
     this.saveObjects();
     this.httpRequestService.getScore(this.urlbuilderService.buildURL(this.object_A, this.object_B,
       this.finalAspDict, this.selectedModel, this.fastSearch)
-    )
-      .subscribe(async res => {
-        await this.saveResult(res);
-      });
+    ).subscribe(
+      data => { this.saveResult(data); },       // async res => { await this.saveResult(res);
+      error => { console.error(error); }
+    );
   }
 
   /**
