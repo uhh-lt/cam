@@ -16,8 +16,6 @@ import { UserInterfaceComponent } from './components/user-interface/user-interfa
 import { ResultPresentationComponent } from './components/result-presentation/result-presentation.component';
 
 import { MaterialModule } from './material/material.module';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
 
 const appRoute: Routes = [
   { path: '', component: UserInterfaceComponent},
@@ -35,7 +33,7 @@ const appRoute: Routes = [
     ApiInfoComponent,
     ContactComponent,
     UserInterfaceComponent,
-    ResultPresentationComponent,
+    ResultPresentationComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +43,6 @@ const appRoute: Routes = [
     MaterialModule
   ],
   providers: [UrlBuilderService, ClustererService, HTTPRequestService],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
