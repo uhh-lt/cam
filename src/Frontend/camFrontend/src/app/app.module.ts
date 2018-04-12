@@ -8,9 +8,10 @@ import { AppComponent } from './app.component';
 import { UrlBuilderService } from './shared/url-builder.service';
 import { ClustererService } from './shared/clusterer.service';
 import { HTTPRequestService } from './shared/http-request.service';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HeaderComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule],
   providers: [UrlBuilderService, ClustererService, HTTPRequestService],
   bootstrap: [AppComponent]
