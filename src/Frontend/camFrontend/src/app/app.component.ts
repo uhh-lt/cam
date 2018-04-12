@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // needed for the http.get method
-import { UrlBuilderComponent } from './url-builder/url-builder.component';
-import { ClustererComponent } from './clusterer/clusterer.component';
+import { UrlBuilderService } from './shared/url-builder.service';
+import { ClustererService } from './shared/clusterer.service';
+import { HttpRequestService } from './shared/http-request.service';
 
 /**
  * UI for the Comparative Argument Machine. Currently everything is done by this one class --
@@ -40,11 +40,8 @@ export class AppComponent {
   sentence_show_numberlist_winner = [];
   sentence_show_numberlist_loser = [];
 
-  constructor(
-    private http: HttpClient,
-    private urlbuilder: UrlBuilderComponent,
-    private clusterer: ClustererComponent
-  ) { }
+  constructor(private urlbuilderService: UrlBuilderService, private clustererService: ClustererService,
+    private httpRequestService: HttpRequestService) { }
 
   /**
    * Reads the input from the UI, starts the search request and calls the save method.
@@ -62,16 +59,9 @@ export class AppComponent {
     }
     // read the objects entered, build the URL and start the search request
     this.saveObjects();
-    this.http
-      .get(
-        this.urlbuilder.buildURL(
-          this.object_A,
-          this.object_B,
-          this.finalAspDict,
-          this.selectedModel,
-          this.fastSearch
-        )
-      )
+    this.httpRequestService.getScore(this.urlbuilderService.buildURL(this.object_A, this.object_B,
+      this.finalAspDict, this.selectedModel, this.fastSearch)
+    )
       .subscribe(async res => {
         await this.saveResult(res);
       });
@@ -225,7 +215,7 @@ export class AppComponent {
     let i = 0;
     if (a_won) {
       for (const sentence of result['object 1 sentences']) {
-        this.winner_sentex[i++] = this.clusterer.getCluster(
+        this.winner_sentex[i++] = this.clustererService.getCluster(
           sentence,
           this.winner_links,
           this.loser_links,
@@ -236,7 +226,7 @@ export class AppComponent {
       }
       i = 0;
       for (const sentence of result['object 2 sentences']) {
-        this.loser_sentex[i++] = this.clusterer.getCluster(
+        this.loser_sentex[i++] = this.clustererService.getCluster(
           sentence,
           this.winner_links,
           this.loser_links,
@@ -247,7 +237,7 @@ export class AppComponent {
       }
     } else {
       for (const sentence of result['object 1 sentences']) {
-        this.loser_sentex[i++] = this.clusterer.getCluster(
+        this.loser_sentex[i++] = this.clustererService.getCluster(
           sentence,
           this.winner_links,
           this.loser_links,
@@ -258,7 +248,7 @@ export class AppComponent {
       }
       i = 0;
       for (const sentence of result['object 2 sentences']) {
-        this.winner_sentex[i++] = this.clusterer.getCluster(
+        this.winner_sentex[i++] = this.clustererService.getCluster(
           sentence,
           this.winner_links,
           this.loser_links,

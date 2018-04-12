@@ -1,20 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-@Component({
-  selector: 'app-url-builder',
-  templateUrl: './url-builder.component.html',
-  styleUrls: ['./url-builder.component.css']
-})
-export class UrlBuilderComponent implements OnInit {
-  /**
-   *  The name of the server. Change this to 'http://127.0.0.1:5000/cam' if you want to communicate
-   *  with your locally hosted server instead, to 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
-   *  if you want to communicate with ltdemos.
-   */
-  HOSTNAME_DEFAULT = 'http://127.0.0.1:5000/cam';
-  HOSTNAME_ML = 'http://127.0.0.1:5000/cam';
+@Injectable()
+export class UrlBuilderService {
 
   constructor() { }
+  /**
+    *  The name of the server. Change this to 'http://127.0.0.1:5000/cam' if you want to communicate
+    *  with your locally hosted server instead, to 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
+    *  if you want to communicate with ltdemos.
+    */
+  HOSTNAME_DEFAULT = 'http://127.0.0.1:5000/cam';
+  HOSTNAME_ML = 'http://127.0.0.1:5000/cam';
 
   ngOnInit() { }
 
@@ -65,4 +61,5 @@ export class UrlBuilderComponent implements OnInit {
     );
     return url_part;
   }
+
 }

@@ -5,13 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { UrlBuilderComponent } from './url-builder/url-builder.component';
-import { ClustererComponent } from './clusterer/clusterer.component';
+import { UrlBuilderService } from './shared/url-builder.service';
+import { ClustererService } from './shared/clusterer.service';
+import { HttpRequestService } from './shared/http-request.service';
 
 @NgModule({
-  declarations: [AppComponent, UrlBuilderComponent, ClustererComponent],
+  declarations: [AppComponent],
   imports: [BrowserModule, HttpClientModule, FormsModule],
-  providers: [UrlBuilderComponent, ClustererComponent],
+  providers: [UrlBuilderService, ClustererService, HttpRequestService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
