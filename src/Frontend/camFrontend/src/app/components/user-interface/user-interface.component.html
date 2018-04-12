@@ -1,0 +1,150 @@
+<table class='table borderless'>
+  <tbody>
+    <tr>
+      <th class='text-center' colspan=3 style='font-size: 50px'>Comparative Argument Machine</th>
+    </tr>
+    <tr>
+      <td class='text-right'>
+        <input placeholder='enter the first object' #objA [(ngModel)]='object_A' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
+      </td>
+      <td class='align-middle text-center' style='font-size: 16px'>versus</td>
+      <td>
+        <input placeholder='enter the second object' #objB [(ngModel)]='object_B' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
+      </td>
+    </tr>
+    <tr>
+      <td class='text-right' style='font-size: 17px'>Enter aspects below:</td>
+      <td></td>
+      <td style='font-size: 17px'>Aspect importance:</td>
+    </tr>
+    <tr *ngFor='let aspect of aspects'>
+      <td class='text-right'>
+        <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' style='font-size: 17px'
+          (keyup.enter)='compIfEntered()'>
+      </td>
+      <td class='text-center'>
+        <button (click)='removeAspect(aspect)' type='button' class='btn btn-primary'>
+          <span class='glyphicon glyphicon-minus' aria-hidden='true'></span>
+        </button>
+      </td>
+      <td>
+        <div class='slidecontainer'>
+          <input type='range' min='1' max='5' value='1' class='slider' id='weight{{aspect}}' [(ngModel)]='weightDict[aspect]' (keyup.enter)='compIfEntered()'>
+          <span>value: {{weightDict[aspect]}}</span>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class='text-center'>
+        <button (click)='addAspect()' type='button' class='btn btn-primary'>
+          <span class='glyphicon glyphicon-plus' aria-hidden='true'></span>
+        </button>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class='align-middle'>
+        <div ng-app='myApp' ng-controller='myCtrl' class='text-right'>
+          <select class='select-option' [(ngModel)]='selectedModel'>
+            <option class='option' selected value='default'>Default</option>
+            <option class='option' value='machine_learning'>Machine Learning</option>
+          </select>
+        </div>
+      </td>
+      <th class='text-center'>
+        <button (click)='compare()' type='button' class='btn btn-primary btn-lg' [disabled]='!objectsEntered()'>
+          Compare!
+        </button>
+      </th>
+      <td class='align-middle'>
+        <label>
+          <input type='checkbox' [(ngModel)]='fastSearch'> Faster Search</label>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class='text-center'>
+        <button (click)='resetInput()' type='button' class='btn btn-primary'>
+          Reset
+        </button>
+      </td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<p *ngIf='loadshow' class='text-center' style='font-size: 20px'>Loading, please wait ...</p>
+<br>
+<br>
+<p *ngIf='resshow' class='text-center' style='font-size: 25px'>Result (based on {{rescount}} sentences):</p>
+<br>
+<br>
+<table *ngIf='resshow' class='table'>
+  <thead>
+    <tr>
+      <th width='20%' scope='col'></th>
+      <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{winner_obj}}</th>
+      <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{loser_obj}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope='row'></th>
+      <td class='text-center' bgcolor='green' style='font-size: 17px'>Winner</td>
+      <td class='text-center' bgcolor='red' style='font-size: 17px'>Runner-up</td>
+    </tr>
+    <tr>
+      <th scope='row' style='font-size: 17px'>Score</th>
+      <td class='text-center' style='font-size: 17px'>{{winner_score}} %</td>
+      <td class='text-center' style='font-size: 17px'>{{loser_score}} %</td>
+    </tr>
+    <tr>
+      <th scope='row' style='font-size: 17px'>Automatically extracted aspects for these objects</th>
+      <td style='font-size: 17px'>
+        <li *ngFor='let link of winner_links'>{{link}}</li>
+      </td>
+      <td style='font-size: 17px'>
+        <li *ngFor='let link of loser_links'>{{link}}</li>
+      </td>
+    </tr>
+    <tr>
+      <th scope='row' style='font-size: 17px'>Sentence examples</th>
+      <td>
+        <table class='table' *ngFor='let i of sentence_show_numberlist_winner'>
+          <tr style='font-size: 17px'>
+            <span *ngFor='let part of winner_sentex[i][1]'>
+              <span class='link'>{{winner_sentex[i][0][part]['link']}}</span>
+              <span class='aspect'>{{winner_sentex[i][0][part]['aspect']}}</span>
+              <span class='winner'>{{winner_sentex[i][0][part]['winner']}}</span>
+              <span class='loser'>{{winner_sentex[i][0][part]['loser']}}</span>
+              <span class='noHL'>{{winner_sentex[i][0][part]['noHL']}} </span>
+            </span>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <table class='table' *ngFor='let i of sentence_show_numberlist_loser'>
+          <tr style='font-size: 17px'>
+            <span *ngFor='let part of loser_sentex[i][1]'>
+              <span class='link'>{{loser_sentex[i][0][part]['link']}}</span>
+              <span class='aspect'>{{loser_sentex[i][0][part]['aspect']}}</span>
+              <span class='winner'>{{loser_sentex[i][0][part]['winner']}}</span>
+              <span class='loser'>{{loser_sentex[i][0][part]['loser']}}</span>
+              <span class='noHL'>{{loser_sentex[i][0][part]['noHL']}} </span>
+            </span>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<button (click)='show_more_sentences()' type='button' class='btn btn-primary btn-lg' *ngIf='resshow'>
+  Show more sentences
+</button>
+<br>
+<br>
+<br>
+<br>
+<br>
