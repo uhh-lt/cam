@@ -14,6 +14,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ApiInfoComponent } from './components/api-info/api-info.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { UserInterfaceComponent } from './components/user-interface/user-interface.component';
+import { ResultPresentationComponent } from './components/result-presentation/result-presentation.component';
 
 
 const appRoute: Routes = [
@@ -31,7 +32,8 @@ const appRoute: Routes = [
     AboutComponent,
     ApiInfoComponent,
     ContactComponent,
-    UserInterfaceComponent
+    UserInterfaceComponent,
+    ResultPresentationComponent
   ],
   imports: [
     BrowserModule,
