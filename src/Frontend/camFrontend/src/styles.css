@@ -1,1 +1,5 @@
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~@angular/material/prebuilt-themes/purple-green.css';
+
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #0069d9;
+}

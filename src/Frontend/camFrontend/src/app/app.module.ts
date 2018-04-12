@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
-
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -15,6 +14,9 @@ import { ApiInfoComponent } from './components/api-info/api-info.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { UserInterfaceComponent } from './components/user-interface/user-interface.component';
 import { ResultPresentationComponent } from './components/result-presentation/result-presentation.component';
+
+import { MaterialModule } from './material/material.module';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 
 const appRoute: Routes = [
@@ -33,15 +35,16 @@ const appRoute: Routes = [
     ApiInfoComponent,
     ContactComponent,
     UserInterfaceComponent,
-    ResultPresentationComponent
+    ResultPresentationComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoute)
+    RouterModule.forRoot(appRoute),
+    MaterialModule
   ],
   providers: [UrlBuilderService, ClustererService, HTTPRequestService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
