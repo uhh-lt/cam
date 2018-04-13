@@ -4,6 +4,10 @@ import re
 import nltk
 from nltk import word_tokenize
 import time
+import sys
+sys.path.append('../Backend')
+import link_extracter
+import constants
 
 
 def extractData():
@@ -17,30 +21,19 @@ def extractData():
     return objectList
 
 
-def tag_sentence(sentence):
-    '''
-    Returns a list of tags for each word of the sentence. A tag is a combination of the word and
-    its part of speech coded as an NLTK tag, for example ('apple', 'NN').
-    '''
-    # remove special characters
-    s_rem = re.sub('[^a-zA-Z0-9 ]', ' ', sentence)
-    # find all words in the sentence
-    wordlist = word_tokenize(s_rem)
-    taglist = nltk.pos_tag(wordlist)
-    return taglist
-
 def generateAspects(sentence, objectA, objectB):
-    taglist = tag_sentence(sentence)
+    taglist = link_extracter.tag_sentence(sentence)
     aspects = set()
     for tag in taglist:
         possibleAspect = tag[0].lower()
-        if tag[1].startswith('NN') and possibleAspect != objectA and possibleAspect != objectB:
+        if tag[1].startswith('NN') and possibleAspect != objectA and possibleAspect != objectB \
+            and possibleAspect not in constants.STOPWORDS and possibleAspect not in constants.NUMBER_STRINGS :
             aspects.add(possibleAspect)
 
     return aspects
 
 def collectAspectsPerSentence(comparisonList):
-    header = ['object_a', 'object_b', 'label']
+    header = ['id', 'object_a', 'object_b', 'label']
     sentences = []
     maxAspects = 0
     for comparation in comparisonList:
@@ -63,6 +56,10 @@ def collectAspectsPerSentence(comparisonList):
 
     sentences.sort(key=operator.itemgetter(0, 1, 2))
     sentences.insert(0, header)
+    
+    for i in range(1, len(sentences), 1):
+        sentences[i].insert(0, i)
+
     return sentences
     
 
