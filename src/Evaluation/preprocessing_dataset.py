@@ -1,6 +1,5 @@
 import csv
 import operator
-import re
 import nltk
 from nltk import word_tokenize
 import time
@@ -26,48 +25,40 @@ def generateAspects(sentence, objectA, objectB):
     aspects = set()
     for tag in taglist:
         possibleAspect = tag[0].lower()
-        if tag[1].startswith('NN') and possibleAspect != objectA and possibleAspect != objectB \
-            and possibleAspect not in constants.STOPWORDS and possibleAspect not in constants.NUMBER_STRINGS :
+        if (tag[1].startswith('JJ') or tag[1].startswith('NN')) and possibleAspect != objectA and possibleAspect != objectB \
+                and possibleAspect not in constants.STOPWORDS and possibleAspect not in constants.NUMBER_STRINGS and len(possibleAspect) > 1:
             aspects.add(possibleAspect)
 
     return aspects
 
 def collectAspectsPerSentence(comparisonList):
-    header = ['id', 'object_a', 'object_b', 'label']
+    header = ['id', 'object_a', 'object_b', 'label', 'sentence', 'aspects']
     sentences = []
-    maxAspects = 0
     for comparation in comparisonList:
         objectA = comparation[0]
         objectB = comparation[1]
         label = comparation[2]
         sentence = comparation[3]
 
-        sentences.append([objectA, objectB, label])
+        sentences.append([objectA, objectB, label, sentence])
         aspects = generateAspects(sentence, objectA, objectB)
-
-        numberOfAspects = len(aspects)
-        if maxAspects < numberOfAspects:
-            maxAspects = numberOfAspects
-
-        sentences[len(sentences)-1].extend(aspects)
-
-    for i in range(0, maxAspects, 1):
-        header.append('aspect_' + str(i))
+        aspects = list(aspects)
+        aspects.sort()
+        sentences[len(sentences)-1].append(", ".join(aspects))
 
     sentences.sort(key=operator.itemgetter(0, 1, 2))
     sentences.insert(0, header)
-    
+
     for i in range(1, len(sentences), 1):
         sentences[i].insert(0, i)
 
     return sentences
-    
 
 
 def main():
     comparisonList = extractData()
+    # comparisonList.sort(key=operator.itemgetter(0, 1, 2))
     comparationsWithAspects = collectAspectsPerSentence(comparisonList)
-
 
     with open('./csv/preprocessed_dataset.csv', 'w', newline='', encoding="UTF-8") as f:
         writer = csv.writer(f)
