@@ -25,7 +25,7 @@ class myThread (threading.Thread):
             scoreB = jsonResult['score object 2']
 
             return [scoreA, scoreB]
-        except requests.exceptions.RequestException as e:  # This is the correct syntax
+        except requests.exceptions.RequestException:
             print('Pair with id {}, raised an exception'.format(id))
             return self.requestLabels(url, id)
 
@@ -68,7 +68,7 @@ def addAspectURL(aspectMap):
 def generateURLS(comparations):
     urls = []
     for objects in comparations:
-        aspects = objects[4:]
+        aspects = [x for x in objects[5].split(', ')]
         aspectDict = {}
         for aspect in aspects:
             aspectDict[aspect] = 5
@@ -79,7 +79,8 @@ def generateURLS(comparations):
 
 def main():
     comparations = []
-    with open('./csv/preprocessed_dataset.csv', newline='', encoding='utf-8') as csvfile:
+    urlParam = 'NN+JJ'
+    with open('./csv/({})_preprocessed_dataset.csv'.format(urlParam), newline='', encoding='utf-8') as csvfile:
         csvReader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in csvReader:
             comparations.append(row)
@@ -92,7 +93,7 @@ def main():
     # Create new threads
     threads = []
 
-    i = 1
+    i = 10
     thread1 = myThread(1, "Thread-1", comparations[0:i])
     thread2 = myThread(2, "Thread-2", comparations[i:2*i])
     thread3 = myThread(3, "Thread-3", comparations[2*i:3*i])
@@ -165,8 +166,7 @@ def main():
           or thread9.isAlive() or thread10.isAlive() or thread11.isAlive() or thread12.isAlive()
           or thread13.isAlive() or thread14.isAlive() or thread15.isAlive() or thread16.isAlive()
           or thread17.isAlive() or thread18.isAlive() or thread19.isAlive() or thread20.isAlive()):
-        # wait
-        continue
+        pass
 
     for t in threads:
         print('Wait')
@@ -175,10 +175,9 @@ def main():
 
     print("Exiting Main Thread")
     print(str(len(requested)) + ' results.')
-    print(requested)
     # **********************
 
-    with open('./csv/requested_labels.csv', 'w', newline='') as f:
+    with open('./csv/({})_requested_labels.csv'.format(urlParam), 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(requested)
 

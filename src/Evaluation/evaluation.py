@@ -29,8 +29,7 @@ def loadFromCSV(fileName):
 def main():
     print('Start evaluating:')
 
-    requestedLabels = loadFromCSV('./csv/requested_labels.csv')
-    preprocessed = loadFromCSV('./csv/preprocessed_dataset.csv')
+    requestedLabels = loadFromCSV('./csv/(NN+JJ)_requested_labels.csv')
     objectList2 = [['object_a', 'object_b', 'requested_label', 'gold_label']]
     evaluation = [['treshold', 'wrong', 'right', 'total_percent_right', 'better_accuracy', 'worse_accuracy', 'none_accuracy']]
 
@@ -54,12 +53,11 @@ def main():
         noneTN = 0
         noneFN = 0
 
-        index = 0
         for pair in requestedLabels:
-            goldLabel = preprocessed[index][2]
+            goldLabel = pair[3]
             requestedLabel = calculateLabel(
-                treshold, float(pair[2]), float(pair[3]))
-            objectList2.append([pair[0], pair[1], requestedLabel, goldLabel])
+                treshold, float(pair[4]), float(pair[5]))
+            objectList2.append([pair[1], pair[2], requestedLabel, goldLabel])
 
             if requestedLabel == goldLabel:
                 totalRight += 1
@@ -91,7 +89,6 @@ def main():
                 worseFN += 1
             if goldLabel == 'NONE' and requestedLabel != 'NONE':
                 noneFN += 1
-            index += 1
 
         # with open('./csv/evaluated_with_t_' + str(treshold) + '.csv', 'w', newline='') as f:
         #     writer = csv.writer(f)
