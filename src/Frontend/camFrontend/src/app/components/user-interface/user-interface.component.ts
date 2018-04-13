@@ -26,10 +26,32 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   private object_A = ''; // the first object currently entered
   private object_B = ''; // the second object currently entered
 
+  private preSelectedObjects = [
+    ['python', 'java'],
+    ['php', 'javascript'],
+    ['perl', 'python'],
+    ['ios', 'android'],
+    ['cuda', 'opencl'],
+    ['bluetooth', 'ethernet'],
+    ['bmw', 'toyota'],
+    ['apple', 'microsoft'],
+    ['gamecube', 'ps2'],
+    ['milk', 'beer'],
+    ['motorcycle', 'truck'],
+    ['oregon', 'michigan'],
+    ['pepsi', 'coca-cola'],
+    ['potato', 'steak'],
+    ['tennis', 'golf']
+  ];
+
   constructor(private urlbuilderService: UrlBuilderService, private clustererService: ClustererService,
     private httpRequestService: HTTPRequestService) { }
 
   ngOnInit() {
+
+    const index = Math.floor(Math.random() * 16);
+    this.object_A = this.preSelectedObjects[index][0];
+    this.object_B = this.preSelectedObjects[index][1];
   }
 
   ngAfterViewInit() {
