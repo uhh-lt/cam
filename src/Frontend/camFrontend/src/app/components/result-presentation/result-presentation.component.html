@@ -1,4 +1,4 @@
-<div *ngIf = showResult>
+<mat-card *ngIf=showResult>
   <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p>
   <br>
   <br>
@@ -61,12 +61,7 @@
       </tr>
     </tbody>
   </table>
-  <button (click)='showMoreSentences()' type='button' class='btn btn-primary btn-lg'>
+  <button (click)='showMoreSentences()' mat-raised-button color="primary">
     Show more sentences
   </button>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-</div>
+</mat-card>

@@ -134,8 +134,6 @@ export class ResultPresentationComponent {
     let i = 0;
     if (a_won) {
       for (const sentence of result['object 1 sentences']) {
-        // this.winner_sentex[i++]
-        console.log(result);
         this.winnerSentenceExamples[i++] = this.clustererService.getCluster(
           sentence,
           this.result.winnerAspects,
@@ -147,7 +145,6 @@ export class ResultPresentationComponent {
       }
       i = 0;
       for (const sentence of result['object 2 sentences']) {
-        // this.loser_sentex[i++]
         this.looserSentenceExamples[i++] = this.clustererService.getCluster(
           sentence,
           this.result.winnerAspects,
@@ -159,7 +156,6 @@ export class ResultPresentationComponent {
       }
     } else {
       for (const sentence of result['object 1 sentences']) {
-        // this.loser_sentex[i++]
         this.looserSentenceExamples[i++] = this.clustererService.getCluster(
           sentence,
           this.result.winnerAspects,
@@ -171,7 +167,6 @@ export class ResultPresentationComponent {
       }
       i = 0;
       for (const sentence of result['object 2 sentences']) {
-        // this.winner_sentex[i++]
         this.winnerSentenceExamples[i++] = this.clustererService.getCluster(
           sentence,
           this.result.winnerAspects,

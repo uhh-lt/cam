@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG  } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
@@ -14,6 +14,8 @@ import { ApiInfoComponent } from './components/api-info/api-info.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { UserInterfaceComponent } from './components/user-interface/user-interface.component';
 import { ResultPresentationComponent } from './components/result-presentation/result-presentation.component';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './material/material.module';
 
@@ -37,6 +39,7 @@ const appRoute: Routes = [
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot(appRoute),
@@ -46,3 +49,5 @@ const appRoute: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule);

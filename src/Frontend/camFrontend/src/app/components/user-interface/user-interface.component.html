@@ -1,83 +1,105 @@
-<table class='table borderless'>
-  <tbody>
+<h1 class='text-center'>Comparative Argument Machine</h1>
+<mat-card>
+  <table class="table table-borderless">
     <tr>
-      <th class='text-center' colspan=3 style='font-size: 50px'>Comparative Argument Machine</th>
-    </tr>
-    <tr>
-      <td class='text-right'>
-        <input placeholder='enter the first object' #objA [(ngModel)]='object_A' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
+      <td class='text-right' style='width:40%'>
+        <mat-form-field class="object-input">
+          <input matInput placeholder='First object' #objA [(ngModel)]='object_A' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
+        </mat-form-field>
       </td>
       <td class='align-middle text-center' style='font-size: 16px'>versus</td>
-      <td>
-        <input placeholder='enter the second object' #objB [(ngModel)]='object_B' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
+      <td style='width:40%'>
+        <mat-form-field class="object-input">
+          <input matInput placeholder='Second object' #objB [(ngModel)]='object_B' style='font-size: 20px' (keyup.enter)='compIfEntered()'>
+        </mat-form-field>
       </td>
     </tr>
     <tr>
-      <td class='text-right' style='font-size: 17px'>Enter aspects below:</td>
-      <td></td>
-      <td style='font-size: 17px'>Aspect importance:</td>
+      <td>
+        <mat-divider></mat-divider>
+      </td>
     </tr>
     <tr *ngFor='let aspect of aspects'>
       <td class='text-right'>
-        <input placeholder='enter an aspect, e.g. price' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' style='font-size: 17px'
-          (keyup.enter)='compIfEntered()'>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder='Aspect' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' style='font-size: 17px' (keyup.enter)='compIfEntered()'>
+          <mat-hint align="start">
+            e.g. price
+          </mat-hint>
+        </mat-form-field>
       </td>
-      <td class='text-center'>
-        <button (click)='removeAspect(aspect)' type='button' class='btn btn-primary'>
-            <span class="material-icons"  aria-hidden='true'>remove</span>
+      <td class='align-middle text-center'>
+        <button (click)='removeAspect(aspect)' mat-mini-fab color="primary" [disabled]='!aspectDict[aspect] && aspects.length == 1'>
+          <mat-icon aria-hidden='true'>remove
+          </mat-icon>
         </button>
       </td>
+
       <td>
         <div class='slidecontainer'>
-          <input type='range' min='1' max='5' value='1' class='slider' id='weight{{aspect}}' [(ngModel)]='weightDict[aspect]' (keyup.enter)='compIfEntered()'>
-          <span>value: {{weightDict[aspect]}}</span>
+          <label for="importance">Aspect importance:</label>
+          <mat-slider class='slider' min='1' max='5' step='1' thumb-label="true" tick-interval="1" [(ngModel)]='weightDict[aspect]'
+            name="importance" (keyup.enter)='compIfEntered()'>
+          </mat-slider>
         </div>
       </td>
     </tr>
     <tr>
       <td></td>
-      <td class='text-center'>
-        <button (click)='addAspect()' type='button' class='btn btn-primary'>
-            <span class="material-icons"  aria-hidden='true'>add</span>
+      <td class='align-middle text-center'>
+        <button (click)='addAspect()' mat-mini-fab color="primary">
+          <mat-icon aria-hidden='true'>add
+          </mat-icon>
         </button>
       </td>
       <td></td>
     </tr>
     <tr>
-      <td class='align-middle'>
-        <div class='text-right'>
-          <select class='select-option' [(ngModel)]='selectedModel'>
-            <option class='option' selected value='default'>Default</option>
-            <option class='option' value='machine_learning'>Machine Learning</option>
-          </select>
-        </div>
+      <td></td>
+      <td>
+        <mat-divider dotted></mat-divider>
       </td>
-      <th class='text-center'>
-        <button (click)='compare()' type='button' class='btn btn-primary btn-lg' [disabled]='!objectsEntered()'>
+      <td></td>
+    </tr>
+    <tr>
+      <td class='align-middle text-right'>
+
+        <mat-form-field>
+          <mat-select [(ngModel)]='selectedModel'>
+            <mat-option selected value="default">
+              Default
+            </mat-option>
+            <mat-option value="machine_learning">
+              Machine Learning
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </td>
+      <th class='align-middle text-center'>
+        <button (click)='compare()' mat-raised-button color="primary" [disabled]='!objectsEntered()'>
           Compare!
         </button>
       </th>
       <td class='align-middle'>
-        <label>
-          <input type='checkbox' [(ngModel)]='fastSearch'> Faster Search</label>
+        <mat-checkbox [(ngModel)]="fastSearch">Faster Search</mat-checkbox>
       </td>
     </tr>
     <tr>
       <td></td>
       <td class='text-center'>
-        <button (click)='resetInput()' type='button' class='btn btn-primary'>
+        <button (click)='resetInput()' mat-raised-button>
           Reset
         </button>
       </td>
       <td></td>
     </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  <div *ngIf='showLoading'>
+    <mat-spinner style="margin:0 auto;"></mat-spinner>
+  </div>
+</mat-card>
 <br>
 <br>
-<div *ngIf='showLoading'><mat-spinner style="margin:0 auto;"></mat-spinner></div>
-<br>
-<br>
-<div>
-  <app-result-presentation></app-result-presentation>
-</div>
+<app-result-presentation></app-result-presentation>
