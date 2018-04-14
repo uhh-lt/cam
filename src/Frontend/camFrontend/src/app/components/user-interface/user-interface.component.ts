@@ -97,9 +97,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   resetInput() {
     this.object_A = '';
     this.object_B = '';
-    for (const aspect of Object.keys(this.aspectDict)) {
-      this.aspectDict[aspect] = '';
-    }
+    this.aspectDict = {};
+    this.weightDict = { 1: 1 };
     this.aspects = [1];
     this.fastSearch = false;
   }
