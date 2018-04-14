@@ -48,8 +48,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     private httpRequestService: HTTPRequestService) { }
 
   ngOnInit() {
-
-    const index = Math.floor(Math.random() * 16);
+    const index = Math.floor(Math.random() * 15);
     this.object_A = this.preSelectedObjects[index][0];
     this.object_B = this.preSelectedObjects[index][1];
   }
