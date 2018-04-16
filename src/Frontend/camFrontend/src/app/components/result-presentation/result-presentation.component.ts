@@ -67,7 +67,7 @@ export class ResultPresentationComponent {
    * @param winner object that won the comparation
    * @param looser object that lost the comparation
    */
-  saveWinner(winner: string, looser: string) {
+  private saveWinner(winner: string, looser: string) {
     this.result.winner = winner;
     this.result.looser = looser;
   }
@@ -78,17 +78,9 @@ export class ResultPresentationComponent {
    * @param winnerScore the score of the object that won the comparation
    * @param looserScore the score of the object that lost the comparation
    */
-  saveScores(winnerScore: number, looserScore: number) {
-    this.result.winnerScorePercent = (
-      winnerScore /
-      (winnerScore + looserScore) *
-      100
-    ).toFixed(2);
-    this.result.looserScorePercent = (
-      looserScore /
-      (winnerScore + looserScore) *
-      100
-    ).toFixed(2);
+  private saveScores(winnerScore: number, looserScore: number) {
+    this.result.winnerScorePercent = (winnerScore / (winnerScore + looserScore) * 100).toFixed(2);
+    this.result.looserScorePercent = (looserScore / (winnerScore + looserScore) * 100).toFixed(2);
   }
 
   /**
@@ -97,7 +89,7 @@ export class ResultPresentationComponent {
    * @param winnerAspects aspects of the object that won the comparation
    * @param looserAspects aspects of the object that lost the comparation
    */
-  saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>) {
+  private saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>) {
     for (const link of winnerAspects) {
       this.result.winnerAspects.push(link);
     }
@@ -113,7 +105,7 @@ export class ResultPresentationComponent {
    * @param looserSentences sentences of the object that lost
    * @param finalAspDict dict that holds all aspects of the comparation
    */
-  saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>, finalAspDict) {
+  private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>, finalAspDict) {
     let i = 0;
     for (const sentence of winnerSentences) {
       this.winnerSentenceExamples[i++] = this.clustererService.getCluster(
@@ -142,7 +134,7 @@ export class ResultPresentationComponent {
    * each, but if an object has less than 10 sentences, it's set to this amount instead.
    *
    */
-  setSentenceShow() {
+  private setSentenceShow() {
     const minW = Math.min(9, Object.keys(this.winnerSentenceExamples).length);
     const minL = Math.min(9, Object.keys(this.looserSentenceExamples).length);
     this.sentenceShowNumberlistWinner = Array.from(Array(minW).keys());
@@ -155,39 +147,15 @@ export class ResultPresentationComponent {
    *
    */
   showMoreSentences() {
-    let i1 = 0;
-    const minW = Math.min(
-      10,
-      Object.keys(this.winnerSentenceExamples).length -
-      this.sentenceShowNumberlistWinner[
-      this.sentenceShowNumberlistWinner.length - 1
-      ] -
-      1
-    );
-    while (i1 < minW) {
-      this.sentenceShowNumberlistWinner.push(
-        this.sentenceShowNumberlistWinner[
-        this.sentenceShowNumberlistWinner.length - 1
-        ] + 1
-      );
-      i1++;
-    }
-    let i2 = 0;
-    const minL = Math.min(
-      10,
-      Object.keys(this.looserSentenceExamples).length -
-      this.sentenceShowNumberlistLooser[
-      this.sentenceShowNumberlistLooser.length - 1
-      ] -
-      1
-    );
-    while (i2 < minL) {
-      this.sentenceShowNumberlistLooser.push(
-        this.sentenceShowNumberlistLooser[
-        this.sentenceShowNumberlistLooser.length - 1
-        ] + 1
-      );
-      i2++;
+    this._showMoreSentences(this.winnerSentenceExamples, this.sentenceShowNumberlistWinner);
+    this._showMoreSentences(this.looserSentenceExamples, this.sentenceShowNumberlistLooser);
+  }
+
+  private _showMoreSentences(sentecesExamples, showNumber) {
+    const minW = Math.min(10, Object.keys(sentecesExamples.keys).length - showNumber[showNumber.length - 1] - 1);
+    for (let i = 0; i < minW; i++) {
+      showNumber.push(showNumber[showNumber.length - 1] + 1);
     }
   }
+
 }
