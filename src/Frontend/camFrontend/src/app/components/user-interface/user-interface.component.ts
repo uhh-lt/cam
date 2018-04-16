@@ -4,6 +4,7 @@ import { ClustererService } from '../../shared/clusterer.service';
 import { HTTPRequestService } from '../../shared/http-request.service';
 import { Result } from '../../model/result';
 import { ResultPresentationComponent } from '../result-presentation/result-presentation.component';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-user-interface',
@@ -45,7 +46,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(private urlbuilderService: UrlBuilderService, private clustererService: ClustererService,
-    private httpRequestService: HTTPRequestService) { }
+    private httpRequestService: HTTPRequestService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     const index = Math.floor(Math.random() * 15);
@@ -54,7 +55,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.log('on after view init', this.resultPresentation);
   }
 
   /**
@@ -76,7 +76,14 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     const url = this.urlbuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict, this.selectedModel, this.fastSearch);
     this.httpRequestService.getScore(url).subscribe(
       data => { this.resultPresentation.saveResult(data, this.finalAspDict); },       // async res => { await this.saveResult(res);
-      error => { console.error(error); },
+      error => {
+        this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
+          duration: 3500,
+        });
+        this.showLoading = false;
+        console.error(error);
+
+      },
       () => {
         this.showLoading = false; // hide the loading screen
         this.showResult = true;
