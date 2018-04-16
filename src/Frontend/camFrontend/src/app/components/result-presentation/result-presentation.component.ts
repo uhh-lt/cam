@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Result } from '../../model/result';
 import { ClustererService } from '../../shared/clusterer.service';
+import { RequestResult } from '../../model/request-result';
 
 @Component({
   selector: 'app-result-presentation',
@@ -29,17 +30,25 @@ export class ResultPresentationComponent {
    *
    * @param result the search results to be saved
    */
-  saveResult(result, finalAspDict) {
+  saveResult(result: RequestResult, finalAspDict) {
     console.log('Save Result accessed');
     // count the number of sentences used for comparison
     console.log(result);
     this.sentenceCount = result['object 1 sentences'].length + result['object 2 sentences'].length;
 
-    const a_won = result['score object 1'] > result['score object 2']; // did object A win?
-    this.saveWinner(result, a_won);
-    this.saveScores(result, a_won);
-    this.saveExtractedAspects(result, a_won);
-    this.saveSentences(result, a_won, finalAspDict);
+    const aWon = result['score object 1'] > result['score object 2']; // did object A win?
+    if (aWon) {
+      this.saveWinner(result['object 1'], result['object 2']);
+      this.saveScores(result['score object 1'], result['score object 2']);
+      this.saveExtractedAspects(result['extracted aspects object 1'], result['extracted aspects object 2']);
+      this.saveSentences(result['object 1 sentences'], result['object 2 sentences'], finalAspDict);
+
+    } else {
+      this.saveWinner(result['object 2'], result['object 1']);
+      this.saveScores(result['score object 2'], result['score object 1']);
+      this.saveExtractedAspects(result['extracted aspects object 2'], result['extracted aspects object 1']);
+      this.saveSentences(result['object 2 sentences'], result['object 1 sentences'], finalAspDict);
+    }
     this.setSentenceShow();
     this.showResult = true;
   }
@@ -55,127 +64,77 @@ export class ResultPresentationComponent {
   /**
    * Save the winner and loser of the comparison.
    *
-   * @param result search result of Elastic Search
-   * @param a_won did object A win?
+   * @param winner object that won the comparation
+   * @param looser object that lost the comparation
    */
-  saveWinner(result, a_won) {
-    if (a_won) {
-      this.result.winner = result['object 1'];
-      this.result.looser = result['object 2'];
-    } else {
-      this.result.winner = result['object 2'];
-      this.result.looser = result['object 1'];
-    }
+  saveWinner(winner: string, looser: string) {
+    this.result.winner = winner;
+    this.result.looser = looser;
   }
 
   /**
    * Save the percentage of the scores for each object.
    *
-   * @param result search result of Elastic Search
-   * @param a_won did object A win?
+   * @param winnerScore the score of the object that won the comparation
+   * @param looserScore the score of the object that lost the comparation
    */
-  saveScores(result, a_won) {
-    if (a_won) {
-      this.result.winnerScorePercent = (
-        result['score object 1'] /
-        (result['score object 1'] + result['score object 2']) *
-        100
-      ).toFixed(2);
-      this.result.looserScorePercent = (
-        result['score object 2'] /
-        (result['score object 1'] + result['score object 2']) *
-        100
-      ).toFixed(2);
-    } else {
-      this.result.winnerScorePercent = (
-        result['score object 2'] /
-        (result['score object 1'] + result['score object 2']) *
-        100
-      ).toFixed(2);
-      this.result.looserScorePercent = (
-        result['score object 1'] /
-        (result['score object 1'] + result['score object 2']) *
-        100
-      ).toFixed(2);
-    }
+  saveScores(winnerScore: number, looserScore: number) {
+    this.result.winnerScorePercent = (
+      winnerScore /
+      (winnerScore + looserScore) *
+      100
+    ).toFixed(2);
+    this.result.looserScorePercent = (
+      looserScore /
+      (winnerScore + looserScore) *
+      100
+    ).toFixed(2);
   }
 
   /**
    * Save the extracted aspects for each object.
    *
-   * @param result search result of Elastic Search
-   * @param a_won did object A win?
+   * @param winnerAspects aspects of the object that won the comparation
+   * @param looserAspects aspects of the object that lost the comparation
    */
-  saveExtractedAspects(result, a_won) {
-    if (a_won) {
-      for (const link of result['extracted aspects object 1']) {
-        this.result.winnerAspects.push(link);
-      }
-      for (const link of result['extracted aspects object 2']) {
-        this.result.looserAspects.push(link);
-      }
-    } else {
-      for (const link of result['extracted aspects object 1']) {
-        this.result.looserAspects.push(link);
-      }
-      for (const link of result['extracted aspects object 2']) {
-        this.result.winnerAspects.push(link);
-      }
+  saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>) {
+    for (const link of winnerAspects) {
+      this.result.winnerAspects.push(link);
+    }
+    for (const link of looserAspects) {
+      this.result.looserAspects.push(link);
     }
   }
 
   /**
    * Save the clustered sentences each object has won.
    *
-   * @param result search result of Elastic Search
-   * @param a_won did object A win?
+   * @param winnerSentences sentences of the object that won
+   * @param looserSentences sentences of the object that lost
+   * @param finalAspDict dict that holds all aspects of the comparation
    */
-  saveSentences(result, a_won, finalAspDict) {
+  saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>, finalAspDict) {
     let i = 0;
-    if (a_won) {
-      for (const sentence of result['object 1 sentences']) {
-        this.winnerSentenceExamples[i++] = this.clustererService.getCluster(
-          sentence,
-          this.result.winnerAspects,
-          this.result.looserAspects,
-          finalAspDict,
-          this.result.winner,
-          this.result.looser
-        );
-      }
-      i = 0;
-      for (const sentence of result['object 2 sentences']) {
-        this.looserSentenceExamples[i++] = this.clustererService.getCluster(
-          sentence,
-          this.result.winnerAspects,
-          this.result.looserAspects,
-          finalAspDict,
-          this.result.winner,
-          this.result.looser
-        );
-      }
-    } else {
-      for (const sentence of result['object 1 sentences']) {
-        this.looserSentenceExamples[i++] = this.clustererService.getCluster(
-          sentence,
-          this.result.winnerAspects,
-          this.result.looserAspects,
-          finalAspDict,
-          this.result.winner,
-          this.result.looser
-        );
-      }
-      i = 0;
-      for (const sentence of result['object 2 sentences']) {
-        this.winnerSentenceExamples[i++] = this.clustererService.getCluster(
-          sentence,
-          this.result.winnerAspects,
-          this.result.looserAspects,
-          finalAspDict,
-          this.result.winner,
-          this.result.looser
-        );
-      }
+    for (const sentence of winnerSentences) {
+      this.winnerSentenceExamples[i++] = this.clustererService.getCluster(
+        sentence,
+        this.result.winnerAspects,
+        this.result.looserAspects,
+        finalAspDict,
+        this.result.winner,
+        this.result.looser
+      );
+    }
+    i = 0;
+    for (const sentence of looserSentences) {
+      this.looserSentenceExamples[i++] = this.clustererService.getCluster(
+        sentence,
+        this.result.winnerAspects,
+        this.result.looserAspects,
+        finalAspDict,
+        this.result.winner,
+        this.result.looser
+      );
     }
   }
   /**
