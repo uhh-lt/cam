@@ -106,29 +106,21 @@ export class ResultPresentationComponent {
    * @param finalAspDict dict that holds all aspects of the comparation
    */
   private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>, finalAspDict) {
-    let i = 0;
-    for (const sentence of winnerSentences) {
-      this.winnerSentenceExamples[i++] = this.clustererService.getCluster(
-        sentence,
-        this.result.winnerAspects,
-        this.result.looserAspects,
-        finalAspDict,
-        this.result.winner,
-        this.result.looser
-      );
-    }
-    i = 0;
-    for (const sentence of looserSentences) {
-      this.looserSentenceExamples[i++] = this.clustererService.getCluster(
-        sentence,
-        this.result.winnerAspects,
-        this.result.looserAspects,
-        finalAspDict,
-        this.result.winner,
-        this.result.looser
-      );
-    }
+    this.winnerSentenceExamples = this._saveSentences(winnerSentences, finalAspDict);
+    this.looserSentenceExamples = this._saveSentences(looserSentences, finalAspDict);
   }
+
+  private _saveSentences(sentences: Array<string>, finalAspDict) {
+    let i = 0;
+    const sentenceExamples =  {};
+    for (const sentence of sentences) {
+      sentenceExamples[i++] = this.clustererService.getCluster(sentence, this.result.winnerAspects,
+        this.result.looserAspects, finalAspDict, this.result.winner, this.result.looser);
+    }
+    return sentenceExamples;
+  }
+
+
   /**
    * Sets the amount of initially shown sentence examples for each object. The default is 10 for
    * each, but if an object has less than 10 sentences, it's set to this amount instead.
@@ -152,7 +144,7 @@ export class ResultPresentationComponent {
   }
 
   private _showMoreSentences(sentecesExamples, showNumber) {
-    const minW = Math.min(10, Object.keys(sentecesExamples.keys).length - showNumber[showNumber.length - 1] - 1);
+    const minW = Math.min(10, Object.keys(sentecesExamples).length - showNumber[showNumber.length - 1] - 1);
     for (let i = 0; i < minW; i++) {
       showNumber.push(showNumber[showNumber.length - 1] + 1);
     }
