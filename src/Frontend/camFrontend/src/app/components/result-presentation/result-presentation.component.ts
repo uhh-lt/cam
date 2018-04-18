@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { Result } from '../../model/result';
-import { ClustererService } from '../../shared/clusterer.service';
-import { RequestResult } from '../../model/request-result';
 
 @Component({
   selector: 'app-result-presentation',
@@ -11,6 +9,8 @@ import { RequestResult } from '../../model/request-result';
 export class ResultPresentationComponent {
 
   private result = new Result();
+  private finalAspectDict = {};
+
   private winnerSentenceExamples = {}; // stores some example sentences for the first object
   private looserSentenceExamples = {}; // stores some example sentences for the second object
 
@@ -22,18 +22,18 @@ export class ResultPresentationComponent {
 
   private showResult: boolean;
 
-
-  constructor(private clustererService: ClustererService) { }
+  constructor() { }
 
   /**
    * Saves the search result so that they can be shown in the UI.
    *
    * @param result the search results to be saved
    */
-  saveResult(result: RequestResult, finalAspDict) {
+  saveResult(result, finalAspDict) {
     console.log('Save Result accessed');
+    this.finalAspectDict = finalAspDict;
+
     // count the number of sentences used for comparison
-    console.log(result);
     this.sentenceCount = result['object 1 sentences'].length + result['object 2 sentences'].length;
 
     const aWon = result['score object 1'] > result['score object 2']; // did object A win?
@@ -41,13 +41,13 @@ export class ResultPresentationComponent {
       this.saveWinner(result['object 1'], result['object 2']);
       this.saveScores(result['score object 1'], result['score object 2']);
       this.saveExtractedAspects(result['extracted aspects object 1'], result['extracted aspects object 2']);
-      this.saveSentences(result['object 1 sentences'], result['object 2 sentences'], finalAspDict);
+      this.saveSentences(result['object 1 sentences'], result['object 2 sentences']);
 
     } else {
       this.saveWinner(result['object 2'], result['object 1']);
       this.saveScores(result['score object 2'], result['score object 1']);
       this.saveExtractedAspects(result['extracted aspects object 2'], result['extracted aspects object 1']);
-      this.saveSentences(result['object 2 sentences'], result['object 1 sentences'], finalAspDict);
+      this.saveSentences(result['object 2 sentences'], result['object 1 sentences']);
     }
     this.setSentenceShow();
     this.showResult = true;
@@ -91,10 +91,10 @@ export class ResultPresentationComponent {
    */
   private saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>) {
     for (const link of winnerAspects) {
-      this.result.winnerAspects.push(link);
+      this.result.winnerLinks.push(link);
     }
     for (const link of looserAspects) {
-      this.result.looserAspects.push(link);
+      this.result.looserLinks.push(link);
     }
   }
 
@@ -103,23 +103,20 @@ export class ResultPresentationComponent {
    *
    * @param winnerSentences sentences of the object that won
    * @param looserSentences sentences of the object that lost
-   * @param finalAspDict dict that holds all aspects of the comparation
    */
-  private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>, finalAspDict) {
-    this.winnerSentenceExamples = this._saveSentences(winnerSentences, finalAspDict);
-    this.looserSentenceExamples = this._saveSentences(looserSentences, finalAspDict);
+  private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>) {
+    this.winnerSentenceExamples = this._saveSentences(winnerSentences);
+    this.looserSentenceExamples = this._saveSentences(looserSentences);
   }
 
-  private _saveSentences(sentences: Array<string>, finalAspDict) {
+  private _saveSentences(sentences: Array<string>) {
     let i = 0;
-    const sentenceExamples =  {};
+    const sentenceExamples = {};
     for (const sentence of sentences) {
-      sentenceExamples[i++] = this.clustererService.getCluster(sentence, this.result.winnerAspects,
-        this.result.looserAspects, finalAspDict, this.result.winner, this.result.looser);
+      sentenceExamples[i++] = sentence;
     }
     return sentenceExamples;
   }
-
 
   /**
    * Sets the amount of initially shown sentence examples for each object. The default is 10 for
@@ -149,5 +146,4 @@ export class ResultPresentationComponent {
       showNumber.push(showNumber[showNumber.length - 1] + 1);
     }
   }
-
 }

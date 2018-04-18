@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { UrlBuilderService } from './shared/url-builder.service';
-import { ClustererService } from './shared/clusterer.service';
 import { HTTPRequestService } from './shared/http-request.service';
 
 /**

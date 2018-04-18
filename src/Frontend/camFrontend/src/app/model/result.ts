@@ -3,8 +3,8 @@ export class Result {
     constructor() {
         this.objectA = '';
         this.objectB = '';
-        this.winnerAspects = new Array<string>();
-        this.looserAspects = new Array<string>();
+        this.winnerLinks = new Array<string>();
+        this.looserLinks = new Array<string>();
         this.sentencesObjectA = new Array<string>();
         this.sentencesObjectB = new Array<string>();
         this.winnerScorePercent = '';
@@ -15,8 +15,8 @@ export class Result {
 
     objectA: string;
     objectB: string;
-    winnerAspects: Array<string>; // stores the main links of the first object
-    looserAspects: Array<string>; // stores the main links of the second object
+    winnerLinks: Array<string>; // stores the main links of the first object
+    looserLinks: Array<string>; // stores the main links of the second object
     sentencesObjectA: Array<string>;
     sentencesObjectB: Array<string>;
     winnerScorePercent: string; // stores the score of the first object

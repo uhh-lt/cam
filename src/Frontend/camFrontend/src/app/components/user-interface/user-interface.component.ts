@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UrlBuilderService } from '../../shared/url-builder.service';
-import { ClustererService } from '../../shared/clusterer.service';
 import { HTTPRequestService } from '../../shared/http-request.service';
 import { Result } from '../../model/result';
 import { ResultPresentationComponent } from '../result-presentation/result-presentation.component';
@@ -45,8 +44,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     ['tennis', 'golf']
   ];
 
-  constructor(private urlbuilderService: UrlBuilderService, private clustererService: ClustererService,
-    private httpRequestService: HTTPRequestService, private snackBar: MatSnackBar) { }
+  constructor(private urlbuilderService: UrlBuilderService, private httpRequestService: HTTPRequestService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     const index = Math.floor(Math.random() * 15);

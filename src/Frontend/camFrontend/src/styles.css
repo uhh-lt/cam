@@ -2,3 +2,19 @@
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 /* @import '~@angular/material/prebuilt-themes/pink-bluegrey.css'; */
 /* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
+
+.winner {
+    background-color: rgba(24, 226, 51, 0.4);
+}
+  
+.looser {
+  background-color: rgba(224, 21, 21, 0.39);
+}
+  
+.aspect {
+  background-color: rgba(6, 220, 228, 0.4);
+}
+  
+.link {
+  background-color: rgba(119, 117, 117, 0.4);
+}

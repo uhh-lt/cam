@@ -24,10 +24,10 @@
       <tr>
         <th scope='row' style='font-size: 17px'>Automatically extracted aspects for these objects</th>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of result.winnerAspects'>{{link}}</li>
+          <li *ngFor='let link of result.winnerLinks'>{{link}}</li>
         </td>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of result.looserAspects'>{{link}}</li>
+          <li *ngFor='let link of result.looserLinks'>{{link}}</li>
         </td>
       </tr>
       <tr>
@@ -35,26 +35,14 @@
         <td>
           <table class='table' *ngFor='let i of sentenceShowNumberlistWinner'>
             <tr style='font-size: 17px'>
-              <span *ngFor='let part of winnerSentenceExamples[i][1]'>
-                <span class='link'>{{winnerSentenceExamples[i][0][part]['link']}}</span>
-                <span class='aspect'>{{winnerSentenceExamples[i][0][part]['aspect']}}</span>
-                <span class='winner'>{{winnerSentenceExamples[i][0][part]['winner']}}</span>
-                <span class='loser'>{{winnerSentenceExamples[i][0][part]['loser']}}</span>
-                <span class='noHL'>{{winnerSentenceExamples[i][0][part]['noHL']}} </span>
-              </span>
+              <div [innerHtml]="winnerSentenceExamples[i] | markClasses:result:finalAspectDict"></div>
             </tr>
           </table>
         </td>
         <td>
           <table class='table' *ngFor='let i of sentenceShowNumberlistLooser'>
             <tr style='font-size: 17px'>
-              <span *ngFor='let part of looserSentenceExamples[i][1]'>
-                <span class='link'>{{looserSentenceExamples[i][0][part]['link']}}</span>
-                <span class='aspect'>{{looserSentenceExamples[i][0][part]['aspect']}}</span>
-                <span class='winner'>{{looserSentenceExamples[i][0][part]['winner']}}</span>
-                <span class='loser'>{{looserSentenceExamples[i][0][part]['loser']}}</span>
-                <span class='noHL'>{{looserSentenceExamples[i][0][part]['noHL']}} </span>
-              </span>
+                <div [innerHtml]="looserSentenceExamples[i] | markClasses:result:finalAspectDict"></div>
             </tr>
           </table>
         </td>

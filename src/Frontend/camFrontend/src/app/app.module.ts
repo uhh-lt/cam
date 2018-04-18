@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { UrlBuilderService } from './shared/url-builder.service';
-import { ClustererService } from './shared/clusterer.service';
 import { HTTPRequestService } from './shared/http-request.service';
 import { HeaderComponent } from './components/header/header.component';
 import { AboutComponent } from './components/about/about.component';
@@ -18,6 +17,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './material/material.module';
+import { MarkClassesPipe } from './pipes/mark-classes.pipe';
 
 const appRoute: Routes = [
   { path: '', component: UserInterfaceComponent},
@@ -35,7 +35,8 @@ const appRoute: Routes = [
     ApiInfoComponent,
     ContactComponent,
     UserInterfaceComponent,
-    ResultPresentationComponent
+    ResultPresentationComponent,
+    MarkClassesPipe
   ],
   imports: [
     BrowserModule,
@@ -45,9 +46,7 @@ const appRoute: Routes = [
     RouterModule.forRoot(appRoute),
     MaterialModule
   ],
-  providers: [UrlBuilderService, ClustererService, HTTPRequestService],
+  providers: [UrlBuilderService, HTTPRequestService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-platformBrowserDynamic().bootstrapModule(AppModule);
