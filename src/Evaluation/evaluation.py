@@ -28,13 +28,17 @@ def loadFromCSV(fileName):
 
 def main():
     print('Start evaluating:')
-
-    requestedLabels = loadFromCSV('./csv/(NN+JJ)_requested_labels.csv')
+    urlParam = '-'
+    requestedLabels = loadFromCSV('./csv/({})_requested_labels.csv'.format(urlParam))
     objectList2 = [['object_a', 'object_b', 'requested_label', 'gold_label']]
-    evaluation = [['treshold', 'wrong', 'right', 'total_percent_right', 'better_accuracy', 'worse_accuracy', 'none_accuracy']]
+    evaluation = [['treshold', 'wrong', 'right', 'total_percent_right',
+                   'better_accuracy', 'worse_accuracy', 'none_accuracy']]
+    PrReF1 = [['treshold', 'label', 'precision', 'recall', 'f_1', 'accuracy', 'total accuracy']]
+
+    digits = 2
 
     for i in range(1, 11, 1):
-        treshold = round(0.1*i,1)
+        treshold = round(0.1*i, 1)
         totalRight = 0
         totalWrong = 0
 
@@ -59,6 +63,7 @@ def main():
                 treshold, float(pair[4]), float(pair[5]))
             objectList2.append([pair[1], pair[2], requestedLabel, goldLabel])
 
+            # Set true-positives
             if requestedLabel == goldLabel:
                 totalRight += 1
                 if requestedLabel == 'BETTER':
@@ -67,7 +72,7 @@ def main():
                     worseTP += 1
                 else:
                     noneTP += 1
-            else:
+            else:  # Set false-positives
                 totalWrong += 1
                 if requestedLabel == 'BETTER':
                     betterFP += 1
@@ -76,6 +81,7 @@ def main():
                 else:
                     noneFP += 1
 
+            # Set the true-negatives
             if goldLabel != 'BETTER' and requestedLabel != 'BETTER':
                 betterTN += 1
             if goldLabel != 'WORSE' and requestedLabel != 'WORSE':
@@ -83,6 +89,7 @@ def main():
             if goldLabel != 'NONE' and requestedLabel != 'NONE':
                 noneTN += 1
 
+            # Set the false-negative
             if goldLabel == 'BETTER' and requestedLabel != 'BETTER':
                 betterFN += 1
             if goldLabel == 'WORSE' and requestedLabel != 'WORSE':
@@ -90,28 +97,55 @@ def main():
             if goldLabel == 'NONE' and requestedLabel != 'NONE':
                 noneFN += 1
 
-        # with open('./csv/evaluated_with_t_' + str(treshold) + '.csv', 'w', newline='') as f:
-        #     writer = csv.writer(f)
-        #     writer.writerows(objectList2)
+        totalPercentRight = round(
+            totalRight * 100 / (totalRight + totalWrong), 2)
 
         betterDivide = betterTP + betterTN + betterFP + betterFN
         bAccuracy = '1.0'
         if betterDivide > 0:
-            bAccuracy = round((betterTP + betterTN)/betterDivide,2)
+            bAccuracy = round((betterTP + betterTN) / betterDivide, digits)
+        bPrecision = round(betterTP / (betterTP + betterFP),
+                           digits) if betterTP + betterFP > 0 else 1.0
+        bRecall = round(betterTP / (betterTP + betterFN),
+                        digits) if betterTP + betterFP > 0 else 1.0
+        bF1 = round(2 * (bPrecision * bRecall) / (bPrecision + bRecall),
+                    digits) if bPrecision + bRecall > 0 else 0.0
+
+        PrReF1.append([treshold, 'better', bPrecision,
+                       bRecall, bF1, bAccuracy, ''])
 
         worseDivide = worseTP + worseTN + worseFP + worseFN
         wAccuracy = '1.0'
         if worseDivide > 0:
-            wAccuracy = round((worseTP + worseTN)/worseDivide,2)
+            wAccuracy = round((worseTP + worseTN) / worseDivide, digits)
+        wPrecision = round(worseTP / (worseTP + worseFP),
+                           digits) if worseTP + worseFP > 0 else 1.0
+        wRecall = round(worseTP / (worseTP + worseFN),
+                        digits) if worseTP + worseFP > 0 else 1.0
+        wF1 = round(2 * (wPrecision * wRecall) / (wPrecision + wRecall),
+                    digits) if wPrecision + wRecall > 0 else 0.0
 
-        noneDivide = noneTP + noneTN + worseFP + worseFN
+        PrReF1.append([treshold, 'worse', wPrecision,
+                       wRecall, wF1, wAccuracy, ''])
+
+        noneDivide = noneTP + noneTN + noneFP + noneFN
         nAccuracy = '1.0'
         if noneDivide > 0:
-            nAccuracy = round((noneTP + noneTN)/noneDivide,2)
+            nAccuracy = round((noneTP + noneTN) / noneDivide, digits)
+        nPrecision = round(noneTP / (noneTP + noneFP),
+                           digits) if noneTP + noneFP > 0 else 1.0
+        nRecall = round(noneTP / (noneTP + noneFN),
+                        digits) if noneTP + noneFP > 0 else 1.0
+        nF1 = round(2 * (nPrecision * nRecall) / (nPrecision + nRecall),
+                    digits) if nPrecision + nRecall > 0 else 0.0
 
-        totalPercentRight = round(totalRight*100/(totalRight+totalWrong),2)
+        PrReF1.append([treshold, 'none', nPrecision, nRecall,
+                       nF1, nAccuracy, totalPercentRight])
 
-        evaluation.append([treshold, totalWrong, totalRight, totalPercentRight, bAccuracy, wAccuracy, nAccuracy])
+        # PrReF1.append(['', '', '', '', '', '', ''])
+
+        evaluation.append([treshold, totalWrong, totalRight,
+                           totalPercentRight, bAccuracy, wAccuracy, nAccuracy])
 
         print('with ' + str(treshold) + ' as treshold:')
         print('wrong: ' + str(totalWrong) + ' vs. right: ' + str(totalRight))
@@ -121,9 +155,13 @@ def main():
         print('NONE-Accuracy: ' + str(nAccuracy))
         print('')
 
-    with open('./csv/evaluation.csv', 'w', newline='') as f:
+    with open('./csv/({})_evaluation.csv'.format(urlParam), 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(evaluation)
+
+    with open('./csv/({})_prReF1.csv'.format(urlParam), 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerows(PrReF1)
 
 
 main()
