@@ -14,17 +14,17 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(ResultPresentationComponent) resultPresentation: ResultPresentationComponent;
 
-  private aspects = [1]; // the rows of aspects currently shown in the UI
+  aspects = [1]; // the rows of aspects currently shown in the UI
   private aspectDict = {}; // the aspects currently entered
   private finalAspDict = {}; // holds all aspects after compare() was called
   private weightDict = { 1: 1 }; // the weightings of the aspects currently chosen with the sliders
-  private selectedModel = 'default'; // the comparison model to be used
-  private fastSearch = false; // the possibility to do a fast comparison
-  private showLoading = false; // boolean that checks if the loading screen should be shown
-  private showResult = false; // boolean that checks if the result table should be shown
+  selectedModel = 'default'; // the comparison model to be used
+  fastSearch = false; // the possibility to do a fast comparison
+  showLoading = false; // boolean that checks if the loading screen should be shown
+  showResult = false; // boolean that checks if the result table should be shown
 
-  private object_A = ''; // the first object currently entered
-  private object_B = ''; // the second object currently entered
+  object_A = ''; // the first object currently entered
+  object_B = ''; // the second object currently entered
 
   private preSelectedObjects = [
     ['python', 'java'],

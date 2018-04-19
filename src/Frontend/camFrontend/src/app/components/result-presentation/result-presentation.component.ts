@@ -20,7 +20,7 @@ export class ResultPresentationComponent {
 
   private sentenceCount: number; // total amount of sentences used for comparison
 
-  private showResult: boolean;
+  showResult: boolean;
 
   constructor() { }
 
