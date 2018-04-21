@@ -14,4 +14,4 @@ preprocessing_dataset.py
 
 step3_calculate_scores.py
     Takes the in step 2 produces sentences to all unic pairs and the preprocessed_dataset with the aspects to calculate the scores.
-    Takes about 1,5h.
+    Takes about 2h.

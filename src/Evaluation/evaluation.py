@@ -2,6 +2,20 @@ import csv
 
 
 def calculateLabel(winnerTreshold, scoreA, scoreB):
+    '''
+    Calculates the score by the given scores of the compared objects with respect to
+    the given threshold. The threshold determines how much higher the score of one
+    object must be to get selected as winner.
+
+    @param winnerThreshold: in range from 0 > t >= 1, one object score must be at least
+    1+(1-t) times bigger then the other to get selectd as winner
+
+    @param scoreA: score of object a
+
+    @param scoreB score of object b
+
+    @returns the label according to the scores and to the threshold
+    '''
     tresholdLabel = ''
     if scoreA > scoreB:
         if (scoreB/scoreA) < winnerTreshold:
@@ -17,6 +31,12 @@ def calculateLabel(winnerTreshold, scoreA, scoreB):
 
 
 def loadFromCSV(fileName):
+    '''
+    Load all lines of the csv file with the calculated scores and the gold label
+    of the compared pairs and remove the header.
+
+    @returns the content of the file as list
+    '''
     listCSV = []
     with open(fileName, newline='', encoding='utf-8') as csvfile:
         csvReader = csv.reader(csvfile, delimiter=',', quotechar='"')
@@ -26,14 +46,55 @@ def loadFromCSV(fileName):
     return listCSV
 
 
+def calculateEvaluationScores(TP, TN, FP, FN, digits, prefilledResult, totalAcc):
+    '''
+    Calculates precision, recall, accuracy and f1 score for the given parameters.
+
+    @param TP: true positives
+
+    @param TN: true negatives
+    
+    @param FP: false positives
+    
+    @param FN: false negatives
+    
+    @param digits: how many digits after the coma
+
+    @param prefilledResult: contains the threshold and the label ob the tp, tn ...
+
+    @totalAcc: empty string or for none its the total accuracy computed with the given
+    threshold.
+
+    @returns the prefilledResult filled with precison, recall etc.
+    '''
+    total = TP + TN + FP + FN
+    accuracy = '1.0'
+    if total > 0:
+        accuracy = round((TP + TN) / total, digits)
+    precision = round(TP / (TP + FP),
+                      digits) if TP + FP > 0 else 1.0
+    recall = round(TP / (TP + FN),
+                   digits) if TP + FP > 0 else 1.0
+    f1 = round(2 * (precision * recall) / (precision + recall),
+               digits) if precision + recall > 0 else 0.0
+
+    prefilledResult.extend([precision, recall, f1, accuracy, totalAcc])
+    return prefilledResult
+
+
 def main():
+    '''
+    Calculates the TP, TN, FN and FP for all labels, calculates Precision, Recall, F1 and accuracy
+    and outputs it in a csv file.
+    '''
     print('Start evaluating:')
-    urlParam = '-'
-    requestedLabels = loadFromCSV('./csv/({})_requested_labels.csv'.format(urlParam))
+    urlParam = 'NN+JJ'
+    requestedLabels = loadFromCSV(
+        './csv/({})_requested_labels.csv'.format(urlParam))
     objectList2 = [['object_a', 'object_b', 'requested_label', 'gold_label']]
-    evaluation = [['treshold', 'wrong', 'right', 'total_percent_right',
-                   'better_accuracy', 'worse_accuracy', 'none_accuracy']]
-    PrReF1 = [['treshold', 'label', 'precision', 'recall', 'f_1', 'accuracy', 'total accuracy']]
+
+    PrReF1 = [['treshold', 'label', 'precision',
+               'recall', 'f_1', 'accuracy', 'total accuracy']]
 
     digits = 2
 
@@ -100,64 +161,14 @@ def main():
         totalPercentRight = round(
             totalRight * 100 / (totalRight + totalWrong), 2)
 
-        betterDivide = betterTP + betterTN + betterFP + betterFN
-        bAccuracy = '1.0'
-        if betterDivide > 0:
-            bAccuracy = round((betterTP + betterTN) / betterDivide, digits)
-        bPrecision = round(betterTP / (betterTP + betterFP),
-                           digits) if betterTP + betterFP > 0 else 1.0
-        bRecall = round(betterTP / (betterTP + betterFN),
-                        digits) if betterTP + betterFP > 0 else 1.0
-        bF1 = round(2 * (bPrecision * bRecall) / (bPrecision + bRecall),
-                    digits) if bPrecision + bRecall > 0 else 0.0
+        PrReF1.append(calculateEvaluationScores(
+            betterTP, betterTN, betterFP, betterFN, digits, [treshold, 'better'], ''))
+        PrReF1.append(calculateEvaluationScores(
+            worseTP, worseTN, worseFP, worseFN, digits, [treshold, 'worse'], ''))
+        PrReF1.append(calculateEvaluationScores(
+            noneTP, noneTN, noneFP, noneFN, digits, [treshold, 'none'], totalPercentRight))
 
-        PrReF1.append([treshold, 'better', bPrecision,
-                       bRecall, bF1, bAccuracy, ''])
-
-        worseDivide = worseTP + worseTN + worseFP + worseFN
-        wAccuracy = '1.0'
-        if worseDivide > 0:
-            wAccuracy = round((worseTP + worseTN) / worseDivide, digits)
-        wPrecision = round(worseTP / (worseTP + worseFP),
-                           digits) if worseTP + worseFP > 0 else 1.0
-        wRecall = round(worseTP / (worseTP + worseFN),
-                        digits) if worseTP + worseFP > 0 else 1.0
-        wF1 = round(2 * (wPrecision * wRecall) / (wPrecision + wRecall),
-                    digits) if wPrecision + wRecall > 0 else 0.0
-
-        PrReF1.append([treshold, 'worse', wPrecision,
-                       wRecall, wF1, wAccuracy, ''])
-
-        noneDivide = noneTP + noneTN + noneFP + noneFN
-        nAccuracy = '1.0'
-        if noneDivide > 0:
-            nAccuracy = round((noneTP + noneTN) / noneDivide, digits)
-        nPrecision = round(noneTP / (noneTP + noneFP),
-                           digits) if noneTP + noneFP > 0 else 1.0
-        nRecall = round(noneTP / (noneTP + noneFN),
-                        digits) if noneTP + noneFP > 0 else 1.0
-        nF1 = round(2 * (nPrecision * nRecall) / (nPrecision + nRecall),
-                    digits) if nPrecision + nRecall > 0 else 0.0
-
-        PrReF1.append([treshold, 'none', nPrecision, nRecall,
-                       nF1, nAccuracy, totalPercentRight])
-
-        # PrReF1.append(['', '', '', '', '', '', ''])
-
-        evaluation.append([treshold, totalWrong, totalRight,
-                           totalPercentRight, bAccuracy, wAccuracy, nAccuracy])
-
-        print('with ' + str(treshold) + ' as treshold:')
-        print('wrong: ' + str(totalWrong) + ' vs. right: ' + str(totalRight))
-        print('In Total ' + str(totalPercentRight) + '% were right')
-        print('BETTER-Accuracy: ' + str(bAccuracy))
-        print('WORSE-Accuracy: ' + str(wAccuracy))
-        print('NONE-Accuracy: ' + str(nAccuracy))
-        print('')
-
-    with open('./csv/({})_evaluation.csv'.format(urlParam), 'w', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerows(evaluation)
+        PrReF1.append(['', '', '', '', '', '', ''])
 
     with open('./csv/({})_prReF1.csv'.format(urlParam), 'w', newline='') as f:
         writer = csv.writer(f)
