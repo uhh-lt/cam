@@ -2,6 +2,7 @@ import csv
 import operator
 import nltk
 from nltk import word_tokenize
+from nltk.corpus import wordnet
 import time
 import sys
 sys.path.append('../Backend')
@@ -25,6 +26,47 @@ def extractData():
     objectList.pop(0)
     return objectList
 
+# Just to make it a bit more readable
+WN_NOUN = 'n'
+WN_VERB = 'v'
+WN_ADJECTIVE = 'a'
+WN_ADJECTIVE_SATELLITE = 's'
+WN_ADVERB = 'r'
+
+def convert(word, from_pos, to_pos):    
+    """ Transform words given from/to POS tags """
+ 
+    synsets = wordnet.synsets(word, pos=from_pos)
+ 
+    # Word not found
+    if not synsets:
+        return []
+ 
+    # Get all lemmas of the word (consider 'a' and 's' equivalent)
+    lemmas = [l for s in synsets
+                for l in s.lemmas() 
+                if s.name().split('.')[1] == from_pos
+                    or from_pos in (WN_ADJECTIVE, WN_ADJECTIVE_SATELLITE)
+                        and s.name().split('.')[1] in (WN_ADJECTIVE, WN_ADJECTIVE_SATELLITE)]
+ 
+    # Get related forms
+    derivationally_related_forms = [(l, l.derivationally_related_forms()) for l in lemmas]
+ 
+    # filter only the desired pos (consider 'a' and 's' equivalent)
+    related_noun_lemmas = [l for drf in derivationally_related_forms
+                             for l in drf[1] 
+                             if l.synset().name().split('.')[1] == to_pos
+                                or to_pos in (WN_ADJECTIVE, WN_ADJECTIVE_SATELLITE)
+                                    and l.synset().name().split('.')[1] in (WN_ADJECTIVE, WN_ADJECTIVE_SATELLITE)]
+ 
+    # Extract the words from the lemmas
+    words = set()
+    for l in related_noun_lemmas:
+        words.add(l.name())
+ 
+    # return all the possibilities sorted by probability
+    return words
+
 
 def generateAspects(sentence, objectA, objectB):
     '''
@@ -37,8 +79,17 @@ def generateAspects(sentence, objectA, objectB):
     for tag in taglist:
         possibleAspect = tag[0].lower()
         if (tag[1].startswith('JJ') or tag[1].startswith('NN')) and possibleAspect != objectA and possibleAspect != objectB \
-                and possibleAspect not in constants.STOPWORDS and possibleAspect not in constants.NUMBER_STRINGS and len(possibleAspect) > 1:
+                and possibleAspect not in constants.STOPWORDS \
+                and possibleAspect not in constants.NUMBER_STRINGS \
+                and possibleAspect not in constants.NON_LINKS \
+                and possibleAspect not in constants.POSITIVE_MARKERS \
+                and possibleAspect not in constants.NEGATIVE_MARKERS \
+                and len(possibleAspect) > 1:
             aspects.add(possibleAspect)
+            if tag[1].startswith('JJ'):
+                nounsOfAdjective = convert(possibleAspect, WN_ADJECTIVE, WN_NOUN)
+                aspects = aspects.union(nounsOfAdjective)
+
 
     return aspects
 
@@ -82,8 +133,8 @@ def main():
     comparisonList = extractData()
     comparisonList.sort(key=operator.itemgetter(0, 1, 2))
     comparationsWithAspects = collectAspectsPerSentence(comparisonList)
-    urlParam = '-'
-    with open('./csv/({})preprocessed_dataset.csv'.format(urlParam), 'w', newline='', encoding="UTF-8") as f:
+    urlParam = 'related'
+    with open('./csv/({})_preprocessed_dataset.csv'.format(urlParam), 'w', newline='', encoding="UTF-8") as f:
         writer = csv.writer(f)
         writer.writerows(comparationsWithAspects)
 
