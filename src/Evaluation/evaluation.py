@@ -88,12 +88,12 @@ def main():
     and outputs it in a csv file.
     '''
     print('Start evaluating:')
-    urlParam = 'NN+JJ'
+    urlParam = 'related'
     requestedLabels = loadFromCSV(
         './csv/({})_requested_labels.csv'.format(urlParam))
     objectList2 = [['object_a', 'object_b', 'requested_label', 'gold_label']]
 
-    PrReF1 = [['treshold', 'label', 'precision',
+    PrReF1 = [['threshold', 'label', 'precision',
                'recall', 'f_1', 'accuracy', 'total accuracy']]
 
     digits = 2
