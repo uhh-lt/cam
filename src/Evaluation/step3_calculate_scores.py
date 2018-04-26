@@ -2,6 +2,8 @@ import csv
 import time
 import math
 import sys
+from random import shuffle
+from operator import itemgetter
 import threading
 sys.path.append('../Backend')
 from object_comparer import find_winner
@@ -108,15 +110,15 @@ def main():
     up numberOfThreads threads to calculate the scores concurrently
     '''
     print('Start evaluating:')
-    urlParam = 'NN+JJ'
+    urlParam = 'related'
     requestedSentences = loadFromCSV('./csv/step2_requested_sentences.csv')
     preprocessed = loadFromCSV(
         './csv/({})_preprocessed_dataset.csv'.format(urlParam))
     preprocessed.pop(0)
-
     pairsSentences = extractPairSentences(requestedSentences)
 
-    numberOfThreads = 40
+    shuffle(preprocessed)
+    numberOfThreads = 72
     i = math.ceil(len(preprocessed)/numberOfThreads)
     threads = []
     for j in range(0, numberOfThreads, 1):
@@ -135,9 +137,12 @@ def main():
 
     requested = [['id', 'object_a', 'object_b',
                   'gold_label', 'score_a', 'score_b']]
+    resultList = []
     for t in threads:
-        requested.extend(t.resultList)
-
+        resultList.extend(t.resultList)
+    resultList.sort(key =lambda x: int(itemgetter(0)(x)))
+    requested.extend(resultList)
+    
     with open('./csv/({})_requested_labels.csv'.format(urlParam), 'w', newline='', encoding="UTF-8") as f:
         writer = csv.writer(f)
         writer.writerows(requested)
