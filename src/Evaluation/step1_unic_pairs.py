@@ -44,7 +44,7 @@ def main():
     unicPairs = [x.split(',') for x in list(getUnicPairs(comparisonList))]
     unicPairs.sort(key=operator.itemgetter(0, 1))
 
-    with open('./csv/unic_pairs.csv', 'w', newline='', encoding="UTF-8") as f:
+    with open('./csv/step1_unic_pairs.csv', 'w', newline='', encoding="UTF-8") as f:
         writer = csv.writer(f)
         writer.writerows(unicPairs)
 
