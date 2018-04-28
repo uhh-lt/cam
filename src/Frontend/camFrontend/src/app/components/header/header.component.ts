@@ -7,13 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  private selectedTab = 'home';
+  selectedTab = 'home';
   constructor() { }
 
   ngOnInit() {
   }
 
-  private setSelectedTab(tab: string) {
+  setSelectedTab(tab: string) {
     this.selectedTab = tab;
   }
 
