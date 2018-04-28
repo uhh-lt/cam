@@ -17,6 +17,9 @@ export class HeaderComponent implements OnInit {
     this.selectedTab = tab;
   }
 
+  goToGit() {
+    window.location.href = 'https://github.com/uhh-lt/cam-hci';
+  }
 
 
 }
