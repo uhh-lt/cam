@@ -1,35 +1,30 @@
-<mat-toolbar role="header">
-  <nav class='navbar navbar-expand-lg navbar-dark bg-dark fixed-top'>
-    <div class='container'>
-      <a class='navbar-brand' routerLink=''>
-        <img src='https://www.inf.uni-hamburg.de/5546980/lt-logo-640x361-a989c770e22911cea480ffbbbd42e7c4d5429b43.png' width='150'
-          height='80' alt=''>
-      </a>
-      <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive'
-        aria-expanded='false' aria-label='Toggle navigation'>
-        <span class='navbar-toggler-icon'></span>
-      </button>
-      <div class='collapse navbar-collapse' id='navbarResponsive'>
-        <ul class='navbar-nav ml-auto'>
-          <li class='nav-item active'>
-            <a class='nav-link' routerLink=''>Home
-              <span class='sr-only'>(current)</span>
-            </a>
-          </li>
-          <li class='nav-item'>
-            <a class='nav-link' routerLink='/About'>About</a>
-          </li>
-          <li class='nav-item'>
-            <a class='nav-link' href='https://github.com/uhh-lt/cam-hci'>GitHub</a>
-          </li>
-          <li class='nav-item'>
-            <a class='nav-link' routerLink='/API-Info'>API</a>
-          </li>
-          <li class='nav-item'>
-            <a class='nav-link' routerLink='/Contact'>Contact</a>
-          </li>
-        </ul>
-      </div>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+
+    <span routerLink=''>Comparative Argumentative Machine</span>
+    <span class="spacer"></span>
+    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+      <button mat-menu-item routerLink='' [ngClass]="{'nav-selected': selectedTab == 'home'}" (click)="setSelectedTab('home')">
+        Home </button>
+      <button mat-menu-item routerLink='/About' [ngClass]="{'nav-selected': selectedTab == 'about'}" (click)="setSelectedTab('about')">
+        About </button>
+      <button mat-menu-item href='https://github.com/uhh-lt/cam-hci'> GitHub </button>
+      <button mat-menu-item routerLink='/API-Info' [ngClass]="{'nav-selected': selectedTab == 'api'}" (click)="setSelectedTab('api')">
+        API </button>
+      <button mat-menu-item routerLink='/Contact' [ngClass]="{'nav-selected': selectedTab == 'contact'}" (click)="setSelectedTab('contact')">
+        Contact </button>
     </div>
-  </nav>
+    <button mat-icon-button [matMenuTriggerFor]="menu" fxHide="false" fxHide.gt-sm>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </mat-toolbar-row>
 </mat-toolbar>
+
+
+<mat-menu x-position="before" #menu="matMenu">
+  <button mat-menu-item routerLink='' (click)="setSelectedTab('home')"> Home </button>
+  <button mat-menu-item routerLink='/About' (click)="setSelectedTab('about')"> About </button>
+  <button mat-menu-item href='https://github.com/uhh-lt/cam-hci'> GitHub </button>
+  <button mat-menu-item routerLink='/API-Info' (click)="setSelectedTab('api')"> API </button>
+  <button mat-menu-item routerLink='/Contact' (click)="setSelectedTab('contact')"> Contact </button>
+</mat-menu>

@@ -1,8 +1,10 @@
-import { BrowserModule, HAMMER_GESTURE_CONFIG  } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { UrlBuilderService } from './shared/url-builder.service';
@@ -13,17 +15,16 @@ import { ApiInfoComponent } from './components/api-info/api-info.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { UserInterfaceComponent } from './components/user-interface/user-interface.component';
 import { ResultPresentationComponent } from './components/result-presentation/result-presentation.component';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 
 import { MaterialModule } from './material/material.module';
 import { MarkClassesPipe } from './pipes/mark-classes.pipe';
 
 const appRoute: Routes = [
-  { path: '', component: UserInterfaceComponent},
-  { path: 'About', component: AboutComponent},
-  { path: 'API-Info', component: ApiInfoComponent},
-  { path: 'Contact', component: ContactComponent}
+  { path: '', component: UserInterfaceComponent },
+  { path: 'About', component: AboutComponent },
+  { path: 'API-Info', component: ApiInfoComponent },
+  { path: 'Contact', component: ContactComponent }
 
 ];
 
@@ -41,9 +42,10 @@ const appRoute: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoute, {useHash: true}),
+    RouterModule.forRoot(appRoute, { useHash: true }),
     MaterialModule
   ],
   providers: [UrlBuilderService, HTTPRequestService],

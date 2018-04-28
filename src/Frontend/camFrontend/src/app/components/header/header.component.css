@@ -1,0 +1,12 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.mat-menu-item {
+    text-overflow: clip;
+    text-align: center;
+}
+
+.nav-selected {
+    color:  #fff
+}
