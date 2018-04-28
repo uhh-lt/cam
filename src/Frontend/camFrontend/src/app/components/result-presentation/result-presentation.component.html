@@ -33,18 +33,17 @@
       <tr>
         <th scope='row' style='font-size: 17px'>Sentence examples</th>
         <td>
-          <table class='table' *ngFor='let i of sentenceShowNumberlistWinner'>
-            <tr style='font-size: 17px'>
-              <div [innerHtml]="winnerSentenceExamples[i] | markClasses:result:finalAspectDict"></div>
-            </tr>
-          </table>
+          <div *ngFor='let i of sentenceShowNumberlistWinner'>
+            <div style='font-size: 17px' [innerHtml]="winnerSentenceExamples[i] | markClasses:result:finalAspectDict">
+            </div>
+            <br>
+          </div>
         </td>
         <td>
-          <table class='table' *ngFor='let i of sentenceShowNumberlistLooser'>
-            <tr style='font-size: 17px'>
-                <div [innerHtml]="looserSentenceExamples[i] | markClasses:result:finalAspectDict"></div>
-            </tr>
-          </table>
+          <div *ngFor='let i of sentenceShowNumberlistLooser'>
+            <div [innerHtml]="looserSentenceExamples[i] | markClasses:result:finalAspectDict"></div>
+            <br>
+          </div>
         </td>
       </tr>
     </tbody>
