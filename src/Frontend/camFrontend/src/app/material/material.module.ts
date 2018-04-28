@@ -12,7 +12,8 @@ import { MatProgressSpinnerModule,
   MatToolbarModule,
   MatDividerModule,
   MatSnackBarModule,
-  MatMenuModule
+  MatMenuModule,
+  MatProgressBarModule
 } from '@angular/material';
 
 @NgModule({
@@ -28,7 +29,8 @@ import { MatProgressSpinnerModule,
     MatToolbarModule,
     MatDividerModule,
     MatSnackBarModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressBarModule
   ],
   providers: [{provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig}]
 })
