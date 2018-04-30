@@ -74,16 +74,16 @@ def build_final_dict(obj_a, obj_b):
         final_dict['winner'] = obj_b.name
     else:
         final_dict['winner'] = 'No winner found'
-    final_dict['object 1'] = obj_a.name
-    final_dict['object 2'] = obj_b.name
-    final_dict['score object 1'] = obj_a.points
-    final_dict['score object 2'] = obj_b.points
+    final_dict['object1'] = obj_a.name
+    final_dict['object2'] = obj_b.name
+    final_dict['scoreObject1'] = obj_a.points
+    final_dict['scoreObject2'] = obj_b.points
     linked_words = extract_main_links(
         obj_a.sentences, obj_b.sentences, obj_a, obj_b)
-    final_dict['extracted aspects object 1'] = linked_words['A']
-    final_dict['extracted aspects object 2'] = linked_words['B']
-    final_dict['object 1 sentences'] = obj_a.sentences
-    final_dict['object 2 sentences'] = obj_b.sentences
+    final_dict['extractedAspectsObject1'] = linked_words['A']
+    final_dict['extractedAspectsObject2'] = linked_words['B']
+    final_dict['sentencesObject1'] = obj_a.sentences
+    final_dict['sentencesObject2'] = obj_b.sentences
     return final_dict
 
 

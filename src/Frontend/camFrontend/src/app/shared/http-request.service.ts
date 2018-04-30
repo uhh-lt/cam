@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Result } from '../model/result';
 
 @Injectable()
 export class HTTPRequestService {
@@ -7,7 +8,7 @@ export class HTTPRequestService {
   constructor(private httpClient: HttpClient) { }
 
   getScore(url: string) {
-    return this.httpClient.get(url);
+    return this.httpClient.get<Result>(url);
   }
 
   /**

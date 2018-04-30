@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DispensableResult } from '../../model/dispensable-result';
+import { Result } from '../../model/result';
 
 @Component({
   selector: 'app-result-presentation',
@@ -29,25 +30,25 @@ export class ResultPresentationComponent {
    *
    * @param result the search results to be saved
    */
-  saveResult(result, finalAspDict) {
+  saveResult(result: Result, finalAspDict) {
     console.log('Save Result accessed');
     this.finalAspectDict = finalAspDict;
 
     // count the number of sentences used for comparison
-    this.sentenceCount = result['object 1 sentences'].length + result['object 2 sentences'].length;
+    this.sentenceCount = result.sentencesObject1.length + result.sentencesObject2.length;
 
-    const aWon = result['score object 1'] > result['score object 2']; // did object A win?
+    const aWon = result.scoreObject1 > result.scoreObject2; // did object A win?
     if (aWon) {
-      this.saveWinner(result['object 1'], result['object 2']);
-      this.saveScores(result['score object 1'], result['score object 2']);
-      this.saveExtractedAspects(result['extracted aspects object 1'], result['extracted aspects object 2']);
-      this.saveSentences(result['object 1 sentences'], result['object 2 sentences']);
+      this.saveWinner(result.object1, result.object2);
+      this.saveScores(result.scoreObject1, result.scoreObject2);
+      this.saveExtractedAspects(result.extractedAspectsObject1, result.extractedAspectsObject2);
+      this.saveSentences(result.sentencesObject1, result.sentencesObject2);
 
     } else {
-      this.saveWinner(result['object 2'], result['object 1']);
-      this.saveScores(result['score object 2'], result['score object 1']);
-      this.saveExtractedAspects(result['extracted aspects object 2'], result['extracted aspects object 1']);
-      this.saveSentences(result['object 2 sentences'], result['object 1 sentences']);
+      this.saveWinner(result.object2, result.object1);
+      this.saveScores(result.scoreObject2, result.scoreObject1);
+      this.saveExtractedAspects(result.extractedAspectsObject2, result.extractedAspectsObject1);
+      this.saveSentences(result.sentencesObject2, result.sentencesObject1);
     }
     this.setSentenceShow();
     this.showResult = true;
@@ -90,12 +91,8 @@ export class ResultPresentationComponent {
    * @param looserAspects aspects of the object that lost the comparation
    */
   private saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>) {
-    for (const link of winnerAspects) {
-      this.dispensableResult.winnerLinks.push(link);
-    }
-    for (const link of looserAspects) {
-      this.dispensableResult.looserLinks.push(link);
-    }
+    this.dispensableResult.winnerLinks = winnerAspects;
+    this.dispensableResult.looserLinks = looserAspects;
   }
 
   /**
@@ -105,17 +102,8 @@ export class ResultPresentationComponent {
    * @param looserSentences sentences of the object that lost
    */
   private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>) {
-    this.winnerSentenceExamples = this._saveSentences(winnerSentences);
-    this.looserSentenceExamples = this._saveSentences(looserSentences);
-  }
-
-  private _saveSentences(sentences: Array<string>) {
-    let i = 0;
-    const sentenceExamples = {};
-    for (const sentence of sentences) {
-      sentenceExamples[i++] = sentence;
-    }
-    return sentenceExamples;
+    this.winnerSentenceExamples = winnerSentences;
+    this.looserSentenceExamples = looserSentences;
   }
 
   /**
