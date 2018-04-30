@@ -25,13 +25,7 @@ export class UrlBuilderService {
    * @returns the URL
    */
   buildURL(objA, objB, aspectList, model, fastSearch) {
-    let hostname = '';
-    if (model === 'default') {
-      hostname = this.HOSTNAME_DEFAULT;
-    } else if (model === 'machine_learning') {
-      hostname = this.HOSTNAME_ML;
-    }
-    let URL = this.buildObjURL(objA, objB, hostname, fastSearch);
+    let URL = this.buildObjURL(objA, objB, this.getHostname(model), fastSearch);
     URL += this.addAspectURL(aspectList);
     return URL;
   }
@@ -43,7 +37,7 @@ export class UrlBuilderService {
    * @param objB the second object entered by the user
    * @returns the first part of the URL
    */
-  buildObjURL(objA, objB, hostname, fastSearch) {
+  private buildObjURL(objA, objB, hostname, fastSearch) {
     return `${hostname}?fs=${fastSearch}&objectA=${objA}&objectB=${objB}`;
   }
 
@@ -54,13 +48,38 @@ export class UrlBuilderService {
    * @param aspectList the list of aspects with their weights entered by the user
    * @returns the second part of the URL
    */
-  addAspectURL(aspectList) {
+  private addAspectURL(aspectList) {
     let url_part = ``;
     let i = 1;
     Object.entries(aspectList).forEach(
       ([key, value]) => (url_part += `&aspect${i}=${key}&weight${i++}=${value}`)
     );
     return url_part;
+  }
+
+  /**
+   * Selects the right url as basis
+   *
+   * @param model the backend model to be used for the comparison
+   * @returns the url basis (HOSTNAME)
+   */
+  private getHostname(model: string) {
+    if (model === 'default') {
+      return this.HOSTNAME_DEFAULT;
+    } else if (model === 'machine_learning') {
+      return this.HOSTNAME_ML;
+    }
+    console.error('Model was neither default nor machine_learning');
+  }
+
+  /**
+   * Builds the url to request the status of the answer preparation.
+   *
+   * @param model the backend model to be used for the comparison
+   * @return status request url
+   */
+  getStatusUrl(model: string) {
+    return this.getHostname(model) + '/status';
   }
 
 }

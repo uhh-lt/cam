@@ -4,6 +4,8 @@ import { HTTPRequestService } from '../../shared/http-request.service';
 import { Result } from '../../model/result';
 import { ResultPresentationComponent } from '../result-presentation/result-presentation.component';
 import { MatSnackBar } from '@angular/material';
+import { TimerObservable } from 'rxjs/observable/TimerObservable';
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: 'app-user-interface',
@@ -22,6 +24,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   fastSearch = false; // the possibility to do a fast comparison
   showLoading = false; // boolean that checks if the loading screen should be shown
   showResult = false; // boolean that checks if the result table should be shown
+  status = '';
 
   object_A = ''; // the first object currently entered
   object_B = ''; // the second object currently entered
@@ -44,7 +47,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     ['tennis', 'golf']
   ];
 
-  constructor(private urlbuilderService: UrlBuilderService, private httpRequestService: HTTPRequestService,
+  constructor(private urlBuilderService: UrlBuilderService, private httpRequestService: HTTPRequestService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -72,9 +75,9 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     }
     // read the objects entered, build the URL and start the search request
     this.saveObjects();
-    const url = this.urlbuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict, this.selectedModel, this.fastSearch);
+    const url = this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict, this.selectedModel, this.fastSearch);
     this.httpRequestService.getScore(url).subscribe(
-      data => { this.resultPresentation.saveResult(data, this.finalAspDict); },       // async res => { await this.saveResult(res);
+      data => { this.resultPresentation.saveResult(data, this.finalAspDict); },
       error => {
         this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
           duration: 3500,
@@ -86,8 +89,15 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       () => {
         this.showLoading = false; // hide the loading screen
         this.showResult = true;
+        this.status = '';
       }
     );
+    TimerObservable.create(0, 500).takeWhile(() => this.showLoading).subscribe(() => {
+      this.httpRequestService.getStatus(this.urlBuilderService.getStatusUrl(this.selectedModel)).subscribe(
+        data => { this.status = data; },
+        error => { console.error(error); }
+      );
+    });
   }
 
   /**

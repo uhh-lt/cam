@@ -10,4 +10,14 @@ export class HTTPRequestService {
     return this.httpClient.get(url);
   }
 
+  /**
+   * Requests the status of answer processing to show the user the progress.
+   *
+   * @param url to the backend status endpoint
+   * @returns subscribable
+   */
+  getStatus(url: string) {
+    return this.httpClient.get<string>(url);
+  }
+
 }

@@ -34,16 +34,29 @@ def cam():
             i += 1
         else:
             i = False
+    
+    global status
     # json obj with all ES hits containing obj_a, obj_b and a marker.
+    status = 'Request ES'
     json_compl = request_es(fast_search, obj_a, obj_b)
+
     # list of all sentences containing obj_a, obj_b and a marker.
+    status = 'Extract sentences'
     all_sentences = extract_sentences(json_compl)
+
     # removing sentences that can't be properly analyzed
+    status = 'Clear sentences'
     all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
+
     # find the winner of the two objects
+    status = 'Find winner'
     final_dict = find_winner(all_sentences, obj_a, obj_b, aspects)
     return jsonify(final_dict)
 
+@app.route('/status')
+@app.route('/cam/status')
+def getStatus():
+    return jsonify(status)
 
 class Argument:
     '''
@@ -73,4 +86,5 @@ class Aspect:
 
 
 if __name__ == "__main__":
+    status = ''
     app.run(host="0.0.0.0", threaded=True)

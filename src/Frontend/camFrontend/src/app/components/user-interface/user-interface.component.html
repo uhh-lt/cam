@@ -95,9 +95,10 @@
     </tr>
     </tbody>
   </table>
-  <div *ngIf='showLoading'>
+  <div *ngIf='showLoading' class="text-center">
     <!-- <mat-spinner style="margin:0 auto;"></mat-spinner> -->
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <small>{{status}}</small>
   </div>
 </mat-card>
 <br>
