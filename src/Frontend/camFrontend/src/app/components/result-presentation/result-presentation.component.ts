@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Result } from '../../model/result';
+import { DispensableResult } from '../../model/dispensable-result';
 
 @Component({
   selector: 'app-result-presentation',
@@ -8,7 +8,7 @@ import { Result } from '../../model/result';
 })
 export class ResultPresentationComponent {
 
-  private result = new Result();
+  private dispensableResult = new DispensableResult();
   private finalAspectDict = {};
 
   private winnerSentenceExamples = {}; // stores some example sentences for the first object
@@ -54,7 +54,7 @@ export class ResultPresentationComponent {
   }
 
   reset() {
-    this.result = new Result();
+    this.dispensableResult = new DispensableResult();
     this.sentenceShowNumberlistWinner = new Array<number>();
     this.sentenceShowNumberlistLooser = new Array<number>();
     this.sentenceCount = 0;
@@ -68,8 +68,8 @@ export class ResultPresentationComponent {
    * @param looser object that lost the comparation
    */
   private saveWinner(winner: string, looser: string) {
-    this.result.winner = winner;
-    this.result.looser = looser;
+    this.dispensableResult.winner = winner;
+    this.dispensableResult.looser = looser;
   }
 
   /**
@@ -79,8 +79,8 @@ export class ResultPresentationComponent {
    * @param looserScore the score of the object that lost the comparation
    */
   private saveScores(winnerScore: number, looserScore: number) {
-    this.result.winnerScorePercent = (winnerScore / (winnerScore + looserScore) * 100).toFixed(2);
-    this.result.looserScorePercent = (looserScore / (winnerScore + looserScore) * 100).toFixed(2);
+    this.dispensableResult.winnerScorePercent = (winnerScore / (winnerScore + looserScore) * 100).toFixed(2);
+    this.dispensableResult.looserScorePercent = (looserScore / (winnerScore + looserScore) * 100).toFixed(2);
   }
 
   /**
@@ -91,10 +91,10 @@ export class ResultPresentationComponent {
    */
   private saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>) {
     for (const link of winnerAspects) {
-      this.result.winnerLinks.push(link);
+      this.dispensableResult.winnerLinks.push(link);
     }
     for (const link of looserAspects) {
-      this.result.looserLinks.push(link);
+      this.dispensableResult.looserLinks.push(link);
     }
   }
 

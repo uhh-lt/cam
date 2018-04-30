@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
-import { Result } from '../model/result';
+import { DispensableResult } from '../model/dispensable-result';
 
 @Pipe({
   name: 'markClasses'
@@ -9,7 +9,7 @@ export class MarkClassesPipe implements PipeTransform {
 
   constructor(private sanitizer: DomSanitizer) { }
 
-  transform(value: string, result: Result, finalAspectDict: any): SafeHtml {
+  transform(value: string, result: DispensableResult, finalAspectDict: any): SafeHtml {
 
     const regex1 = '(?!<span[^>]*?>)(\\b';
     const regex2 = '\\b)(?![^<]*?</span>)';

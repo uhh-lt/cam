@@ -6,8 +6,8 @@
     <thead>
       <tr>
         <th width='20%' scope='col'></th>
-        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{result.winner}}</th>
-        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{result.looser}}</th>
+        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{dispensableResult.winner}}</th>
+        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{dispensableResult.looser}}</th>
       </tr>
     </thead>
     <tbody>
@@ -18,30 +18,30 @@
       </tr>
       <tr>
         <th scope='row' style='font-size: 17px'>Score</th>
-        <td class='text-center' style='font-size: 17px'>{{result.winnerScorePercent}} %</td>
-        <td class='text-center' style='font-size: 17px'>{{result.looserScorePercent}} %</td>
+        <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScorePercent}} %</td>
+        <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScorePercent}} %</td>
       </tr>
       <tr>
         <th scope='row' style='font-size: 17px'>Automatically extracted aspects for these objects</th>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of result.winnerLinks'>{{link}}</li>
+          <li *ngFor='let link of dispensableResult.winnerLinks'>{{link}}</li>
         </td>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of result.looserLinks'>{{link}}</li>
+          <li *ngFor='let link of dispensableResult.looserLinks'>{{link}}</li>
         </td>
       </tr>
       <tr>
         <th scope='row' style='font-size: 17px'>Sentence examples</th>
         <td>
           <div *ngFor='let i of sentenceShowNumberlistWinner'>
-            <div style='font-size: 17px' [innerHtml]="winnerSentenceExamples[i] | markClasses:result:finalAspectDict">
+            <div style='font-size: 17px' [innerHtml]="winnerSentenceExamples[i] | markClasses:dispensableResult:finalAspectDict">
             </div>
             <br>
           </div>
         </td>
         <td>
           <div *ngFor='let i of sentenceShowNumberlistLooser'>
-            <div [innerHtml]="looserSentenceExamples[i] | markClasses:result:finalAspectDict"></div>
+            <div [innerHtml]="looserSentenceExamples[i] | markClasses:dispensableResult:finalAspectDict"></div>
             <br>
           </div>
         </td>
