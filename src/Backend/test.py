@@ -100,16 +100,16 @@ class Test(unittest.TestCase):
         s = {'Dog is better than cat': 10, 'Cat is beautiful better than dog': 10,
              'Dogs are way better than cat': 10}
         result = find_winner(s, self.objA, self.objB, [])
-        self.assertEqual(result['object 1'], self.objA.name)
-        self.assertEqual(result['object 2'], self.objB.name)
-        self.assertEqual(result['score object 1'], 2)
-        self.assertEqual(result['score object 2'], 1)
+        self.assertEqual(result['object1'], self.objA.name)
+        self.assertEqual(result['object2'], self.objB.name)
+        self.assertEqual(result['scoreObject1'], 2)
+        self.assertEqual(result['scoreObject2'], 1)
         self.assertEqual(
-            sorted(result['extracted aspects object 1']), sorted(['way', 'dogs']))
-        self.assertEqual(result['extracted aspects object 2'], [])
-        self.assertEqual(sorted(result['object 1 sentences']), sorted([
+            sorted(result['extractedAspectsObject1']), sorted(['way', 'dogs']))
+        self.assertEqual(result['extractedAspectsObject2'], [])
+        self.assertEqual(sorted(result['sentencesObject1']), sorted([
                          'Dog is better than cat', 'Dogs are way better than cat']))
-        self.assertEqual(sorted(result['object 2 sentences']), sorted([
+        self.assertEqual(sorted(result['sentencesObject2']), sorted([
                          'Cat is beautiful better than dog']))
         self.assertEqual(result['winner'], self.objA.name)
 
