@@ -171,6 +171,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       }
     } else {
       this.aspectDict = {};
+      this.weightDict = { 1: 1 };
     }
   }
 }
