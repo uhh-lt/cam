@@ -65,9 +65,9 @@ def add_marker_urlpart(url, fast_search):
         url += MARKERS_WO_THAN[i]
         url += '%20OR%20'
     for i in range(0, len(MARKERS_THAN)):
-        url += '('
+        url += '(\"'
         url += MARKERS_THAN[i]
-        url += '%20AND%20than)%20OR%20'
+        url += '\"%20AND%20than)%20OR%20'
     for i in range(0, len(MARKERS_THAN)):
         url += '(\"'
         url += MARKERS_THAN[i]
@@ -75,11 +75,12 @@ def add_marker_urlpart(url, fast_search):
     for i in range(0, len(MARKERS_THAN) - 1):
         url += '(\"'
         url += MARKERS_THAN[i]
-        url += '%20then\")%20OR%20'
-    url += '(\"'
+        url += '\"%20AND%20then)%20OR%20'
+    url += '('
     url += MARKERS_THAN[len(MARKERS_THAN) - 1]
     if fast_search == 'false':
-        url += '%20then\"))&from=0&size=10000'
+        url += '%20AND%20then))&from=0&size=10000'
     else:
-        url += '%20then\"))&from=0&size=500'
+        url += '%20AND%20then))&from=0&size=500'
+    print(url)
     return url
