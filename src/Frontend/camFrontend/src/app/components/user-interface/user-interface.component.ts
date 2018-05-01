@@ -161,14 +161,16 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
    *
    * @param aspect the aspect row to be removed, given as a number
    */
-  removeAspect(aspect) {
+  removeAspect(aspect: number) {
     if (this.aspects.length > 1) {
-      const index = this.aspects.indexOf(aspect, 0);
+      const index = this.aspects.indexOf(aspect);
       if (index > -1) {
         this.aspects.splice(index, 1);
+        delete this.aspectDict[aspect];
+        delete this.weightDict[aspect];
       }
     } else {
-      this.aspectDict[this.aspects[0]] = '';
+      this.aspectDict = {};
     }
   }
 }
