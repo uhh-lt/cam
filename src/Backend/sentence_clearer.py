@@ -1,6 +1,6 @@
 from constants import POSITIVE_MARKERS, NEGATIVE_MARKERS
 from marker_searcher import has_marker
-import re
+from regex_service import find_pos_in_sentence
 
 
 def clear_sentences(sentences, obj_a, obj_b):
@@ -52,14 +52,9 @@ def remove_wrong_structures(sentences, obj_a, obj_b):
                 the second object to be compared
     '''
     sentences_to_delete = []
-    for s in sentences:
-        wordlist = re.compile('[A-Za-z]+').findall(s)
-        a_pos = -1
-        if obj_a.name in wordlist:
-            a_pos = wordlist.index(obj_a.name)
-        b_pos = -1
-        if obj_b.name in wordlist:
-            b_pos = wordlist.index(obj_b.name)
+    for s in sentences:   
+        a_pos = find_pos_in_sentence(obj_a.name, s)
+        b_pos = find_pos_in_sentence(obj_b.name, s)
         if a_pos == -1 and b_pos == -1:
             sentences_to_delete.append(s)
             continue

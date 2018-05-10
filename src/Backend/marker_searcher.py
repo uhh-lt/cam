@@ -1,4 +1,4 @@
-import re
+from regex_service import find_pos_in_sentence
 
 
 def has_marker(sentence, pos_first, pos_second, markers):
@@ -14,10 +14,7 @@ def has_marker(sentence, pos_first, pos_second, markers):
     markers:    list
                 list of the markers of which any one must be found.
     '''
-    if get_marker_pos(sentence, pos_first, pos_second, markers) != -1:
-        return True
-    else:
-        return False
+    return get_marker_pos(sentence, pos_first, pos_second, markers) != -1
 
 
 def get_marker_pos(sentence, pos_first, pos_second, markers):
@@ -33,16 +30,11 @@ def get_marker_pos(sentence, pos_first, pos_second, markers):
     markers:    list
                 list of the markers of which any one must be found.
     '''
-    pos_marker = -1
     for m in markers:
-        wordlist = re.compile('[A-Za-z]+').findall(sentence)
-        if m in wordlist:
-            pos_marker = wordlist.index(m)
-            if pos_first < pos_marker < pos_second:
-                break  # found a marker between the objects
-            else:
-                pos_marker = -1
-    return pos_marker
+        pos_marker = marker_pos(sentence, pos_first, pos_second, m)
+        if pos_marker != -1:
+            return pos_marker
+    return -1
 
 
 def get_marker_count(sentence, pos_first, pos_second, markers):
@@ -57,12 +49,19 @@ def get_marker_count(sentence, pos_first, pos_second, markers):
     markers:    list
                 list of the markers of which any one must be found.
     '''
-    pos_marker = -1
     cnt = 0
     for m in markers:
-        wordlist = re.compile('[A-Za-z]+').findall(sentence)
-        if m in wordlist:
-            pos_marker = wordlist.index(m)
-            if pos_first < pos_marker < pos_second:
-                cnt += 1
+        if(marker_pos(sentence, pos_first, pos_second, m) != -1):
+            cnt += 1
     return cnt
+
+def marker_pos(sentence, pos_first, pos_second, marker):
+    '''
+    Checks if the given marker is contained in the sentence and between the given positions,
+    if yes the position is returned, else -1 is returned
+    '''
+    pos_marker = find_pos_in_sentence(marker, sentence)
+    if pos_marker != -1 and pos_first < pos_marker < pos_second:
+        return pos_marker  # found a marker between the objects
+    return -1
+

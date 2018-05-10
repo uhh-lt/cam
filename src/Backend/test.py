@@ -50,6 +50,20 @@ class Test(unittest.TestCase):
         self.assertEqual(what_is_better('This tortoise sculpture is made of hammer formed copper sheet metal and filled solid with concrete.',
                                         self.objB, self.objA), {'marker_cnt': 0, 'winner': self.objA})
 
+    def test_what_is_better10(self):
+        obj_a = Argument('coca-cola light')
+        obj_b = Argument('pepsi light')
+        self.assertEqual(what_is_better(
+            'Coca Cola light tastes better than pepsi light', obj_a, obj_b), {
+                         'marker_cnt': 1, 'winner': obj_a})
+
+    def test_what_is_better11(self):
+        obj_a = Argument('coca1-cola light')
+        obj_b = Argument('pepsi light')
+        self.assertEqual(what_is_better(
+            'Coca1-Cola™ light tastes better than Pepsi™ light', obj_a, obj_b), {
+                         'marker_cnt': 1, 'winner': obj_a})
+
     '''
     Testing if the removal of the following sentences work:
     1.containing '?'
@@ -90,6 +104,27 @@ class Test(unittest.TestCase):
         s = clear_sentences(s, self.objA, self.objB)
         self.assertFalse(
             'Cat are wiser, but are harder to raise than dog' in s)
+        self.assertTrue(s)
+
+    def test_clear_sentences7(self):
+        obj_a = Argument('cola light')
+        obj_b = Argument('pepsi light')
+        s = {'Cola light tastes better than pepsi light': 20}
+        s = clear_sentences(s, obj_a, obj_b)
+        self.assertTrue(s)
+
+    def test_clear_sentences8(self):
+        obj_a = Argument('coca-cola light')
+        obj_b = Argument('pepsi light')
+        s = {'Coca Cola light tastes better than pepsi light': 20}
+        s = clear_sentences(s, obj_a, obj_b)
+        self.assertTrue(s)
+
+    def test_clear_sentences9(self):
+        obj_a = Argument('coca-cola light')
+        obj_b = Argument('pepsi light')
+        s = {'Coca Cola™ light tastes better than Pepsi™ light': 20}
+        s = clear_sentences(s, obj_a, obj_b)
         self.assertTrue(s)
 
     '''
@@ -134,6 +169,12 @@ class Test(unittest.TestCase):
         self.assertFalse(find_aspects(
             s, [aspect1, aspect2]))
 
+    def test_find_aspects3(self):
+        s = 'Finding dory was better than finding nemo, because of the higher worldwide gross'
+        aspect1 = Aspect('worldwide gross', 5)
+        self.assertTrue(find_aspects(s, [aspect1]))
+
+
     def test_build_object_urlpart1(self):
         obj_a = Argument('ape')
         obj_b = Argument('gorilla')
@@ -156,6 +197,21 @@ class Test(unittest.TestCase):
         self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
                          'A': ['time'], 'B': ['power']})
 
+    def test_extract_main_links2(self):
+        sentencesA = ['Coca Cola tastes better than pepsi, because of its ingredients']
+        sentencesB = ['Pepsi is worse than Coca-cola, because of the better sweeteners']
+        obj_a = Argument('coca-cola')
+        obj_b = Argument('pepsi light')
+        self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
+                         'A': ['ingredients'], 'B': ['sweeteners']})
+    
+    def test_extract_main_links3(self):
+        sentencesA = ['Coca-Cola™ tastes better than pepsi, because of its ingredients']
+        sentencesB = ['Pepsi is worse than Coca-cola™, because of the better sweeteners']
+        obj_a = Argument('coca-cola')
+        obj_b = Argument('pepsi light')
+        self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
+                         'A': ['ingredients'], 'B': ['sweeteners']})
 
 if __name__ == '__main__':
     unittest.main()

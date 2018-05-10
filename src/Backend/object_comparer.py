@@ -2,7 +2,7 @@ from constants import OPPOSITE_MARKERS, POSITIVE_MARKERS, NEGATIVE_MARKERS, NEGA
 from aspect_searcher import find_aspects
 from marker_searcher import get_marker_count, get_marker_pos
 from link_extracter import extract_main_links
-import re
+from regex_service import find_pos_in_sentence
 
 
 def find_winner(sentences, obj_a, obj_b, aspects):
@@ -103,15 +103,10 @@ def what_is_better(sentence, obj_a, obj_b):
     '''
     sentence = sentence.lower()
     result = {}
-    # position of objectA in sentence, spaces to not find objname as part of different word
-    wordlist = re.compile('[A-Za-z]+').findall(sentence)
-    a_pos = 0
-    if obj_a.name in wordlist:
-        a_pos = wordlist.index(obj_a.name)
-    # position of objectB in sentence, spaces to not find objname as part of different word
-    b_pos = 0
-    if obj_b.name in wordlist:
-        b_pos = wordlist.index(obj_b.name)
+
+    a_pos = find_pos_in_sentence(obj_a.name, sentence)
+    b_pos = find_pos_in_sentence(obj_b.name, sentence)
+
     first_pos = min(a_pos, b_pos)
     second_pos = max(a_pos, b_pos)
     opp_pos = get_marker_pos(sentence, first_pos, second_pos, OPPOSITE_MARKERS)
@@ -119,19 +114,14 @@ def what_is_better(sentence, obj_a, obj_b):
     positive_pos = get_marker_pos(
         sentence, first_pos, second_pos, POSITIVE_MARKERS)
     if positive_pos != -1:  # there's a positive marker, check if a won
-        result['marker_cnt'] = get_marker_count(
-            sentence, first_pos, second_pos, POSITIVE_MARKERS)
-        result['winner'] = obj_a if obj_a_wins_sentence(
-            first_pos, a_pos, opp_pos, neg_pos, positive_pos) else obj_b
+        result['marker_cnt'] = get_marker_count(sentence, first_pos, second_pos, POSITIVE_MARKERS)
+        result['winner'] = obj_a if obj_a_wins_sentence(first_pos, a_pos, opp_pos, neg_pos, positive_pos) else obj_b
         return result
         # we can return because there's never both markers in a sentence
-    negative_pos = get_marker_pos(
-        sentence, first_pos, second_pos, NEGATIVE_MARKERS)
-    result['marker_cnt'] = get_marker_count(
-        sentence, first_pos, second_pos, NEGATIVE_MARKERS)
+    negative_pos = get_marker_pos(sentence, first_pos, second_pos, NEGATIVE_MARKERS)
+    result['marker_cnt'] = get_marker_count(sentence, first_pos, second_pos, NEGATIVE_MARKERS)
     # we're only here if there's no positive marker, so there must be negative one
-    result['winner'] = obj_b if obj_a_wins_sentence(
-        first_pos, a_pos, opp_pos, neg_pos, negative_pos) else obj_a
+    result['winner'] = obj_b if obj_a_wins_sentence(first_pos, a_pos, opp_pos, neg_pos, negative_pos) else obj_a
     return result
 
 

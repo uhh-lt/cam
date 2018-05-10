@@ -1,4 +1,4 @@
-import re
+from regex_service import find_pos_in_sentence
 
 
 def find_aspects(sentence, aspects):
@@ -11,10 +11,8 @@ def find_aspects(sentence, aspects):
     aspects:    List
                 list of Aspect objects
     '''
-    wordlist = re.compile(
-        '[A-Za-z]+').findall(sentence)  # find all words in the sentence
     ret_aspects = []
     for aspect in aspects:
-        if aspect.name in wordlist:
+        if find_pos_in_sentence(aspect.name, sentence) != -1:
             ret_aspects.append(aspect)
     return ret_aspects

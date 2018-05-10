@@ -21,29 +21,9 @@ def extract_main_links(sentencesA, sentencesB, obj_a, obj_b):
                 the second object to be compared
     '''
     # stores all words for object A as keys and the number of times they've been found as values
-    worddict_a = {}
+    worddict_a = build_worddict(sentencesA, obj_a, obj_b)
     # stores all words for object B as keys and the number of times they've been found as values
-    worddict_b = {}
-    for s in sentencesA:
-        taglist = tag_sentence(s)
-        for tag in taglist:
-            if tag[1].startswith('NN'):  # is the word a noun?
-                w = tag[0].lower()
-                if is_useful(w, obj_a, obj_b):
-                    if w in worddict_a:
-                        worddict_a[w] += 1
-                    else:
-                        worddict_a[w] = 1
-    for s in sentencesB:
-        taglist = tag_sentence(s)
-        for tag in taglist:
-            if tag[1].startswith('NN'):  # is the word a noun?
-                w = tag[0].lower()
-                if is_useful(w, obj_a, obj_b):
-                    if w in worddict_b:
-                        worddict_b[w] += 1
-                    else:
-                        worddict_b[w] = 1
+    worddict_b = build_worddict(sentencesB, obj_a, obj_b)
     result = {}
     result_a = []
     result_b = []
@@ -66,6 +46,23 @@ def extract_main_links(sentencesA, sentencesB, obj_a, obj_b):
     result['B'] = result_b
     return result
 
+def build_worddict(sentences, obj_a, obj_b):
+    '''
+    Extracts the nouns from the sentences corresponding to one object and saves the frequency
+    '''
+    worddict = {}
+    for s in sentences:
+        taglist = tag_sentence(s)
+        for tag in taglist:
+            if tag[1].startswith('NN'):  # is the word a noun?
+                w = tag[0].lower()
+                if is_useful(w, obj_a, obj_b):
+                    if w in worddict:
+                        worddict[w] += 1
+                    else:
+                        worddict[w] = 1
+    return worddict
+
 
 def is_useful(word, obj_a, obj_b):
     '''
@@ -82,7 +79,7 @@ def is_useful(word, obj_a, obj_b):
             the second object
     '''
     return word not in STOPWORDS and word not in POSITIVE_MARKERS and word not in NEGATIVE_MARKERS \
-        and word != obj_a.name and word != obj_b.name and word not in NON_LINKS and word not in \
+        and word not in obj_a.name and word not in obj_b.name and word not in NON_LINKS and word not in \
         NUMBER_STRINGS
 
 
