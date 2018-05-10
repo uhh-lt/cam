@@ -28,32 +28,45 @@ def find_winner(sentences, obj_a, obj_b, aspects):
         max_sentscore = max(max_sentscore, sentences[key])
     for s in sentences:
         comp_result = what_is_better(s, obj_a, obj_b)
-        # the aspects the user entered that are contained in the sentence
-        contained_aspects = find_aspects(s, aspects)
         if comp_result['winner'] == obj_a:  # objectA won the sentence
-            if contained_aspects:
-                for aspect in contained_aspects:
-                    obj_a.add_points(
-                        (sentences[s] / max_sentscore) * aspect.weight)
-                    obj_a.add_points(
-                        (sentences[s] / max_sentscore) * comp_result['marker_cnt'])
-            else:
-                # multiple markers, multiple points
-                obj_a.add_points(
-                    (sentences[s] / max_sentscore) * comp_result['marker_cnt'])
-            obj_a.add_sentence(s)
+            add_points(find_aspects(s, aspects), obj_a, sentences[s], s, max_sentscore, comp_result['marker_cnt'])
         else:  # objectB won the sentence
-            if contained_aspects:
-                for aspect in contained_aspects:
-                    obj_b.add_points(
-                        (sentences[s] / max_sentscore) * aspect.weight)
-                    obj_a.add_points(
-                        (sentences[s] / max_sentscore) * comp_result['marker_cnt'])
-            else:
-                obj_b.add_points(
-                    (sentences[s] / max_sentscore) * comp_result['marker_cnt'])
-            obj_b.add_sentence(s)
+            add_points(find_aspects(s, aspects), obj_b, sentences[s], s, max_sentscore, comp_result['marker_cnt'])
+
     return build_final_dict(obj_a, obj_b)
+
+def add_points(contained_aspects, winner, score, sentence, max_score, marker_count):
+    '''
+    Adds the points of the won sentence to the points of the winner.
+
+    contained_aspects:  List
+                        The aspects the user entered that are 
+                        contained in the sentence
+
+    winner:             Argument
+                        The winner of the given sentence
+    
+    score:              Integer
+                        The score of the given sentence
+
+    sentence:           String
+                        The given sentence to add
+
+    max_score:          Integer
+                        Max score over all sentences
+
+    marker_count:       Integer
+                        How many markers are countained in the 
+                        Sentence
+    '''
+    if contained_aspects:
+        for aspect in contained_aspects:
+            winner.add_points((score / max_score) * aspect.weight)
+            winner.add_points((score / max_score) * marker_count)
+    else:
+        # multiple markers, multiple points
+        winner.add_points((score / max_score) * marker_count)
+    winner.add_sentence(sentence)
 
 
 def build_final_dict(obj_a, obj_b):
@@ -144,12 +157,9 @@ def obj_a_wins_sentence(first_pos, a_pos, opp_pos, neg_pos, marker_pos):
     marker_pos: number
                 the position of a marker within the sentence
     '''
-    if opp_pos != -1:
-        if first_pos < opp_pos < marker_pos:
-            return False if first_pos == a_pos else True  # example: a is not better than b
-    elif neg_pos != -1:
-        if first_pos < neg_pos < marker_pos:
-            # example: a couldn't be better than b
-            return False if first_pos == a_pos else True
+    if opp_pos != -1 and first_pos < opp_pos < marker_pos:
+        return first_pos != a_pos  # example: a is not better than b
+    elif neg_pos != -1 and first_pos < neg_pos < marker_pos:
+        return first_pos != a_pos # example: a couldn't be better than b
     else:
-        return True if first_pos == a_pos else False  # example: a is better than b
+        return first_pos == a_pos  # example: a is better than b
