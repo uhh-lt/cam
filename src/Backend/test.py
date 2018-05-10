@@ -1,3 +1,5 @@
+# encoding=utf8
+
 import unittest
 from object_comparer import what_is_better, find_winner
 from sentence_clearer import clear_sentences, remove_wrong_structures
@@ -55,14 +57,14 @@ class Test(unittest.TestCase):
         obj_b = Argument('pepsi light')
         self.assertEqual(what_is_better(
             'Coca Cola light tastes better than pepsi light', obj_a, obj_b), {
-                         'marker_cnt': 1, 'winner': obj_a})
+            'marker_cnt': 1, 'winner': obj_a})
 
     def test_what_is_better11(self):
         obj_a = Argument('coca1-cola light')
         obj_b = Argument('pepsi light')
         self.assertEqual(what_is_better(
             'Coca1-Cola™ light tastes better than Pepsi™ light', obj_a, obj_b), {
-                         'marker_cnt': 1, 'winner': obj_a})
+            'marker_cnt': 1, 'winner': obj_a})
 
     '''
     Testing if the removal of the following sentences work:
@@ -174,7 +176,6 @@ class Test(unittest.TestCase):
         aspect1 = Aspect('worldwide gross', 5)
         self.assertTrue(find_aspects(s, [aspect1]))
 
-
     def test_build_object_urlpart1(self):
         obj_a = Argument('ape')
         obj_b = Argument('gorilla')
@@ -198,20 +199,25 @@ class Test(unittest.TestCase):
                          'A': ['time'], 'B': ['power']})
 
     def test_extract_main_links2(self):
-        sentencesA = ['Coca Cola tastes better than pepsi, because of its ingredients']
-        sentencesB = ['Pepsi is worse than Coca-cola, because of the better sweeteners']
+        sentencesA = [
+            'Coca Cola tastes better than pepsi, because of its ingredients']
+        sentencesB = [
+            'Pepsi is worse than Coca-cola, because of the better sweeteners']
         obj_a = Argument('coca-cola')
         obj_b = Argument('pepsi light')
         self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
                          'A': ['ingredients'], 'B': ['sweeteners']})
-    
+
     def test_extract_main_links3(self):
-        sentencesA = ['Coca-Cola™ tastes better than pepsi, because of its ingredients']
-        sentencesB = ['Pepsi is worse than Coca-cola™, because of the better sweeteners']
+        sentencesA = [
+            'Coca-Cola™ tastes better than pepsi, because of its ingredients']
+        sentencesB = [
+            'Pepsi is worse than Coca-cola™, because of the better sweeteners']
         obj_a = Argument('coca-cola')
         obj_b = Argument('pepsi light')
         self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
                          'A': ['ingredients'], 'B': ['sweeteners']})
+
 
 if __name__ == '__main__':
     unittest.main()
