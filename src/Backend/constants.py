@@ -17,13 +17,13 @@ NEGATIVE_MARKERS = ['worse', 'harder', 'slower', 'poorer', 'inferior to', 'compl
                     'accessible', 'recommended', 'experienced', 'intuitive', 'secure']
 # list of all positive and negative markers with than used for comparing the objects
 MARKERS_THAN = ['better', 'easier', 'faster', 'nicer', 'cooler', 'safer', 'worse', 'harder',
-                'slower', 'poorer', '\'more accessible\'', 'greater', 'simpler', 'smoother',
-                '\'more complicated\'', 'lighter', 'quicker', 'friendlier', '\'less accessible\'',
-                '\'less complicated\'', '\'more recommended\'', '\'more experienced\'',
-                '\'less experienced\'', 'smarter', 'cleverer', '\'more intuitive\'',
-                '\'less intuitive\'', '\'more secure\'', '\'less secure\'', 'finer']
+                'slower', 'poorer', 'more accessible', 'greater', 'simpler', 'smoother',
+                'more complicated', 'lighter', 'quicker', 'friendlier', 'less accessible',
+                'less complicated', 'more recommended', 'more experienced',
+                'less experienced', 'smarter', 'cleverer', 'more intuitive',
+                'less intuitive', 'more secure', 'less secure', 'finer']
 # list of all positive and negative markers without than used for comparing the objects
-MARKERS_WO_THAN = ['\'superior to\'', '\'inferior to\'']
+MARKERS_WO_THAN = ['\"superior to\"', '\"inferior to\"', 'superior', 'inferior']
 # sentences containing a negation between the objects will have their result reversed
 NEGATIONS = ['didn\'t', 'couldn\'t', 'wasn\'t', 'haven\'t', 'wouldn\'t', 'can\'t', 'isn\'t',
              'did not', 'could not', 'was not', 'have not', 'would not', 'can not', 'is not',
