@@ -5,8 +5,9 @@
 .mat-menu-item {
     text-overflow: clip;
     text-align: center;
+    color: inherit;
 }
 
 .nav-selected {
-    color:  #fff
+    color:  rgba(255, 255, 255, 0.5);
 }
