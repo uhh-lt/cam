@@ -180,7 +180,7 @@ class Test(unittest.TestCase):
         obj_a = Argument('ape')
         obj_b = Argument('gorilla')
         self.assertEqual(build_object_urlpart(
-            obj_a, obj_b), 'http://localhost:9222/commoncrawl2/_search?q=text:ape%20AND%20gorilla')
+            obj_a, obj_b), 'http://localhost:9200/commoncrawl2/_search?q=text:"ape"%20AND%20"gorilla"')
 
     def test_build_object_urlpart2(self):
         obj_a = Argument('')
