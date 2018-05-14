@@ -37,7 +37,7 @@ On default, the backend is running on a localhost. If you want to change this, m
 
 ## Communication between backend and search request server; search type
 
-On default, the search request server is connected via SSH on port 9222. If you have a different server you want to do the search requests on, change ES_HOSTNAME in ./src/Backend/constants.py. The default search type is commoncrawl2 of Elastic Search. If you want to change this, change CRAWL_DATA_REPOS in the same file.
+On default, the search request server is connected via SSH on port 9200. If you have a different server you want to do the search requests on, change ES_HOSTNAME in ./src/Backend/constants.py. The default search type is commoncrawl2 of Elastic Search. If you want to change this, change CRAWL_DATA_REPOS in the same file.
 
 # 3. Launching the program
 
@@ -46,6 +46,12 @@ On default, the search request server is connected via SSH on port 9222. If you 
 In a shell within the Backend directory, start via:
 
     python main.py
+    
+if the ElasticSearch needs no credentials and via:
+
+    python main.py username password
+    
+for an ElasticSearch instance with credentials.
 
 (a local server is started that can be addressed via <http://127.0.0.1:5000>)
 
