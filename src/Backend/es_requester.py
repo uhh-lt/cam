@@ -53,7 +53,7 @@ def build_object_urlpart(obj_a, obj_b):
     url = ES_HOSTNAME  # name of the host
     url += CRAWL_DATA_REPOS  # Elastic Search request type
     # add the objects to look for
-    url += '{}%20AND%20{}'.format(obj_a.name, obj_b.name)
+    url += '\"{}\"%20AND%20\"{}\"'.format(obj_a.name, obj_b.name)
     return url
 
 
