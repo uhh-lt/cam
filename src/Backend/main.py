@@ -67,6 +67,7 @@ class Argument:
         self.name = name.lower()
         self.points = 0
         self.sentences = []
+        self.sentence_with_aspect = []
 
     def add_points(self, points):
         self.points += points
@@ -74,6 +75,8 @@ class Argument:
     def add_sentence(self, sentence):
         self.sentences.append(sentence)
 
+    def add_sentence_with_aspect(self, sentence):
+        self.sentence_with_aspect.append(sentence)
 
 class Aspect:
     '''

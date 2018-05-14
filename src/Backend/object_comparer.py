@@ -63,11 +63,12 @@ def add_points(contained_aspects, winner, score, sentence, max_score, marker_cou
         for aspect in contained_aspects:
             winner.add_points((score / max_score) * aspect.weight)
             winner.add_points((score / max_score) * marker_count)
+        winner.add_sentence_with_aspect(sentence)
     else:
         # multiple markers, multiple points
         winner.add_points((score / max_score) * marker_count)
-    winner.add_sentence(sentence)
-
+        winner.add_sentence(sentence)
+    
 
 def build_final_dict(obj_a, obj_b):
     '''
@@ -95,8 +96,8 @@ def build_final_dict(obj_a, obj_b):
         obj_a.sentences, obj_b.sentences, obj_a, obj_b)
     final_dict['extractedAspectsObject1'] = linked_words['A']
     final_dict['extractedAspectsObject2'] = linked_words['B']
-    final_dict['sentencesObject1'] = obj_a.sentences
-    final_dict['sentencesObject2'] = obj_b.sentences
+    final_dict['sentencesObject1'] = obj_a.sentence_with_aspect + obj_a.sentences
+    final_dict['sentencesObject2'] = obj_b.sentence_with_aspect + obj_b.sentences
     return final_dict
 
 
