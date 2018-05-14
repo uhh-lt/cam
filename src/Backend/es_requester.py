@@ -1,4 +1,6 @@
 import requests
+import sys
+from requests.auth import HTTPBasicAuth
 import json
 from constants import ES_HOSTNAME, CRAWL_DATA_REPOS, MARKERS_WO_THAN, MARKERS_THAN
 
@@ -15,7 +17,10 @@ def request_es(fast_search, obj_a, obj_b):
     '''
     url = build_object_urlpart(obj_a, obj_b)
     url = add_marker_urlpart(url, fast_search)
-    return requests.get(url)
+    if(len(sys.argv) > 1):
+        return requests.get(url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
+    else: 
+        return requests.get(url)
 
 
 def extract_sentences(es_json):
