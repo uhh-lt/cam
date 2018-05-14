@@ -11,33 +11,29 @@ export class MarkClassesPipe implements PipeTransform {
 
   transform(value: string, result: DispensableResult, finalAspectDict: any): SafeHtml {
 
-    const regex1 = '(?!<span[^>]*?>)(\\b';
-    const regex2 = '\\b)(?![^<]*?</span>)';
-
-    value = value.replace(new RegExp(regex1 + result.winner + regex2, 'gi'), match => {
-      return '<span class="winner">' + result.winner + '</span>';
-    });
-    value = value.replace(new RegExp(regex1 + result.looser + regex2, 'gi'), match => {
-      return '<span class="looser">' + match + '</span>';
-    });
-    for (const aspect of Object.keys(finalAspectDict)) {
-      value = value.replace(new RegExp(regex1 + aspect + regex2, 'gi'), match => {
-        return '<span class="aspect">' + match + '</span>';
-      });
-    }
-    for (const link of result.looserLinks) {
-      value = value.replace(new RegExp(regex1 + link + regex2, 'gi'), match => {
-        return '<span class="link">' + match + '</span>';
-      });
-    }
-    for (const link of result.winnerLinks) {
-      value = value.replace(new RegExp(regex1 + link + regex2, 'gi'), match => {
-        return '<span class="link">' + match + '</span>';
-      });
-    }
-
+    value = this.replaceByMarking('winner', [result.winner], value);
+    value = this.replaceByMarking('looser', [result.looser], value);
+    value = this.replaceByMarking('aspect', Object.keys(finalAspectDict), value);
+    value = this.replaceByMarking('link', result.looserLinks, value);
+    value = this.replaceByMarking('link', result.winnerLinks, value);
 
     return this.sanitizer.bypassSecurityTrustHtml(value);
+  }
+
+  private replaceByMarking(type: string, toMark: Array<string>, value: string) {
+    for (const mark of toMark) {
+      value = value.replace(this.buildRegex(mark), match => {
+        return `<span class="${type}">${match}</span>`;
+      });
+    }
+    return value;
+  }
+
+  private buildRegex(sequence: string) {
+    const regex1 = '(?!<span[^>]*?>)(\\b';
+    const regex2 = '\\b)(?![^<]*?</span>)';
+    const cleanedsequence = sequence.replace(/[^a-zA-Z0-9 ]/g, ' ').replace(/ +/g, ' ');
+    return new RegExp(`${regex1}${sequence}${regex2}|${regex1}${cleanedsequence}${regex2}`, 'gi');
   }
 
 }
