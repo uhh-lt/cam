@@ -22,6 +22,37 @@ def request_es(fast_search, obj_a, obj_b):
     else: 
         return requests.get(url)
 
+def request_es_triple(obj_a, obj_b, aspects):
+    url = build_object_urlpart(obj_a, obj_b)
+    url += '%20AND%20('
+    first = True
+    for aspect in aspects:
+        if first:
+            url += '\"{}\"'.format(aspect.name)
+        else:
+            url += '%20OR%20\"{}\"'.format(aspect.name)
+    url += ')&from=0&size=10000'
+
+    payload =  {}
+    if(len(sys.argv) > 1):
+        return requests.get(url, params=payload, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
+    else: 
+        return requests.get(url)
+
+def request_es_ML(fast_search, obj_a, obj_b):
+    url = build_object_urlpart(obj_a, obj_b)
+
+    size = 10000
+    if fast_search == 'true':
+        size = 500
+    url += '&from=0&size={}'.format(size)
+
+    payload =  {}
+    if(len(sys.argv) > 1):
+        return requests.get(url, params=payload, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
+    else: 
+        return requests.get(url)
+
 
 def extract_sentences(es_json):
     '''

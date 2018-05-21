@@ -1,10 +1,14 @@
 import requests
 import json
-from es_requester import request_es, extract_sentences
-from sentence_clearer import clear_sentences
+from es_requester import request_es, extract_sentences, request_es_ML, request_es_triple
+import sentence_clearer 
+from sentence_preparation_ML import prepare_sentence_DF
+from classify import classify_sentences, evaluate
 from object_comparer import find_winner
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import sklearn
+
 
 app = Flask(__name__)
 CORS(app)
@@ -19,21 +23,7 @@ def cam():
     fast_search = request.args.get('fs')
     obj_a = Argument(request.args.get('objectA').lower().strip())
     obj_b = Argument(request.args.get('objectB').lower().strip())
-    aspects = []
-    i = 1
-    while i is not False:
-        asp = 'aspect'
-        asp += str(i)
-        wght = 'weight'
-        wght += str(i)
-        inputasp = request.args.get(asp)
-        inputwght = request.args.get(wght)
-        if inputasp is not None and inputwght is not None:
-            asp = Aspect(inputasp.lower(), int(inputwght))
-            aspects.append(asp)
-            i += 1
-        else:
-            i = False
+    aspects = extract_aspects(request)
     
     global status
     # json obj with all ES hits containing obj_a, obj_b and a marker.
@@ -46,17 +36,67 @@ def cam():
 
     # removing sentences that can't be properly analyzed
     status = 'Clear sentences'
-    all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
+    all_sentences = sentence_clearer.clear_sentences(all_sentences, obj_a, obj_b)
 
     # find the winner of the two objects
     status = 'Find winner'
     final_dict = find_winner(all_sentences, obj_a, obj_b, aspects)
+
+    return jsonify(final_dict)
+
+@app.route('/cam/ml', methods=['GET'])
+def cam_ml():
+    fast_search = request.args.get('fs')
+    obj_a = Argument(request.args.get('objectA').lower().strip())
+    obj_b = Argument(request.args.get('objectB').lower().strip())
+    aspects = extract_aspects(request)
+
+    global status
+    status = 'Request all sentences containing the objects'
+    if aspects:
+        json_compl_triples = request_es_triple(obj_a, obj_b, aspects)
+    json_compl = request_es_ML(fast_search, obj_a, obj_b)
+
+    status = 'Extract sentences'
+    if aspects:
+        all_sentences = extract_sentences(json_compl_triples)
+        all_sentences.update(extract_sentences(json_compl))
+    else:
+        all_sentences = extract_sentences(json_compl)
+
+    sentence_clearer.remove_questions(all_sentences)
+
+    status = 'Prepare sentences for classification'
+    prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b)
+
+    status = 'Classify sentences'
+    classification_results = classify_sentences(prepared_sentences)
+
+    status = 'Evaluate classified sentences; Find winner'
+    final_dict = evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects)
+
     return jsonify(final_dict)
 
 @app.route('/status')
 @app.route('/cam/status')
 def getStatus():
     return jsonify(status)
+
+def extract_aspects(request):
+    aspects = []
+    i = 1
+    while i is not False:
+        asp = 'aspect{}'.format(i)
+        wght = 'weight{}'.format(i)
+        inputasp = request.args.get(asp)
+        inputwght = request.args.get(wght)
+        if inputasp is not None and inputwght is not None:
+            asp = Aspect(inputasp.lower(), int(inputwght))
+            aspects.append(asp)
+            i += 1
+        else:
+            i = False
+    return aspects
 
 class Argument:
     '''

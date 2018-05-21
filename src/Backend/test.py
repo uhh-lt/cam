@@ -7,6 +7,8 @@ from main import Argument, Aspect
 from aspect_searcher import find_aspects
 from es_requester import build_object_urlpart
 from link_extracter import extract_main_links
+from sentence_preparation_ML import prepare_sentence_DF
+import classify
 
 
 class Test(unittest.TestCase):
@@ -217,6 +219,18 @@ class Test(unittest.TestCase):
         obj_b = Argument('pepsi light')
         self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
                          'A': ['ingredients'], 'B': ['sweeteners']})
+
+
+    '''
+    Test the ML parts
+    '''
+
+    def test_sentence_preparation_ML(self):
+        sentenceA = ['Coca-Cola tastes better than pepsi, because of its ingredients',
+            'Pepsi is worse than Coca-cola, because of the better sweeteners']
+
+        df = prepare_sentence_DF(sentenceA, Argument('coca-cola'), Argument('pepsi'))
+        self.assertNotEqual(df.loc[0]['object_a'], df.loc[1]['object_a'])
 
 
 if __name__ == '__main__':
