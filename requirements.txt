@@ -3,3 +3,10 @@ flask-cors
 nltk
 requests
 inflect
+pandas
+scipy
+sklearn
+pytorch
+torchvision
+numpy
+xgboost
