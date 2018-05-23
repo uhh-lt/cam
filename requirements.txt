@@ -3,8 +3,13 @@ flask-cors
 nltk
 requests
 inflect
-pandas
-sklearn
-numpy
-xgboost
+# From here all dependencies for ml
 scipy
+sklearn
+pytorch
+numpy
+pandas
+torchvision
+xgboost
+
+

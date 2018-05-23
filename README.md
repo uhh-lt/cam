@@ -19,6 +19,11 @@ In a shell, install requirements:
     python -m nltk.downloader punkt
     python -m nltk.downloader averaged_perceptron_tagger
 
+To be able to use the machine learning approaches, it is necessary to download the following files and place them in ./src/Backend/data
+
+- Download [Glove Embeddings](http://nlp.stanford.edu/data/glove.840B.300d.zip)
+- Download [InferSent model](https://s3.amazonaws.com/senteval/infersent/infersent.allnli.pickle)
+
 ## Frontend
 
 [Download nodejs with npm](https://nodejs.org/en/)

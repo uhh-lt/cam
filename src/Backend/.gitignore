@@ -16,3 +16,6 @@
 
 # Pycache
 __pycache__
+
+/data/glove.840B.300d.txt
+/data/infersent.allnli.pickle

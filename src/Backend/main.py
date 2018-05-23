@@ -48,6 +48,7 @@ def cam():
 @app.route('/cam/ml', methods=['GET'])
 def cam_ml():
     fast_search = request.args.get('fs')
+    model = request.args.get('model')
     obj_a = Argument(request.args.get('objectA').lower().strip())
     obj_b = Argument(request.args.get('objectB').lower().strip())
     aspects = extract_aspects(request)
@@ -71,7 +72,7 @@ def cam_ml():
     prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b)
 
     status = 'Classify sentences'
-    classification_results = classify_sentences(prepared_sentences)
+    classification_results = classify_sentences(prepared_sentences, model)
 
     status = 'Evaluate classified sentences; Find winner'
     final_dict = evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects)

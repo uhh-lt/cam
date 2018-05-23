@@ -25,20 +25,9 @@ export class UrlBuilderService {
    * @returns the URL
    */
   buildURL(objA, objB, aspectList, model, fastSearch) {
-    let URL = this.buildObjURL(objA, objB, this.getHostname(model), fastSearch);
+    let URL = `${this.getUrlBase(model)}fs=${fastSearch}&objectA=${objA}&objectB=${objB}`;
     URL += this.addAspectURL(aspectList);
     return URL;
-  }
-
-  /**
-   * Builds the first part of the URL containing the host address and the objects entered.
-   *
-   * @param objA the first object entered by the user
-   * @param objB the second object entered by the user
-   * @returns the first part of the URL
-   */
-  private buildObjURL(objA, objB, hostname, fastSearch) {
-    return `${hostname}?fs=${fastSearch}&objectA=${objA}&objectB=${objB}`;
   }
 
   /**
@@ -63,11 +52,13 @@ export class UrlBuilderService {
    * @param model the backend model to be used for the comparison
    * @returns the url basis (HOSTNAME)
    */
-  private getHostname(model: string) {
+  private getUrlBase(model: string) {
     if (model === 'default') {
-      return this.HOSTNAME_DEFAULT;
-    } else if (model === 'machine_learning') {
-      return this.HOSTNAME_ML;
+      return `${this.HOSTNAME_DEFAULT}?`;
+    } else if (model === 'ml1') {
+      return `${this.HOSTNAME_ML}?model=bow&`;
+    } else if (model === 'ml2') {
+      return `${this.HOSTNAME_ML}?model=infersent&`;
     }
     console.error('Model was neither default nor machine_learning');
   }
