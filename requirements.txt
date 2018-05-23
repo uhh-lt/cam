@@ -6,7 +6,5 @@ inflect
 pandas
 scipy
 sklearn
-pytorch
-torchvision
 numpy
 xgboost

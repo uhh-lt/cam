@@ -6,19 +6,18 @@ import object_comparer
 import os, sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "cam_pretrained"))
 
-from cam_pretrained.model_util import load_model
-
+# from cam_pretrained.model_util import load_model
 
 def classify_sentences(sentences):
-    # model = load_model('data/bow_model.pkl', glove_path=None, infersent_path=None)
-    model = load_model('data/bow_model_XGB.pkl', glove_path=None, infersent_path=None)
+    model = joblib.load('data/bow_model_XGB.pkl')
     # model = load_model('data/model_2.pkl', glove_path='data/glove.840B.300d.txt', infersent_path='data/infersent.allnli.pickle')
     return model.predict(sentences)
 
 
 def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects):
 
-    max_sentscore = max(sentences.values())
+    if sentences.values():
+        max_sentscore = max(sentences.values())
 
     for index, row in prepared_sentences.iterrows():
         label = classification_results[index]
