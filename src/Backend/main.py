@@ -44,6 +44,7 @@ def cam():
 
     return jsonify(final_dict)
 
+@app.route('/ml', methods=['GET'])
 @app.route('/cam/ml', methods=['GET'])
 def cam_ml():
     fast_search = request.args.get('fs')
