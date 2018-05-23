@@ -6,7 +6,7 @@ inflect
 # From here all dependencies for ml
 scipy
 sklearn
-pytorch
+torch
 numpy
 pandas
 torchvision
