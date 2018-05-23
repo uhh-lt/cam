@@ -4,7 +4,6 @@ nltk
 requests
 inflect
 pandas
-scipy
 sklearn
 numpy
 xgboost
