@@ -81,6 +81,8 @@ def build_final_dict(obj_a, obj_b):
             the second object of the comparison
     '''
     final_dict = {}  # the dictionary to be returned
+    sentences_obja = obj_a.sentence_with_aspect + obj_a.sentences
+    sentences_objb = obj_b.sentence_with_aspect + obj_b.sentences
     if obj_a.points > obj_b.points:
         final_dict['winner'] = obj_a.name
     elif obj_b.points > obj_a.points:
@@ -92,11 +94,11 @@ def build_final_dict(obj_a, obj_b):
     final_dict['scoreObject1'] = obj_a.points
     final_dict['scoreObject2'] = obj_b.points
     linked_words = extract_main_links(
-        obj_a.sentences, obj_b.sentences, obj_a, obj_b)
+        sentences_obja, sentences_objb, obj_a, obj_b)
     final_dict['extractedAspectsObject1'] = linked_words['A']
     final_dict['extractedAspectsObject2'] = linked_words['B']
-    final_dict['sentencesObject1'] = obj_a.sentence_with_aspect + obj_a.sentences
-    final_dict['sentencesObject2'] = obj_b.sentence_with_aspect + obj_b.sentences
+    final_dict['sentencesObject1'] = sentences_obja
+    final_dict['sentencesObject2'] = sentences_objb
     return final_dict
 
 
