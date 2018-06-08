@@ -43,7 +43,7 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
     return object_comparer.build_final_dict(obj_a, obj_b)
 
 def prepare_sentence_list(sentences_with_confidence):
-    sentences_with_confidence.sort()
+    sentences_with_confidence.sort(reverse = True)
     return list(DataFrame(sentences_with_confidence, columns=['confidence', 'sentence'])['sentence'])
 
 def add_points(contained_aspects, winner, sentence_score, sentence, max_sentscore, classification_confidence):
