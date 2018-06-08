@@ -30,7 +30,7 @@ export class MarkClassesPipe implements PipeTransform {
   }
 
   private buildRegex(sequence: string) {
-    const regex1 = '(?!<span[^>]*?>)(\\b';
+    const regex1 = '(?!([^<]+)?>)(?!<span[^>]*?>)(\\b';
     const regex2 = '\\b)(?![^<]*?</span>)';
     const cleanedsequence = sequence.replace(/[^a-zA-Z0-9 ]/g, ' ').replace(/ +/g, ' ');
     return new RegExp(`${regex1}${sequence}${regex2}|${regex1}${cleanedsequence}${regex2}`, 'gi');
