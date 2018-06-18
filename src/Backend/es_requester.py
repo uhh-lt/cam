@@ -20,7 +20,7 @@ def request_es(fast_search, obj_a, obj_b):
     if(len(sys.argv) > 1):
         return requests.get(url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
     else: 
-        return requests.get(url)
+        return requests.get(url, auth=('reader', 'reader'))
 
 def request_es_triple(obj_a, obj_b, aspects):
     url = build_object_urlpart(obj_a, obj_b)
