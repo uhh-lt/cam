@@ -2,8 +2,8 @@ import inflect
 from nltk.corpus import stopwords
 
 
-ES_HOSTNAME = 'http://localhost:9200/'  # port of the local host
-# ES_HOSTNAME = 'http://134.100.15.203:9200/'
+# ES_HOSTNAME = 'http://localhost:9200/'  # port of the local host
+ES_HOSTNAME = 'http://134.100.15.203:9200/' # url for es on ltdemos
 # Elastic Search commoncrawl2 search request
 CRAWL_DATA_REPOS = 'commoncrawl2/_search?q=text:'
 
