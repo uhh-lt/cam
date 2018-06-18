@@ -9,11 +9,11 @@ export class UrlBuilderService {
     *  with your locally hosted server instead, to 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
     *  if you want to communicate with ltdemos.
     */
-  // HOSTNAME_DEFAULT = 'http://127.0.0.1:5000/cam';
-  // HOSTNAME_ML = 'http://127.0.0.1:5000/cam/ml';
+  HOSTNAME_DEFAULT = 'http://127.0.0.1:5000/cam';
+  HOSTNAME_ML = 'http://127.0.0.1:5000/cam/ml';
 
-  HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
-  HOSTNAME_ML = 'http://ltdemos.informatik.uni-hamburg.de/cam-api/ml';
+  // HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
+  // HOSTNAME_ML = 'http://ltdemos.informatik.uni-hamburg.de/cam-api/ml';
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
