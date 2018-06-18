@@ -2,13 +2,8 @@ import inflect
 from nltk.corpus import stopwords
 
 
-<<<<<<< HEAD
 # ES_HOSTNAME = 'http://localhost:9200/'  # if you want to connect to a locally hosted ES
 ES_HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/'
-=======
-# ES_HOSTNAME = 'http://localhost:9200/'  # port of the local host
-ES_HOSTNAME = 'http://134.100.15.203:9200/' # url for es on ltdemos
->>>>>>> 342053a8b797d166b56da8c340d5dc43cae2efc8
 # Elastic Search commoncrawl2 search request
 CRAWL_DATA_REPOS = 'commoncrawl2/_search?q=text:'
 
