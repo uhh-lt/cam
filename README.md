@@ -15,6 +15,7 @@ If you want to learn more about the project or help to develop it, feel free to 
 In a shell, install requirements:
 
     pip install -r requirements.txt
+    pip install -r mlRequirements.txt
     python -m nltk.downloader stopwords
     python -m nltk.downloader punkt
     python -m nltk.downloader averaged_perceptron_tagger
