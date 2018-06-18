@@ -7,7 +7,7 @@ python:
   - "3.6"
   # - "pypy"
 install :
-  - pip install -r requirements.txt --progress-bar off --quiet
+  - pip install -r requirements.txt --quiet
   - python -m nltk.downloader stopwords
   - python -m nltk.downloader punkt
   - python -m nltk.downloader averaged_perceptron_tagger
