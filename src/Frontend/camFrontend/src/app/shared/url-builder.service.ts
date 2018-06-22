@@ -5,15 +5,10 @@ export class UrlBuilderService {
 
   constructor() { }
   /**
-    *  The name of the server. Change this to 'http://127.0.0.1:5000/cam' if you want to communicate
-    *  with your locally hosted server instead, to 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
-    *  if you want to communicate with ltdemos.
+    *  The name of the backend server.
     */
-  HOSTNAME_DEFAULT = 'http://127.0.0.1:5000/cam';
-  HOSTNAME_ML = 'http://127.0.0.1:5000/cam/ml';
-
-  // HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
-  // HOSTNAME_ML = 'http://ltdemos.informatik.uni-hamburg.de/cam-api/ml';
+  HOSTNAME_DEFAULT = 'http://localhost:10050/cam';
+  HOSTNAME_ML = 'http://localhost:10050/cam/ml';
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
