@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  frontend:
+    image: chulioz/cam:frontend
+    ports:
+      - "10051:4200"
+  backend:
+    image: chulioz/cam:backend
+    ports:
+      - "10050:5000"
