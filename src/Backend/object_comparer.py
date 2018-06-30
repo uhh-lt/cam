@@ -62,11 +62,14 @@ def add_points(contained_aspects, winner, score, sentence, max_score, marker_cou
         for aspect in contained_aspects:
             winner.add_points((score / max_score) * aspect.weight)
             winner.add_points((score / max_score) * marker_count)
-        winner.add_sentence_with_aspect(sentence)
+        if len(contained_aspects) == 1:
+            winner.add_sentence(contained_aspects[0].name, sentence)
+        else:
+            winner.add_sentence('multiple', sentence)
     else:
         # multiple markers, multiple points
         winner.add_points((score / max_score) * marker_count)
-        winner.add_sentence(sentence)
+        winner.add_sentence('none', sentence)
     
 
 def build_final_dict(obj_a, obj_b):
@@ -81,24 +84,32 @@ def build_final_dict(obj_a, obj_b):
             the second object of the comparison
     '''
     final_dict = {}  # the dictionary to be returned
-    sentences_obja = obj_a.sentence_with_aspect + obj_a.sentences
-    sentences_objb = obj_b.sentence_with_aspect + obj_b.sentences
+
+    sentences_obja = []
+    for value in obj_a.sentences.values():
+        sentences_obja = sentences_obja + value
+
+    sentences_objb = []
+    for value in obj_b.sentences.values():
+        sentences_objb = sentences_objb + value
+
     if obj_a.points > obj_b.points:
         final_dict['winner'] = obj_a.name
     elif obj_b.points > obj_a.points:
         final_dict['winner'] = obj_b.name
     else:
         final_dict['winner'] = 'No winner found'
+    linked_words = extract_main_links(
+        sentences_obja, sentences_objb, obj_a, obj_b)
     final_dict['object1'] = obj_a.name
     final_dict['object2'] = obj_b.name
     final_dict['scoreObject1'] = obj_a.points
     final_dict['scoreObject2'] = obj_b.points
-    linked_words = extract_main_links(
-        sentences_obja, sentences_objb, obj_a, obj_b)
     final_dict['extractedAspectsObject1'] = linked_words['A']
     final_dict['extractedAspectsObject2'] = linked_words['B']
-    final_dict['sentencesObject1'] = sentences_obja
-    final_dict['sentencesObject2'] = sentences_objb
+    final_dict['sentencesObject1'] = obj_a.sentences
+    final_dict['sentencesObject2'] = obj_b.sentences
+
     return final_dict
 
 

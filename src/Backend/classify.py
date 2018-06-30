@@ -34,11 +34,11 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
             add_points(contained_aspects, obj_a, sentences[sentence], sentence, max_sentscore, classification_confidence)
         else:
             add_points(contained_aspects, obj_b, sentences[sentence], sentence, max_sentscore, classification_confidence)
-        
-    obj_a.sentence_with_aspect = prepare_sentence_list(obj_a.sentence_with_aspect)
-    obj_b.sentence_with_aspect = prepare_sentence_list(obj_b.sentence_with_aspect)
-    obj_a.sentences = prepare_sentence_list(obj_a.sentences)
-    obj_b.sentences = prepare_sentence_list(obj_b.sentences)
+    
+    for key in obj_a.sentences:
+        obj_a.sentences[key] = prepare_sentence_list(obj_a.sentences[key])
+    for key in obj_b.sentences:
+        obj_b.sentences[key] = prepare_sentence_list(obj_b.sentences[key])
 
     return object_comparer.build_final_dict(obj_a, obj_b)
 
@@ -50,7 +50,10 @@ def add_points(contained_aspects, winner, sentence_score, sentence, max_sentscor
     if contained_aspects:
         for aspect in contained_aspects:
             winner.add_points((sentence_score / max_sentscore) * aspect.weight * max_sentscore)
-        winner.add_sentence_with_aspect([classification_confidence, sentence])
+        if len(contained_aspects) == 1:
+            winner.add_sentence(contained_aspects[0].name, [classification_confidence, sentence])
+        else:
+            winner.add_sentence('multiple', [classification_confidence, sentence])
     else:
         winner.add_points(sentence_score / max_sentscore)
-        winner.add_sentence([classification_confidence, sentence])
+        winner.add_sentence('none', [classification_confidence, sentence])
