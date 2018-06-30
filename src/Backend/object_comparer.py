@@ -28,11 +28,14 @@ def find_winner(sentences, obj_a, obj_b, aspects):
     for s in sentences:
         comp_result = what_is_better(s, obj_a, obj_b)
         if comp_result['winner'] == obj_a:  # objectA won the sentence
-            add_points(find_aspects(s, aspects), obj_a, sentences[s], s, max_sentscore, comp_result['marker_cnt'])
+            add_points(find_aspects(s, aspects), obj_a,
+                       sentences[s], s, max_sentscore, comp_result['marker_cnt'])
         else:  # objectB won the sentence
-            add_points(find_aspects(s, aspects), obj_b, sentences[s], s, max_sentscore, comp_result['marker_cnt'])
+            add_points(find_aspects(s, aspects), obj_b,
+                       sentences[s], s, max_sentscore, comp_result['marker_cnt'])
 
     return build_final_dict(obj_a, obj_b)
+
 
 def add_points(contained_aspects, winner, score, sentence, max_score, marker_count):
     '''
@@ -44,7 +47,7 @@ def add_points(contained_aspects, winner, score, sentence, max_score, marker_cou
 
     winner:             Argument
                         The winner of the given sentence
-    
+
     score:              Integer
                         The score of the given sentence
 
@@ -59,18 +62,20 @@ def add_points(contained_aspects, winner, score, sentence, max_score, marker_cou
                         Sentence
     '''
     if contained_aspects:
-        for aspect in contained_aspects:
-            winner.add_points((score / max_score) * aspect.weight)
-            winner.add_points((score / max_score) * marker_count)
         if len(contained_aspects) == 1:
+            winner.add_points(
+                contained_aspects[0].name, (score / max_score) * (contained_aspects[0].weight + marker_count))
             winner.add_sentence(contained_aspects[0].name, sentence)
         else:
+            for aspect in contained_aspects:
+                winner.add_points('multiple', (score / max_score)
+                                  * (aspect.weight + marker_count))
             winner.add_sentence('multiple', sentence)
     else:
         # multiple markers, multiple points
-        winner.add_points((score / max_score) * marker_count)
+        winner.add_points('none', (score / max_score) * marker_count)
         winner.add_sentence('none', sentence)
-    
+
 
 def build_final_dict(obj_a, obj_b):
     '''
@@ -93,9 +98,9 @@ def build_final_dict(obj_a, obj_b):
     for value in obj_b.sentences.values():
         sentences_objb = sentences_objb + value
 
-    if obj_a.points > obj_b.points:
+    if obj_a.totalPoints > obj_b.totalPoints:
         final_dict['winner'] = obj_a.name
-    elif obj_b.points > obj_a.points:
+    elif obj_b.totalPoints > obj_a.totalPoints:
         final_dict['winner'] = obj_b.name
     else:
         final_dict['winner'] = 'No winner found'
@@ -103,6 +108,8 @@ def build_final_dict(obj_a, obj_b):
         sentences_obja, sentences_objb, obj_a, obj_b)
     final_dict['object1'] = obj_a.name
     final_dict['object2'] = obj_b.name
+    final_dict['totalScoreObject1'] = obj_a.totalPoints
+    final_dict['totalScoreObject2'] = obj_b.totalPoints
     final_dict['scoreObject1'] = obj_a.points
     final_dict['scoreObject2'] = obj_b.points
     final_dict['extractedAspectsObject1'] = linked_words['A']
@@ -140,14 +147,19 @@ def what_is_better(sentence, obj_a, obj_b):
     positive_pos = get_marker_pos(
         sentence, first_pos, second_pos, POSITIVE_MARKERS)
     if positive_pos != -1:  # there's a positive marker, check if a won
-        result['marker_cnt'] = get_marker_count(sentence, first_pos, second_pos, POSITIVE_MARKERS)
-        result['winner'] = obj_a if obj_a_wins_sentence(first_pos, a_pos, opp_pos, neg_pos, positive_pos) else obj_b
+        result['marker_cnt'] = get_marker_count(
+            sentence, first_pos, second_pos, POSITIVE_MARKERS)
+        result['winner'] = obj_a if obj_a_wins_sentence(
+            first_pos, a_pos, opp_pos, neg_pos, positive_pos) else obj_b
         return result
         # we can return because there's never both markers in a sentence
-    negative_pos = get_marker_pos(sentence, first_pos, second_pos, NEGATIVE_MARKERS)
-    result['marker_cnt'] = get_marker_count(sentence, first_pos, second_pos, NEGATIVE_MARKERS)
+    negative_pos = get_marker_pos(
+        sentence, first_pos, second_pos, NEGATIVE_MARKERS)
+    result['marker_cnt'] = get_marker_count(
+        sentence, first_pos, second_pos, NEGATIVE_MARKERS)
     # we're only here if there's no positive marker, so there must be negative one
-    result['winner'] = obj_b if obj_a_wins_sentence(first_pos, a_pos, opp_pos, neg_pos, negative_pos) else obj_a
+    result['winner'] = obj_b if obj_a_wins_sentence(
+        first_pos, a_pos, opp_pos, neg_pos, negative_pos) else obj_a
     return result
 
 
@@ -173,6 +185,6 @@ def obj_a_wins_sentence(first_pos, a_pos, opp_pos, neg_pos, marker_pos):
     if opp_pos != -1 and first_pos < opp_pos < marker_pos:
         return first_pos != a_pos  # example: a is not better than b
     elif neg_pos != -1 and first_pos < neg_pos < marker_pos:
-        return first_pos != a_pos # example: a couldn't be better than b
+        return first_pos != a_pos  # example: a couldn't be better than b
     else:
         return first_pos == a_pos  # example: a is better than b
