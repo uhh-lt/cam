@@ -10,4 +10,4 @@ services:
     build: ./src/Backend
     ports:
       - "10050:5000"
-    container-name: cam-backend
+    container_name: cam-backend
