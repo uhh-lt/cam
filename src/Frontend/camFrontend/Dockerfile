@@ -12,12 +12,10 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json /usr/src/app/package.json
 RUN npm install
 RUN npm install -g @angular/cli
+RUN npm audit fix
 
 # add app
 COPY . /usr/src/app
-
-# make port available
-EXPOSE 4200
 
 # start app
 CMD ng serve --host 0.0.0.0
