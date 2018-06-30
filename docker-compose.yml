@@ -2,10 +2,12 @@ version: '3'
 
 services:
   frontend:
-    image: chulioz/cam:frontend
+    build: ./src/Frontend
     ports:
       - "10051:4200"
+    container_name: cam-frontend
   backend:
-    image: chulioz/cam:backend
+    build: ./src/Backend
     ports:
       - "10050:5000"
+    container-name: cam-backend
