@@ -2,7 +2,7 @@ version: '3'
 
 services:
   frontend:
-    build: ./src/Frontend
+    build: ./src/Frontend/camFrontend
     ports:
       - "10051:4200"
     container_name: cam-frontend
