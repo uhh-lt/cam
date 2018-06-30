@@ -1,0 +1,13 @@
+<mat-accordion *ngIf = "initialized" matTooltip="{{summary}}" >
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" [disabled]="_aspectSentences.length == 0" matBadge="{{_aspectSentences.length}}">
+    <mat-expansion-panel-header >
+      <mat-panel-title>
+        {{titel}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngFor='let sentence of _aspectSentences'>
+      <p style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict">
+      </p>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

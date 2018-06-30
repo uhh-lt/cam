@@ -11,13 +11,7 @@ export class ResultPresentationComponent {
 
   private dispensableResult = new DispensableResult();
   private finalAspectDict = {};
-
-  private winnerSentenceExamples = {}; // stores some example sentences for the first object
-  private looserSentenceExamples = {}; // stores some example sentences for the second object
-
-  // sentences to be shown for each object
-  private sentenceShowNumberlistWinner = new Array<number>();
-  private sentenceShowNumberlistLooser = new Array<number>();
+  private categories = new Array<string>();
 
   private sentenceCount: number; // total amount of sentences used for comparison
 
@@ -32,6 +26,7 @@ export class ResultPresentationComponent {
    */
   saveResult(result: Result, finalAspDict) {
     console.log('Save Result accessed');
+    console.log(result);
     this.finalAspectDict = finalAspDict;
 
     // count the number of sentences used for comparison
@@ -40,24 +35,22 @@ export class ResultPresentationComponent {
     const aWon = result.scoreObject1 > result.scoreObject2; // did object A win?
     if (aWon) {
       this.saveWinner(result.object1, result.object2);
-      this.saveScores(result.scoreObject1, result.scoreObject2);
+      this.saveScores(result.scoreObject1, result.scoreObject2, result.totalScoreObject1, result.totalScoreObject2);
       this.saveExtractedAspects(result.extractedAspectsObject1, result.extractedAspectsObject2);
       this.saveSentences(result.sentencesObject1, result.sentencesObject2);
 
     } else {
       this.saveWinner(result.object2, result.object1);
-      this.saveScores(result.scoreObject2, result.scoreObject1);
+      this.saveScores(result.scoreObject2, result.scoreObject1, result.totalScoreObject2, result.totalScoreObject1);
       this.saveExtractedAspects(result.extractedAspectsObject2, result.extractedAspectsObject1);
       this.saveSentences(result.sentencesObject2, result.sentencesObject1);
     }
-    this.setSentenceShow();
+    console.log(this.dispensableResult);
     this.showResult = true;
   }
 
   reset() {
     this.dispensableResult = new DispensableResult();
-    this.sentenceShowNumberlistWinner = new Array<number>();
-    this.sentenceShowNumberlistLooser = new Array<number>();
     this.sentenceCount = 0;
     this.showResult = false;
   }
@@ -79,9 +72,27 @@ export class ResultPresentationComponent {
    * @param winnerScore the score of the object that won the comparation
    * @param looserScore the score of the object that lost the comparation
    */
-  private saveScores(winnerScore: number, looserScore: number) {
-    this.dispensableResult.winnerScorePercent = (winnerScore / (winnerScore + looserScore) * 100).toFixed(2);
-    this.dispensableResult.looserScorePercent = (looserScore / (winnerScore + looserScore) * 100).toFixed(2);
+  private saveScores(winnerScores: any, looserScores: any, totalScoreA: number, totalScoreB: number) {
+
+    this.dispensableResult.winnerScoresPercent['total'] = this.calcScore(totalScoreA, totalScoreB);
+    this.dispensableResult.looserScoresPercent['total'] = this.calcScore(totalScoreB, totalScoreA);
+
+    this.categories = Array.from(new Set(Object.keys(winnerScores).concat(Object.keys(looserScores))));
+    this.categories.forEach(key => {
+      this.dispensableResult.winnerScoresPercent[key] = this.calcScore(winnerScores[key], looserScores[key]);
+      this.dispensableResult.looserScoresPercent[key] = this.calcScore(looserScores[key], winnerScores[key]);
+    });
+  }
+
+  private calcScore(a: number, b: number): string {
+    if (a === undefined) {
+      a = 0;
+    }
+    if (b === undefined) {
+      b = 0;
+    }
+
+    return (a / (a + b) * 100).toFixed(2);
   }
 
   /**
@@ -101,37 +112,8 @@ export class ResultPresentationComponent {
    * @param winnerSentences sentences of the object that won
    * @param looserSentences sentences of the object that lost
    */
-  private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>) {
-    this.winnerSentenceExamples = winnerSentences;
-    this.looserSentenceExamples = looserSentences;
-  }
-
-  /**
-   * Sets the amount of initially shown sentence examples for each object. The default is 10 for
-   * each, but if an object has less than 10 sentences, it's set to this amount instead.
-   *
-   */
-  private setSentenceShow() {
-    const minW = Math.min(9, Object.keys(this.winnerSentenceExamples).length);
-    const minL = Math.min(9, Object.keys(this.looserSentenceExamples).length);
-    this.sentenceShowNumberlistWinner = Array.from(Array(minW).keys());
-    this.sentenceShowNumberlistLooser = Array.from(Array(minL).keys());
-  }
-
-  /**
-   * Shows 10 more sentences in the result table for both objects or, if an object has less than 10
-   * sentences left to be shown, instead only the remaining sentences will be added.
-   *
-   */
-  showMoreSentences() {
-    this._showMoreSentences(this.winnerSentenceExamples, this.sentenceShowNumberlistWinner);
-    this._showMoreSentences(this.looserSentenceExamples, this.sentenceShowNumberlistLooser);
-  }
-
-  private _showMoreSentences(sentecesExamples, showNumber) {
-    const minW = Math.min(10, Object.keys(sentecesExamples).length - showNumber[showNumber.length - 1] - 1);
-    for (let i = 0; i < minW; i++) {
-      showNumber.push(showNumber[showNumber.length - 1] + 1);
-    }
+  private saveSentences(winnerSentences: {}, looserSentences: {}) {
+    this.dispensableResult.winnerSentences = winnerSentences;
+    this.dispensableResult.looserSentences = looserSentences;
   }
 }

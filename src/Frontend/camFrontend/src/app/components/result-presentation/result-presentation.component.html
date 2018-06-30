@@ -16,10 +16,15 @@
         <td class='text-center winner' style='font-size: 17px'>Winner</td>
         <td class='text-center looser' style='font-size: 17px'>Runner-up</td>
       </tr>
+      <tr *ngFor="let key of categories">
+        <th scope='row' style='font-size: 17px'>{{key}}</th>
+        <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent[key]}} %</td>
+        <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent[key]}} %</td>
+      </tr>
       <tr>
-        <th scope='row' style='font-size: 17px'>Score</th>
-        <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScorePercent}} %</td>
-        <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScorePercent}} %</td>
+        <th scope='row' style='font-size: 17px'>total</th>
+        <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent['total']}} %</td>
+        <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent['total']}} %</td>
       </tr>
       <tr>
         <th scope='row' style='font-size: 17px'>Automatically extracted aspects for these objects</th>
@@ -30,25 +35,17 @@
           <li *ngFor='let link of dispensableResult.looserLinks'>{{link}}</li>
         </td>
       </tr>
-      <tr>
-        <th scope='row' style='font-size: 17px'>Sentence examples</th>
+      <tr *ngFor="let key of categories">
+        <th scope='row' style='font-size: 17px'>Sentence examples for {{key}}</th>
         <td>
-          <div *ngFor='let i of sentenceShowNumberlistWinner'>
-            <div style='font-size: 17px' [innerHtml]="winnerSentenceExamples[i] | markClasses:dispensableResult:finalAspectDict">
-            </div>
-            <br>
-          </div>
+          <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.winnerSentences[key]" [titel]="'Sentence examples for ' + key"
+            [dispensableResult]="dispensableResult" [finalAspectDict]="finalAspectDict"></app-aspect-expansion>
         </td>
         <td>
-          <div *ngFor='let i of sentenceShowNumberlistLooser'>
-            <div [innerHtml]="looserSentenceExamples[i] | markClasses:dispensableResult:finalAspectDict"></div>
-            <br>
-          </div>
+          <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.looserSentences[key]" [titel]="'Sentence examples for ' + key"
+            [dispensableResult]="dispensableResult" [finalAspectDict]="finalAspectDict"></app-aspect-expansion>
         </td>
       </tr>
     </tbody>
   </table>
-  <button (click)='showMoreSentences()' mat-raised-button color="primary">
-    Show more sentences
-  </button>
 </mat-card>
