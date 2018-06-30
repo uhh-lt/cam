@@ -2,50 +2,51 @@
   <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p>
   <br>
   <br>
-  <table class='table'>
+  <table class='table table-borderless text-center'>
     <thead>
       <tr>
-        <th width='20%' scope='col'></th>
-        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{dispensableResult.winner}}</th>
-        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{dispensableResult.looser}}</th>
+        <th width='50%' scope='col' class='text-center winner' style='font-size: 19px'>{{dispensableResult.winner}}</th>
+        <th width='50%' scope='col' class='text-center looser' style='font-size: 19px'>{{dispensableResult.looser}}</th>
       </tr>
     </thead>
+  </table>
+  <table class='table'>
     <tbody>
-      <tr>
-        <th scope='row'></th>
-        <td class='text-center winner' style='font-size: 17px'>Winner</td>
-        <td class='text-center looser' style='font-size: 17px'>Runner-up</td>
-      </tr>
       <tr *ngFor="let key of categories">
-        <th scope='row' style='font-size: 17px'>{{key}}</th>
-        <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent[key]}} %</td>
-        <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent[key]}} %</td>
+        <td width='40%' class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent[key]}} %</td>
+        <th width='20%' class='text-center' scope='row' style='font-size: 17px'>{{key}}</th>
+        <td width='40%' class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent[key]}} %</td>
       </tr>
       <tr>
-        <th scope='row' style='font-size: 17px'>total</th>
         <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent['total']}} %</td>
+        <th class='text-center' scope='row' style='font-size: 17px'>Overall Score</th>
         <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent['total']}} %</td>
       </tr>
       <tr>
-        <th scope='row' style='font-size: 17px'>Automatically extracted aspects for these objects</th>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of dispensableResult.winnerLinks'>{{link}}</li>
+          <mat-chip-list>
+            <mat-chip *ngFor='let link of dispensableResult.winnerLinks'>{{link}}</mat-chip>
+          </mat-chip-list>
         </td>
+        <th class='text-center' scope='row' style='font-size: 17px'>Automatically Extracted Aspects</th>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of dispensableResult.looserLinks'>{{link}}</li>
+          <mat-chip-list>
+            <mat-chip *ngFor='let link of dispensableResult.looserLinks'>{{link}}</mat-chip>
+          </mat-chip-list>
         </td>
       </tr>
-      <tr *ngFor="let key of categories">
-        <th scope='row' style='font-size: 17px'>Sentence examples for {{key}}</th>
-        <td>
-          <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.winnerSentences[key]" [titel]="'Sentence examples for ' + key"
-            [dispensableResult]="dispensableResult" [finalAspectDict]="finalAspectDict"></app-aspect-expansion>
-        </td>
-        <td>
-          <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.looserSentences[key]" [titel]="'Sentence examples for ' + key"
-            [dispensableResult]="dispensableResult" [finalAspectDict]="finalAspectDict"></app-aspect-expansion>
-        </td>
-      </tr>
+  </table>
+  <table class="table table-borderless">
+    <tr *ngFor="let key of categories">
+      <td style="width: 50%">
+        <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.winnerSentences[key]" [titel]="'Sentence examples for ' + key"
+          [dispensableResult]="dispensableResult" [finalAspectDict]="finalAspectDict"></app-aspect-expansion>
+      </td>
+      <td>
+        <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.looserSentences[key]" [titel]="'Sentence examples for ' + key"
+          [dispensableResult]="dispensableResult" [finalAspectDict]="finalAspectDict"></app-aspect-expansion>
+      </td>
+    </tr>
     </tbody>
   </table>
 </mat-card>
