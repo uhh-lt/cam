@@ -14,11 +14,8 @@ RUN python -m nltk.downloader stopwords
 RUN python -m nltk.downloader punkt
 RUN python -m nltk.downloader averaged_perceptron_tagger
 
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
-
 # Define environment variable
 ENV NAME World
 
 # Run main.py when the container launches
-CMD ["python", "main.py reader reader"]
+CMD python main.py reader reader
