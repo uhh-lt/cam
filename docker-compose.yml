@@ -2,10 +2,17 @@ version: '3'
 
 services:
   frontend:
-    image: chulioz/cam:frontend
+    image: cam-frontend
     ports:
-      - "10051:4200"
+      - 10101:4200
+    networks: 
+      - cam
   backend:
-    image: chulioz/cam:backend
+    image: cam-backend
     ports:
-      - "10050:5000"
+      - 10100:5000
+    networks: 
+      - cam
+
+networks: 
+  cam:
