@@ -6,13 +6,15 @@ services:
     ports:
       - 10101:4200
     networks: 
-      - cam
+      cam:
   backend:
     image: cam-backend
     ports:
       - 10100:5000
     networks: 
-      - cam
+      cam:
+        aliases:
+          cam.backend
 
 networks: 
   cam:
