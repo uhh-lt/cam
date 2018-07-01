@@ -7,8 +7,8 @@ export class UrlBuilderService {
   /**
     *  The name of the backend server.
     */
-  HOSTNAME_DEFAULT = 'http://localhost:10050/cam';
-  HOSTNAME_ML = 'http://localhost:10050/cam/ml';
+  HOSTNAME_DEFAULT = 'http://localhost:10052/cam';
+  HOSTNAME_ML = 'http://localhost:10052/cam/ml';
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
