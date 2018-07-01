@@ -7,7 +7,7 @@ export class UrlBuilderService {
   /**
     *  The name of the backend server.
     */
-  HOSTNAME_DEFAULT = 'http://localhost:10100/cam';
+  HOSTNAME_DEFAULT = 'http://test:10100/cam';
   HOSTNAME_ML = 'http://localhost:10100/cam/ml';
 
   /**
