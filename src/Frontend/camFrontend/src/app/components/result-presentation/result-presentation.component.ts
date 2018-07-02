@@ -13,16 +13,19 @@ export class ResultPresentationComponent {
   private finalAspectDict = {};
   private categories = new Array<string>();
   private categoriesChartOrder = new Array<string>();
-  private categoryLabels = {
-    'none': 'General Comparison',
-    'multiple': 'Multiple Aspects',
-  };
+  private none = 'none';          // label for sentences with no contained aspect
+  private multiple = 'multiple';  // label for sentences with multiple aspects
+  private categoryLabels = {};
 
   private sentenceCount: number; // total amount of sentences used for comparison
 
   showResult: boolean;
 
-  constructor() { }
+  constructor() {
+    this.categoryLabels[this.none] = 'General Comparison';
+    this.categoryLabels[this.multiple] = 'General Comparison';
+
+  }
 
   /**
    * Saves the search result so that they can be shown in the UI.
@@ -79,22 +82,22 @@ export class ResultPresentationComponent {
   private saveScores(winnerScores: any, looserScores: any, totalScoreA: number, totalScoreB: number) {
 
     const categories = Array.from(new Set(Object.keys(winnerScores).concat(Object.keys(looserScores))));
-    this.setScores(winnerScores['none'], looserScores['none'], this.categoryLabels['none']);
+    this.setScores(winnerScores[this.none], looserScores[this.none], this.categoryLabels[this.none]);
     if (categories.length > 1) {
       categories.forEach(key => {
-        if (key !== 'none' && key !== 'multiple') {
+        if (key !== this.none && key !== this.multiple) {
           this.setScores(winnerScores[key], looserScores[key], key);
           this.categoryLabels[key] = key;
           this.categories.push(key);
         }
       });
 
-      if (categories.indexOf('multiple') !== -1) {
-        this.setScores(winnerScores['multiple'], looserScores['multiple'], this.categoryLabels['multiple']);
-        this.categories.push('multiple');
+      if (categories.indexOf(this.multiple) !== -1) {
+        this.setScores(winnerScores[this.multiple], looserScores[this.multiple], this.categoryLabels[this.multiple]);
+        this.categories.push(this.multiple);
       }
     }
-    this.categories.push('none');
+    this.categories.push(this.none);
     this.setScores(totalScoreA, totalScoreB, 'Overall Comparison');
 
   }
