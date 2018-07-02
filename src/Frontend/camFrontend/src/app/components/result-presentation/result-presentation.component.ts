@@ -12,6 +12,11 @@ export class ResultPresentationComponent {
   private dispensableResult = new DispensableResult();
   private finalAspectDict = {};
   private categories = new Array<string>();
+  private categoriesChartOrder = new Array<string>();
+  private categoryLabels = {
+    'none': 'General Comparison',
+    'multiple': 'Multiple Aspects',
+  }
 
   private sentenceCount: number; // total amount of sentences used for comparison
 
@@ -53,6 +58,8 @@ export class ResultPresentationComponent {
     this.dispensableResult = new DispensableResult();
     this.sentenceCount = 0;
     this.showResult = false;
+    this.categories = [];
+    this.categoriesChartOrder = [];
   }
 
   /**
@@ -74,15 +81,28 @@ export class ResultPresentationComponent {
    */
   private saveScores(winnerScores: any, looserScores: any, totalScoreA: number, totalScoreB: number) {
 
-    this.dispensableResult.winnerScoresPercent['total'] = this.calcScore(totalScoreA, totalScoreB);
-    this.dispensableResult.looserScoresPercent['total'] = this.calcScore(totalScoreB, totalScoreA);
-
     this.categories = Array.from(new Set(Object.keys(winnerScores).concat(Object.keys(looserScores))));
-    this.categories.forEach(key => {
-      this.dispensableResult.winnerScoresPercent[key] = this.calcScore(winnerScores[key], looserScores[key]);
-      this.dispensableResult.looserScoresPercent[key] = this.calcScore(looserScores[key], winnerScores[key]);
-    });
-    this.categories = this.categories.concat('total');
+    this.setScores(winnerScores['none'], looserScores['none'], this.categoryLabels['none']);
+    if (this.categories.length > 1) {
+      this.categories.forEach(key => {
+        if (key !== 'none' && key !== 'multiple') {
+          this.setScores(winnerScores[key], looserScores[key], key);
+          this.categoryLabels[key] = key;
+        }
+      });
+
+      if (this.categories.indexOf('multiple') !== -1) {
+        this.setScores(winnerScores['multiple'], looserScores['multiple'], this.categoryLabels['multiple']);
+      }
+    }
+    this.setScores(totalScoreA, totalScoreB, 'Overall Comparison');
+
+  }
+
+  private setScores(a: number, b: number, label: string): void {
+    this.dispensableResult.winnerScoresPercent[label] = this.calcScore(a, b);
+    this.dispensableResult.looserScoresPercent[label] = this.calcScore(b, a);
+    this.categoriesChartOrder.push(label);
   }
 
   private calcScore(a: number, b: number): string {

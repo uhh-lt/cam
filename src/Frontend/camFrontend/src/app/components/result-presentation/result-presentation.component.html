@@ -10,7 +10,7 @@
       </tr>
     </thead>
   </table>
-  <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categories"></app-score-presentation>
+  <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
   <table class='table'>
     <tbody>
       <tr>
@@ -30,11 +30,11 @@
   <table class="table table-borderless">
     <tr *ngFor="let key of categories">
       <td style="width: 50%">
-        <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.winnerSentences[key]" [titel]="'Sentence examples for ' + key"
+        <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.winnerSentences[key]" [titel]="'Sentence examples for ' + categoryLabels[key]"
           [dispensableResult]="dispensableResult" [finalAspectDict]="finalAspectDict"></app-aspect-expansion>
       </td>
       <td>
-        <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.looserSentences[key]" [titel]="'Sentence examples for ' + key"
+        <app-aspect-expansion *ngIf="dispensableResult" [aspectSentences]="dispensableResult.looserSentences[key]" [titel]="'Sentence examples for ' + categoryLabels[key]"
           [dispensableResult]="dispensableResult" [finalAspectDict]="finalAspectDict"></app-aspect-expansion>
       </td>
     </tr>

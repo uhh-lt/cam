@@ -7,7 +7,7 @@ import { Chart } from 'chart.js';
   templateUrl: './score-presentation.component.html',
   styleUrls: ['./score-presentation.component.css']
 })
-export class ScorePresentationComponent implements AfterViewInit, OnInit {
+export class ScorePresentationComponent implements AfterViewInit {
 
   @Input() dispensableResult: DispensableResult;
   @Input() categories: Array<string>;
@@ -19,14 +19,11 @@ export class ScorePresentationComponent implements AfterViewInit, OnInit {
 
   constructor(private changeDetection: ChangeDetectorRef) { }
 
-  ngOnInit() {}
   ngAfterViewInit() {
 
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
-    console.log(this.ctx.canvas.height);
     this.canvas.height = (this.barThickness * this.categories.length + this.categories.length * 2 + 50) * 0.28;
-    console.log(this.ctx.canvas.height);
 
     const barOptions_stacked = {
       responsive: true,
@@ -109,8 +106,6 @@ export class ScorePresentationComponent implements AfterViewInit, OnInit {
       scaleFontFamily: 'Quadon Extra Bold',
     };
 
-
-    console.log('this.ctx' , this.ctx);
     this.chart = new Chart(this.ctx, {
       type: 'horizontalBar',
       data: {
@@ -140,7 +135,6 @@ export class ScorePresentationComponent implements AfterViewInit, OnInit {
   private obtainScores(dict: {}) {
     const scores = [];
     this.categories.forEach(category => {
-      console.log(category);
       scores.push(dict[category]);
     });
     return scores;
