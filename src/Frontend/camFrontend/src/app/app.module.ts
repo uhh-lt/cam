@@ -20,6 +20,7 @@ import { ResultPresentationComponent } from './components/result-presentation/re
 import { MaterialModule } from './material/material.module';
 import { MarkClassesPipe } from './pipes/mark-classes.pipe';
 import { AspectExpansionComponent } from './components/result-presentation/aspect-expansion/aspect-expansion.component';
+import { ScorePresentationComponent } from './components/result-presentation/score-presentation/score-presentation.component';
 
 const appRoute: Routes = [
   { path: '', component: UserInterfaceComponent },
@@ -39,7 +40,8 @@ const appRoute: Routes = [
     UserInterfaceComponent,
     ResultPresentationComponent,
     MarkClassesPipe,
-    AspectExpansionComponent
+    AspectExpansionComponent,
+    ScorePresentationComponent
   ],
   imports: [
     BrowserModule,

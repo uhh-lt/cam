@@ -82,6 +82,7 @@ export class ResultPresentationComponent {
       this.dispensableResult.winnerScoresPercent[key] = this.calcScore(winnerScores[key], looserScores[key]);
       this.dispensableResult.looserScoresPercent[key] = this.calcScore(looserScores[key], winnerScores[key]);
     });
+    this.categories = this.categories.concat('total');
   }
 
   private calcScore(a: number, b: number): string {

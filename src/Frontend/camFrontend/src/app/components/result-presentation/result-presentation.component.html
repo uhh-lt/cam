@@ -10,26 +10,17 @@
       </tr>
     </thead>
   </table>
+  <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categories"></app-score-presentation>
   <table class='table'>
     <tbody>
-      <tr *ngFor="let key of categories">
-        <td width='40%' class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent[key]}} %</td>
-        <th width='20%' class='text-center' scope='row' style='font-size: 17px'>{{key}}</th>
-        <td width='40%' class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent[key]}} %</td>
-      </tr>
       <tr>
-        <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent['total']}} %</td>
-        <th class='text-center' scope='row' style='font-size: 17px'>Overall Score</th>
-        <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent['total']}} %</td>
-      </tr>
-      <tr>
-        <td style='font-size: 17px'>
+        <td width='40%' style='font-size: 17px'>
           <mat-chip-list>
             <mat-chip *ngFor='let link of dispensableResult.winnerLinks'>{{link}}</mat-chip>
           </mat-chip-list>
         </td>
-        <th class='text-center' scope='row' style='font-size: 17px'>Automatically Extracted Aspects</th>
-        <td style='font-size: 17px'>
+        <th width='20%' class='text-center' scope='row' style='font-size: 17px'>Automatically Extracted Aspects</th>
+        <td width='40%' style='font-size: 17px'>
           <mat-chip-list>
             <mat-chip *ngFor='let link of dispensableResult.looserLinks'>{{link}}</mat-chip>
           </mat-chip-list>

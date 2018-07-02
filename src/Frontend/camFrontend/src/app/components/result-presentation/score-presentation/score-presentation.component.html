@@ -1,0 +1,18 @@
+<!-- <table class='table'>
+  <tbody>
+    <tr *ngFor="let key of categories">
+      <td width='40%' class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent[key]}} %</td>
+      <th width='20%' class='text-center' scope='row' style='font-size: 17px'>{{key}}</th>
+      <td width='40%' class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent[key]}} %</td>
+    </tr>
+    <tr>
+      <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScoresPercent['total']}} %</td>
+      <th class='text-center' scope='row' style='font-size: 17px'>Overall Score</th>
+      <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScoresPercent['total']}} %</td>
+    </tr>
+  </tbody>
+</table> -->
+
+<div *ngIf="chart">
+  <canvas id="canvas">{{ chart }}</canvas>
+</div>
