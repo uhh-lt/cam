@@ -1,4 +1,7 @@
-<mat-card *ngIf=showResult>
+<mat-card *ngIf="showResult && sentenceCount == 0">
+    <p class='text-center' style='font-size: 25px'>No sentences were found, please check for typos.</p>
+</mat-card>
+<mat-card *ngIf="showResult && sentenceCount > 0">
   <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p>
   <br>
   <br>
