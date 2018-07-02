@@ -118,7 +118,7 @@ export class ScorePresentationComponent implements AfterViewInit {
         }, {
           // data: [80, 70, 60],
           data: this.obtainScores(this.dispensableResult.looserScoresPercent),
-          backgroundColor: 'rgba(224, 21, 21, 0.39)',
+          backgroundColor: 'rgba(49,130,189, 0.4)',
           hoverBackgroundColor: 'rgba(224, 21, 21, 0.1)'
         }]
       },
