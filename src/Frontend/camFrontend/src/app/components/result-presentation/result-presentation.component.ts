@@ -35,8 +35,7 @@ export class ResultPresentationComponent {
     // count the number of sentences used for comparison
     this.sentenceCount = result.sentenceCount;
 
-    const aWon = result.scoreObject1 > result.scoreObject2; // did object A win?
-    if (aWon) {
+    if (result.winner === result.object1) {
       this.saveWinner(result.object1, result.object2);
       this.saveScores(result.scoreObject1, result.scoreObject2, result.totalScoreObject1, result.totalScoreObject2);
       this.saveExtractedAspects(result.extractedAspectsObject1, result.extractedAspectsObject2);
