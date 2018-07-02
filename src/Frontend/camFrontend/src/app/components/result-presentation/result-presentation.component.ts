@@ -23,7 +23,7 @@ export class ResultPresentationComponent {
 
   constructor() {
     this.categoryLabels[this.none] = 'General Comparison';
-    this.categoryLabels[this.multiple] = 'General Comparison';
+    this.categoryLabels[this.multiple] = 'Multiple Aspects';
 
   }
 
