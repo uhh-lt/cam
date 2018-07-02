@@ -79,20 +79,23 @@ export class ResultPresentationComponent {
    */
   private saveScores(winnerScores: any, looserScores: any, totalScoreA: number, totalScoreB: number) {
 
-    this.categories = Array.from(new Set(Object.keys(winnerScores).concat(Object.keys(looserScores))));
+    const categories = Array.from(new Set(Object.keys(winnerScores).concat(Object.keys(looserScores))));
     this.setScores(winnerScores['none'], looserScores['none'], this.categoryLabels['none']);
-    if (this.categories.length > 1) {
-      this.categories.forEach(key => {
+    if (categories.length > 1) {
+      categories.forEach(key => {
         if (key !== 'none' && key !== 'multiple') {
           this.setScores(winnerScores[key], looserScores[key], key);
           this.categoryLabels[key] = key;
+          this.categories.push(key);
         }
       });
 
-      if (this.categories.indexOf('multiple') !== -1) {
+      if (categories.indexOf('multiple') !== -1) {
         this.setScores(winnerScores['multiple'], looserScores['multiple'], this.categoryLabels['multiple']);
+        this.categories.push('multiple');
       }
     }
+    this.categories.push('none');
     this.setScores(totalScoreA, totalScoreB, 'Overall Comparison');
 
   }
