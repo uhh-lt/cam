@@ -1,5 +1,5 @@
 <mat-card *ngIf="showResult && sentenceCount == 0">
-    <p class='text-center' style='font-size: 25px'>No sentences were found, please check for typos.</p>
+  <p class='text-center' style='font-size: 25px'>No sentences were found, please check for typos.</p>
 </mat-card>
 <mat-card *ngIf="showResult && sentenceCount > 0">
   <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p>
@@ -14,8 +14,13 @@
     </thead>
   </table>
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
-  <table class='table'>
+  <table class='table table-borderless'>
     <tbody>
+      <tr>
+        <td>
+          <mat-divider></mat-divider>
+        </td>
+      </tr>
       <tr>
         <td width='40%' style='font-size: 17px'>
           <mat-chip-list>
@@ -27,6 +32,11 @@
           <mat-chip-list>
             <mat-chip *ngFor='let link of dispensableResult.looserLinks'>{{link}}</mat-chip>
           </mat-chip-list>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-divider></mat-divider>
         </td>
       </tr>
   </table>
