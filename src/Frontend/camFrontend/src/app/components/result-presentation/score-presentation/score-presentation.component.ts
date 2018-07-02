@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { DispensableResult } from '../../../model/dispensable-result';
 import { Chart } from 'chart.js';
 
@@ -7,7 +7,7 @@ import { Chart } from 'chart.js';
   templateUrl: './score-presentation.component.html',
   styleUrls: ['./score-presentation.component.css']
 })
-export class ScorePresentationComponent implements AfterViewInit {
+export class ScorePresentationComponent implements AfterViewInit, OnInit {
 
   @Input() dispensableResult: DispensableResult;
   @Input() categories: Array<string>;
@@ -15,13 +15,18 @@ export class ScorePresentationComponent implements AfterViewInit {
   chart = [];
   canvas: any;
   ctx: any;
+  barThickness = 50;
 
-  constructor() { }
+  constructor(private changeDetection: ChangeDetectorRef) { }
 
+  ngOnInit() {}
   ngAfterViewInit() {
 
     this.canvas = document.getElementById('canvas');
     this.ctx = this.canvas.getContext('2d');
+    console.log(this.ctx.canvas.height);
+    this.canvas.height = (this.barThickness * this.categories.length + this.categories.length * 2 + 50) * 0.28;
+    console.log(this.ctx.canvas.height);
 
     const barOptions_stacked = {
       responsive: true,
@@ -44,12 +49,14 @@ export class ScorePresentationComponent implements AfterViewInit {
           },
           gridLines: {
             display: true,
-            color: ['rgba(0,0,0,0)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)',
-            'rgba(0,0,0,0.8)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.1)']
+            color: ['rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)',
+            'rgba(0,0,0,0.8)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)']
           },
           stacked: true
         }],
         yAxes: [{
+          display: false,
+          barThickness: this.barThickness,
           gridLines: {
             display: false,
           },
@@ -67,6 +74,7 @@ export class ScorePresentationComponent implements AfterViewInit {
 
       animation: {
         onComplete: function () {
+
           const chartInstance = this.chart;
           const ctx = chartInstance.ctx;
           ctx.textAlign = 'left';
@@ -95,7 +103,6 @@ export class ScorePresentationComponent implements AfterViewInit {
             ctx.fillText(label, labelPositionX, bar._model.y);
           }));
 
-
         }
       },
       pointLabelFontFamily: 'Quadon Extra Bold',
@@ -119,12 +126,14 @@ export class ScorePresentationComponent implements AfterViewInit {
           // data: [80, 70, 60],
           data: this.obtainScores(this.dispensableResult.looserScoresPercent),
           backgroundColor: 'rgba(49,130,189, 0.4)',
-          hoverBackgroundColor: 'rgba(224, 21, 21, 0.1)'
+          hoverBackgroundColor: 'rgba(49,130,189, 0.1)'
         }]
       },
 
       options: barOptions_stacked
     });
+
+    this.changeDetection.detectChanges();
 
   }
 
