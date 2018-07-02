@@ -116,6 +116,7 @@ def build_final_dict(obj_a, obj_b):
     final_dict['extractedAspectsObject2'] = linked_words['B']
     final_dict['sentencesObject1'] = obj_a.sentences
     final_dict['sentencesObject2'] = obj_b.sentences
+    final_dict['sentenceCount'] = len(sentences_obja) + len(sentences_objb)
 
     return final_dict
 

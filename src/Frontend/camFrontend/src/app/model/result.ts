@@ -11,4 +11,5 @@ export class Result {
     extractedAspectsObject2: Array<string>;
     sentencesObject1: any;
     sentencesObject2: any;
+    sentenceCount: number;
 }

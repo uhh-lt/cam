@@ -16,7 +16,7 @@ export class ResultPresentationComponent {
   private categoryLabels = {
     'none': 'General Comparison',
     'multiple': 'Multiple Aspects',
-  }
+  };
 
   private sentenceCount: number; // total amount of sentences used for comparison
 
@@ -30,12 +30,10 @@ export class ResultPresentationComponent {
    * @param result the search results to be saved
    */
   saveResult(result: Result, finalAspDict) {
-    console.log('Save Result accessed');
-    console.log(result);
     this.finalAspectDict = finalAspDict;
 
     // count the number of sentences used for comparison
-    this.sentenceCount = result.sentencesObject1.length + result.sentencesObject2.length;
+    this.sentenceCount = result.sentenceCount;
 
     const aWon = result.scoreObject1 > result.scoreObject2; // did object A win?
     if (aWon) {
