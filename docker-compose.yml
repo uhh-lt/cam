@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  frontend:
+    build: ./src/Frontend/camFrontend/
+    ports: 
+      - 10101:4200
+    container_name: cam-frontend
+  backend:
+    build: ./src/Backend/
+    ports:
+      - 10100:5000
+    container_name: cam-backend
