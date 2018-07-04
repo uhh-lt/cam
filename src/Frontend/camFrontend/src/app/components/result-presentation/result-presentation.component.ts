@@ -96,9 +96,10 @@ export class ResultPresentationComponent {
         this.setScores(winnerScores[this.multiple], looserScores[this.multiple], this.categoryLabels[this.multiple]);
         this.categories.push(this.multiple);
       }
+      this.setScores(totalScoreA, totalScoreB, 'Overall Comparison');
     }
     this.categories.push(this.none);
-    this.setScores(totalScoreA, totalScoreB, 'Overall Comparison');
+
 
   }
 
