@@ -24,13 +24,13 @@
       <tr>
         <td width='40%' style='font-size: 17px'>
           <mat-chip-list>
-            <mat-chip *ngFor='let link of dispensableResult.winnerLinks'>{{link}}</mat-chip>
+            <mat-chip (click)="chiplistSelect(link)" *ngFor='let link of dispensableResult.winnerLinks'>{{link}}</mat-chip>
           </mat-chip-list>
         </td>
         <th width='20%' class='text-center' scope='row' style='font-size: 17px'>Automatically Extracted Aspects</th>
         <td width='40%' style='font-size: 17px'>
           <mat-chip-list>
-            <mat-chip *ngFor='let link of dispensableResult.looserLinks'>{{link}}</mat-chip>
+            <mat-chip (click)="chiplistSelect(link)" *ngFor='let link of dispensableResult.looserLinks'>{{link}}</mat-chip>
           </mat-chip-list>
         </td>
       </tr>

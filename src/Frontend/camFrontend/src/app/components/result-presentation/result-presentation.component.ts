@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { EventEmitter, Component, Output } from '@angular/core';
 import { DispensableResult } from '../../model/dispensable-result';
 import { Result } from '../../model/result';
 
@@ -8,6 +8,8 @@ import { Result } from '../../model/result';
   styleUrls: ['./result-presentation.component.css']
 })
 export class ResultPresentationComponent {
+
+  @Output() chipSelected = new EventEmitter<string>();
 
   private dispensableResult = new DispensableResult();
   private finalAspectDict = {};
@@ -50,7 +52,6 @@ export class ResultPresentationComponent {
       this.saveExtractedAspects(result.extractedAspectsObject2, result.extractedAspectsObject1);
       this.saveSentences(result.sentencesObject2, result.sentencesObject1);
     }
-    console.log(this.dispensableResult);
     this.showResult = true;
   }
 
@@ -140,5 +141,10 @@ export class ResultPresentationComponent {
   private saveSentences(winnerSentences: {}, looserSentences: {}) {
     this.dispensableResult.winnerSentences = winnerSentences;
     this.dispensableResult.looserSentences = looserSentences;
+  }
+
+
+  chiplistSelect(selectedChip: string) {
+    this.chipSelected.emit(selectedChip);
   }
 }

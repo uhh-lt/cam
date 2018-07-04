@@ -19,17 +19,17 @@
           <mat-divider></mat-divider>
         </td>
       </tr>
-      <tr *ngFor='let aspect of aspects'>
+      <tr *ngFor='let aspect of aspects; let i = index'>
         <td class='text-right'>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder='Aspect' id='asp{{aspect}}' [(ngModel)]='aspectDict[aspect]' name="aspect" style='font-size: 17px'>
+          <mat-form-field>
+            <input matInput placeholder='Aspect' [(ngModel)]='aspect.value'  name="i" [ngModelOptions]="{standalone: true}" style='font-size: 17px'>
             <mat-hint align="start">
               e.g. price
             </mat-hint>
           </mat-form-field>
         </td>
         <td class='align-middle text-center'>
-          <button (click)='removeAspect(aspect)' mat-mini-fab type="button" color="primary" [disabled]='!aspectDict[aspect] && aspects.length == 1'>
+          <button (click)='removeAspect(i)' mat-mini-fab type="button" color="primary" [disabled]='!aspect.value && aspects.length == 1'>
             <mat-icon aria-hidden='true'>remove
             </mat-icon>
           </button>
@@ -38,8 +38,8 @@
         <td>
           <div class='slidecontainer'>
             <label for="importance">Aspect importance:</label>
-            <mat-slider class='slider' min='1' max='5' step='1' thumb-label="true" tick-interval="1" [(ngModel)]='weightDict[aspect]'
-              name="importance" (keyup.enter)='compIfEntered()'>
+            <mat-slider class='slider' min='1' max='5' step='1' thumb-label="true" tick-interval="1" [(ngModel)]='aspect.weight'
+              [ngModelOptions]="{standalone: true}" (keyup.enter)='compIfEntered()'>
             </mat-slider>
           </div>
         </td>
@@ -108,4 +108,4 @@
 </mat-card>
 <br>
 <br>
-<app-result-presentation></app-result-presentation>
+<app-result-presentation (chipSelected)="chipSelected($event)"></app-result-presentation>
