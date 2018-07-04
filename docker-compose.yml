@@ -1,8 +1,8 @@
 version: '2.3'
-#
+
 networks:
   cam:
-#
+
 services:
   frontend:
     build: ./src/Frontend/camFrontend/
