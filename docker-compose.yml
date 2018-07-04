@@ -1,0 +1,22 @@
+version: '2.3'
+#
+networks:
+  cam:
+#
+services:
+  frontend:
+    build: ./src/Frontend/camFrontend/
+    image: cam-frontend
+    ports:
+      - 10101:4200
+    networks:
+      - cam
+    container_name: cam-frontend
+  backend:
+    build: ./src/Backend/
+    image: cam-backend
+    ports:
+      - 10100:5000
+    networks:
+      - cam
+    container_name: cam-backend
