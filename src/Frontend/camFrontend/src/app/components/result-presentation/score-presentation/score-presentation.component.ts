@@ -15,7 +15,7 @@ export class ScorePresentationComponent implements AfterViewInit {
   chart = [];
   canvas: any;
   ctx: any;
-  barThickness = 50;
+  barThickness = 30;
 
   constructor(private changeDetection: ChangeDetectorRef) { }
 
@@ -82,9 +82,9 @@ export class ScorePresentationComponent implements AfterViewInit {
             Chart.helpers.each(chartInstance.controller.getDatasetMeta(i).data.forEach(function (bar, index) {
               const data = dataset.data[index];
               if (i === 0) {
-                ctx.fillText(data + '%', 25, bar._model.y + 4);
+                ctx.fillText(data + '%', 25, bar._model.y + 2);
               } else {
-                ctx.fillText(data + '%', bar._model.x - (25 + ctx.measureText(data).width), bar._model.y + 4);
+                ctx.fillText(data + '%', bar._model.x - (25 + ctx.measureText(data).width), bar._model.y + 2);
               }
             }));
           }));
