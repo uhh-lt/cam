@@ -24,60 +24,49 @@ def cam():
     obj_a = Argument(request.args.get('objectA').lower().strip())
     obj_b = Argument(request.args.get('objectB').lower().strip())
     aspects = extract_aspects(request)
-    
-    global status
-    # json obj with all ES hits containing obj_a, obj_b and a marker.
-    status = 'Request ES'
-    json_compl = request_es(fast_search, obj_a, obj_b)
-
-    # list of all sentences containing obj_a, obj_b and a marker.
-    status = 'Extract sentences'
-    all_sentences = extract_sentences(json_compl)
-
-    # removing sentences that can't be properly analyzed
-    status = 'Clear sentences'
-    all_sentences = sentence_clearer.clear_sentences(all_sentences, obj_a, obj_b)
-
-    # find the winner of the two objects
-    status = 'Find winner'
-    final_dict = find_winner(all_sentences, obj_a, obj_b, aspects)
-
-    return jsonify(final_dict)
-
-@app.route('/ml', methods=['GET'])
-@app.route('/cam/ml', methods=['GET'])
-def cam_ml():
-    fast_search = request.args.get('fs')
     model = request.args.get('model')
-    obj_a = Argument(request.args.get('objectA').lower().strip())
-    obj_b = Argument(request.args.get('objectB').lower().strip())
-    aspects = extract_aspects(request)
 
     global status
-    status = 'Request all sentences containing the objects'
-    if aspects:
-        json_compl_triples = request_es_triple(obj_a, obj_b, aspects)
-    json_compl = request_es_ML(fast_search, obj_a, obj_b)
+    if model == 'default' or model is None:
+        # json obj with all ES hits containing obj_a, obj_b and a marker.
+        status = 'Request ES'
+        json_compl = request_es(fast_search, obj_a, obj_b)
 
-    status = 'Extract sentences'
-    if aspects:
-        all_sentences = extract_sentences(json_compl_triples)
-        all_sentences.update(extract_sentences(json_compl))
-    else:
+        # list of all sentences containing obj_a, obj_b and a marker.
+        status = 'Extract sentences'
         all_sentences = extract_sentences(json_compl)
 
-    sentence_clearer.remove_questions(all_sentences)
+        # removing sentences that can't be properly analyzed
+        status = 'Clear sentences'
+        all_sentences = sentence_clearer.clear_sentences(all_sentences, obj_a, obj_b)
 
-    status = 'Prepare sentences for classification'
-    prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b)
+        # find the winner of the two objects
+        status = 'Find winner'
+        return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
+    
+    else:
+        status = 'Request all sentences containing the objects'
+        if aspects:
+            json_compl_triples = request_es_triple(obj_a, obj_b, aspects)
+        json_compl = request_es_ML(fast_search, obj_a, obj_b)
 
-    status = 'Classify sentences'
-    classification_results = classify_sentences(prepared_sentences, model)
+        status = 'Extract sentences'
+        if aspects:
+            all_sentences = extract_sentences(json_compl_triples)
+            all_sentences.update(extract_sentences(json_compl))
+        else:
+            all_sentences = extract_sentences(json_compl)
 
-    status = 'Evaluate classified sentences; Find winner'
-    final_dict = evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects)
+        sentence_clearer.remove_questions(all_sentences)
 
-    return jsonify(final_dict)
+        status = 'Prepare sentences for classification'
+        prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b)
+
+        status = 'Classify sentences'
+        classification_results = classify_sentences(prepared_sentences, model)
+
+        status = 'Evaluate classified sentences; Find winner'
+        return jsonify(evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects))
 
 @app.route('/status')
 @app.route('/cam/status')
