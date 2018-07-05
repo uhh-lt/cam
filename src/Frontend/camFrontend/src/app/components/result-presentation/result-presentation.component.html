@@ -24,31 +24,28 @@
       <tr>
         <th scope='row' style='font-size: 17px'>Automatically extracted aspects for these objects</th>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of dispensableResult.winnerLinks'>{{link}}</li>
+          <app-multiselect-chiplist [extractedAspects]="dispensableResult.winnerLinks" (updatedSelection)="updatedSelection($event, true)">test</app-multiselect-chiplist>
         </td>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of dispensableResult.looserLinks'>{{link}}</li>
+          <app-multiselect-chiplist [extractedAspects]="dispensableResult.looserLinks" (updatedSelection)="updatedSelection($event, false)">test</app-multiselect-chiplist>
         </td>
       </tr>
       <tr>
         <th scope='row' style='font-size: 17px'>Sentence examples</th>
         <td>
-          <div *ngFor='let i of sentenceShowNumberlistWinner'>
-            <div style='font-size: 17px' [innerHtml]="winnerSentenceExamples[i] | markClasses:dispensableResult:finalAspectDict">
+          <div *ngFor='let sentence of (dispensableResult.sentencesObjectA | sentenceFilter:selectedWinnerAspects:trigger)'>
+            <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict">
             </div>
             <br>
           </div>
         </td>
         <td>
-          <div *ngFor='let i of sentenceShowNumberlistLooser'>
-            <div [innerHtml]="looserSentenceExamples[i] | markClasses:dispensableResult:finalAspectDict"></div>
+          <div *ngFor='let sentence of (dispensableResult.sentencesObjectB | sentenceFilter:selectedLooserAspects:trigger)'>
+            <div [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict"></div>
             <br>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <button (click)='showMoreSentences()' mat-raised-button color="primary">
-    Show more sentences
-  </button>
 </mat-card>

@@ -19,6 +19,8 @@ import { ResultPresentationComponent } from './components/result-presentation/re
 
 import { MaterialModule } from './material/material.module';
 import { MarkClassesPipe } from './pipes/mark-classes.pipe';
+import { MultiselectChiplistComponent } from './components/result-presentation/multiselect-chiplist/multiselect-chiplist.component';
+import { SentenceFilterPipe } from './components/result-presentation/sentence-filter/sentence-filter.pipe';
 
 const appRoute: Routes = [
   { path: '', component: UserInterfaceComponent },
@@ -37,7 +39,9 @@ const appRoute: Routes = [
     ContactComponent,
     UserInterfaceComponent,
     ResultPresentationComponent,
-    MarkClassesPipe
+    MarkClassesPipe,
+    MultiselectChiplistComponent,
+    SentenceFilterPipe
   ],
   imports: [
     BrowserModule,

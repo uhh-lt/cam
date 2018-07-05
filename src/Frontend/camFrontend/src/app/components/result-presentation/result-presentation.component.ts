@@ -12,14 +12,11 @@ export class ResultPresentationComponent {
   private dispensableResult = new DispensableResult();
   private finalAspectDict = {};
 
-  private winnerSentenceExamples = {}; // stores some example sentences for the first object
-  private looserSentenceExamples = {}; // stores some example sentences for the second object
-
-  // sentences to be shown for each object
-  private sentenceShowNumberlistWinner = new Array<number>();
-  private sentenceShowNumberlistLooser = new Array<number>();
-
   private sentenceCount: number; // total amount of sentences used for comparison
+
+  public selectedWinnerAspects = new Array<string>();
+  public selectedLooserAspects = new Array<string>();
+  public trigger = 0;
 
   showResult: boolean;
 
@@ -50,14 +47,11 @@ export class ResultPresentationComponent {
       this.saveExtractedAspects(result.extractedAspectsObject2, result.extractedAspectsObject1);
       this.saveSentences(result.sentencesObject2, result.sentencesObject1);
     }
-    this.setSentenceShow();
     this.showResult = true;
   }
 
   reset() {
     this.dispensableResult = new DispensableResult();
-    this.sentenceShowNumberlistWinner = new Array<number>();
-    this.sentenceShowNumberlistLooser = new Array<number>();
     this.sentenceCount = 0;
     this.showResult = false;
   }
@@ -102,36 +96,17 @@ export class ResultPresentationComponent {
    * @param looserSentences sentences of the object that lost
    */
   private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>) {
-    this.winnerSentenceExamples = winnerSentences;
-    this.looserSentenceExamples = looserSentences;
+    this.dispensableResult.sentencesObjectA = winnerSentences;
+    this.dispensableResult.sentencesObjectB = looserSentences;
   }
 
-  /**
-   * Sets the amount of initially shown sentence examples for each object. The default is 10 for
-   * each, but if an object has less than 10 sentences, it's set to this amount instead.
-   *
-   */
-  private setSentenceShow() {
-    const minW = Math.min(9, Object.keys(this.winnerSentenceExamples).length);
-    const minL = Math.min(9, Object.keys(this.looserSentenceExamples).length);
-    this.sentenceShowNumberlistWinner = Array.from(Array(minW).keys());
-    this.sentenceShowNumberlistLooser = Array.from(Array(minL).keys());
-  }
 
-  /**
-   * Shows 10 more sentences in the result table for both objects or, if an object has less than 10
-   * sentences left to be shown, instead only the remaining sentences will be added.
-   *
-   */
-  showMoreSentences() {
-    this._showMoreSentences(this.winnerSentenceExamples, this.sentenceShowNumberlistWinner);
-    this._showMoreSentences(this.looserSentenceExamples, this.sentenceShowNumberlistLooser);
-  }
-
-  private _showMoreSentences(sentecesExamples, showNumber) {
-    const minW = Math.min(10, Object.keys(sentecesExamples).length - showNumber[showNumber.length - 1] - 1);
-    for (let i = 0; i < minW; i++) {
-      showNumber.push(showNumber[showNumber.length - 1] + 1);
+  updatedSelection(selectedAspects: Array<string>, isWinner: boolean) {
+    if (isWinner) {
+      this.selectedWinnerAspects = selectedAspects;
+    } else {
+      this.selectedLooserAspects = selectedAspects;
     }
+    this.trigger++;
   }
 }
