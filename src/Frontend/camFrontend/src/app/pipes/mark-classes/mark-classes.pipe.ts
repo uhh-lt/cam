@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
-import { DispensableResult } from '../model/dispensable-result';
+import { DispensableResult } from '../../model/dispensable-result';
 
 @Pipe({
   name: 'markClasses'
@@ -9,11 +9,12 @@ export class MarkClassesPipe implements PipeTransform {
 
   constructor(private sanitizer: DomSanitizer) { }
 
-  transform(value: string, result: DispensableResult, finalAspectDict: any): SafeHtml {
+  transform(value: string, result: DispensableResult, finalAspectDict: any, filterAspects: Array<string>, trigger: number): SafeHtml {
 
     value = this.replaceByMarking('winner', [result.winner], value);
     value = this.replaceByMarking('looser', [result.looser], value);
     value = this.replaceByMarking('aspect', Object.keys(finalAspectDict), value);
+    value = this.replaceByMarking('filteredAspect', filterAspects, value);
     value = this.replaceByMarking('link', result.looserLinks, value);
     value = this.replaceByMarking('link', result.winnerLinks, value);
 

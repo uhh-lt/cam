@@ -34,14 +34,14 @@
         <th scope='row' style='font-size: 17px'>Sentence examples</th>
         <td>
           <div *ngFor='let sentence of (dispensableResult.sentencesObjectA | sentenceFilter:selectedWinnerAspects:trigger)'>
-            <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict">
+            <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict:selectedWinnerAspects:trigger">
             </div>
             <br>
           </div>
         </td>
         <td>
           <div *ngFor='let sentence of (dispensableResult.sentencesObjectB | sentenceFilter:selectedLooserAspects:trigger)'>
-            <div [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict"></div>
+            <div [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict:selectedLooserAspects:trigger"></div>
             <br>
           </div>
         </td>
