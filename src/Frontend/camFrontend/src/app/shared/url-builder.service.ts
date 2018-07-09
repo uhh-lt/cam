@@ -7,8 +7,8 @@ export class UrlBuilderService {
   /**
     *  The name of the backend server.
     */
-  HOSTNAME_DEFAULT = 'http://localhost:10050/cam';
-  HOSTNAME_ML = 'http://localhost:10050/cam/ml';
+  HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api2';
+  HOSTNAME_ML = 'http://ltdemos.informatik.uni-hamburg.de/cam-api2/ml';
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
