@@ -54,6 +54,8 @@ export class ResultPresentationComponent {
     this.dispensableResult = new DispensableResult();
     this.sentenceCount = 0;
     this.showResult = false;
+    this.selectedWinnerAspects = new Array<string>();
+    this.selectedLooserAspects = new Array<string>();
   }
 
   /**
