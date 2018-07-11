@@ -24,7 +24,7 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
 
     for index, row in prepared_sentences.iterrows():
         label = classification_results['max'][index]
-        if label == 'NONE':
+        if label == 'NONE' or classification_results[label][index] < 0.6:
             continue
 
         classification_confidence = classification_results[label][index]
@@ -43,14 +43,20 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
     return object_comparer.build_final_dict(obj_a, obj_b)
 
 def prepare_sentence_list(sentences_with_confidence):
-    sentences_with_confidence.sort(reverse = True)
-    return list(DataFrame(sentences_with_confidence, columns=['confidence', 'sentence'])['sentence'])
+    sentences_with_confidence.sort(key=lambda elem: elem[0], reverse = True)
+    return list(DataFrame(sentences_with_confidence, columns=['points', 'sentence'])['sentence'])
 
 def add_points(contained_aspects, winner, sentence_score, sentence, max_sentscore, classification_confidence):
+    points = 0
     if contained_aspects:
         for aspect in contained_aspects:
-            winner.add_points((sentence_score / max_sentscore) * aspect.weight * max_sentscore)
-        winner.add_sentence_with_aspect([classification_confidence, sentence])
+            points = points + score_function(sentence_score, max_sentscore, aspect.weight, classification_confidence)
+        winner.add_points(points)
+        winner.add_sentence_with_aspect([points, sentence])
     else:
-        winner.add_points(sentence_score / max_sentscore)
-        winner.add_sentence([classification_confidence, sentence])
+        points = score_function(sentence_score, max_sentscore, 1, classification_confidence)
+        winner.add_points(points)
+        winner.add_sentence([points, sentence])
+
+def score_function(sentence_score, max_sentscore, weight, confidence):
+    return ((sentence_score * confidence) / max_sentscore) * weight
