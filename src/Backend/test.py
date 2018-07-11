@@ -141,16 +141,19 @@ class Test(unittest.TestCase):
         result = find_winner(s, self.objA, self.objB, [])
         self.assertEqual(result['object1'], self.objA.name)
         self.assertEqual(result['object2'], self.objB.name)
-        self.assertEqual(result['scoreObject1'], 2)
-        self.assertEqual(result['scoreObject2'], 1)
+        self.assertEqual(result['totalScoreObject1'], 2.0)
+        self.assertEqual(result['totalScoreObject2'], 1.0)
+        self.assertEqual(result['scoreObject1'], {'none': 2.0})
+        self.assertEqual(result['scoreObject2'], {'none': 1.0})
         self.assertEqual(
             sorted(result['extractedAspectsObject1']), sorted(['way', 'dogs']))
         self.assertEqual(result['extractedAspectsObject2'], [])
-        self.assertEqual(sorted(result['sentencesObject1']), sorted([
-                         'Dog is better than cat', 'Dogs are way better than cat']))
-        self.assertEqual(sorted(result['sentencesObject2']), sorted([
-                         'Cat is beautiful better than dog']))
+        self.assertEqual(sorted(result['sentencesObject1']['none']), sorted(
+            ['Dog is better than cat', 'Dogs are way better than cat']))
+        self.assertEqual(sorted(result['sentencesObject2']['none']), sorted(
+            ['Cat is beautiful better than dog']))
         self.assertEqual(result['winner'], self.objA.name)
+        self.assertEqual(result['sentenceCount'], 3.0)
 
     '''
     Test if all aspects are correctly extracted.
@@ -220,16 +223,16 @@ class Test(unittest.TestCase):
         self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
                          'A': ['ingredients'], 'B': ['sweeteners']})
 
-
     '''
     Test the ML parts
     '''
 
     def test_sentence_preparation_ML(self):
         sentenceA = ['Coca-Cola tastes better than pepsi, because of its ingredients',
-            'Pepsi is worse than Coca-cola, because of the better sweeteners']
+                     'Pepsi is worse than Coca-cola, because of the better sweeteners']
 
-        df = prepare_sentence_DF(sentenceA, Argument('coca-cola'), Argument('pepsi'))
+        df = prepare_sentence_DF(sentenceA, Argument(
+            'coca-cola'), Argument('pepsi'))
         self.assertNotEqual(df.loc[0]['object_a'], df.loc[1]['object_a'])
 
 
