@@ -19,8 +19,6 @@ export class ResultPresentationComponent {
   private sentenceShowNumberlistWinner = new Array<number>();
   private sentenceShowNumberlistLooser = new Array<number>();
 
-  private sentenceCount: number; // total amount of sentences used for comparison
-
   showResult: boolean;
 
   constructor() { }
@@ -33,10 +31,6 @@ export class ResultPresentationComponent {
   saveResult(result: Result, finalAspDict) {
     console.log('Save Result accessed');
     this.finalAspectDict = finalAspDict;
-
-    // count the number of sentences used for comparison
-    this.sentenceCount = result.sentencesObject1.length + result.sentencesObject2.length;
-
     const aWon = result.scoreObject1 > result.scoreObject2; // did object A win?
     if (aWon) {
       this.saveWinner(result.object1, result.object2);
@@ -58,7 +52,6 @@ export class ResultPresentationComponent {
     this.dispensableResult = new DispensableResult();
     this.sentenceShowNumberlistWinner = new Array<number>();
     this.sentenceShowNumberlistLooser = new Array<number>();
-    this.sentenceCount = 0;
     this.showResult = false;
   }
 
