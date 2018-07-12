@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { AppComponent } from './app.component';
 import { UrlBuilderService } from './shared/url-builder.service';
@@ -46,7 +47,8 @@ const appRoute: Routes = [
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot(appRoute, { useHash: true }),
-    MaterialModule
+    MaterialModule,
+    ScrollToModule.forRoot()
   ],
   providers: [UrlBuilderService, HTTPRequestService],
   bootstrap: [AppComponent]

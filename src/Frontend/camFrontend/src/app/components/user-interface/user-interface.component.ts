@@ -4,6 +4,7 @@ import { HTTPRequestService } from '../../shared/http-request.service';
 import { ResultPresentationComponent } from '../result-presentation/result-presentation.component';
 import { MatSnackBar } from '@angular/material';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import 'rxjs/add/operator/takeWhile';
 
 @Component({
@@ -47,7 +48,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(private urlBuilderService: UrlBuilderService, private httpRequestService: HTTPRequestService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar, private scrollToService: ScrollToService) { }
 
   ngOnInit() {
     const index = Math.floor(Math.random() * 15);
@@ -89,6 +90,12 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
         this.showLoading = false; // hide the loading screen
         this.showResult = true;
         this.status = '';
+
+        const config: ScrollToConfigOptions = {
+          target: 'resultPresentation'
+        };
+
+        this.scrollToService.scrollTo(config);
       }
     );
     TimerObservable.create(0, 500).takeWhile(() => this.showLoading).subscribe(() => {
