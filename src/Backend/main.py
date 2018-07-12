@@ -57,6 +57,9 @@ def cam():
         else:
             all_sentences = extract_sentences(json_compl)
 
+        if len(all_sentences) == 0:
+            return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects)) 
+        
         sentence_clearer.remove_questions(all_sentences)
 
         status = 'Prepare sentences for classification'
