@@ -35,7 +35,7 @@
       </tr>
   </table>
   <table class="table table-borderless">
-    <tr *ngFor="let key of categories">
+    <tr>
       <td style="width: 50%">
         <div *ngFor='let sentence of (dispensableResult.winnerSentences | sentenceFilter:selectedWinnerAspects:trigger)'>
           <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict:selectedWinnerAspects:trigger">
