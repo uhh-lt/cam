@@ -148,9 +148,9 @@ class Test(unittest.TestCase):
         self.assertEqual(
             sorted(result['extractedAspectsObject1']), sorted(['way', 'dogs']))
         self.assertEqual(result['extractedAspectsObject2'], [])
-        self.assertEqual(sorted(result['sentencesObject1']['none']), sorted(
+        self.assertEqual(sorted(result['sentencesObject1']), sorted(
             ['Dog is better than cat', 'Dogs are way better than cat']))
-        self.assertEqual(sorted(result['sentencesObject2']['none']), sorted(
+        self.assertEqual(sorted(result['sentencesObject2']), sorted(
             ['Cat is beautiful better than dog']))
         self.assertEqual(result['winner'], self.objA.name)
         self.assertEqual(result['sentenceCount'], 3.0)
