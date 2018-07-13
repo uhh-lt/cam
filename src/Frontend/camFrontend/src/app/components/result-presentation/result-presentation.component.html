@@ -20,12 +20,17 @@
         </td>
       </tr>
       <tr>
-        <th scope='row' style='font-size: 17px'>Automatically extracted aspects</th>
-        <td style='font-size: 17px'>
+        <td style='font-size: 17px' style="width: 40%">
           <app-multiselect-chiplist [extractedAspects]="dispensableResult.winnerLinks" (updatedSelection)="updatedSelection($event, true)">test</app-multiselect-chiplist>
         </td>
-        <td style='font-size: 17px'>
+        <th scope='row' style='font-size: 17px' style="width: 20%">Automatically extracted aspects</th>
+        <td style='font-size: 17px' style="width: 40%">
           <app-multiselect-chiplist [extractedAspects]="dispensableResult.looserLinks" (updatedSelection)="updatedSelection($event, false)">test</app-multiselect-chiplist>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-divider></mat-divider>
         </td>
       </tr>
   </table>
