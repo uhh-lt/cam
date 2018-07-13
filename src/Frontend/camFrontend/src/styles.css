@@ -8,11 +8,11 @@
 }
   
 .looser {
-  background-color: rgba(224, 21, 21, 0.39);
+  background-color: rgba(49,130,189, 0.4); /*rgba(224, 21, 21, 0.39);*/
 }
   
 .aspect {
-  background-color: rgba(6, 220, 228, 0.4);
+  background-color: rgba(254,178,76, 0.4);
 }
   
 .link {

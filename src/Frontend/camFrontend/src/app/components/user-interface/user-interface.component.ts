@@ -5,6 +5,7 @@ import { ResultPresentationComponent } from '../result-presentation/result-prese
 import { MatSnackBar } from '@angular/material';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';
 import 'rxjs/add/operator/takeWhile';
+import { Aspect } from '../../model/aspect';
 
 @Component({
   selector: 'app-user-interface',
@@ -15,10 +16,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(ResultPresentationComponent) resultPresentation: ResultPresentationComponent;
 
-  aspects = [1]; // the rows of aspects currently shown in the UI
-  private aspectDict = {}; // the aspects currently entered
+  aspects = new Array<Aspect>(new Aspect('')); // the rows of aspects currently shown in the UI
   private finalAspDict = {}; // holds all aspects after compare() was called
-  private weightDict = { 1: 1 }; // the weightings of the aspects currently chosen with the sliders
   selectedModel = 'default'; // the comparison model to be used
   fastSearch = false; // the possibility to do a fast comparison
   showLoading = false; // boolean that checks if the loading screen should be shown
@@ -66,15 +65,13 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.reset(); // reset everything to its default and hide the result table
     // read the aspects entered by the user and store them with their weight
     for (const aspect of this.aspects) {
-      if (this.aspectDict[aspect] !== undefined) {
-        this.finalAspDict[this.aspectDict[aspect].trim()] = this.weightDict[
-          aspect
-        ];
+      if (aspect.value !== '' && aspect.value !== undefined) {
+        this.finalAspDict[aspect.value] = aspect.weight;
       }
     }
     // read the objects entered, build the URL and start the search request
-    this.saveObjects();
-    const url = this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict, this.selectedModel, this.fastSearch);
+    const url = this.urlBuilderService.buildURL(this.object_A.trim(), this.object_B.trim(),
+      this.finalAspDict, this.selectedModel, this.fastSearch);
     this.httpRequestService.getScore(url).subscribe(
       data => { this.resultPresentation.saveResult(data, this.finalAspDict); },
       error => {
@@ -83,7 +80,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
         });
         this.showLoading = false;
         console.error(error);
-
       },
       () => {
         this.showLoading = false; // hide the loading screen
@@ -112,19 +108,9 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   resetInput() {
     this.object_A = '';
     this.object_B = '';
-    this.aspectDict = {};
-    this.weightDict = { 1: 1 };
-    this.aspects = [1];
+    this.aspects = new Array<Aspect>(new Aspect(''));
     this.fastSearch = false;
-  }
-
-  /**
-   * Save the trimmed objects that were entered after compare() was called.
-   *
-   */
-  saveObjects() {
-    this.object_A = this.object_A.trim();
-    this.object_B = this.object_B.trim();
+    this.selectedModel = 'default';
   }
 
   /**
@@ -151,8 +137,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
    *
    */
   addAspect() {
-    this.aspects.push(this.aspects[this.aspects.length - 1] + 1);
-    this.weightDict[this.aspects[this.aspects.length - 1]] = 1;
+    this.aspects.push(new Aspect(''));
   }
 
   /**
@@ -162,16 +147,17 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
    * @param aspect the aspect row to be removed, given as a number
    */
   removeAspect(aspect: number) {
-    if (this.aspects.length > 1) {
-      const index = this.aspects.indexOf(aspect);
-      if (index > -1) {
-        this.aspects.splice(index, 1);
-        delete this.aspectDict[aspect];
-        delete this.weightDict[aspect];
-      }
+    this.aspects.splice(aspect, 1);
+    if (this.aspects.length === 0) {
+      this.addAspect();
+    }
+  }
+
+  chipSelected(selectedChip: string) {
+    if (this.aspects[this.aspects.length - 1].value === '') {
+      this.aspects[this.aspects.length - 1].value = selectedChip;
     } else {
-      this.aspectDict = {};
-      this.weightDict = { 1: 1 };
+      this.aspects.push(new Aspect(selectedChip));
     }
   }
 }
