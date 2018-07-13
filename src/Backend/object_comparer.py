@@ -3,6 +3,7 @@ from aspect_searcher import find_aspects
 from marker_searcher import get_marker_count, get_marker_pos
 from link_extracter import extract_main_links
 from regex_service import find_pos_in_sentence
+from pandas import DataFrame
 
 
 def find_winner(sentences, obj_a, obj_b, aspects):
@@ -34,7 +35,14 @@ def find_winner(sentences, obj_a, obj_b, aspects):
             add_points(find_aspects(s, aspects), obj_b,
                        sentences[s], s, max_sentscore, comp_result['marker_cnt'])
 
+    obj_a.sentences = prepare_sentence_list(obj_a.sentences)
+    obj_b.sentences = prepare_sentence_list(obj_b.sentences)
+
     return build_final_dict(obj_a, obj_b)
+
+def prepare_sentence_list(sentences_with_score):
+    sentences_with_score.sort(key=lambda elem: elem[0], reverse = True)
+    return list(DataFrame(sentences_with_score, columns=['points', 'sentence'])['sentence'])
 
 
 def add_points(contained_aspects, winner, score, sentence, max_score, marker_count):
@@ -61,20 +69,26 @@ def add_points(contained_aspects, winner, score, sentence, max_score, marker_cou
                         How many markers are countained in the 
                         Sentence
     '''
+    points = 0
     if contained_aspects:
         if len(contained_aspects) == 1:
-            winner.add_points(
-                contained_aspects[0].name, (score / max_score) * (contained_aspects[0].weight + marker_count))
-            winner.add_sentence(sentence)
+            aspect = contained_aspects[0]
+            points = score_function(score, max_score, aspect.weight, marker_count)
+            winner.add_points(aspect.name, points)
+            winner.add_sentence([points, sentence])
         else:
             for aspect in contained_aspects:
-                winner.add_points('multiple', (score / max_score)
-                                  * (aspect.weight + marker_count))
-            winner.add_sentence(sentence)
+                points = points + score_function(score, max_score, aspect.weight, marker_count)
+                winner.add_points('multiple', )
+            winner.add_sentence([points, sentence])
     else:
         # multiple markers, multiple points
-        winner.add_points('none', (score / max_score) * marker_count)
-        winner.add_sentence(sentence)
+        points = score_function(score, max_score, 0, marker_count)
+        winner.add_points('none', points)
+        winner.add_sentence([points, sentence])
+
+def score_function(sentence_score, max_sentscore, weight, marker_count):
+    return (sentence_score / max_sentscore) * (weight + marker_count)
 
 
 def build_final_dict(obj_a, obj_b):
