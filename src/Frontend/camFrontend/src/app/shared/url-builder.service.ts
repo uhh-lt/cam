@@ -18,8 +18,8 @@ export class UrlBuilderService {
    * @param model the backend model to be used for the comparison
    * @returns the URL
    */
-  public buildURL(objA, objB, aspectList, model, fastSearch) {
-    let URL = `${this.getUrlBase(model)}fs=${fastSearch}&objectA=${objA}&objectB=${objB}`;
+  public buildURL(objA, objB, aspectList, model, fastSearch, statusID) {
+    let URL = `${this.getUrlBase(model)}fs=${fastSearch}&objectA=${objA}&objectB=${objB}&statusID=${statusID}`;
     URL += this.addAspectURL(aspectList);
     return URL;
   }
@@ -61,10 +61,29 @@ export class UrlBuilderService {
    * Builds the url to request the status of the answer preparation.
    *
    * @param model the backend model to be used for the comparison
-   * @return status request url
+   * @return status request url (should be called by GET)
    */
-  getStatusUrl(model: string) {
-    return this.HOSTNAME_DEFAULT + '/status';
+  getStatusURL(model: string, statusID: string) {
+    return `${this.HOSTNAME_DEFAULT}/status?statusID=${statusID}`;
+  }
+
+  /**
+   * Url for deleting the status after the result is received
+   *
+   * @param statusID the id to remove
+   * @returns remove url (should be called by DELETE)
+   */
+  getRemoveStatusURL(statusID: string) {
+    return `${this.HOSTNAME_DEFAULT}/remove/status?statusID=${statusID}`;
+  }
+
+  /**
+   * Url to register a request
+   * 
+   * @returns register url (should be called by GET)
+   */
+  getRegisterURL() {
+    return `${this.HOSTNAME_DEFAULT}/register`;
   }
 
 }

@@ -21,4 +21,11 @@ export class HTTPRequestService {
     return this.httpClient.get<string>(url);
   }
 
+  removeStatus(url: string) {
+    this.httpClient.delete<any>(url).subscribe();
+  }
+
+  register(url: string) {
+    return this.httpClient.get<string>(url);
+  }
 }

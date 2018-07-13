@@ -29,6 +29,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   object_A = ''; // the first object currently entered
   object_B = ''; // the second object currently entered
 
+  private statusID = '-1';
+
   private preSelectedObjects = [
     ['python', 'java'],
     ['php', 'javascript'],
@@ -75,32 +77,49 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     }
     // read the objects entered, build the URL and start the search request
     this.saveObjects();
-    const url = this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict, this.selectedModel, this.fastSearch);
-    this.httpRequestService.getScore(url).subscribe(
-      data => { this.resultPresentation.saveResult(data, this.finalAspDict); },
-      error => {
-        this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
-          duration: 3500,
-        });
-        this.showLoading = false;
-        console.error(error);
-
+    this.httpRequestService.register(this.urlBuilderService.getRegisterURL()).subscribe(
+      data => {
+        this.statusID = data;
+        this.requestScores();
+        this.getStatus();
       },
-      () => {
-        this.showLoading = false; // hide the loading screen
-        this.showResult = true;
-        this.status = '';
-
-        const config: ScrollToConfigOptions = {
-          target: 'resultPresentation'
-        };
-
-        this.scrollToService.scrollTo(config);
-      }
+      error => { console.error(error); }
     );
+  }
+
+  requestScores() {
+    this.httpRequestService.getScore(this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict,
+      this.selectedModel, this.fastSearch, this.statusID)).subscribe(
+        data => {
+          this.resultPresentation.saveResult(data, this.finalAspDict);
+          this.showLoading = false; // hide the loading screen
+          this.showResult = true;
+          this.status = '';
+
+          const config: ScrollToConfigOptions = {
+            target: 'resultPresentation'
+          };
+          this.scrollToService.scrollTo(config);
+
+          this.httpRequestService.removeStatus(this.urlBuilderService.getRemoveStatusURL(this.statusID));
+          this.statusID = '-1';
+        },
+        error => {
+          this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
+            duration: 3500,
+          });
+          this.showLoading = false;
+          console.error(error);
+        }
+      );
+  }
+
+  getStatus() {
     TimerObservable.create(0, 500).takeWhile(() => this.showLoading).subscribe(() => {
-      this.httpRequestService.getStatus(this.urlBuilderService.getStatusUrl(this.selectedModel)).subscribe(
-        data => { this.status = data; },
+      this.httpRequestService.getStatus(this.urlBuilderService.getStatusURL(this.selectedModel, this.statusID)).subscribe(
+        data => {
+          this.status = data;
+        },
         error => { console.error(error); }
       );
     });
