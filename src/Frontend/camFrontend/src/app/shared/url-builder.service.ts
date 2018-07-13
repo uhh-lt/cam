@@ -79,7 +79,7 @@ export class UrlBuilderService {
 
   /**
    * Url to register a request
-   * 
+   *
    * @returns register url (should be called by GET)
    */
   getRegisterURL() {

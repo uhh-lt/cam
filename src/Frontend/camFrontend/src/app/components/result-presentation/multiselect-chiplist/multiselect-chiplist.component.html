@@ -1,0 +1,5 @@
+<mat-chip-list #chipList [(ngModel)]="selectedFruits" multiple>
+  <mat-chip *ngFor="let aspect of extractedAspects" [selected]="isSelected(aspect)" (click)="selectAspect(aspect)">
+    {{aspect}}
+  </mat-chip>
+</mat-chip-list>

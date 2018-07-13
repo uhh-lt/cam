@@ -1,51 +1,52 @@
-<mat-card *ngIf=showResult>
-  <table class='table'>
+<mat-card *ngIf="showResult && sentenceCount == 0">
+  <p class='text-center' style='font-size: 25px'>No sentences were found, please check for typos.</p>
+</mat-card>
+<mat-card *ngIf="showResult && sentenceCount > 0">
+  <!-- <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p> -->
+  <table class='table table-borderless text-center'>
     <thead>
       <tr>
-        <th width='20%' scope='col'></th>
-        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{dispensableResult.winner}}</th>
-        <th width='40%' scope='col' class='text-center' style='font-size: 19px'>{{dispensableResult.looser}}</th>
+        <th width='50%' scope='col' class='text-center winner' style='font-size: 19px'>{{dispensableResult.winner}}</th>
+        <th width='50%' scope='col' class='text-center looser' style='font-size: 19px'>{{dispensableResult.looser}}</th>
       </tr>
     </thead>
+  </table>
+  <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
+  <table class='table table-borderless'>
     <tbody>
       <tr>
-        <th scope='row'></th>
-        <td class='text-center winner' style='font-size: 17px'>Winner</td>
-        <td class='text-center looser' style='font-size: 17px'>Runner-up</td>
-      </tr>
-      <tr>
-        <th scope='row' style='font-size: 17px'>Score</th>
-        <td class='text-center' style='font-size: 17px'>{{dispensableResult.winnerScorePercent}} %</td>
-        <td class='text-center' style='font-size: 17px'>{{dispensableResult.looserScorePercent}} %</td>
+        <td>
+          <mat-divider></mat-divider>
+        </td>
       </tr>
       <tr>
         <th scope='row' style='font-size: 17px'>Automatically extracted aspects</th>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of dispensableResult.winnerLinks'>{{link}}</li>
+          <app-multiselect-chiplist [extractedAspects]="dispensableResult.winnerLinks" (updatedSelection)="updatedSelection($event, true)">test</app-multiselect-chiplist>
         </td>
         <td style='font-size: 17px'>
-          <li *ngFor='let link of dispensableResult.looserLinks'>{{link}}</li>
+          <app-multiselect-chiplist [extractedAspects]="dispensableResult.looserLinks" (updatedSelection)="updatedSelection($event, false)">test</app-multiselect-chiplist>
         </td>
       </tr>
-      <tr>
-        <th scope='row' style='font-size: 17px'>Sentence examples</th>
-        <td>
-          <div *ngFor='let i of sentenceShowNumberlistWinner'>
-            <div style='font-size: 17px' [innerHtml]="winnerSentenceExamples[i] | markClasses:dispensableResult:finalAspectDict">
-            </div>
-            <br>
+  </table>
+  <table class="table table-borderless">
+    <tr *ngFor="let key of categories">
+      <td style="width: 50%">
+        <div *ngFor='let sentence of (dispensableResult.winnerSentences | sentenceFilter:selectedWinnerAspects:trigger)'>
+          <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict:selectedWinnerAspects:trigger">
           </div>
-        </td>
-        <td>
-          <div *ngFor='let i of sentenceShowNumberlistLooser'>
-            <div [innerHtml]="looserSentenceExamples[i] | markClasses:dispensableResult:finalAspectDict"></div>
-            <br>
-          </div>
-        </td>
-      </tr>
+          <br>
+        </div>
+      </td>
+      <td>
+        <div *ngFor='let sentence of (dispensableResult.looserSentences | sentenceFilter:selectedLooserAspects:trigger)'>
+          <div [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict:selectedLooserAspects:trigger"></div>
+          <br>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </table>
-  <button (click)='showMoreSentences()' mat-raised-button color="primary">
-    Show more sentences
-  </button>
 </mat-card>
+<br>
+<br>
