@@ -1,14 +1,14 @@
 # encoding=utf8
 
 import unittest
-from object_comparer import what_is_better, find_winner
-from sentence_clearer import clear_sentences, remove_wrong_structures
 from main import Argument, Aspect
-from aspect_searcher import find_aspects
-from es_requester import build_object_urlpart
-from link_extracter import extract_main_links
-from sentence_preparation_ML import prepare_sentence_DF
-import classify
+from marker_approach.object_comparer import what_is_better, find_winner
+from ml_approach.sentence_preparation_ML import prepare_sentence_DF
+from utils.sentence_clearer import clear_sentences, remove_wrong_structures
+from utils.regex_service import find_aspects
+from utils.url_builder import build_object_urlpart
+from utils.link_extracter import extract_main_links
+
 
 
 class Test(unittest.TestCase):

@@ -1,7 +1,7 @@
 from sklearn.base import TransformerMixin, BaseEstimator
 import re
 import numpy as np
-import regex_service
+from utils.regex_service import find_pos_in_sentence
 
 
 def process(text, a, b, mode=None, rep_a='OBJECT_A', rep_b='OBJECT_B'):
@@ -46,7 +46,7 @@ class ExtractMiddlePart(TransformerMixin, BaseEstimator):
         results = []
         for index, row in dataframe.iterrows():
             a, b, text = row['object_a'], row['object_b'], row['sentence']
-            a_index, b_index = regex_service.find_pos_in_sentence(a, text), regex_service.find_pos_in_sentence(b, text)
+            a_index, b_index = find_pos_in_sentence(a, text), find_pos_in_sentence(b, text)
             if a_index < b_index:
                 begin, end = a_index, b_index + len(b)
             else:

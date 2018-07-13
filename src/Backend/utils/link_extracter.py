@@ -1,7 +1,7 @@
 import re
 import nltk
 from nltk import word_tokenize
-from constants import STOPWORDS, POSITIVE_MARKERS, NEGATIVE_MARKERS, NON_LINKS, NUMBER_STRINGS
+from marker_approach.constants import STOPWORDS, POSITIVE_MARKERS, NEGATIVE_MARKERS, NON_LINKS, NUMBER_STRINGS
 
 
 def extract_main_links(sentencesA, sentencesB, obj_a, obj_b):

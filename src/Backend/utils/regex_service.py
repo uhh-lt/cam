@@ -15,3 +15,20 @@ def find_pos_in_sentence(sequence, sentence):
         return match.start() if match != None else -1
     else:
         return match.start()
+
+
+def find_aspects(sentence, aspects):
+    '''
+    Searches for the aspects the user entered within a given sentence.
+
+    sentence:   String
+                the sentence which shall be scanned for aspects
+
+    aspects:    List
+                list of Aspect objects
+    '''
+    ret_aspects = []
+    for aspect in aspects:
+        if find_pos_in_sentence(aspect.name, sentence) != -1:
+            ret_aspects.append(aspect)
+    return ret_aspects

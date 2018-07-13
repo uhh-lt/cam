@@ -1,4 +1,4 @@
-from regex_service import find_pos_in_sentence
+from utils.regex_service import find_pos_in_sentence
 
 
 def has_marker(sentence, pos_first, pos_second, markers):

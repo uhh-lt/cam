@@ -1,13 +1,6 @@
 import inflect
 from nltk.corpus import stopwords
 
-
-# ES_HOSTNAME = 'http://localhost:9200/'  # if you want to connect to a locally hosted ES
-ES_HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/'
-# Elastic Search commoncrawl2 search request
-CRAWL_DATA_REPOS = 'commoncrawl2/_search?q=text:'
-
-
 # list of all positive markers used for comparing the objects
 POSITIVE_MARKERS = ['better', 'easier', 'faster', 'nicer', 'cooler', 'safer', 'superior',
                     'accessible', 'greater', 'simpler', 'smoother', 'lighter', 'quicker',

@@ -1,6 +1,6 @@
-import aspect_searcher
-import object_comparer
 from pandas import DataFrame
+from utils.answer_preparation import add_points, prepare_sentence_list, build_final_dict
+from utils.regex_service import find_aspects
 
 import os
 import sys
@@ -33,43 +33,22 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
 
         classification_confidence = classification_results[label][index]
         sentence = row['sentence']
-        contained_aspects = aspect_searcher.find_aspects(sentence, aspects)
+        contained_aspects = find_aspects(sentence, aspects)
         if (label == 'BETTER' and row['object_a'] == obj_a.name) or (label == 'WORSE' and row['object_b'] == obj_a.name):
             add_points(contained_aspects, obj_a,
-                       sentences[sentence], sentence, max_sentscore, classification_confidence)
+                       sentences[sentence], sentence, max_sentscore, classification_confidence, score_function)
         else:
             add_points(contained_aspects, obj_b,
-                       sentences[sentence], sentence, max_sentscore, classification_confidence)
+                       sentences[sentence], sentence, max_sentscore, classification_confidence, score_function)
 
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
 
-    return object_comparer.build_final_dict(obj_a, obj_b)
+    return build_final_dict(obj_a, obj_b)
 
-
-def prepare_sentence_list(sentences_with_confidence):
-    sentences_with_confidence.sort(key=lambda elem: elem[0], reverse = True)
-    return list(DataFrame(sentences_with_confidence, columns=['points', 'sentence'])['sentence'])
-
-
-def add_points(contained_aspects, winner, sentence_score, sentence, max_sentscore, classification_confidence):
-    points = 0
-    if contained_aspects:
-        if len(contained_aspects) == 1:
-            aspect = contained_aspects[0]
-            points = score_function(sentence_score, max_sentscore, aspect.weight, classification_confidence)
-            winner.add_points(aspect.name, points)
-            winner.add_sentence([points, sentence])
-        else:
-            for aspect in contained_aspects:
-                points = points + score_function(sentence_score, max_sentscore, aspect.weight, classification_confidence)
-            winner.add_points('multiple', points)
-            winner.add_sentence([points, sentence])
-    else:
-        points = score_function(sentence_score, max_sentscore, 1, classification_confidence)
-        winner.add_points('none', points)
-        winner.add_sentence([points, sentence])
 
 def score_function(sentence_score, max_sentscore, weight, confidence):
+    if weight < 1:
+        weight = 1
     return ((sentence_score * confidence) / max_sentscore) * weight
 

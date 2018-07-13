@@ -1,13 +1,13 @@
 import pandas as pd
-import regex_service
+from utils.regex_service import find_pos_in_sentence
 
 
 def prepare_sentence_DF(sentences, obj_a, obj_b):
     index = 0
     temp_list = []
     for sentence in sentences:
-        pos_a = regex_service.find_pos_in_sentence(obj_a.name, sentence)
-        pos_b = regex_service.find_pos_in_sentence(obj_b.name, sentence)
+        pos_a = find_pos_in_sentence(obj_a.name, sentence)
+        pos_b = find_pos_in_sentence(obj_b.name, sentence)
         if pos_a < pos_b:
             temp_list.append([obj_a.name, obj_b.name, sentence])
         else:

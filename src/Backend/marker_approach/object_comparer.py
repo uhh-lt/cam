@@ -1,9 +1,9 @@
-from constants import OPPOSITE_MARKERS, POSITIVE_MARKERS, NEGATIVE_MARKERS, NEGATIONS
-from aspect_searcher import find_aspects
-from marker_searcher import get_marker_count, get_marker_pos
-from link_extracter import extract_main_links
-from regex_service import find_pos_in_sentence
-from pandas import DataFrame
+from marker_approach.constants import OPPOSITE_MARKERS, POSITIVE_MARKERS, NEGATIVE_MARKERS, NEGATIONS
+from marker_approach.marker_searcher import get_marker_count, get_marker_pos
+
+from utils.regex_service import find_aspects, find_pos_in_sentence
+from utils.answer_preparation import add_points, prepare_sentence_list, build_final_dict
+
 
 
 def find_winner(sentences, obj_a, obj_b, aspects):
@@ -30,101 +30,22 @@ def find_winner(sentences, obj_a, obj_b, aspects):
         comp_result = what_is_better(s, obj_a, obj_b)
         if comp_result['winner'] == obj_a:  # objectA won the sentence
             add_points(find_aspects(s, aspects), obj_a,
-                       sentences[s], s, max_sentscore, comp_result['marker_cnt'])
+                       sentences[s], s, max_sentscore, comp_result['marker_cnt'], score_function)
         else:  # objectB won the sentence
             add_points(find_aspects(s, aspects), obj_b,
-                       sentences[s], s, max_sentscore, comp_result['marker_cnt'])
+                       sentences[s], s, max_sentscore, comp_result['marker_cnt'], score_function)
 
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
 
     return build_final_dict(obj_a, obj_b)
 
-def prepare_sentence_list(sentences_with_score):
-    sentences_with_score.sort(key=lambda elem: elem[0], reverse = True)
-    return list(DataFrame(sentences_with_score, columns=['points', 'sentence'])['sentence'])
 
 
-def add_points(contained_aspects, winner, score, sentence, max_score, marker_count):
-    '''
-    Adds the points of the won sentence to the points of the winner.
-
-    contained_aspects:  List
-                        The aspects the user entered that are 
-                        contained in the sentence
-
-    winner:             Argument
-                        The winner of the given sentence
-
-    score:              Integer
-                        The score of the given sentence
-
-    sentence:           String
-                        The given sentence to add
-
-    max_score:          Integer
-                        Max score over all sentences
-
-    marker_count:       Integer
-                        How many markers are countained in the 
-                        Sentence
-    '''
-    points = 0
-    if contained_aspects:
-        if len(contained_aspects) == 1:
-            aspect = contained_aspects[0]
-            points = score_function(score, max_score, aspect.weight, marker_count)
-            winner.add_points(aspect.name, points)
-            winner.add_sentence([points, sentence])
-        else:
-            for aspect in contained_aspects:
-                points = points + score_function(score, max_score, aspect.weight, marker_count)
-                winner.add_points('multiple', )
-            winner.add_sentence([points, sentence])
-    else:
-        # multiple markers, multiple points
-        points = score_function(score, max_score, 0, marker_count)
-        winner.add_points('none', points)
-        winner.add_sentence([points, sentence])
 
 def score_function(sentence_score, max_sentscore, weight, marker_count):
     return (sentence_score / max_sentscore) * (weight + marker_count)
 
-
-def build_final_dict(obj_a, obj_b):
-    '''
-    Builds the final dictionary containing all necessary information regarding the comparison to 
-    be returned to the frontend.
-
-    obj_a:  Argument
-            the first object of the comparison
-
-    obj_b:  Argument
-            the second object of the comparison
-    '''
-    final_dict = {}  # the dictionary to be returned
-
-    if obj_a.totalPoints > obj_b.totalPoints:
-        final_dict['winner'] = obj_a.name
-    elif obj_b.totalPoints > obj_a.totalPoints:
-        final_dict['winner'] = obj_b.name
-    else:
-        final_dict['winner'] = 'No winner found'
-    linked_words = extract_main_links(
-        obj_a.sentences, obj_b.sentences, obj_a, obj_b)
-    final_dict['object1'] = obj_a.name
-    final_dict['object2'] = obj_b.name
-    final_dict['totalScoreObject1'] = obj_a.totalPoints
-    final_dict['totalScoreObject2'] = obj_b.totalPoints
-    final_dict['scoreObject1'] = obj_a.points
-    final_dict['scoreObject2'] = obj_b.points
-    final_dict['extractedAspectsObject1'] = linked_words['A']
-    final_dict['extractedAspectsObject2'] = linked_words['B']
-    final_dict['sentencesObject1'] = obj_a.sentences
-    final_dict['sentencesObject2'] = obj_b.sentences
-    final_dict['sentenceCount'] = len(obj_a.sentences) + len(obj_b.sentences)
-
-    return final_dict
 
 
 def what_is_better(sentence, obj_a, obj_b):

@@ -1,6 +1,6 @@
-from constants import POSITIVE_MARKERS, NEGATIVE_MARKERS
-from marker_searcher import has_marker
-from regex_service import find_pos_in_sentence
+from marker_approach.constants import POSITIVE_MARKERS, NEGATIVE_MARKERS
+from marker_approach.marker_searcher import has_marker
+from utils.regex_service import find_pos_in_sentence
 
 
 def clear_sentences(sentences, obj_a, obj_b):

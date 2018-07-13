@@ -1,10 +1,11 @@
 import requests
 import json
-from es_requester import request_es, extract_sentences, request_es_ML, request_es_triple
-import sentence_clearer 
-from sentence_preparation_ML import prepare_sentence_DF
-from classify import classify_sentences, evaluate
-from object_comparer import find_winner
+from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple
+from utils.sentence_clearer import clear_sentences, remove_questions
+from ml_approach.sentence_preparation_ML import prepare_sentence_DF
+from ml_approach.classify import classify_sentences, evaluate
+from marker_approach.object_comparer import find_winner
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sklearn
@@ -38,7 +39,7 @@ def cam():
 
         # removing sentences that can't be properly analyzed
         setStatus(statusID, 'Clear sentences')
-        all_sentences = sentence_clearer.clear_sentences(all_sentences, obj_a, obj_b)
+        all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
 
         # find the winner of the two objects
         setStatus(statusID, 'Find winner')
@@ -60,7 +61,7 @@ def cam():
         if len(all_sentences) == 0:
             return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects)) 
         
-        sentence_clearer.remove_questions(all_sentences)
+        remove_questions(all_sentences)
 
         setStatus(statusID, 'Prepare sentences for classification')
         prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b)
@@ -148,4 +149,4 @@ class Aspect:
 
 if __name__ == "__main__":
     status = {}
-    app.run(host="0.0.0.0", threaded=True)
+    app.run(host="0.0.0.0", threaded=True, port=10100)
