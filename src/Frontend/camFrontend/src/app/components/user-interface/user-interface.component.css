@@ -24,6 +24,10 @@
   border-top-style: dotted;
 }
 
+.table {
+  margin-bottom: 0;
+}
+
 
 /* .mat-progress-spinner circle, .mat-spinner circle {
     stroke: #0069d9;
