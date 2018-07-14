@@ -3,14 +3,6 @@
 </mat-card>
 <mat-card *ngIf="showResult && sentenceCount > 0">
   <!-- <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p> -->
-  <table class='table table-borderless text-center'>
-    <thead>
-      <tr>
-        <th width='50%' scope='col' class='text-center winner' style='font-size: 19px'>{{dispensableResult.winner}}</th>
-        <th width='50%' scope='col' class='text-center looser' style='font-size: 19px'>{{dispensableResult.looser}}</th>
-      </tr>
-    </thead>
-  </table>
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
   <table class='table table-borderless'>
     <tbody>

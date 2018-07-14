@@ -9,6 +9,8 @@ export class DispensableResult {
         this.looserScoresPercent = {};
         this.winner = '';
         this.looser = '';
+        this.winnerTotalScore = '';
+        this.looserTotalScore = '';
     }
 
     winnerLinks: Array<string>; // stores the main links of the first object
@@ -19,4 +21,6 @@ export class DispensableResult {
     looserScoresPercent: {}; // stores the score of the second object
     winner: string; // the winning object of the results shown
     looser: string; // the losing object of the results shown
+    winnerTotalScore: string;
+    looserTotalScore: string;
 }
