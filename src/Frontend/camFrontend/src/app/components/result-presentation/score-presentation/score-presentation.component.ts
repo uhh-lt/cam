@@ -157,6 +157,7 @@ export class ScorePresentationComponent implements AfterViewInit {
             display: false
           },
           gridLines: {
+            zeroLineColor: 'rgba(0,0,0,0)',
             display: true,
             color: ['rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)',
               'rgba(255,0,0,0.4)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)']
