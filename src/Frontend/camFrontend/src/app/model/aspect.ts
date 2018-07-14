@@ -1,7 +1,7 @@
 export class Aspect {
     constructor(value: string) {
         this.value = value;
-        this.weight = 1;
+        this.weight = 3;
     }
 
     public value: string;
