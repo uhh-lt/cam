@@ -12,12 +12,15 @@ export class SentenceFilterPipe implements PipeTransform {
   }
 
   allAspectsContained(sentence: string, selectedAspects: Array<string>) {
+    if (selectedAspects.length === 0) {
+      return true;
+    }
     for (const aspect of selectedAspects) {
-      if (!sentence.includes(aspect)) {
-        return false;
+      if (sentence.includes(aspect)) {
+        return true;
       }
     }
-    return true;
+    return false;
   }
 
 }
