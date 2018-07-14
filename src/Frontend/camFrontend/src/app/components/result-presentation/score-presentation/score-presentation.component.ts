@@ -60,7 +60,7 @@ export class ScorePresentationComponent implements AfterViewInit {
 
         Chart.helpers.each(chartInstance.controller.getDatasetMeta(0).data.forEach((bar, index) => {
           const label = this.data.labels[index];
-          const labelPositionX = (this.canvas.width / 2);
+          const labelPositionX = (this.canvas.width / (2 * this.chart.currentDevicePixelRatio));
           ctx.textBaseline = 'middle';
           ctx.textAlign = 'center';
           ctx.fillStyle = '#000000';
