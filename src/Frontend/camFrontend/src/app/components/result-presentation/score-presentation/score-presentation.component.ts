@@ -64,7 +64,7 @@ export class ScorePresentationComponent implements AfterViewInit {
           ctx.textBaseline = 'middle';
           ctx.textAlign = 'center';
           ctx.fillStyle = '#000000';
-          ctx.font = '25px Open Sans';
+          ctx.font = '20px Open Sans';
           ctx.fillText(label, labelPositionX, bar._model.y);
         }));
       }
