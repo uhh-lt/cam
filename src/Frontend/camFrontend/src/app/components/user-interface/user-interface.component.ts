@@ -87,7 +87,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.httpRequestService.getScore(this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict,
       this.selectedModel, this.fastSearch, this.statusID)).subscribe(
         data => {
-          this.resultPresentation.saveResult(data, this.finalAspDict);
+          this.resultPresentation.saveResult(data, Object.keys(this.finalAspDict));
           this.showLoading = false; // hide the loading screen
           this.showResult = true;
           this.status = '';

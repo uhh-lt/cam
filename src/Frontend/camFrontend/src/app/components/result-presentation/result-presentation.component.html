@@ -4,40 +4,39 @@
 <mat-card *ngIf="showResult && sentenceCount > 0">
   <!-- <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p> -->
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
-  <table class='table table-borderless'>
+  <!-- <mat-divider></mat-divider> -->
+  <table class='table table-bordered'>
     <tbody>
       <tr>
-        <td>
-          <mat-divider></mat-divider>
-        </td>
+        <th scope='row' class="aspect-header">Generated aspects for {{dispensableResult.winner}}</th>
+        <th scope='row' class="aspect-header">Aspects</th>
+        <th scope='row' class="aspect-header">Generated aspects for {{dispensableResult.looser}}</th>
       </tr>
       <tr>
-        <td style='font-size: 17px' style="width: 40%">
-          <app-multiselect-chiplist [extractedAspects]="dispensableResult.winnerLinks" (updatedSelection)="updatedSelection($event, true)">test</app-multiselect-chiplist>
+        <td style="width: 40%">
+          <app-multiselect-chiplist [extractedAspects]="dispensableResult.winnerLinks" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
         </td>
-        <th scope='row' style='font-size: 17px' style="width: 20%">Automatically extracted aspects</th>
-        <td style='font-size: 17px' style="width: 40%">
-          <app-multiselect-chiplist [extractedAspects]="dispensableResult.looserLinks" (updatedSelection)="updatedSelection($event, false)">test</app-multiselect-chiplist>
+        <td style="width: 20%">
+          <app-multiselect-chiplist [extractedAspects]="finalAspectList" (updatedSelection)="selectEnteredAspects($event)"></app-multiselect-chiplist>
         </td>
-      </tr>
-      <tr>
-        <td>
-          <mat-divider></mat-divider>
+        <td style="width: 40%">
+          <app-multiselect-chiplist [extractedAspects]="dispensableResult.looserLinks" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
         </td>
       </tr>
   </table>
+  <!-- <mat-divider></mat-divider> -->
   <table class="table table-borderless">
     <tr>
       <td style="width: 50%">
-        <div *ngFor='let sentence of (dispensableResult.winnerSentences | sentenceFilter:selectedWinnerAspects:trigger)'>
-          <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict:selectedWinnerAspects:trigger">
+        <div *ngFor='let sentence of (dispensableResult.winnerSentences | sentenceFilter:selectedWinnerAspects:selectedEnteredAspects:trigger)'>
+          <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedWinnerAspects:trigger">
           </div>
           <br>
         </div>
       </td>
       <td>
-        <div *ngFor='let sentence of (dispensableResult.looserSentences | sentenceFilter:selectedLooserAspects:trigger)'>
-          <div [innerHtml]="sentence | markClasses:dispensableResult:finalAspectDict:selectedLooserAspects:trigger"></div>
+        <div *ngFor='let sentence of (dispensableResult.looserSentences | sentenceFilter:selectedLooserAspects:selectedEnteredAspects:trigger)'>
+          <div [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedLooserAspects:trigger"></div>
           <br>
         </div>
       </td>
