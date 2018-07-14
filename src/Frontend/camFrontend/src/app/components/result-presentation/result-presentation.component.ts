@@ -12,8 +12,6 @@ export class ResultPresentationComponent {
   @Output() chipSelected = new EventEmitter<string>();
 
   private dispensableResult = new DispensableResult();
-  private finalAspectDict = {};
-  private categories = new Array<string>();
   private categoriesChartOrder = new Array<string>();
   private none = 'none';          // label for sentences with no contained aspect
   private multiple = 'multiple';  // label for sentences with multiple aspects
@@ -23,6 +21,7 @@ export class ResultPresentationComponent {
 
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
+  public finalAspectDict = {};
   public trigger = 0;
 
   showResult: boolean;
@@ -65,7 +64,6 @@ export class ResultPresentationComponent {
     this.showResult = false;
     this.selectedWinnerAspects = new Array<string>();
     this.selectedLooserAspects = new Array<string>();
-    this.categories = [];
     this.categoriesChartOrder = [];
   }
 
@@ -95,19 +93,14 @@ export class ResultPresentationComponent {
         if (key !== this.none && key !== this.multiple) {
           this.setScores(winnerScores[key], looserScores[key], key);
           this.categoryLabels[key] = key;
-          this.categories.push(key);
         }
       });
 
       if (categories.indexOf(this.multiple) !== -1) {
         this.setScores(winnerScores[this.multiple], looserScores[this.multiple], this.categoryLabels[this.multiple]);
-        this.categories.push(this.multiple);
       }
       this.setScores(totalScoreA, totalScoreB, 'Overall Comparison');
     }
-    this.categories.push(this.none);
-
-
   }
 
   private setScores(a: number, b: number, label: string): void {
