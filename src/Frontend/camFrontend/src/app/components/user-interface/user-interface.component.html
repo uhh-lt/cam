@@ -2,13 +2,13 @@
   <form nonvalidate (ngSubmit)="compIfEntered()">
     <table class="table table-borderless">
       <tr>
-        <td class='text-right' style='width:40%'>
+        <td class='text-right' style='width:38%'>
           <mat-form-field class="object-input">
             <input matInput placeholder='First object' #objA [(ngModel)]='object_A' name="objA" style='font-size: 20px'>
           </mat-form-field>
         </td>
         <td class='align-middle text-center' style='font-size: 16px'>versus</td>
-        <td style='width:40%'>
+        <td style='width:38%'>
           <mat-form-field class="object-input">
             <input matInput placeholder='Second object' #objB [(ngModel)]='object_B' name="objB" style='font-size: 20px'>
           </mat-form-field>
@@ -63,7 +63,6 @@
       </tr>
       <tr>
         <td class='align-middle text-right'>
-
           <mat-form-field>
             <mat-select [(ngModel)]='selectedModel' name="modelSelect">
               <mat-option selected value="default">
@@ -77,14 +76,14 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-
         </td>
         <th class='align-middle text-center'>
-          <button (click)='resetInput()' mat-raised-button type="button">
-            Reset
-          </button>
           <button type="submit" mat-raised-button color="primary" [disabled]='!objectsEntered()'>
             Compare!
+          </button>
+          &nbsp;
+          <button (click)='resetInput()' mat-raised-button type="button">
+            Reset
           </button>
         </th>
         <td class='align-middle'>
@@ -95,7 +94,6 @@
     </table>
   </form>
   <div *ngIf='showLoading' class="text-center">
-    <!-- <mat-spinner style="margin:0 auto;"></mat-spinner> -->
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     <small>{{status}}</small>
   </div>
