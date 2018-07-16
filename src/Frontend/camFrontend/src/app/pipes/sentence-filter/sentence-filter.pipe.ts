@@ -6,7 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SentenceFilterPipe implements PipeTransform {
 
   transform(sentences: Array<string>, selectedAspects: Array<string>, selectEnteredAspects: Array<string>, trigger: number): any {
-    console.log(selectEnteredAspects);
     return sentences.filter(sentence =>
       this.allAspectsContained(sentence, selectedAspects.concat(selectEnteredAspects))
     );
