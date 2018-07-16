@@ -1,6 +1,6 @@
 <div *ngIf="headlineChart">
   <canvas id="headlineCanvas">{{headlineChart}}</canvas>
 </div>
-<div *ngIf="chart">
+<div *ngIf="categories.length > 0 && chart">
   <canvas id="canvas">{{chart}}</canvas>
 </div>

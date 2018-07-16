@@ -28,7 +28,9 @@ export class ScorePresentationComponent implements AfterViewInit {
   ngAfterViewInit() {
 
     this.setUpHeaderChart();
-    this.setUpScoreChart();
+    if (this.categories.length > 0) {
+          this.setUpScoreChart();
+    }
     this.changeDetection.detectChanges();
 
   }

@@ -91,18 +91,17 @@ export class ResultPresentationComponent {
     this.dispensableResult.winnerTotalScore = this.calcScore(totalScoreA, totalScoreB);
     this.dispensableResult.looserTotalScore = this.calcScore(totalScoreB, totalScoreA);
     const categories = Array.from(new Set(Object.keys(winnerScores).concat(Object.keys(looserScores))));
-    this.setScores(winnerScores[this.none], looserScores[this.none], this.categoryLabels[this.none]);
-    if (categories.length > 1) {
-      categories.forEach(key => {
-        if (key !== this.none && key !== this.multiple) {
-          this.setScores(winnerScores[key], looserScores[key], key);
-          this.categoryLabels[key] = key;
-        }
-      });
-
-      if (categories.indexOf(this.multiple) !== -1) {
-        this.setScores(winnerScores[this.multiple], looserScores[this.multiple], this.categoryLabels[this.multiple]);
+    categories.forEach(key => {
+      if (key !== this.none && key !== this.multiple) {
+        this.setScores(winnerScores[key], looserScores[key], key);
+        this.categoryLabels[key] = key;
       }
+    });
+    if (categories.indexOf(this.multiple) !== -1) {
+      this.setScores(winnerScores[this.multiple], looserScores[this.multiple], this.categoryLabels[this.multiple]);
+    }
+    if (categories.length > 1) {
+      this.setScores(winnerScores[this.none], looserScores[this.none], this.categoryLabels[this.none]);
     }
   }
 
