@@ -149,4 +149,4 @@ class Aspect:
 
 if __name__ == "__main__":
     status = {}
-    app.run(host="0.0.0.0", threaded=True, port=10100)
+    app.run(host="0.0.0.0", threaded=True)
