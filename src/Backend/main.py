@@ -73,10 +73,10 @@ def cam():
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
         final_dict = evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects)
         
-        print('Obj 1:')
-        find_most_frequent_words(obj_a.name, obj_b.name, final_dict['sentencesObject1'], aspects[0].name)
-        print('Obj 2:')
-        find_most_frequent_words(obj_a.name, obj_b.name, final_dict['sentencesObject2'], aspects[0].name)
+        # print('Obj 1:')
+        # find_most_frequent_words(obj_a.name, obj_b.name, final_dict['sentencesObject1'], aspects[0].name)
+        # print('Obj 2:')
+        # find_most_frequent_words(obj_a.name, obj_b.name, final_dict['sentencesObject2'], aspects[0].name)
         
         
         return jsonify(final_dict)
