@@ -3,6 +3,7 @@ from utils.regex_service import find_pos_in_sentence
 from collections import Counter
 from marker_approach.constants import STOPWORDS
 from nltk import word_tokenize, pos_tag
+import spacy
 
 # STOPWORDS = ['the', 'and', 'in', 's', 'of', 'to', 'a', 'or', 'is', 'are', 'that', 'by', 'be', 'as', 'its', 'has', 'some', 'which', 'than', 'on', 'would']
 not_filter = ['most', 'after', 'above', 'more', 'before', 'same', 'under', 'below']
@@ -91,3 +92,11 @@ def find_most_frequent_comparative_word(object_a, object_b, sentences, aspect):
 
 find_most_frequent_words("earth", "venus", [
                          "and venus has lower mass than earth and 90 bars of co2 pressure and it is 500 degress hot, why 1 mil.", "the diameter of venus is 12, 092 km ( sole 650 km less than the earth ' s ) and its mass is 81. 5 % of the earth ' s."], "mass")
+nlp = spacy.load('en')
+doc = nlp('and venus has lower mass than earth and 90 bars of co2 pressure and it is 500 degress hot, why 1 mil.'
+    'the diameter of venus is 12, 092 km ( sole 650 km less than the earth \' s ) and its mass is 81. 5 % of the earth \' s.')
+for token in doc:
+    if token.dep_ in ['appos', 'nmod', 'acomp']:
+        print(token.text)
+    # print(token.text, token.dep_, token.head.text, token.head.pos_,
+    #       [child for child in token.children])
