@@ -4,7 +4,7 @@ import time
 import threading
 import math
 import sys
-sys.path.append('../Backend')
+sys.path.append('../../Backend')
 import es_requester
 from sentence_clearer import clear_sentences
 from main import Argument
