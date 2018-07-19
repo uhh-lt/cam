@@ -102,24 +102,6 @@ def find_most_frequent_comparative_word(object_a, object_b, sentences, aspect):
     print('>>>>>>>>>', comparative_words)
 
 
-def get_tag(sentence, object_a, object_b, aspect):
-
-    pos_a = find_pos_in_sentence(object_a, sentence)
-    pos_b = find_pos_in_sentence(object_b, sentence)
-    pos_c = find_pos_in_sentence(aspect, sentence)
-    if pos_a != -1 and pos_b != -1 and pos_c != -1:
-        if pos_a > pos_b:
-            pos_a = find_last_pos_in_sentence(object_a, sentence)
-        else:
-            pos_b = find_last_pos_in_sentence(object_b, sentence)
-
-        indices = [['a', pos_a], ['b', pos_b], ['c', pos_c]]
-        indices.sort(key=lambda elem: elem[1])
-
-        return '_'.join([x[0] for x in indices])
-    return 'none'
-
-
 # find_most_frequent_words("earth", "venus", [
 #                          "and venus has lower mass than earth and 90 bars of co2 pressure and it is 500 degress hot, why 1 mil.", "the diameter of venus is 12, 092 km ( sole 650 km less than the earth ' s ) and its mass is 81. 5 % of the earth ' s."], "mass")
 # nlp = spacy.load('en')
