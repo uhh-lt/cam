@@ -54,7 +54,7 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
 def score_function(sentence_score, max_sentscore, weight, confidence):
     if weight < 1:
         weight = 1
-    return ((sentence_score * confidence) / max_sentscore) * weight
+    return (sentence_score + confidence * max_sentscore) * weight
 
 
 contrary_comparatives = {

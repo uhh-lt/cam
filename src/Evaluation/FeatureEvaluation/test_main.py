@@ -10,14 +10,14 @@ from marker_approach.object_comparer import find_winner
 from main import Argument, Aspect
 
 from score_determination import calculateEvaluationScores, set_counts, Scores
-from evaluation_triples import gold_scores, triples
+from evaluation_triples import triples
 
 
 def simulate_main(triple):
     fast_search = 'true'
-    obj_a = Argument(triple[0].lower().strip())
-    obj_b = Argument(triple[1].lower().strip())
-    aspects = [Aspect(triple[2].lower(), 5)]
+    obj_a = Argument(triple[1].lower().strip())
+    obj_b = Argument(triple[2].lower().strip())
+    aspects = [Aspect(triple[3].lower(), 5)]
     model = 'bow'
 
     if aspects:
@@ -40,17 +40,16 @@ def simulate_main(triple):
                           classification_results, obj_a, obj_b, aspects)
 
     a_aspect_score = 0
-    if triple[2] in final_dict['scoreObject1']:
-        a_aspect_score = final_dict['scoreObject1'][triple[2]]
+    if triple[3] in final_dict['scoreObject1']:
+        a_aspect_score = final_dict['scoreObject1'][triple[3]]
     b_aspect_score = 0
-    if triple[2] in final_dict['scoreObject2']:
-        b_aspect_score = final_dict['scoreObject2'][triple[2]]
+    if triple[3] in final_dict['scoreObject2']:
+        b_aspect_score = final_dict['scoreObject2'][triple[3]]
     
     return [a_aspect_score, b_aspect_score]
 
 
 def main():
-    index = 1
     scores = [['index', 'a_score', 'b_score', 'gold_deviation']]
     score_counts = Scores()
     for triple in triples:
@@ -62,19 +61,18 @@ def main():
         total_aspect_score = a_aspect_score + b_aspect_score
 
         if total_aspect_score == 0:
-            print('Nothing found for: ', index,
-                  triple[0], triple[1], triple[2])
-            scores.append([index, 0, 0, ''])
+            print('Nothing found for: ', triple[0],
+                  triple[1], triple[2], triple[3])
+            scores.append([triple[0], 0, 0, ''])
         else:
-            gold = gold_scores[index-1]
+            gold = triple[4]
             a_percent = (a_aspect_score / total_aspect_score)
             b_percent = (b_aspect_score / total_aspect_score)
-            print(index, triple[0] + ':', a_percent, triple[1] + ':', b_percent, triple[2])
+            print(triple[0], triple[1] + ':', a_percent, triple[2] + ':', b_percent, triple[3])
             deviation = a_percent - gold if a_percent > gold else gold - a_percent
             set_counts((a_aspect_score / total_aspect_score), gold, deviation, score_counts)
 
-            scores.append([index, a_percent, b_percent, deviation])
-        index = index + 1
+            scores.append([triple[0], a_percent, b_percent, deviation])
 
     summed_deviation = 0
     total = len(scores)
