@@ -61,14 +61,14 @@ def main():
         total_aspect_score = a_aspect_score + b_aspect_score
 
         if total_aspect_score == 0:
-            print('Nothing found for: ', triple[0],
+            print(triple[0], '---', 'Nothing found for: ', triple[0],
                   triple[1], triple[2], triple[3])
             scores.append([triple[0], 0, 0, ''])
         else:
             gold = triple[4]
             a_percent = (a_aspect_score / total_aspect_score)
             b_percent = (b_aspect_score / total_aspect_score)
-            print(triple[0], triple[1] + ':', a_percent, triple[2] + ':', b_percent, triple[3])
+            print(triple[0], '---', triple[1] + ':', a_percent, triple[2] + ':', b_percent, triple[3])
             deviation = a_percent - gold if a_percent > gold else gold - a_percent
             set_counts((a_aspect_score / total_aspect_score), gold, deviation, score_counts)
 
