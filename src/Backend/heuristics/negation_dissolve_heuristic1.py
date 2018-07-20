@@ -1,24 +1,34 @@
 import re
+from utils.regex_service import find_aspects
 
-
-def move_assignment(sentences_to_move, from_object, to_object, aspect):
+def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects):
+    
     points_to_move = 0
+    points_for_multiple = 0
+
     print('For', '\'' + aspect + '\'', 'there were moved', len(sentences_to_move),
           'sentences from', from_object.name, 'to', to_object.name, '.')
     print('----')
     for sentence in sentences_to_move:
-        # print('-' + re.sub(' +', ' ', re.sub('[^a-zA-Z0-9 ]', ' ', sentence[1])))
-        points_to_move = points_to_move + sentence[0]
+        if len(find_aspects(sentence[1], aspects)) > 1:
+            points_for_multiple = points_for_multiple + sentence[0]
+        else:
+            points_to_move = points_to_move + sentence[0]
 
-    from_object.sentences = [
-        sentence for sentence in from_object.sentences if sentence not in sentences_to_move]
-    from_object.points[aspect] = from_object.points[aspect] - \
-        points_to_move
-    from_object.totalPoints = from_object.totalPoints - points_to_move
+
+        print('-' + re.sub(' +', ' ', re.sub('[^a-zA-Z0-9 ]', ' ', sentence[1])))
+        
+
+    from_object.sentences = [sentence for sentence in from_object.sentences if sentence not in sentences_to_move]
+    from_object.points[aspect] = from_object.points[aspect] - points_to_move
+    from_object.totalPoints = from_object.totalPoints - (points_to_move + points_for_multiple)
 
     to_object.sentences.extend(sentences_to_move)
-    to_object.points[aspect] = to_object.points[aspect] + points_to_move
-    to_object.totalPoints = to_object.totalPoints + points_to_move
+    to_object.add_points(aspect, points_to_move)
+
+    if points_for_multiple > 0:
+        from_object.points['multiple'] = from_object.points['multiple'] - points_for_multiple
+        to_object.add_points('multiple', points_for_multiple)
 
     print((points_to_move / (to_object.totalPoints +
                              from_object.totalPoints)) * 100, '% moved (total)')
@@ -34,7 +44,8 @@ positive_contrary_comparatives = {
     'faster': ['slower'],
     'quicker': ['slower'],
     'smarter': ['dumper'],
-    'larger': ['smaller']
+    'larger': ['smaller'],
+    'harder': ['softer']
 }
 
 negative_contrary_comparatives = {
@@ -46,7 +57,7 @@ negative_contrary_comparatives = {
 }
 
 
-def negation_dissolve_heuristic(object_a, object_b, aspect):
+def negation_dissolve_heuristic(object_a, object_b, aspect, aspects):
     markers = positive_contrary_comparatives
     filtered_sentences = get_matching_sentences(
         object_a.name, object_b.name, aspect, object_a.sentences, markers)
@@ -66,7 +77,7 @@ def negation_dissolve_heuristic(object_a, object_b, aspect):
                     object_b.name, object_a.name, aspect, object_b.sentences, filtered_contrary)
                 if len(same_meaning_sentences) > 0:
                     move_assignment(same_meaning_sentences,
-                                    object_b, object_a, aspect)
+                                    object_b, object_a, aspect, aspects)
 
 
 def get_matching_sentences(object_a, object_b, aspect, sentences, markers):

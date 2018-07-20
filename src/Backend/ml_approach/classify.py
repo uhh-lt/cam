@@ -44,7 +44,7 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
                        sentences[sentence], sentence, max_sentscore, classification_confidence, score_function)
 
     for aspect in aspects:
-        negation_dissolve_heuristic(obj_a, obj_b, aspect.name)
+        negation_dissolve_heuristic(obj_a, obj_b, aspect.name, aspects)
 
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
