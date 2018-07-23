@@ -28,16 +28,27 @@
   <table class="table table-borderless">
     <tr>
       <td style="width: 50%">
-        <div *ngFor='let sentence of (dispensableResult.winnerSentences | sentenceFilter:selectedWinnerAspects:selectedEnteredAspects:trigger)'>
-          <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedWinnerAspects:trigger">
+        <div *ngFor='let sentence of (dispensableResult.winnerSentences | sentenceFilter:selectedWinnerAspects:selectedEnteredAspects:trigger); let i = index'>
+          <div>
+            <span style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedWinnerAspects:trigger">
+            </span>
+            <button matTooltip="{{dispensableResult.winnerSources[i]}}" mat-icon-button type="button" class="link-button-size" color="secundary"
+              (click)="openLink(dispensableResult.winnerSources[i])">
+              <mat-icon class="material-icons md-15">open_in_new
+              </mat-icon>
+            </button>
           </div>
           <br>
         </div>
       </td>
       <td>
-        <div *ngFor='let sentence of (dispensableResult.looserSentences | sentenceFilter:selectedLooserAspects:selectedEnteredAspects:trigger)'>
-          <div [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedLooserAspects:trigger"></div>
-          <br>
+        <div *ngFor='let sentence of (dispensableResult.looserSentences | sentenceFilter:selectedLooserAspects:selectedEnteredAspects:trigger); let i = index'>
+          <div>
+            <a target="_blank" href="{{dispensableResult.looserSources[i]}}">
+              <div matTooltip="{{dispensableResult.looserSources[i]}}" style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedLooserAspects:trigger"></div>
+            </a>
+            <br>
+          </div>
         </div>
       </td>
     </tr>

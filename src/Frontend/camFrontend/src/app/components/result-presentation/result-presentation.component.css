@@ -2,3 +2,30 @@
     font-size: 17px;
     text-align: center;
 }
+
+.material-icons.md-15 {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.link-button-size {
+	width: 20px;
+    height: 20px;
+    line-height: 1;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color: inherit;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+::ng-deep .mat-tooltip {
+    font-size: 13px;
+}
