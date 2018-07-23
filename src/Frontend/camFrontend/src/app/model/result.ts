@@ -9,7 +9,9 @@ export class Result {
     scoreObject2: any;
     extractedAspectsObject1: Array<string>;
     extractedAspectsObject2: Array<string>;
-    sentencesObject1: Array<String>;
-    sentencesObject2: Array<String>;
+    sentencesObject1: Array<string>;
+    sentencesObject2: Array<string>;
     sentenceCount: number;
+    sourcesObject1: Array<string>;
+    sourcesObject2: Array<string>;
 }
