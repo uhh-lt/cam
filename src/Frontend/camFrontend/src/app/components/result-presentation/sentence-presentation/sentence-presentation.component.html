@@ -1,0 +1,8 @@
+<div *ngFor='let sentence of (sentences | sentenceFilter:selectedAspects:selectedEnteredAspects:trigger); let i = index'>
+  <div>
+    <a target="_blank" href="{{sources[i]}}">
+      <div matTooltip="{{sources[i]}}" style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
+    </a>
+    <br>
+  </div>
+</div>

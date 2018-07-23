@@ -23,6 +23,7 @@ import { MarkClassesPipe } from './pipes/mark-classes/mark-classes.pipe';
 import { MultiselectChiplistComponent } from './components/result-presentation/multiselect-chiplist/multiselect-chiplist.component';
 import { SentenceFilterPipe } from './pipes/sentence-filter/sentence-filter.pipe';
 import { ScorePresentationComponent } from './components/result-presentation/score-presentation/score-presentation.component';
+import { SentencePresentationComponent } from './components/result-presentation/sentence-presentation/sentence-presentation.component';
 
 const appRoute: Routes = [
   { path: '', component: UserInterfaceComponent },
@@ -44,7 +45,8 @@ const appRoute: Routes = [
     MarkClassesPipe,
     MultiselectChiplistComponent,
     SentenceFilterPipe,
-    ScorePresentationComponent
+    ScorePresentationComponent,
+    SentencePresentationComponent
   ],
   imports: [
     BrowserModule,

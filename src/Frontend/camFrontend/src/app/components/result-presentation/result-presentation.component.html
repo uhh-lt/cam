@@ -2,9 +2,7 @@
   <p class='text-center' style='font-size: 25px'>No sentences were found, please check for typos.</p>
 </mat-card>
 <mat-card *ngIf="showResult && sentenceCount > 0">
-  <!-- <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p> -->
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
-  <!-- <mat-divider></mat-divider> -->
   <table class='table table-bordered'>
     <tbody>
       <tr>
@@ -24,32 +22,15 @@
         </td>
       </tr>
   </table>
-  <!-- <mat-divider></mat-divider> -->
   <table class="table table-borderless">
     <tr>
       <td style="width: 50%">
-        <div *ngFor='let sentence of (dispensableResult.winnerSentences | sentenceFilter:selectedWinnerAspects:selectedEnteredAspects:trigger); let i = index'>
-          <div>
-            <span style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedWinnerAspects:trigger">
-            </span>
-            <button matTooltip="{{dispensableResult.winnerSources[i]}}" mat-icon-button type="button" class="link-button-size" color="secundary"
-              (click)="openLink(dispensableResult.winnerSources[i])">
-              <mat-icon class="material-icons md-15">open_in_new
-              </mat-icon>
-            </button>
-          </div>
-          <br>
-        </div>
+        <app-sentence-presentation [dispensableResult]="dispensableResult" [isWinner]="true" [selectedAspects]="selectedWinnerAspects"
+          [selectedEnteredAspects]="selectedEnteredAspects" [trigger]="trigger" [finalAspectList]="finalAspectList"></app-sentence-presentation>
       </td>
       <td>
-        <div *ngFor='let sentence of (dispensableResult.looserSentences | sentenceFilter:selectedLooserAspects:selectedEnteredAspects:trigger); let i = index'>
-          <div>
-            <a target="_blank" href="{{dispensableResult.looserSources[i]}}">
-              <div matTooltip="{{dispensableResult.looserSources[i]}}" style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedLooserAspects:trigger"></div>
-            </a>
-            <br>
-          </div>
-        </div>
+        <app-sentence-presentation [dispensableResult]="dispensableResult" [isWinner]="false" [selectedAspects]="selectedLooserAspects"
+          [selectedEnteredAspects]="selectedEnteredAspects" [trigger]="trigger" [finalAspectList]="finalAspectList"></app-sentence-presentation>
       </td>
     </tr>
     </tbody>
