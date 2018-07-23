@@ -3,7 +3,7 @@ from utils.regex_service import find_last_pos_in_sentence, find_pos_in_sentence
 from collections import Counter
 from marker_approach.constants import STOPWORDS
 from nltk import word_tokenize, pos_tag
-import spacy
+# import spacy
 
 # STOPWORDS = ['the', 'and', 'in', 's', 'of', 'to', 'a', 'or', 'is', 'are', 'that', 'by', 'be', 'as', 'its', 'has', 'some', 'which', 'than', 'on', 'would']
 not_filter = ['most', 'after', 'above',
