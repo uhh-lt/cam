@@ -36,15 +36,15 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
         contained_aspects = find_aspects(sentence, aspects)
         if (label == 'BETTER' and row['object_a'] == obj_a.name) or (label == 'WORSE' and row['object_b'] == obj_a.name):
             add_points(contained_aspects, obj_a,
-                       sentences[sentence], sentence, max_sentscore, classification_confidence, score_function)
+                       sentences[sentence][0], sentence, max_sentscore[0], classification_confidence, score_function)
         else:
             add_points(contained_aspects, obj_b,
-                       sentences[sentence], sentence, max_sentscore, classification_confidence, score_function)
+                       sentences[sentence][0], sentence, max_sentscore[0], classification_confidence, score_function)
 
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
 
-    return build_final_dict(obj_a, obj_b)
+    return build_final_dict(obj_a, obj_b, sentences)
 
 
 def score_function(sentence_score, max_sentscore, weight, confidence):

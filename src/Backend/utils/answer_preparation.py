@@ -1,7 +1,7 @@
 from pandas import DataFrame
 from utils.link_extracter import extract_main_links
 
-def build_final_dict(obj_a, obj_b):
+def build_final_dict(obj_a, obj_b, sentences):
     '''
     Builds the final dictionary containing all necessary information regarding the comparison to 
     be returned to the frontend.
@@ -33,6 +33,8 @@ def build_final_dict(obj_a, obj_b):
     final_dict['sentencesObject1'] = obj_a.sentences
     final_dict['sentencesObject2'] = obj_b.sentences
     final_dict['sentenceCount'] = len(obj_a.sentences) + len(obj_b.sentences)
+    final_dict['sourcesObject1'] = [sentences[sentence][1] for sentence in obj_a.sentences]
+    final_dict['sourcesObject2'] = [sentences[sentence][1] for sentence in obj_b.sentences]
 
     return final_dict
 
