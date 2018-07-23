@@ -111,10 +111,10 @@ def get_matching_sentences(object_a, object_b, aspect, sentences, markers, is_po
     # regex = re.compile(r'(?=.*\b' + re.escape(object_a) + r'\b.*\b' + re.escape(aspect) +
     #                    r'\b.*\b' + re.escape(object_b) + r'\b)(?=.*\b(?:' + re_markers + r')\b)', re.IGNORECASE)
 
-    regex = re.compile(r'(?=.*\b' + re.escape(object_a) + r'\b.*\b' + re.escape(aspect) +
-                       r'\b.*\b' + re.escape(object_b) + r'\b)(?=.*(\b' + re_markers + r'\b))(?!.*(\b(?:' + re_locked_out_markers + r')\b))', re.IGNORECASE)
+    regex = re.compile(r'(?=.*(?:\b' + re.escape(object_a) + r'\b.*\b' + re.escape(aspect) +
+                       r'\b.*\b' + re.escape(object_b) + r'\b))(?=.*(?:\b' + re_markers + r'\b))(?!.*(?:\b' + re_locked_out_markers + r'\b))', re.IGNORECASE)
 
-                       
+                
     filtered_sentences = [x for x in sentences if regex.search(x[1]) != None]
 
     return filtered_sentences

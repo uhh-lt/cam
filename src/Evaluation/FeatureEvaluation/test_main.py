@@ -19,6 +19,7 @@ def simulate_main(triple):
     obj_b = Argument(triple[2].lower().strip())
     aspects = [Aspect(triple[3].lower(), 5)]
     model = 'bow'
+    # model = 'infersent'
 
     if aspects:
         json_compl_triples = request_es_triple(obj_a, obj_b, aspects)
