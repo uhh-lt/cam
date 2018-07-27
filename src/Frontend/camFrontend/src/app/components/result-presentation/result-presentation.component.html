@@ -4,27 +4,28 @@
 <mat-card *ngIf="showResult && sentenceCount > 0">
   <!-- <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p> -->
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
-  <!-- <mat-divider></mat-divider> -->
   <table class='table table-bordered'>
-    <tbody>
+    <thead>
       <tr>
         <th scope='row' class="aspect-header">Generated aspects for {{dispensableResult.winner}}</th>
         <th *ngIf="finalAspectList.length > 0" scope='row' class="aspect-header">Aspects</th>
         <th scope='row' class="aspect-header">Generated aspects for {{dispensableResult.looser}}</th>
       </tr>
+    </thead>
+    <tbody>
       <tr>
         <td style="width: 40%">
-          <app-multiselect-chiplist [extractedAspects]="dispensableResult.winnerLinks" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
+          <app-multiselect-chiplist [extractedAspects]="dispensableResult.winnerLinks" [arrange]="'left'" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
         </td>
         <td style="width: 20%" *ngIf="finalAspectList.length > 0">
-          <app-multiselect-chiplist [extractedAspects]="finalAspectList" (updatedSelection)="selectEnteredAspects($event)"></app-multiselect-chiplist>
+          <app-multiselect-chiplist [extractedAspects]="finalAspectList" [arrange]="'center'" (updatedSelection)="selectEnteredAspects($event)"></app-multiselect-chiplist>
         </td>
         <td style="width: 40%">
-          <app-multiselect-chiplist [extractedAspects]="dispensableResult.looserLinks" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
+          <app-multiselect-chiplist [extractedAspects]="dispensableResult.looserLinks" [arrange]="'right'" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
         </td>
       </tr>
+    </tbody>
   </table>
-  <!-- <mat-divider></mat-divider> -->
   <table class="table table-borderless">
     <tr>
       <td style="width: 50%">
