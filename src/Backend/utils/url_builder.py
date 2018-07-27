@@ -3,7 +3,8 @@ from marker_approach.constants import MARKERS_WO_THAN, MARKERS_THAN
 # ES_HOSTNAME = 'http://localhost:9200/'  # if you want to connect to a locally hosted ES
 ES_HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/'
 # Elastic Search commoncrawl2 search request
-CRAWL_DATA_REPOS = 'depcc/_search?q=text:'
+INDEX = 'commoncrawl2'
+CRAWL_DATA_REPOS = '/_search?q=text:'
 
 
 def build_object_urlpart(obj_a, obj_b):
@@ -19,7 +20,7 @@ def build_object_urlpart(obj_a, obj_b):
     if(obj_a.name == '' or obj_b.name == ''):
         raise ValueError('Please enter both objects!')
     url = ES_HOSTNAME  # name of the host
-    url += CRAWL_DATA_REPOS  # Elastic Search request type
+    url += INDEX + CRAWL_DATA_REPOS  # Elastic Search request type
     # add the objects to look for
     url += '\"{}\"%20AND%20\"{}\"'.format(obj_a.name, obj_b.name)
     return url
@@ -56,3 +57,7 @@ def add_marker_urlpart(url, fast_search):
     else:
         url += '%20then\"))&from=0&size=500'
     return url
+
+def set_index(index): 
+    global INDEX
+    INDEX = index

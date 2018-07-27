@@ -58,8 +58,11 @@ def extract_sentences(es_json):
     '''
     hits = es_json.json()['hits']['hits']
     sentences = {}
-    for i in range(0, len(hits)):
-        sentences[hits[i]['_source']['text'].lower()] = [hits[i]['_score'], hits[i]['_source']['document_id']]
+    for hit in hits:
+        source = hit['_source']
+        link = source['document_id'] if 'document_id' in source else ''
+        sentences[source['text']] = [hit['_score'], link]
+
     return sentences
 
 
