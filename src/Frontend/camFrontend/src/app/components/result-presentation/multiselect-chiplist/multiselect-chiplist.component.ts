@@ -13,6 +13,7 @@ export class MultiselectChiplistComponent {
   @Input() set arrange(position: string) {
     this.elementRef.nativeElement.style.setProperty('--align', position);
   }
+  @Input() title = '';
   @Output() updatedSelection = new EventEmitter<Array<string>>();
 
 

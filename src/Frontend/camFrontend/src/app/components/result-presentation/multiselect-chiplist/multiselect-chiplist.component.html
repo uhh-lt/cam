@@ -1,5 +1,12 @@
-<mat-chip-list #chipList [(ngModel)]="selectedFruits" multiple>
-  <mat-chip *ngFor="let aspect of extractedAspects" [selected]="isSelected(aspect)" (click)="selectAspect(aspect)">
-    {{aspect}}
-  </mat-chip>
-</mat-chip-list>
+<mat-card style="height: 100%;">
+  <mat-card-header class="title-align">
+    <mat-card-title class="title-style">{{title}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-chip-list #chipList [(ngModel)]="selectedFruits" multiple>
+      <mat-chip *ngFor="let aspect of extractedAspects" [selected]="isSelected(aspect)" (click)="selectAspect(aspect)">
+        {{aspect}}
+      </mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+</mat-card>

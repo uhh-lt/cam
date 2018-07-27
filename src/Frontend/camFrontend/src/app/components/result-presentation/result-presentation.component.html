@@ -4,28 +4,25 @@
 <mat-card *ngIf="showResult && sentenceCount > 0">
   <!-- <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p> -->
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
-  <table class='table table-bordered'>
-    <thead>
-      <tr>
-        <th scope='row' class="aspect-header">Generated aspects for {{dispensableResult.winner}}</th>
-        <th *ngIf="finalAspectList.length > 0" scope='row' class="aspect-header">Aspects</th>
-        <th scope='row' class="aspect-header">Generated aspects for {{dispensableResult.looser}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="width: 40%">
-          <app-multiselect-chiplist [extractedAspects]="dispensableResult.winnerLinks" [arrange]="'left'" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
-        </td>
-        <td style="width: 20%" *ngIf="finalAspectList.length > 0">
-          <app-multiselect-chiplist [extractedAspects]="finalAspectList" [arrange]="'center'" (updatedSelection)="selectEnteredAspects($event)"></app-multiselect-chiplist>
-        </td>
-        <td style="width: 40%">
-          <app-multiselect-chiplist [extractedAspects]="dispensableResult.looserLinks" [arrange]="'right'" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
-        </td>
-      </tr>
-    </tbody>
+
+  <table style="height: 100%">
+    <tr>
+      <td style="width: 40%; height: 100%">
+        <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.winner" [extractedAspects]="dispensableResult.winnerLinks"
+          [arrange]="'left'" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
+
+      </td>
+      <td style="width: 20%; height: 100%" *ngIf="finalAspectList.length > 0">
+        <app-multiselect-chiplist [title]="'Entered Aspects'" [extractedAspects]="finalAspectList" [arrange]="'center'" (updatedSelection)="selectEnteredAspects($event)"></app-multiselect-chiplist>
+
+      </td>
+      <td style="width: 40%; height: 100%">
+          <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.looser" [extractedAspects]="dispensableResult.looserLinks"
+          [arrange]="'right'" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
+      </td>
+    </tr>
   </table>
+
   <table class="table table-borderless">
     <tr>
       <td style="width: 50%">
