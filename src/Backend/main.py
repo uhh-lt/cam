@@ -65,7 +65,7 @@ def cam():
         remove_questions(all_sentences)
 
         setStatus(statusID, 'Prepare sentences for classification')
-        prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b)
+        prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b, aspects)
 
         setStatus(statusID, 'Classify sentences')
         classification_results = classify_sentences(prepared_sentences, model)

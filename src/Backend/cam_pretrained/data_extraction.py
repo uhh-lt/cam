@@ -46,13 +46,9 @@ class ExtractMiddlePart(TransformerMixin, BaseEstimator):
         results = []
         for index, row in dataframe.iterrows():
             a, b, text = row['object_a'], row['object_b'], row['sentence']
-            a_index, b_index = find_pos_in_sentence(a, text), find_pos_in_sentence(b, text)
-            if a_index < b_index:
-                begin, end = a_index, b_index + len(b)
-            else:
-                begin, end = b_index, a_index + len(a)
-            res = process(text[begin:end], a, b, self.processing,rep_a=self.rep_a,rep_b=self.rep_b)
+            begin, end = row['pos_a'], row['pos_b'] + len(b)
 
+            res = process(text[begin:end], a, b, self.processing,rep_a=self.rep_a,rep_b=self.rep_b)
             results.append(res)
 
         return results
