@@ -18,8 +18,8 @@ def simulate_main(triple):
     obj_a = Argument(triple[1].lower().strip())
     obj_b = Argument(triple[2].lower().strip())
     aspects = [Aspect(triple[3].lower(), 5)]
-    # model = 'bow'
-    model = 'infersent'
+    model = 'bow'
+    # model = 'infersent'
 
     if aspects:
         json_compl_triples = request_es_triple(obj_a, obj_b, aspects)
@@ -33,7 +33,7 @@ def simulate_main(triple):
 
     remove_questions(all_sentences)
 
-    prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b, aspects)
+    prepared_sentences = prepare_sentence_DF(all_sentences, obj_a, obj_b)
 
     classification_results = classify_sentences(prepared_sentences, model)
 
