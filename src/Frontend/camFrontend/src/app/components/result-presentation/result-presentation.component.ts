@@ -66,6 +66,7 @@ export class ResultPresentationComponent {
     this.showResult = false;
     this.selectedWinnerAspects = new Array<string>();
     this.selectedLooserAspects = new Array<string>();
+    this.selectedEnteredAspects = new Array<string>();
     this.categoriesChartOrder = [];
   }
 
@@ -161,7 +162,4 @@ export class ResultPresentationComponent {
     this.trigger++;
   }
 
-  chiplistSelect(selectedChip: string) {
-    this.chipSelected.emit(selectedChip);
-  }
 }
