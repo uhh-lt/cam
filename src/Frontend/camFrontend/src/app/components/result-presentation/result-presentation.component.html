@@ -2,7 +2,7 @@
   <p class='text-center' style='font-size: 25px'>No sentences were found, please check for typos.</p>
 </mat-card>
 <mat-card *ngIf="showResult && sentenceCount > 0">
-  <!-- <p class='text-center' style='font-size: 25px'>Result (based on {{sentenceCount}} sentences):</p> -->
+  
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
 
   <table style="height: 100%">
@@ -26,17 +26,12 @@
   <table class="table table-borderless">
     <tr>
       <td style="width: 50%">
-        <div *ngFor='let sentence of (dispensableResult.winnerSentences | sentenceFilter:selectedWinnerAspects:selectedEnteredAspects:trigger)'>
-          <div style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedWinnerAspects:trigger">
-          </div>
-          <br>
-        </div>
+        <app-sentence-presentation [dispensableResult]="dispensableResult" [isWinner]="true" [selectedAspects]="selectedWinnerAspects"
+          [selectedEnteredAspects]="selectedEnteredAspects" [trigger]="trigger" [finalAspectList]="finalAspectList"></app-sentence-presentation>
       </td>
       <td>
-        <div *ngFor='let sentence of (dispensableResult.looserSentences | sentenceFilter:selectedLooserAspects:selectedEnteredAspects:trigger)'>
-          <div [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedLooserAspects:trigger"></div>
-          <br>
-        </div>
+        <app-sentence-presentation [dispensableResult]="dispensableResult" [isWinner]="false" [selectedAspects]="selectedLooserAspects"
+          [selectedEnteredAspects]="selectedEnteredAspects" [trigger]="trigger" [finalAspectList]="finalAspectList"></app-sentence-presentation>
       </td>
     </tr>
     </tbody>

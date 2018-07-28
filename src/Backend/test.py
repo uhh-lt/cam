@@ -10,7 +10,6 @@ from utils.url_builder import build_object_urlpart
 from utils.link_extracter import extract_main_links
 
 
-
 class Test(unittest.TestCase):
 
     '''
@@ -136,8 +135,8 @@ class Test(unittest.TestCase):
     '''
 
     def test_find_winner1(self):
-        s = {'Dog is better than cat': 10, 'Cat is beautiful better than dog': 10,
-             'Dogs are way better than cat': 10}
+        s = {'Dog is better than cat': [10, 'http://test.com'], 'Cat is beautiful better than dog': [10, 'http://test2.com'],
+             'Dogs are way better than cat': [10, 'http://test3.com']}
         result = find_winner(s, self.objA, self.objB, [])
         self.assertEqual(result['object1'], self.objA.name)
         self.assertEqual(result['object2'], self.objB.name)
@@ -184,8 +183,9 @@ class Test(unittest.TestCase):
     def test_build_object_urlpart1(self):
         obj_a = Argument('ape')
         obj_b = Argument('gorilla')
-        self.assertEqual(build_object_urlpart(
-            obj_a, obj_b), 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/commoncrawl2/_search?q=text:"ape"%20AND%20"gorilla"')
+        url = build_object_urlpart(obj_a, obj_b)
+        self.assertTrue(url == 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/depcc/_search?q=text:"ape"%20AND%20"gorilla"' or url ==
+                        'http://ltdemos.informatik.uni-hamburg.de/depcc-index/commoncrawl2/_search?q=text:"ape"%20AND%20"gorilla"')
 
     def test_build_object_urlpart2(self):
         obj_a = Argument('')
