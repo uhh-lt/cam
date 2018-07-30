@@ -2,6 +2,7 @@ import requests
 import json
 from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple
 from utils.sentence_clearer import clear_sentences, remove_questions
+from utils.url_builder import set_index
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from ml_approach.classify import classify_sentences, evaluate
 from marker_approach.object_comparer import find_winner
@@ -21,6 +22,11 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
+
+    with open('config.json') as json_data_file:
+        config = json.load(json_data_file)
+    set_index(config['index']['name'])
+
     fast_search = request.args.get('fs')
     obj_a = Argument(request.args.get('objectA').lower().strip())
     obj_b = Argument(request.args.get('objectB').lower().strip())
@@ -44,7 +50,7 @@ def cam():
         # find the winner of the two objects
         setStatus(statusID, 'Find winner')
         return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
-    
+
     else:
         setStatus(statusID, 'Request all sentences containing the objects')
         if aspects:
@@ -59,8 +65,8 @@ def cam():
             all_sentences = extract_sentences(json_compl)
 
         if len(all_sentences) == 0:
-            return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects)) 
-        
+            return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
+
         remove_questions(all_sentences)
 
         setStatus(statusID, 'Prepare sentences for classification')
@@ -72,11 +78,13 @@ def cam():
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
         return jsonify(evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects))
 
+
 @app.route('/status', methods=['GET'])
 @app.route('/cam/status', methods=['GET'])
 def getStatus():
     statusID = request.args.get('statusID')
     return jsonify(status[statusID])
+
 
 @app.route('/remove/status', methods=['DELETE'])
 @app.route('/cam/remove/status', methods=['DELETE'])
@@ -85,6 +93,7 @@ def removeStatus():
     print('Remove registered:', statusID)
     del status[statusID]
     return jsonify(True)
+
 
 @app.route('/register', methods=['GET'])
 @app.route('/cam/register', methods=['GET'])
@@ -116,6 +125,7 @@ def extract_aspects(request):
             i = False
     return aspects
 
+
 class Argument:
     '''
     Argument Class for the objects to be compared
@@ -136,6 +146,7 @@ class Argument:
 
     def add_sentence(self, sentence):
         self.sentences.append(sentence)
+
 
 class Aspect:
     '''

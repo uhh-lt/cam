@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 
 @Component({
@@ -10,11 +10,16 @@ export class MultiselectChiplistComponent {
 
 
   @Input() extractedAspects = new Array<string>();
+  @Input() set arrange(position: string) {
+    this.elementRef.nativeElement.style.setProperty('--align', position);
+  }
+  @Input() title = '';
   @Output() updatedSelection = new EventEmitter<Array<string>>();
 
 
   selectedAspects: any[] = [];
 
+  constructor(private elementRef: ElementRef) { }
 
   isSelected(fruit: any): boolean {
     const index = this.selectedAspects.indexOf(fruit);

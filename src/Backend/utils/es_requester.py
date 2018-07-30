@@ -17,10 +17,8 @@ def request_es(fast_search, obj_a, obj_b):
     '''
     url = build_object_urlpart(obj_a, obj_b)
     url = add_marker_urlpart(url, fast_search)
-    if(len(sys.argv) > 1):
-        return requests.get(url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
-    else: 
-        return requests.get(url)
+    return send_request(url)
+
 
 def request_es_triple(obj_a, obj_b, aspects):
     url = build_object_urlpart(obj_a, obj_b)
@@ -32,12 +30,8 @@ def request_es_triple(obj_a, obj_b, aspects):
         else:
             url += '%20OR%20\"{}\"'.format(aspect.name)
     url += ')&from=0&size=10000'
+    return send_request(url)
 
-    payload =  {}
-    if(len(sys.argv) > 1):
-        return requests.get(url, params=payload, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
-    else: 
-        return requests.get(url)
 
 def request_es_ML(fast_search, obj_a, obj_b):
     url = build_object_urlpart(obj_a, obj_b)
@@ -46,11 +40,13 @@ def request_es_ML(fast_search, obj_a, obj_b):
     if fast_search == 'true':
         size = 500
     url += '&from=0&size={}'.format(size)
+    return send_request(url)
 
-    payload =  {}
+
+def send_request(url):
     if(len(sys.argv) > 1):
-        return requests.get(url, params=payload, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
-    else: 
+        return requests.get(url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
+    else:
         return requests.get(url)
 
 
@@ -64,9 +60,8 @@ def extract_sentences(es_json):
     '''
     hits = es_json.json()['hits']['hits']
     sentences = {}
-    for i in range(0, len(hits)):
-        sentences[hits[i]['_source']['text'].lower()] = hits[i]['_score']
+    for hit in hits:
+        source = hit['_source']
+        link = source['document_id'] if 'document_id' in source else ''
+        sentences[source['text']] = [hit['_score'], link]
     return sentences
-
-
-

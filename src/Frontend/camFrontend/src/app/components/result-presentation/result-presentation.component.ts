@@ -50,12 +50,14 @@ export class ResultPresentationComponent {
       this.saveScores(result.scoreObject1, result.scoreObject2, result.totalScoreObject1, result.totalScoreObject2);
       this.saveExtractedAspects(result.extractedAspectsObject1, result.extractedAspectsObject2);
       this.saveSentences(result.sentencesObject1, result.sentencesObject2);
+      this.saveSources(result.sourcesObject1, result.sourcesObject2);
 
     } else {
       this.saveWinner(result.object2, result.object1);
       this.saveScores(result.scoreObject2, result.scoreObject1, result.totalScoreObject2, result.totalScoreObject1);
       this.saveExtractedAspects(result.extractedAspectsObject2, result.extractedAspectsObject1);
       this.saveSentences(result.sentencesObject2, result.sentencesObject1);
+      this.saveSources(result.sourcesObject2, result.sourcesObject1);
     }
     this.showResult = true;
   }
@@ -66,6 +68,7 @@ export class ResultPresentationComponent {
     this.showResult = false;
     this.selectedWinnerAspects = new Array<string>();
     this.selectedLooserAspects = new Array<string>();
+    this.selectedEnteredAspects = new Array<string>();
     this.categoriesChartOrder = [];
   }
 
@@ -139,11 +142,15 @@ export class ResultPresentationComponent {
    * @param winnerSentences sentences of the object that won
    * @param looserSentences sentences of the object that lost
    */
-  private saveSentences(winnerSentences: Array<String>, looserSentences: Array<String>) {
+  private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>) {
     this.dispensableResult.winnerSentences = winnerSentences;
     this.dispensableResult.looserSentences = looserSentences;
   }
 
+  private saveSources(winnerSources: Array<string>, looserSources: Array<string>) {
+    this.dispensableResult.winnerSources = winnerSources;
+    this.dispensableResult.looserSources = looserSources;
+  }
 
   updatedSelection(selectedAspects: Array<string>, isWinner: boolean) {
     console.log('update selection');
@@ -161,7 +168,8 @@ export class ResultPresentationComponent {
     this.trigger++;
   }
 
-  chiplistSelect(selectedChip: string) {
-    this.chipSelected.emit(selectedChip);
+
+  openLink(url: string) {
+    window.open(url, '_blank');
   }
 }

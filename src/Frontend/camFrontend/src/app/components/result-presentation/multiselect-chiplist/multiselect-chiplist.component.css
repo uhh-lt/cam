@@ -1,3 +1,16 @@
 .mat-standard-chip {
     cursor: pointer;
 }
+
+::ng-deep.mat-chip-list-wrapper {
+    justify-content: var(--align);
+}
+
+.title-align {
+    justify-content: var(--align);
+}
+
+.title-style {
+    font-weight: bold;
+    font-size: 17px;
+}

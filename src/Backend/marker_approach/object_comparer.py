@@ -30,15 +30,15 @@ def find_winner(sentences, obj_a, obj_b, aspects):
         comp_result = what_is_better(s, obj_a, obj_b)
         if comp_result['winner'] == obj_a:  # objectA won the sentence
             add_points(find_aspects(s, aspects), obj_a,
-                       sentences[s], s, max_sentscore, comp_result['marker_cnt'], score_function)
+                       sentences[s][0], s, max_sentscore[0], comp_result['marker_cnt'], score_function)
         else:  # objectB won the sentence
             add_points(find_aspects(s, aspects), obj_b,
-                       sentences[s], s, max_sentscore, comp_result['marker_cnt'], score_function)
+                       sentences[s][0], s, max_sentscore[0], comp_result['marker_cnt'], score_function)
 
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
 
-    return build_final_dict(obj_a, obj_b)
+    return build_final_dict(obj_a, obj_b, sentences)
 
 
 

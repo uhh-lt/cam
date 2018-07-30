@@ -16,7 +16,7 @@ export class SentenceFilterPipe implements PipeTransform {
       return true;
     }
     for (const aspect of selectedAspects) {
-      if (sentence.includes(aspect)) {
+      if (sentence.toLowerCase().includes(aspect.toLowerCase())) {
         return true;
       }
     }
