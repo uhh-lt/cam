@@ -4,7 +4,15 @@ from marker_approach.constants import MARKERS_WO_THAN, MARKERS_THAN
 ES_HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/'
 # Elastic Search commoncrawl2 search request
 INDEX = 'commoncrawl2'
-CRAWL_DATA_REPOS = '/_search?q=text:'
+CRAWL_DATA_REPOS = '/_search?q='
+
+
+def build_url_base():
+    return ES_HOSTNAME + INDEX + CRAWL_DATA_REPOS
+
+
+def build_context_url(document_id, sentence_id, context_size):
+    return build_url_base() + 'document_id:\"{}\" AND sentence_id:[{} TO {}]'.format(document_id, sentence_id - context_size, sentence_id + context_size)
 
 
 def build_object_urlpart(obj_a, obj_b):
@@ -19,10 +27,7 @@ def build_object_urlpart(obj_a, obj_b):
     '''
     if(obj_a.name == '' or obj_b.name == ''):
         raise ValueError('Please enter both objects!')
-    url = ES_HOSTNAME  # name of the host
-    url += INDEX + CRAWL_DATA_REPOS  # Elastic Search request type
-    # add the objects to look for
-    url += '\"{}\"%20AND%20\"{}\"'.format(obj_a.name, obj_b.name)
+    url = build_url_base() + 'text:\"{}\"%20AND%20\"{}\"'.format(obj_a.name, obj_b.name)
     return url
 
 
@@ -58,6 +63,7 @@ def add_marker_urlpart(url, fast_search):
         url += '%20then\"))&from=0&size=500'
     return url
 
-def set_index(index): 
+
+def set_index(index):
     global INDEX
     INDEX = index

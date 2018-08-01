@@ -2,7 +2,7 @@ import requests
 import sys
 from requests.auth import HTTPBasicAuth
 import json
-from utils.url_builder import build_object_urlpart, add_marker_urlpart
+from utils.url_builder import build_object_urlpart, add_marker_urlpart, build_context_url
 
 
 def request_es(fast_search, obj_a, obj_b):
@@ -63,5 +63,10 @@ def extract_sentences(es_json):
     for hit in hits:
         source = hit['_source']
         link = source['document_id'] if 'document_id' in source else ''
-        sentences[source['text']] = [hit['_score'], link]
+        sentence_id = source['sentence_id'] if 'sentence_id' in source else ''
+        sentences[source['text']] = [hit['_score'], link, sentence_id]
     return sentences
+
+def request_context_sentences(document_id, sentence_id, context_size):
+    url = build_context_url(document_id, sentence_id, context_size)
+    return send_request(url)

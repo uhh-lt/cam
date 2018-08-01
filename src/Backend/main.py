@@ -1,6 +1,6 @@
 import requests
 import json
-from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple
+from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.url_builder import set_index
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
@@ -102,6 +102,18 @@ def register():
     setStatus(statusID, '')
     print('Register:', statusID)
     return jsonify(statusID)
+
+@app.route('/context', methods=['GET'])
+@app.route('/cam/context', methods=['GET'])
+def get_context():
+    # http://localhost:5000/cam/context?documentID=%27http://www.universetoday.com/36129/density-of-venus/%27&sentenceID=3&contextSize=2
+    document_id = request.args.get('documentID')
+    sentence_id = int(request.args.get('sentenceID'))
+    context_size = int(request.args.get('contextSize'))
+    context = request_context_sentences(document_id, sentence_id, context_size)
+    context_sentences = extract_sentences(context)
+    return jsonify(context_sentences)
+
 
 
 def setStatus(statusID, statusText):
