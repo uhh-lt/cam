@@ -83,13 +83,13 @@ def main():
             continue
         summed_deviation = summed_deviation + float(score[3])
 
-    print('Average deviation:', summed_deviation / total, 'Incorrect:', score_counts.totalWrong)
+    print('Average deviation:', summed_deviation / total, 'Incorrect:', score_counts.totalWrong, 'Correct:', score_counts.totalRight)
     totalPercentRight = round(score_counts.totalRight * 100 / (score_counts.totalRight + score_counts.totalWrong), 2)
     evaluation_scores = [['label', 'precision', 'recall', 'f_1', 'accuracy', 'total accuracy']]
     evaluation_scores.append(calculateEvaluationScores('BETTER', score_counts.betterTP, score_counts.betterTN, score_counts.betterFP, score_counts.betterFN, 2, ''))
     evaluation_scores.append(calculateEvaluationScores('WORSE', score_counts.worseTP, score_counts.worseTN, score_counts.worseFP, score_counts.worseFN, 2, ''))
     evaluation_scores.append(calculateEvaluationScores('NONE', score_counts.noneTP, score_counts.noneTN, score_counts.noneFP, score_counts.noneFN, 2, totalPercentRight))
-    with open('./eva_scores.csv', 'w', newline='', encoding="UTF-8") as f:
+    with open('./eval_scores.csv', 'w', newline='', encoding="UTF-8") as f:
         writer = csv.writer(f)
         writer.writerows([list(x) for x in zip(*evaluation_scores)])
 
