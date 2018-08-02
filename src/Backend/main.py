@@ -3,6 +3,7 @@ import json
 from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.url_builder import set_index
+from utils.objects import Argument, Aspect
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from ml_approach.classify import classify_sentences, evaluate
 from marker_approach.object_comparer import find_winner
@@ -136,38 +137,6 @@ def extract_aspects(request):
         else:
             i = False
     return aspects
-
-
-class Argument:
-    '''
-    Argument Class for the objects to be compared
-    '''
-
-    def __init__(self, name):
-        self.name = name.lower()
-        self.points = {}
-        self.totalPoints = 0
-        self.sentences = []
-
-    def add_points(self, aspect, points):
-        self.totalPoints = self.totalPoints + points
-        if aspect in self.points:
-            self.points[aspect] = self.points[aspect] + points
-        else:
-            self.points[aspect] = points
-
-    def add_sentence(self, sentence):
-        self.sentences.append(sentence)
-
-
-class Aspect:
-    '''
-    Aspect Class for the user entered aspects
-    '''
-
-    def __init__(self, name, weight):
-        self.name = name.lower()
-        self.weight = weight
 
 
 if __name__ == "__main__":
