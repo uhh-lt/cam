@@ -4,3 +4,7 @@
     border-top-width: 1px;
     border-top-style: dotted;
 }
+
+.sentence-mark {
+    background-color: rgba(253, 255, 194, 0.8)
+}
