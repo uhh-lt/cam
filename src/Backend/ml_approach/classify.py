@@ -23,8 +23,8 @@ def classify_sentences(sentences, model):
 
 def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects):
 
-    if sentences.values():
-        max_sentscore = max(sentences.values())
+    if len(sentences) > 0:
+        max_sentscore = max(sentence.score for sentence in sentences)
 
     for index, row in prepared_sentences.iterrows():
         label = classification_results['max'][index]
@@ -32,14 +32,20 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
             continue
 
         classification_confidence = classification_results[label][index]
-        sentence = row['sentence']
-        contained_aspects = find_aspects(sentence, aspects)
+        sentence_text = row['sentence']
+
+        for s in sentences:
+            if s.text == sentence_text:
+                sentence = s
+                break
+
+        contained_aspects = find_aspects(sentence.text, aspects)
         if (label == 'BETTER' and row['object_a'] == obj_a.name) or (label == 'WORSE' and row['object_b'] == obj_a.name):
-            add_points(contained_aspects, obj_a,
-                       sentences[sentence][0], sentence, max_sentscore[0], classification_confidence, score_function)
+            add_points(contained_aspects, obj_a, sentence,
+                       max_sentscore, classification_confidence, score_function)
         else:
-            add_points(contained_aspects, obj_b,
-                       sentences[sentence][0], sentence, max_sentscore[0], classification_confidence, score_function)
+            add_points(contained_aspects, obj_b, sentence,
+                       max_sentscore, classification_confidence, score_function)
 
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
@@ -51,4 +57,3 @@ def score_function(sentence_score, max_sentscore, weight, confidence):
     if weight < 1:
         weight = 1
     return ((sentence_score * confidence) / max_sentscore) * weight
-

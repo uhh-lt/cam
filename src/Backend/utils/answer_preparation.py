@@ -1,5 +1,8 @@
 from pandas import DataFrame
+import json
 from utils.link_extracter import extract_main_links
+
+
 
 def build_final_dict(obj_a, obj_b, sentences):
     '''
@@ -22,23 +25,22 @@ def build_final_dict(obj_a, obj_b, sentences):
         final_dict['winner'] = 'No winner found'
     linked_words = extract_main_links(
         obj_a.sentences, obj_b.sentences, obj_a, obj_b)
-    final_dict['object1'] = obj_a.name
-    final_dict['object2'] = obj_b.name
-    final_dict['totalScoreObject1'] = obj_a.totalPoints
-    final_dict['totalScoreObject2'] = obj_b.totalPoints
-    final_dict['scoreObject1'] = obj_a.points
-    final_dict['scoreObject2'] = obj_b.points
+
+    obj_a.sentences = sentences_to_JSON(obj_a.sentences)
+    obj_b.sentences = sentences_to_JSON(obj_b.sentences)
+    final_dict['object1'] = obj_a.__dict__
+    final_dict['object2'] = obj_b.__dict__
     final_dict['extractedAspectsObject1'] = linked_words['A']
     final_dict['extractedAspectsObject2'] = linked_words['B']
-    final_dict['sentencesObject1'] = obj_a.sentences
-    final_dict['sentencesObject2'] = obj_b.sentences
     final_dict['sentenceCount'] = len(obj_a.sentences) + len(obj_b.sentences)
-    final_dict['sourcesObject1'] = [sentences[sentence][1] for sentence in obj_a.sentences]
-    final_dict['sourcesObject2'] = [sentences[sentence][1] for sentence in obj_b.sentences]
-
     return final_dict
 
-def add_points(contained_aspects, winner, score, sentence, max_score, classification_score, score_function):
+
+def sentences_to_JSON(sentences):
+    return [sentence.__dict__ for sentence in sentences]
+
+
+def add_points(contained_aspects, winner, sentence, max_score, classification_score, score_function):
     '''
     Adds the points of the won sentence to the points of the winner.
 
@@ -67,17 +69,17 @@ def add_points(contained_aspects, winner, score, sentence, max_score, classifica
     if contained_aspects:
         if len(contained_aspects) == 1:
             aspect = contained_aspects[0]
-            points = score_function(score, max_score, aspect.weight, classification_score)
+            points = score_function(sentence.score, max_score, aspect.weight, classification_score)
             winner.add_points(aspect.name, points)
             winner.add_sentence([points, sentence])
         else:
             for aspect in contained_aspects:
-                points = points + score_function(score, max_score, aspect.weight, classification_score)
+                points = points + score_function(sentence.score, max_score, aspect.weight, classification_score)
             winner.add_points('multiple', points)
             winner.add_sentence([points, sentence])
     else:
         # multiple markers, multiple points
-        points = score_function(score, max_score, 0, classification_score)
+        points = score_function(sentence.score, max_score, 0, classification_score)
         winner.add_points('none', points)
         winner.add_sentence([points, sentence])
 

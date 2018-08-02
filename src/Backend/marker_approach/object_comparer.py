@@ -24,16 +24,16 @@ def find_winner(sentences, obj_a, obj_b, aspects):
     aspects:    List
                 list of Aspects
     '''
-    if sentences.values():
-        max_sentscore = max(sentences.values())
-    for s in sentences:
-        comp_result = what_is_better(s, obj_a, obj_b)
+    if len(sentences) > 0:
+        max_sentscore = max(sentence.score for sentence in sentences)
+    for sentence in sentences:
+        comp_result = what_is_better(sentence.text, obj_a, obj_b)
         if comp_result['winner'] == obj_a:  # objectA won the sentence
-            add_points(find_aspects(s, aspects), obj_a,
-                       sentences[s][0], s, max_sentscore[0], comp_result['marker_cnt'], score_function)
+            add_points(find_aspects(sentence.text, aspects), obj_a,
+                       sentence, max_sentscore, comp_result['marker_cnt'], score_function)
         else:  # objectB won the sentence
-            add_points(find_aspects(s, aspects), obj_b,
-                       sentences[s][0], s, max_sentscore[0], comp_result['marker_cnt'], score_function)
+            add_points(find_aspects(sentence.text, aspects), obj_b,
+                       sentence, max_sentscore, comp_result['marker_cnt'], score_function)
 
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)

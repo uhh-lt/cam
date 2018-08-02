@@ -53,7 +53,7 @@ def build_worddict(sentences, a_name, b_name):
     '''
     worddict = {}
     for s in sentences:
-        taglist = tag_sentence(s)
+        taglist = tag_sentence(s.text)
         for tag in taglist:
             if tag[1].startswith('NN'):  # is the word a noun?
                 w = tag[0].lower()

@@ -29,11 +29,11 @@ def remove_questions(sentences):
                 a dictionary of sentences
     '''
     sentences_to_delete = []
-    for s in sentences:
-        if '?' in s:
-            sentences_to_delete.append(s)
-    for s in sentences_to_delete:
-        sentences.pop(s)
+    for sentence in sentences:
+        if '?' in sentence.text:
+            sentences_to_delete.append(sentence)
+    for sentence in sentences_to_delete:
+        del sentences[sentences.index(sentence)]
     return sentences
 
 
@@ -52,18 +52,18 @@ def remove_wrong_structures(sentences, obj_a, obj_b):
                 the second object to be compared
     '''
     sentences_to_delete = []
-    for s in sentences:   
-        a_pos = find_pos_in_sentence(obj_a.name, s)
-        b_pos = find_pos_in_sentence(obj_b.name, s)
+    for sentence in sentences:   
+        a_pos = find_pos_in_sentence(obj_a.name, sentence.text)
+        b_pos = find_pos_in_sentence(obj_b.name, sentence.text)
         if a_pos == -1 and b_pos == -1:
-            sentences_to_delete.append(s)
+            sentences_to_delete.append(sentence)
             continue
         pos_first = min(a_pos, b_pos)
         pos_second = max(a_pos, b_pos)
-        has_pos_marker = has_marker(s, pos_first, pos_second, POSITIVE_MARKERS)
-        has_neg_marker = has_marker(s, pos_first, pos_second, NEGATIVE_MARKERS)
+        has_pos_marker = has_marker(sentence.text, pos_first, pos_second, POSITIVE_MARKERS)
+        has_neg_marker = has_marker(sentence.text, pos_first, pos_second, NEGATIVE_MARKERS)
         if (has_pos_marker and has_neg_marker) or (not has_pos_marker and not has_neg_marker):
-            sentences_to_delete.append(s)
-    for s in sentences_to_delete:
-        sentences.pop(s)
+            sentences_to_delete.append(sentence)
+    for sentence in sentences_to_delete:
+        del sentences[sentences.index(sentence)]
     return sentences

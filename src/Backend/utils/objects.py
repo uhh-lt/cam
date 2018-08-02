@@ -3,8 +3,9 @@ class Sentence:
     Sentence class to hold sentence related values
     '''
 
-    def __init__(self, sentence, document_id, sentence_id):
-        self.sentence = sentence
+    def __init__(self, text, score, document_id, sentence_id):
+        self.text = text
+        self.score = score
         self.document_id = document_id
         self.sentence_id = sentence_id
 

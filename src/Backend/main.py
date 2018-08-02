@@ -61,7 +61,7 @@ def cam():
         setStatus(statusID, 'Extract sentences')
         if aspects:
             all_sentences = extract_sentences(json_compl_triples)
-            all_sentences.update(extract_sentences(json_compl))
+            all_sentences.extend(extract_sentences(json_compl))
         else:
             all_sentences = extract_sentences(json_compl)
 
