@@ -1,8 +1,8 @@
 <div *ngFor='let sentence of (sentences | sentenceFilter:selectedAspects:selectedEnteredAspects:trigger); let i = index'>
   <div>
-    <a target="_blank" href="{{sentence.document_id}}" *ngIf="sentence.document_id != ''">
-      <div matTooltip="{{sentence.document_id}}" style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
-    </a>
+    <div id="sentence-hover" *ngIf="sentence.document_id != ''" (click)="getContext(sentence.document_id, sentence.sentence_id)">
+      <div matTooltip="Click, to show context." style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
+    </div>
     <div *ngIf="sentence.document_id == ''" style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
     <br>
   </div>

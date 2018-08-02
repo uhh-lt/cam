@@ -2,6 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DispensableResult } from '../../../model/dispensable-result';
 import { Aspect } from '../../../model/aspect';
 import { Sentence } from '../../../model/sentence';
+import { HTTPRequestService } from '../../../shared/http-request.service';
+import { UrlBuilderService } from '../../../shared/url-builder.service';
+import { MatDialog } from '../../../../../node_modules/@angular/material';
+import { ContextPresentationComponent } from '../context-presentation/context-presentation.component';
 
 @Component({
   selector: 'app-sentence-presentation',
@@ -19,7 +23,7 @@ export class SentencePresentationComponent implements OnInit {
 
   public sentences: Array<Sentence>;
 
-  constructor() { }
+  constructor(private httpService: HTTPRequestService, private urlService: UrlBuilderService, public dialog: MatDialog) { }
 
   ngOnInit() {
     if (this.isWinner) {
@@ -27,8 +31,21 @@ export class SentencePresentationComponent implements OnInit {
     } else {
       this.sentences = this.dispensableResult.looserSentences;
     }
+  }
 
+  getContext(document_id, sentence_id) {
+    console.log(document_id, sentence_id);
 
+    this.httpService.getContext(this.urlService.getContextURL(document_id, sentence_id, 3)).subscribe(
+      data => {
+          const dialogRef = this.dialog.open(ContextPresentationComponent, {
+            width: '30%',
+            data: { sentences: data, dispensableResult: this.dispensableResult, finalAspectList: this.finalAspectList,
+              selectedAspects: this.selectedAspects, sentenceID: sentence_id}
+          });
+
+        }
+    );
   }
 
 }

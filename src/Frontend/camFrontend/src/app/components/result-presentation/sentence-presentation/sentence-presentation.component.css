@@ -1,15 +1,8 @@
-a:link, a:visited, a:hover, a:active {
-    color: inherit;
-}
-
-a:link, a:visited {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
 ::ng-deep .mat-tooltip {
     font-size: 13px;
+}
+
+#sentence-hover:hover{
+    text-decoration: underline;
+    cursor: pointer;
 }
