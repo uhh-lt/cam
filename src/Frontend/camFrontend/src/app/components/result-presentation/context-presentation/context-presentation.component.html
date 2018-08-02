@@ -1,13 +1,20 @@
-<div>
+<div *ngIf='showLoading' class="text-center">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <small>Loading context...</small>
+  <br>
+</div>
+<div *ngIf="!showLoading">
   <span style="font-size: 17px">[...]&nbsp;</span>
-  <span *ngFor="let sentence of data.sentences">
+  <span *ngFor="let sentence of sentences">
     <!-- <span [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:data.selectedAspects"></span> -->
     <span *ngIf="sentence.sentence_id == data.sentenceID" style="background-color: yellowgreen">{{sentence.text}}&nbsp;</span>
     <span *ngIf="sentence.sentence_id != data.sentenceID">{{sentence.text}}&nbsp;</span>
 
   </span>
   <span style="font-size: 17px">[...]</span>
+</div>
+<div *ngIf="data.documentID">
   <mat-card>
-    <a target="_blank" href="{{data.sentences[0].document_id}}" *ngIf="data.sentences.length > 0">{{data.sentences[0].document_id}}</a>
+    <a target="_blank" href="{{data.documentID}}" >{{data.documentID}}</a>
   </mat-card>
 </div>

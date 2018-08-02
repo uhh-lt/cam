@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '../../../../../node_modules/@angular/material';
+import { Sentence } from '../../../model/sentence';
 
 @Component({
   selector: 'app-context-presentation',
@@ -8,12 +9,19 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '../../../../../node_modules/@angu
 })
 export class ContextPresentationComponent {
 
-  constructor(
-    public dialogRef: MatDialogRef<ContextPresentationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
+  public showLoading = true;
+  public sentences: Sentence[];
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  constructor(public dialogRef: MatDialogRef<ContextPresentationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    data.sentences.subscribe(
+      result => {
+        this.sentences = result;
+        this.showLoading = false;
+      }
+    );
+
+
+
   }
-
 
 }

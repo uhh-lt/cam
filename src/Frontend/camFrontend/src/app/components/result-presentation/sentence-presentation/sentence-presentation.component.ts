@@ -34,18 +34,17 @@ export class SentencePresentationComponent implements OnInit {
   }
 
   getContext(document_id, sentence_id) {
-    console.log(document_id, sentence_id);
-
-    this.httpService.getContext(this.urlService.getContextURL(document_id, sentence_id, 3)).subscribe(
-      data => {
-          const dialogRef = this.dialog.open(ContextPresentationComponent, {
-            width: '30%',
-            data: { sentences: data, dispensableResult: this.dispensableResult, finalAspectList: this.finalAspectList,
-              selectedAspects: this.selectedAspects, sentenceID: sentence_id}
-          });
-
-        }
-    );
+    const dialogRef = this.dialog.open(ContextPresentationComponent, {
+      width: '30%',
+      data: {
+        sentences: this.httpService.getContext(this.urlService.getContextURL(document_id, sentence_id, 3)),
+        dispensableResult: this.dispensableResult,
+        finalAspectList: this.finalAspectList,
+        selectedAspects: this.selectedAspects,
+        sentenceID: sentence_id,
+        documentID: document_id
+      }
+    });
   }
 
 }
