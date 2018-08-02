@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Result } from '../model/result';
+import { Sentence } from '../model/sentence';
 
 @Injectable()
 export class HTTPRequestService {
@@ -27,5 +28,9 @@ export class HTTPRequestService {
 
   register(url: string) {
     return this.httpClient.get<string>(url);
+  }
+
+  getContext(url: string) {
+    return this.httpClient.get<Array<Sentence>>(url);
   }
 }

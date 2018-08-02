@@ -87,4 +87,9 @@ export class UrlBuilderService {
     return `${this.HOSTNAME_DEFAULT}/register`;
   }
 
+
+  getContextURL(documentID: string, sentenceID: number, contextSize: number) {
+    return `${this.HOSTNAME_DEFAULT}/context?documentID=${documentID}&sentenceID=${sentenceID}&contextSize=${contextSize}`;
+  }
+
 }
