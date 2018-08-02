@@ -1,9 +1,9 @@
 <div *ngFor='let sentence of (sentences | sentenceFilter:selectedAspects:selectedEnteredAspects:trigger); let i = index'>
   <div>
-    <a target="_blank" href="{{sources[i]}}" *ngIf="sources[i] != ''">
-      <div matTooltip="{{sources[i]}}" style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
+    <a target="_blank" href="{{sentence.document_id}}" *ngIf="sentence.document_id != ''">
+      <div matTooltip="{{sentence.document_id}}" style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
     </a>
-    <div *ngIf="sources[i] == ''" style='font-size: 17px' [innerHtml]="sentence | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
+    <div *ngIf="sentence.document_id == ''" style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
     <br>
   </div>
 </div>

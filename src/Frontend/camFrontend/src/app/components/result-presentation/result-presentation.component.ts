@@ -1,6 +1,7 @@
 import { EventEmitter, Component, Output } from '@angular/core';
 import { DispensableResult } from '../../model/dispensable-result';
 import { Result } from '../../model/result';
+import { Sentence } from '../../model/sentence';
 
 @Component({
   selector: 'app-result-presentation',
@@ -45,19 +46,17 @@ export class ResultPresentationComponent {
     // count the number of sentences used for comparison
     this.sentenceCount = result.sentenceCount;
 
-    if (result.winner === result.object1) {
-      this.saveWinner(result.object1, result.object2);
-      this.saveScores(result.scoreObject1, result.scoreObject2, result.totalScoreObject1, result.totalScoreObject2);
+    if (result.winner === result.object1.name) {
+      this.saveWinner(result.object1.name, result.object2.name);
+      this.saveScores(result.object1.points, result.object2.points, result.object1.totalPoints, result.object2.totalPoints);
       this.saveExtractedAspects(result.extractedAspectsObject1, result.extractedAspectsObject2);
-      this.saveSentences(result.sentencesObject1, result.sentencesObject2);
-      this.saveSources(result.sourcesObject1, result.sourcesObject2);
+      this.saveSentences(result.object1.sentences, result.object2.sentences);
 
     } else {
-      this.saveWinner(result.object2, result.object1);
-      this.saveScores(result.scoreObject2, result.scoreObject1, result.totalScoreObject2, result.totalScoreObject1);
+      this.saveWinner(result.object2.name, result.object1.name);
+      this.saveScores(result.object2.points, result.object1.points, result.object2.totalPoints, result.object1.totalPoints);
       this.saveExtractedAspects(result.extractedAspectsObject2, result.extractedAspectsObject1);
-      this.saveSentences(result.sentencesObject2, result.sentencesObject1);
-      this.saveSources(result.sourcesObject2, result.sourcesObject1);
+      this.saveSentences(result.object2.sentences, result.object1.sentences);
     }
     this.showResult = true;
   }
@@ -142,15 +141,11 @@ export class ResultPresentationComponent {
    * @param winnerSentences sentences of the object that won
    * @param looserSentences sentences of the object that lost
    */
-  private saveSentences(winnerSentences: Array<string>, looserSentences: Array<string>) {
+  private saveSentences(winnerSentences: Array<Sentence>, looserSentences: Array<Sentence>) {
     this.dispensableResult.winnerSentences = winnerSentences;
     this.dispensableResult.looserSentences = looserSentences;
   }
 
-  private saveSources(winnerSources: Array<string>, looserSources: Array<string>) {
-    this.dispensableResult.winnerSources = winnerSources;
-    this.dispensableResult.looserSources = looserSources;
-  }
 
   updatedSelection(selectedAspects: Array<string>, isWinner: boolean) {
     console.log('update selection');

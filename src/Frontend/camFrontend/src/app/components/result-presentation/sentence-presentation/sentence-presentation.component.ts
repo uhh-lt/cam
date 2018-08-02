@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DispensableResult } from '../../../model/dispensable-result';
 import { Aspect } from '../../../model/aspect';
+import { Sentence } from '../../../model/sentence';
 
 @Component({
   selector: 'app-sentence-presentation',
@@ -16,18 +17,15 @@ export class SentencePresentationComponent implements OnInit {
   @Input() trigger = 0;
   @Input() finalAspectList = new Array<Aspect>();
 
-  public sentences: Array<string>;
-  public sources: Array<string>;
+  public sentences: Array<Sentence>;
 
   constructor() { }
 
   ngOnInit() {
     if (this.isWinner) {
       this.sentences = this.dispensableResult.winnerSentences;
-      this.sources = this.dispensableResult.winnerSources;
     } else {
       this.sentences = this.dispensableResult.looserSentences;
-      this.sources = this.dispensableResult.looserSources;
     }
 
 
