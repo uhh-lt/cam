@@ -66,7 +66,6 @@ def extract_sentences(es_json):
         document_id = source['document_id'] if 'document_id' in source else ''
         sentence_id = source['sentence_id'] if 'sentence_id' in source else ''
         sentences.append(Sentence(source['text'], hit['_score'], document_id, sentence_id))
-        # sentences[source['text']] = [hit['_score'], link, sentence_id]
     return sentences
 
 def request_context_sentences(document_id, sentence_id, context_size):
