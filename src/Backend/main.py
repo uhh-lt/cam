@@ -109,13 +109,13 @@ def register():
 @app.route('/context', methods=['GET'])
 @app.route('/cam/context', methods=['GET'])
 def get_context():
-    # http://localhost:5000/cam/context?documentID=%27http://www.universetoday.com/36129/density-of-venus/%27&sentenceID=3&contextSize=2
     document_id = request.args.get('documentID')
     sentence_id = int(request.args.get('sentenceID'))
     context_size = int(request.args.get('contextSize'))
     context = request_context_sentences(document_id, sentence_id, context_size)
     context_sentences = extract_sentences(context)
-    return jsonify(context_sentences)
+    context_sentences.sort(key=lambda elem: elem.sentence_id)
+    return jsonify([context_sentence.__dict__ for context_sentence in context_sentences])
 
 
 def setStatus(statusID, statusText):
