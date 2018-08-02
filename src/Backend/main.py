@@ -61,7 +61,8 @@ def cam():
         setStatus(statusID, 'Extract sentences')
         if aspects:
             all_sentences = extract_sentences(json_compl_triples)
-            all_sentences.extend(extract_sentences(json_compl))
+            all_sentences.extend([sentence for sentence in extract_sentences(
+                json_compl) if sentence.text not in [sentence.text for sentence in all_sentences]])
         else:
             all_sentences = extract_sentences(json_compl)
 
@@ -104,6 +105,7 @@ def register():
     print('Register:', statusID)
     return jsonify(statusID)
 
+
 @app.route('/context', methods=['GET'])
 @app.route('/cam/context', methods=['GET'])
 def get_context():
@@ -114,7 +116,6 @@ def get_context():
     context = request_context_sentences(document_id, sentence_id, context_size)
     context_sentences = extract_sentences(context)
     return jsonify(context_sentences)
-
 
 
 def setStatus(statusID, statusText):

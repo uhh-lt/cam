@@ -61,12 +61,21 @@ def extract_sentences(es_json):
     '''
     hits = es_json.json()['hits']['hits']
     sentences = []
+    seen_sentences = set()
     for hit in hits:
         source = hit['_source']
+        text = source['text']
         document_id = source['document_id'] if 'document_id' in source else ''
         sentence_id = source['sentence_id'] if 'sentence_id' in source else ''
-        sentences.append(Sentence(source['text'], hit['_score'], document_id, sentence_id))
+        if text in seen_sentences:
+            continue
+        else:
+            seen_sentences.add(text)
+        sentences.append(
+            Sentence(source['text'], hit['_score'], document_id, sentence_id))
+
     return sentences
+
 
 def request_context_sentences(document_id, sentence_id, context_size):
     url = build_context_url(document_id, sentence_id, context_size)

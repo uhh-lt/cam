@@ -3,7 +3,6 @@ import json
 from utils.link_extracter import extract_main_links
 
 
-
 def build_final_dict(obj_a, obj_b, sentences):
     '''
     Builds the final dictionary containing all necessary information regarding the comparison to 
@@ -69,21 +68,25 @@ def add_points(contained_aspects, winner, sentence, max_score, classification_sc
     if contained_aspects:
         if len(contained_aspects) == 1:
             aspect = contained_aspects[0]
-            points = score_function(sentence.score, max_score, aspect.weight, classification_score)
+            points = score_function(
+                sentence.score, max_score, aspect.weight, classification_score)
             winner.add_points(aspect.name, points)
             winner.add_sentence([points, sentence])
         else:
             for aspect in contained_aspects:
-                points = points + score_function(sentence.score, max_score, aspect.weight, classification_score)
+                points = points + \
+                    score_function(sentence.score, max_score,
+                                   aspect.weight, classification_score)
             winner.add_points('multiple', points)
             winner.add_sentence([points, sentence])
     else:
         # multiple markers, multiple points
-        points = score_function(sentence.score, max_score, 0, classification_score)
+        points = score_function(
+            sentence.score, max_score, 0, classification_score)
         winner.add_points('none', points)
         winner.add_sentence([points, sentence])
 
 
 def prepare_sentence_list(sentences_with_score):
-    sentences_with_score.sort(key=lambda elem: elem[0], reverse = True)
+    sentences_with_score.sort(key=lambda elem: elem[0], reverse=True)
     return list(DataFrame(sentences_with_score, columns=['points', 'sentence'])['sentence'])
