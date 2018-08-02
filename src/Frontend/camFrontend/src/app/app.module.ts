@@ -24,6 +24,7 @@ import { MultiselectChiplistComponent } from './components/result-presentation/m
 import { SentenceFilterPipe } from './pipes/sentence-filter/sentence-filter.pipe';
 import { ScorePresentationComponent } from './components/result-presentation/score-presentation/score-presentation.component';
 import { SentencePresentationComponent } from './components/result-presentation/sentence-presentation/sentence-presentation.component';
+import { ContextPresentationComponent } from './components/result-presentation/context-presentation/context-presentation.component';
 
 const appRoute: Routes = [
   { path: '', component: UserInterfaceComponent },
@@ -46,7 +47,8 @@ const appRoute: Routes = [
     MultiselectChiplistComponent,
     SentenceFilterPipe,
     ScorePresentationComponent,
-    SentencePresentationComponent
+    SentencePresentationComponent,
+    ContextPresentationComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +60,7 @@ const appRoute: Routes = [
     MaterialModule,
     ScrollToModule.forRoot()
   ],
+  entryComponents: [ContextPresentationComponent],
   providers: [UrlBuilderService, HTTPRequestService],
   bootstrap: [AppComponent]
 })

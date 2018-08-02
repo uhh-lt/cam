@@ -1,0 +1,3 @@
+<div *ngFor="let sentence of data.sentences">
+  <div [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:data.selectedAspects"></div>
+</div>
