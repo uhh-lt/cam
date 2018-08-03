@@ -4,15 +4,18 @@
 /* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
 
 .winner {
-    background-color: rgba(24, 226, 51, 0.4);
+    /* background-color: rgba(24, 226, 51, 0.4); */
+    background-color: #a3f3ad;
 }
   
 .looser {
-  background-color: rgba(49,130,189, 0.4); /*rgba(224, 21, 21, 0.39);*/
+  /* background-color: rgba(49,130,189, 0.4); */
+  background-color: #adcde5;
 }
   
 .aspect {
-  background-color: rgba(254,178,76, 0.4);
+  /* background-color: rgba(254,178,76, 0.4); */
+  background-color: #ffe0b7;
 }
   
 .link {

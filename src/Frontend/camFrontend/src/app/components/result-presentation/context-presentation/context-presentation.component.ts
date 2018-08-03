@@ -13,18 +13,16 @@ export class ContextPresentationComponent {
 
   public showLoading = true;
   public sentences: Sentence[];
-  public contextRange = {
-    Short: 2,
-    Medium: 4,
-    Document: 100
-  };
+  public selectedRange: number;
 
   constructor(private httpService: HTTPRequestService, private urlService: UrlBuilderService,
     public dialogRef: MatDialogRef<ContextPresentationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.getContext(this.contextRange.Short);
+      this.getContext(2);
   }
 
   getContext(contextRange: number) {
+    this.showLoading = true;
+    this.selectedRange = contextRange;
     this.httpService.getContext(this.urlService.getContextURL(this.data.documentID, this.data.sentenceID, contextRange)).subscribe(
       result => {
         this.sentences = result;
@@ -32,5 +30,4 @@ export class ContextPresentationComponent {
       }
     );
   }
-
 }

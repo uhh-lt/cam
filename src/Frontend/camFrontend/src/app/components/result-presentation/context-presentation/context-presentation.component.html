@@ -1,20 +1,33 @@
-<div *ngIf='showLoading' class="text-center">
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  <small>Loading context...</small>
-  <br>
+<div class="toggle-button">
+  <mat-button-toggle-group #group="matButtonToggleGroup" (change)="getContext(group.value)">
+    <mat-button-toggle value="2" [checked]="2 == selectedRange">
+      Short
+    </mat-button-toggle>
+    <mat-button-toggle value="4" [checked]="4 == selectedRange">
+      Medium
+    </mat-button-toggle>
+    <mat-button-toggle value="10" [checked]="15 == selectedRange">
+      Document
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
-<div *ngIf="!showLoading">
+<div *ngIf="!showLoading || sentences != undefined" class="padding-right context">
   <span style="font-size: 17px">[...]&nbsp;</span>
   <span *ngFor="let sentence of sentences">
     <span *ngIf="sentence.sentence_id == data.sentenceID" class="sentence-mark" [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:[]:0:true"></span>
-    <span *ngIf="sentence.sentence_id != data.sentenceID" [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:[]:0:true"></span>
+    <!-- <span *ngIf="sentence.sentence_id != data.sentenceID" [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:[]:0:true"></span> -->
     <!-- <span *ngIf="sentence.sentence_id == data.sentenceID" class="sentence-mark">{{sentence.text}}&nbsp;</span> -->
-    <!-- <span *ngIf="sentence.sentence_id != data.sentenceID">{{sentence.text}}&nbsp;</span> -->
+    <span *ngIf="sentence.sentence_id != data.sentenceID">{{sentence.text}}&nbsp;</span>
     <span>&nbsp;</span>
   </span>
   <span style="font-size: 17px">[...]</span>
 </div>
-<div *ngIf="data.documentID">
+<div *ngIf='showLoading' class="text-center padding-right">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <small>Loading context...</small>
+  <br>
+</div>
+<div *ngIf="data.documentID" class="padding-right">
   <mat-card>
     <a target="_blank" href="{{data.documentID}}">{{data.documentID}}</a>
   </mat-card>
