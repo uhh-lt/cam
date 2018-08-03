@@ -1,6 +1,6 @@
 import requests
 import json
-from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences
+from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences, request_document_by_id
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.url_builder import set_index
 from utils.objects import Argument, Aspect
@@ -23,10 +23,6 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
-
-    with open('config.json') as json_data_file:
-        config = json.load(json_data_file)
-    set_index(config['index']['name'])
 
     fast_search = request.args.get('fs')
     obj_a = Argument(request.args.get('objectA').lower().strip())
@@ -110,9 +106,13 @@ def register():
 @app.route('/cam/context', methods=['GET'])
 def get_context():
     document_id = request.args.get('documentID')
-    sentence_id = int(request.args.get('sentenceID'))
-    context_size = int(request.args.get('contextSize'))
-    context = request_context_sentences(document_id, sentence_id, context_size)
+    sentence_id = request.args.get('sentenceID')
+    context_size = request.args.get('contextSize')
+    if context_size is None and sentence_id is None:
+        context = request_document_by_id(document_id)
+    else:
+        context = request_context_sentences(
+            document_id, int(sentence_id), int(context_size))
     context_sentences = extract_sentences(context)
     context_sentences.sort(key=lambda elem: elem.sentence_id)
     return jsonify([context_sentence.__dict__ for context_sentence in context_sentences])
@@ -142,4 +142,8 @@ def extract_aspects(request):
 
 if __name__ == "__main__":
     status = {}
+    with open('config.json') as json_data_file:
+        config = json.load(json_data_file)
+    set_index(config['index']['name'])
     app.run(host="0.0.0.0", threaded=True)
+

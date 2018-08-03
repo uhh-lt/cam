@@ -92,4 +92,8 @@ export class UrlBuilderService {
     return `${this.HOSTNAME_DEFAULT}/context?documentID=${documentID}&sentenceID=${sentenceID}&contextSize=${contextSize}`;
   }
 
+  getWholeContextURL(documentID: string) {
+    return `${this.HOSTNAME_DEFAULT}/context?documentID=${documentID}`;
+  }
+
 }

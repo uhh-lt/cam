@@ -38,7 +38,8 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
             if s.text == sentence_text:
                 sentence = s
                 break
-
+        sentences.remove(sentence)
+        
         contained_aspects = find_aspects(sentence.text, aspects)
         if (label == 'BETTER' and row['object_a'] == obj_a.name) or (label == 'WORSE' and row['object_b'] == obj_a.name):
             add_points(contained_aspects, obj_a, sentence,

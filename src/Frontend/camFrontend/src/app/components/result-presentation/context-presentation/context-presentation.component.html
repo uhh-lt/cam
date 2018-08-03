@@ -1,12 +1,12 @@
 <div class="toggle-button">
-  <mat-button-toggle-group #group="matButtonToggleGroup" (change)="getContext(group.value)">
+  <mat-button-toggle-group #group="matButtonToggleGroup" (change)="getContext(+group.value)">
     <mat-button-toggle value="2" [checked]="2 == selectedRange">
       Short
     </mat-button-toggle>
     <mat-button-toggle value="4" [checked]="4 == selectedRange">
       Medium
     </mat-button-toggle>
-    <mat-button-toggle value="10" [checked]="15 == selectedRange">
+    <mat-button-toggle value="-1" [checked]="-1 == selectedRange">
       Document
     </mat-button-toggle>
   </mat-button-toggle-group>

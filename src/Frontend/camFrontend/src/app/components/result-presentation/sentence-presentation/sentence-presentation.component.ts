@@ -2,9 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DispensableResult } from '../../../model/dispensable-result';
 import { Aspect } from '../../../model/aspect';
 import { Sentence } from '../../../model/sentence';
-import { HTTPRequestService } from '../../../shared/http-request.service';
-import { UrlBuilderService } from '../../../shared/url-builder.service';
-import { MatDialog } from '../../../../../node_modules/@angular/material';
+import { MatDialog } from '@angular/material';
 import { ContextPresentationComponent } from '../context-presentation/context-presentation.component';
 
 @Component({

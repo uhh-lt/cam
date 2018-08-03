@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '../../../../../node_modules/@angular/material';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Sentence } from '../../../model/sentence';
 import { HTTPRequestService } from '../../../shared/http-request.service';
 import { UrlBuilderService } from '../../../shared/url-builder.service';
@@ -23,7 +23,13 @@ export class ContextPresentationComponent {
   getContext(contextRange: number) {
     this.showLoading = true;
     this.selectedRange = contextRange;
-    this.httpService.getContext(this.urlService.getContextURL(this.data.documentID, this.data.sentenceID, contextRange)).subscribe(
+    let url = '';
+    if (contextRange !== -1) {
+      url = this.urlService.getContextURL(this.data.documentID, this.data.sentenceID, contextRange);
+    } else {
+      url = this.urlService.getWholeContextURL(this.data.documentID);
+    }
+    this.httpService.getContext(url).subscribe(
       result => {
         this.sentences = result;
         this.showLoading = false;

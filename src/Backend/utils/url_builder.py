@@ -12,7 +12,13 @@ def build_url_base():
 
 
 def build_context_url(document_id, sentence_id, context_size):
-    return build_url_base() + 'document_id:\"{}\" AND sentence_id:[{} TO {}]'.format(document_id, sentence_id - context_size, sentence_id + context_size)
+    return build_document_getter_url(document_id) + ' AND sentence_id:[{} TO {}]'.format(sentence_id - context_size, sentence_id + context_size)
+
+def build_document_getter_url(document_id):
+    return build_url_base() + 'document_id:\"{}\"'.format(document_id)
+
+def get_query_range(maximum):
+    return '&from=0&size={}'.format(maximum)
 
 
 def build_object_urlpart(obj_a, obj_b):
@@ -58,9 +64,9 @@ def add_marker_urlpart(url, fast_search):
     url += '(\"'
     url += MARKERS_THAN[len(MARKERS_THAN) - 1]
     if fast_search == 'false':
-        url += '%20then\"))&from=0&size=10000'
+        url += '%20then\"))' + get_query_range(10000)
     else:
-        url += '%20then\"))&from=0&size=500'
+        url += '%20then\"))' + get_query_range(500)
     return url
 
 

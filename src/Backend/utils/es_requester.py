@@ -2,7 +2,7 @@ import requests
 import sys
 from requests.auth import HTTPBasicAuth
 import json
-from utils.url_builder import build_object_urlpart, add_marker_urlpart, build_context_url
+from utils.url_builder import build_object_urlpart, add_marker_urlpart, build_context_url, build_document_getter_url, get_query_range
 from utils.objects import Sentence
 
 
@@ -30,7 +30,7 @@ def request_es_triple(obj_a, obj_b, aspects):
             url += '\"{}\"'.format(aspect.name)
         else:
             url += '%20OR%20\"{}\"'.format(aspect.name)
-    url += ')&from=0&size=10000'
+    url += ')' + get_query_range(10000)
     return send_request(url)
 
 
@@ -40,7 +40,7 @@ def request_es_ML(fast_search, obj_a, obj_b):
     size = 10000
     if fast_search == 'true':
         size = 500
-    url += '&from=0&size={}'.format(size)
+    url += get_query_range(size)
     return send_request(url)
 
 
@@ -67,16 +67,23 @@ def extract_sentences(es_json):
         text = source['text']
         document_id = source['document_id'] if 'document_id' in source else ''
         sentence_id = source['sentence_id'] if 'sentence_id' in source else ''
-        if text in seen_sentences:
-            continue
-        else:
-            seen_sentences.add(text)
+
+        # if text in seen_sentences:
+        #     continue
+        # else:
+        #     seen_sentences.add(text)
         sentences.append(
-            Sentence(source['text'], hit['_score'], document_id, sentence_id))
+            Sentence(text, hit['_score'], document_id, sentence_id))
 
     return sentences
 
 
 def request_context_sentences(document_id, sentence_id, context_size):
-    url = build_context_url(document_id, sentence_id, context_size)
+    url = build_context_url(document_id, sentence_id,
+                            context_size) + get_query_range(10000)
+    return send_request(url)
+
+
+def request_document_by_id(document_id):
+    url = build_document_getter_url(document_id) + get_query_range(10000)
     return send_request(url)
