@@ -17,7 +17,7 @@ export class ContextPresentationComponent {
 
   constructor(private httpService: HTTPRequestService, private urlService: UrlBuilderService,
     public dialogRef: MatDialogRef<ContextPresentationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-      this.getContext(1);
+      this.getContext(3);
   }
 
   getContext(contextRange: number) {
