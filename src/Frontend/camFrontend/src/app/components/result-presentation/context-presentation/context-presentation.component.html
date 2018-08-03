@@ -1,9 +1,9 @@
 <div class="toggle-button">
   <mat-button-toggle-group #group="matButtonToggleGroup" (change)="getContext(+group.value)">
-    <mat-button-toggle value="2" [checked]="2 == selectedRange">
+    <mat-button-toggle value="1" [checked]="1 == selectedRange">
       Short
     </mat-button-toggle>
-    <mat-button-toggle value="4" [checked]="4 == selectedRange">
+    <mat-button-toggle value="3" [checked]="3 == selectedRange">
       Medium
     </mat-button-toggle>
     <mat-button-toggle value="-1" [checked]="-1 == selectedRange">
@@ -12,7 +12,7 @@
   </mat-button-toggle-group>
 </div>
 <div *ngIf="!showLoading || sentences != undefined" class="padding-right context">
-  <span style="font-size: 17px">[...]&nbsp;</span>
+  <span style="font-size: 17px" *ngIf="selectedRange != -1">[...]&nbsp;</span>
   <span *ngFor="let sentence of sentences">
     <span *ngIf="sentence.sentence_id == data.sentenceID" class="sentence-mark" [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:[]:0:true"></span>
     <!-- <span *ngIf="sentence.sentence_id != data.sentenceID" [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:[]:0:true"></span> -->
@@ -20,7 +20,7 @@
     <span *ngIf="sentence.sentence_id != data.sentenceID">{{sentence.text}}&nbsp;</span>
     <span>&nbsp;</span>
   </span>
-  <span style="font-size: 17px">[...]</span>
+  <span style="font-size: 17px" *ngIf="selectedRange != -1">[...]</span>
 </div>
 <div *ngIf='showLoading' class="text-center padding-right">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
