@@ -1,5 +1,6 @@
 import requests
 import json
+import urllib
 from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences, request_document_by_id
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.url_builder import set_index
@@ -105,7 +106,7 @@ def register():
 @app.route('/context', methods=['GET'])
 @app.route('/cam/context', methods=['GET'])
 def get_context():
-    document_id = request.args.get('documentID')
+    document_id = urllib.parse.quote(request.args.get('documentID'))
     sentence_id = request.args.get('sentenceID')
     context_size = request.args.get('contextSize')
     if context_size is None and sentence_id is None:
