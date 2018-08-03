@@ -23,7 +23,7 @@ export class SentencePresentationComponent implements OnInit {
 
   public sentences: Array<Sentence>;
 
-  constructor(private httpService: HTTPRequestService, private urlService: UrlBuilderService, public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
     if (this.isWinner) {
@@ -37,7 +37,6 @@ export class SentencePresentationComponent implements OnInit {
     const dialogRef = this.dialog.open(ContextPresentationComponent, {
       width: '30%',
       data: {
-        sentences: this.httpService.getContext(this.urlService.getContextURL(document_id, sentence_id, 3)),
         dispensableResult: this.dispensableResult,
         finalAspectList: this.finalAspectList,
         selectedAspects: this.selectedAspects,
