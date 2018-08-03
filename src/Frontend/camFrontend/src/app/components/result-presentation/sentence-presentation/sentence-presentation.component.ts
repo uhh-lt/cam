@@ -33,7 +33,7 @@ export class SentencePresentationComponent implements OnInit {
 
   getContext(document_id, sentence_id) {
     const dialogRef = this.dialog.open(ContextPresentationComponent, {
-      width: '30%',
+      width: '45%',
       data: {
         dispensableResult: this.dispensableResult,
         finalAspectList: this.finalAspectList,
