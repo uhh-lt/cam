@@ -24,6 +24,7 @@ def cam():
     '''
     to be visited after a user clicked the 'compare' button.
     '''
+    load_config()
 
     fast_search = request.args.get('fs')
     obj_a = Argument(request.args.get('objectA').lower().strip())
@@ -140,11 +141,14 @@ def extract_aspects(request):
             i = False
     return aspects
 
-
-if __name__ == "__main__":
-    status = {}
+def load_config():
     with open('config.json') as json_data_file:
         config = json.load(json_data_file)
     set_index(config['index']['name'])
+
+
+if __name__ == "__main__":
+    status = {}
+    load_config()
     app.run(host="0.0.0.0", threaded=True)
 
