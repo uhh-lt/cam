@@ -14,20 +14,25 @@ export class ContextPresentationComponent {
   public showLoading = true;
   public sentences: Sentence[];
   public selectedRange: number;
+  public documentIDs = new Array<string>();
+  public selectedDocumentID: string;
 
   constructor(private httpService: HTTPRequestService, private urlService: UrlBuilderService,
     public dialogRef: MatDialogRef<ContextPresentationComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+      this.documentIDs = Object.keys(this.data.IDpairs);
+      this.selectedDocumentID = this.documentIDs[0];
       this.getContext(3);
   }
 
   getContext(contextRange: number) {
+    console.log(this.data);
     this.showLoading = true;
     this.selectedRange = contextRange;
     let url = '';
     if (contextRange !== -1) {
-      url = this.urlService.getContextURL(this.data.documentID, this.data.sentenceID, contextRange);
+      url = this.urlService.getContextURL(this.selectedDocumentID, this.data.IDpairs[this.selectedDocumentID], contextRange);
     } else {
-      url = this.urlService.getWholeContextURL(this.data.documentID);
+      url = this.urlService.getWholeContextURL(this.selectedDocumentID);
     }
     this.httpService.getContext(url).subscribe(
       result => {
@@ -35,5 +40,9 @@ export class ContextPresentationComponent {
         this.showLoading = false;
       }
     );
+  }
+
+  getValues(dict: {}) {
+    return Object.values(dict);
   }
 }
