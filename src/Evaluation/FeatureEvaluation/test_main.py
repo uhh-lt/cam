@@ -26,7 +26,7 @@ def simulate_main(triple):
 
     if aspects:
         all_sentences = extract_sentences(json_compl_triples)
-        all_sentences.update(extract_sentences(json_compl))
+        all_sentences.extend(extract_sentences(json_compl))
     else:
         all_sentences = extract_sentences(json_compl)
 
@@ -40,11 +40,11 @@ def simulate_main(triple):
                           classification_results, obj_a, obj_b, aspects)
 
     a_aspect_score = 0
-    if triple[3] in final_dict['scoreObject1']:
-        a_aspect_score = final_dict['scoreObject1'][triple[3]]
+    if triple[3] in final_dict['object1']['points']:
+        a_aspect_score = final_dict['object1']['points'][triple[3]]
     b_aspect_score = 0
-    if triple[3] in final_dict['scoreObject2']:
-        b_aspect_score = final_dict['scoreObject2'][triple[3]]
+    if triple[3] in final_dict['object2']['points']:
+        b_aspect_score = final_dict['object2']['points'][triple[3]]
     
     return [a_aspect_score, b_aspect_score]
 
