@@ -2,7 +2,6 @@ import requests
 import json
 from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple
 from utils.sentence_clearer import clear_sentences, remove_questions
-from utils.summarization import find_most_frequent_words
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from ml_approach.classify import classify_sentences, evaluate
 from marker_approach.object_comparer import find_winner
@@ -72,11 +71,6 @@ def cam():
 
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
         final_dict = evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects)
-        
-        # print('Obj 1:')
-        # find_most_frequent_words(obj_a.name, obj_b.name, final_dict['sentencesObject1'], aspects[0].name)
-        # print('Obj 2:')
-        # find_most_frequent_words(obj_a.name, obj_b.name, final_dict['sentencesObject2'], aspects[0].name)
         
         
         return jsonify(final_dict)

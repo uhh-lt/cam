@@ -3,7 +3,6 @@ import sys
 sys.path.append('../../Backend')
 from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple
 from utils.sentence_clearer import clear_sentences, remove_questions
-from utils.summarization import find_most_frequent_words
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from ml_approach.classify import classify_sentences, evaluate
 from marker_approach.object_comparer import find_winner
