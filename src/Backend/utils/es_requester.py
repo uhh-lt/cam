@@ -72,24 +72,16 @@ def extract_sentences(es_json):
         if text.lower() in seen_sentences:
             for i, x in enumerate(sentences):
                 if x.text.lower() == text.lower():
-                    if x.document_id != document_id:
-                        # found_duplicate = True
-                        # add documentID to a list of document ids corresponding to the sentence
-                        break
-                    elif x.document_id == document_id and x.sentence_id < sentence_id:
-                        found_duplicate = True
-                        break
-                    else:
-                        del sentences[i]
+                    if document_id not in x.id_pair:
+                        x.add_id_pair(document_id, sentence_id)
+                    elif document_id in x.id_pair and x.id_pair[document_id] > sentence_id:
+                        x.id_pair[document_id] = sentence_id
+                    break
+
         else:
             seen_sentences.add(text.lower())
-
-        if found_duplicate:
-            found_duplicate = False
-            continue
-
-        sentences.append(
-            Sentence(text, hit['_score'], document_id, sentence_id))
+            sentences.append(
+                Sentence(text, hit['_score'], document_id, sentence_id))
 
     return sentences
 
