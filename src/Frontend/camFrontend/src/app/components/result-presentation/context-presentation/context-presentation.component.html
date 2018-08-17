@@ -24,6 +24,24 @@
 </div>
 <div *ngIf="selectedDocumentID" class="padding-right">
   <mat-card>
-    <a target="_blank" href="{{selectedDocumentID}}">{{selectedDocumentID}}</a>
+    <div *ngIf="documentIDs.length > 1">
+      <mat-form-field style="width: 90%;">
+        <mat-select [(value)]='selectedDocumentID' (selectionChange)="documentIDChanged(+group.value)" name="modelSelect">
+          <mat-option *ngFor="let documentID of documentIDs" [value]="documentID">
+            {{documentID}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button matTooltip="Open url in new tab." mat-icon-button type="button" color="secundary" (click)="openLink()">
+        <mat-icon>open_in_new
+        </mat-icon>
+      </button>
+    </div>
+
+
+    <div *ngIf="documentIDs.length < 2">
+      <a target="_blank" href="{{selectedDocumentID}}">{{selectedDocumentID}}</a>
+    </div>
   </mat-card>
 </div>

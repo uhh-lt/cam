@@ -38,11 +38,22 @@ export class ContextPresentationComponent {
       result => {
         this.sentences = result;
         this.showLoading = false;
+      },
+      error => {
+        console.error(error);
       }
     );
   }
 
   getValues(dict: {}) {
     return Object.values(dict);
+  }
+
+  documentIDChanged(contextRange: number) {
+    this.getContext(contextRange);
+  }
+
+  openLink() {
+    window.open(this.selectedDocumentID, '_blank');
   }
 }
