@@ -1,7 +1,7 @@
 from pandas import DataFrame
 from utils.answer_preparation import add_points, prepare_sentence_list, build_final_dict
 from utils.regex_service import find_aspects
-from heuristics.negation_dissolve_heuristic1 import negation_dissolve_heuristic
+from heuristics.negation_dissolve_heuristic import negation_dissolve_heuristic
 
 import re
 import os

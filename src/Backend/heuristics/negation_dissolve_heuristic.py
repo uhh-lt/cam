@@ -1,100 +1,114 @@
 import re
-from utils.regex_service import find_last_pos_in_sentence, find_pos_in_sentence
+from utils.regex_service import find_aspects
+
+positive_contrary_comparatives = {
+    'more': ['less', 'lower'],
+    'higher': ['lower', 'smaller'],
+    'bigger': ['smaller'],
+    'faster': ['slower'],
+    'quicker': ['slower'],
+    'smarter': ['dumper'],
+    'larger': ['smaller'],
+    'harder': ['softer'],
+    'better': ['worse'],
+    'easier': ['more difficult'],
+    'safer': ['more dangerous'],
+    'superior': ['inferior'],
+    'greater': ['smaller'],
+    'lighter': ['heavier'],
+    'taller': ['shorter'],
+    'fatter': ['thinner'],
+    'more beautiful': ['uglier'],
+    'wetter': ['drier'],
+    'more open': ['more closed'],
+    'more expensive': ['cheaper'],
+    'more modern': ['older'],
+    'more awake': ['more tired'],
+    'more exciting': ['more boring'],
+    'more interesting': ['more boring'],
+    'more polite': ['ruder', 'more impolite'],
+    'much': ['less'],
+    'many': ['fewer'],
+    'wider': ['narrower'],
+    'closer': ['further'],
+    'nearer': ['further'],
+    'cleaner': ['more polluted', 'dirtier'],
+    'fuller': ['emptier'],
+    'quieter': ['noisier', 'louder'],
+    'happier': ['unhappier'],
+    'more confortable': ['more uncomfortable'],
+    'more patient': ['more impatient'],
+    'healthier': ['unhealthier']
+}
 
 
-permissible_pattern = ['a_c_b', 'b_c_a']
+def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects):
 
-def negation_dissolve_heuristic(object_a, object_b, aspect):
-    '''
-    This heuristic is based on the position of the objects A and B and the Aspect C.
-    If there are permissible patterns (A_C_B and B_C_A) they are taken from one object
-    and put to the other where more most of those pattern are found.
+    points_to_move = 0
+    points_for_multiple = 0
 
-    '''
-    print(object_a.name, object_b.name, aspect)
-
-    tag_sentences_a = tag_sentences(
-        object_a.sentences, object_a.name, object_b.name, aspect)
-    tag_sentences_b = tag_sentences(
-        object_b.sentences, object_a.name, object_b.name, aspect)
-
-    if len(tag_sentences_a) == 0 or len(tag_sentences_b) == 0:
-        return
-    a_max_tag = max(tag_sentences_a.items(), key=lambda elem: len(elem[1]))[0]
-    b_max_tag = max(tag_sentences_b.items(), key=lambda elem: len(elem[1]))[0]
-    print(len(tag_sentences_a[a_max_tag]), len(tag_sentences_b[b_max_tag]))
-
-    if a_max_tag in permissible_pattern or b_max_tag in permissible_pattern:
-        if len(tag_sentences_a[a_max_tag]) > len(tag_sentences_b[b_max_tag]):
-            print('A:', a_max_tag)
-            move_assignment(a_max_tag, tag_sentences_b,
-                            object_b, object_a, aspect)
+    print('For', '\'' + aspect + '\'', 'there were moved', len(sentences_to_move),
+          'sentences from', from_object.name, 'to', to_object.name, '.')
+    print('----')
+    for sentence in sentences_to_move:
+        if len(find_aspects(sentence[1], aspects)) > 1:
+            points_for_multiple = points_for_multiple + sentence[0]
         else:
-            print('B:', b_max_tag)
-            move_assignment(b_max_tag, tag_sentences_a,
-                            object_a, object_b, aspect)
-
-
-def move_assignment(from_max_tag, to_tag_sentences, from_object, to_object, aspect):
-    turned_tag = turn_tag(from_max_tag)
-    if turned_tag in to_tag_sentences:
-        sentences_to_move = to_tag_sentences[turned_tag]
-        points_to_move = 0
-        print('For', '\'' + aspect + '\'', 'there were moved', len(sentences_to_move),
-              'sentences from', from_object.name, 'to', to_object.name, '.')
-        print('----')
-        for sentence in sentences_to_move:
-            print('-' + re.sub(' +', ' ',
-                               re.sub('[^a-zA-Z0-9 ]', ' ', sentence[1])))
             points_to_move = points_to_move + sentence[0]
-        print('----')
-        from_object.sentences = [
-            sentence for sentence in from_object.sentences if sentence not in sentences_to_move]
-        from_object.points[aspect] = from_object.points[aspect] - \
-            points_to_move
-        from_object.totalPoints = from_object.totalPoints - points_to_move
 
-        to_object.sentences.extend(sentences_to_move)
-        to_object.points[aspect] = to_object.points[aspect] + points_to_move
-        to_object.totalPoints = to_object.totalPoints + points_to_move
+        print('-' + re.sub(' +', ' ', re.sub('[^a-zA-Z0-9 ]', ' ', sentence[1])))
 
-        print((points_to_move / (to_object.totalPoints +
-                                 from_object.totalPoints)) * 100, '% moved (total)')
-        print((points_to_move / (to_object.points[aspect] +
-                                 from_object.points[aspect])) * 100, '% moved for', aspect)
+    from_object.sentences = [
+        sentence for sentence in from_object.sentences if sentence not in sentences_to_move]
+    from_object.points[aspect] = from_object.points[aspect] - points_to_move
+    from_object.totalPoints = from_object.totalPoints - \
+        (points_to_move + points_for_multiple)
+
+    to_object.sentences.extend(sentences_to_move)
+    to_object.add_points(aspect, points_to_move)
+
+    if points_for_multiple > 0:
+        from_object.points['multiple'] = from_object.points['multiple'] - \
+            points_for_multiple
+        to_object.add_points('multiple', points_for_multiple)
+
+    print((points_to_move / (to_object.totalPoints +
+                             from_object.totalPoints)) * 100, '% moved (total)')
+    print((points_to_move / (to_object.points[aspect] +
+                             from_object.points[aspect])) * 100, '% moved for', aspect)
+    print('----')
+
+
+def negation_dissolve_heuristic(object_a, object_b, aspect, aspects):
+    markers = positive_contrary_comparatives
+    filtered_sentences = get_matching_sentences(object_a.name, object_b.name, aspect, object_a.sentences, markers, True)
+
+    if len(filtered_sentences) > 0:
+        for sentence in filtered_sentences:
+            filtered_contrary = [v for k, v in markers.items() if k in sentence[1]]
+            filtered_contrary = [item for sublist in filtered_contrary for item in sublist]
+
+            if len(filtered_contrary) > 0:
+                same_meaning_sentences = get_matching_sentences(
+                    object_b.name, object_a.name, aspect, object_b.sentences, filtered_contrary, False)
+                if len(same_meaning_sentences) > 0:
+                    move_assignment(same_meaning_sentences,
+                                    object_b, object_a, aspect, aspects)
+
+
+def get_matching_sentences(object_a, object_b, aspect, sentences, markers, is_positive):
+    locked_out_markers = [] 
+    if is_positive:
+        locked_out_markers = [item for sublist in list(positive_contrary_comparatives.values()) for item in sublist]
     else:
-        print('No sentences were moved.')
+        locked_out_markers = [marker for marker in positive_contrary_comparatives]
+    re_locked_out_markers = '|'.join([re.escape(x) for x in locked_out_markers])
+    re_markers = '|'.join([re.escape(x) for x in markers])
 
+    regex = re.compile(r'(?=.*(?:\b' + re.escape(object_a) + r'\b.*\b' + re.escape(aspect) +
+                       r'\b.*\b' + re.escape(object_b) + r'\b))(?=.*(?:\b' + re_markers + r'\b))(?!.*(?:\b' + re_locked_out_markers + r'\b))', re.IGNORECASE)
 
-def tag_sentences(sentences, a_name, b_name, aspect):
-    tag_sentences = {}
-    for sentence in sentences:
-        tag = get_tag(sentence[1], a_name, b_name, aspect)
-        if tag == 'none':
-            continue
-        if tag in tag_sentences:
-            tag_sentences[tag].append(sentence)
-        else:
-            tag_sentences[tag] = [sentence]
-    return tag_sentences
+                
+    filtered_sentences = [x for x in sentences if regex.search(x[1]) != None]
 
-
-def turn_tag(tag):
-    return tag[-1:] + tag[1:-1] + tag[:1]
-
-def get_tag(sentence, object_a, object_b, aspect):
-
-    pos_a = find_pos_in_sentence(object_a, sentence)
-    pos_b = find_pos_in_sentence(object_b, sentence)
-    pos_c = find_pos_in_sentence(aspect, sentence)
-    if pos_a != -1 and pos_b != -1 and pos_c != -1:
-        if pos_a > pos_b:
-            pos_a = find_last_pos_in_sentence(object_a, sentence)
-        else:
-            pos_b = find_last_pos_in_sentence(object_b, sentence)
-
-        indices = [['a', pos_a], ['b', pos_b], ['c', pos_c]]
-        indices.sort(key=lambda elem: elem[1])
-
-        return '_'.join([x[0] for x in indices])
-    return 'none'
+    return filtered_sentences
