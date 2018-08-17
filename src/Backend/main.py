@@ -6,7 +6,7 @@ from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.url_builder import set_index
 from utils.objects import Argument, Aspect
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
-from ml_approach.classify import classify_sentences, evaluate
+from ml_approach.classify import classify_sentences, evaluate, set_use_heuristics
 from marker_approach.object_comparer import find_winner
 
 from flask import Flask, request, jsonify
@@ -148,6 +148,7 @@ def load_config():
     with open('config.json') as json_data_file:
         config = json.load(json_data_file)
     set_index(config['index']['name'])
+    set_use_heuristics(config['use_heuristics'] == 'True')
 
 
 if __name__ == "__main__":

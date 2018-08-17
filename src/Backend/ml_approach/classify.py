@@ -10,6 +10,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "cam_pretrained"))
 
 from cam_pretrained.model_util import load_model
 
+USE_HEURISTICS = True
 
 def classify_sentences(sentences, model):
     if model == 'infersent':
@@ -50,9 +51,10 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
             add_points(contained_aspects, obj_b, sentence,
                        max_sentscore, classification_confidence, score_function)
 
-    for aspect in aspects:
-        negation_dissolve_heuristic(obj_a, obj_b, aspect.name, aspects)
-        negation_dissolve_heuristic(obj_b, obj_a, aspect.name, aspects)
+    if USE_HEURISTICS:
+        for aspect in aspects:
+            negation_dissolve_heuristic(obj_a, obj_b, aspect.name, aspects)
+            negation_dissolve_heuristic(obj_b, obj_a, aspect.name, aspects)
         
         
 
@@ -66,3 +68,8 @@ def score_function(sentence_score, max_sentscore, weight, confidence):
     if weight < 1:
         weight = 1
     return (sentence_score + confidence * max_sentscore) * weight
+
+
+def set_use_heuristics(use_heuristics):
+    global USE_HEURISTICS
+    USE_HEURISTICS=use_heuristics
