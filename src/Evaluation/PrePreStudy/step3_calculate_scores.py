@@ -5,7 +5,7 @@ import sys
 from random import shuffle
 from operator import itemgetter
 import threading
-sys.path.append('../Backend')
+sys.path.append('../../Backend')
 from object_comparer import find_winner
 from main import Aspect
 from main import Argument

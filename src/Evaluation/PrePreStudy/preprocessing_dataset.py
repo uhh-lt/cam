@@ -5,7 +5,7 @@ from nltk import word_tokenize
 from nltk.corpus import wordnet
 import time
 import sys
-sys.path.append('../Backend')
+sys.path.append('../../Backend')
 import link_extracter
 import constants
 

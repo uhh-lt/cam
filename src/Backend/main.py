@@ -76,7 +76,10 @@ def cam():
         classification_results = classify_sentences(prepared_sentences, model)
 
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
-        return jsonify(evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects))
+        final_dict = evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects)
+        
+        
+        return jsonify(final_dict)
 
 
 @app.route('/status', methods=['GET'])
