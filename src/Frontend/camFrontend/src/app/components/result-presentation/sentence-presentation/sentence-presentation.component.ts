@@ -47,4 +47,8 @@ export class SentencePresentationComponent implements OnInit {
     return !('' in sentence.id_pair);
   }
 
+  getKeyCount(dict: {}) {
+    return Object.keys(dict).length;
+  }
+
 }

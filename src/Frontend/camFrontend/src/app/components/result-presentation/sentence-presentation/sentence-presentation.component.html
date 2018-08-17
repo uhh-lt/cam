@@ -1,9 +1,11 @@
 <div *ngFor='let sentence of (sentences | sentenceFilter:selectedAspects:selectedEnteredAspects:trigger); let i = index'>
   <div>
-    <div id="sentence-hover" *ngIf="contextIsThere(sentence)" (click)="getContext(sentence.id_pair)">
-      <div matTooltip="Click, to show context." style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
-    </div>
-    <div *ngIf="!contextIsThere(sentence)" style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
-    <br>
+    <p id="sentence-hover" *ngIf="contextIsThere(sentence)" (click)="getContext(sentence.id_pair)">
+      <span matTooltip="Click, to show context." style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></span>
+      <span *ngIf="getKeyCount(sentence.id_pair) > 1" matBadge="{{getKeyCount(sentence.id_pair)}}" matBadgeOverlap="false"></span>
+    </p>
+    <p *ngIf="!contextIsThere(sentence)">
+      <span style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></span>
+    </p>
   </div>
 </div>
