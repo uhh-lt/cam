@@ -1,9 +1,9 @@
 <div *ngFor='let sentence of (sentences | sentenceFilter:selectedAspects:selectedEnteredAspects:trigger); let i = index'>
   <div>
-    <div id="sentence-hover" *ngIf="sentence.document_id != ''" (click)="getContext(sentence.document_id, sentence.sentence_id)">
+    <div id="sentence-hover" *ngIf="contextIsThere(sentence)" (click)="getContext(sentence.id_pair)">
       <div matTooltip="Click, to show context." style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
     </div>
-    <div *ngIf="sentence.document_id == ''" style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
+    <div *ngIf="!contextIsThere(sentence)" style='font-size: 17px' [innerHtml]="sentence.text | markClasses:dispensableResult:finalAspectList:selectedAspects:trigger"></div>
     <br>
   </div>
 </div>

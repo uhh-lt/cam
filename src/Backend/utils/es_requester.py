@@ -62,7 +62,6 @@ def extract_sentences(es_json):
     hits = es_json.json()['hits']['hits']
     sentences = []
     seen_sentences = set()
-    found_duplicate = False
     for hit in hits:
         source = hit['_source']
         text = source['text']
