@@ -18,7 +18,8 @@ import { MatProgressSpinnerModule,
   MatTooltipModule,
   MatDialogModule,
   MatButtonToggleModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatStepperModule
 } from '@angular/material';
 
 @NgModule({
@@ -40,7 +41,8 @@ import { MatProgressSpinnerModule,
     MatTooltipModule,
     MatDialogModule,
     MatButtonToggleModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatStepperModule
   ],
   providers: [{provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig}]
 })

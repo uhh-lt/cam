@@ -25,7 +25,6 @@ export class ContextPresentationComponent {
   }
 
   getContext(contextRange: number) {
-    console.log(this.data);
     this.showLoading = true;
     this.selectedRange = contextRange;
     let url = '';
@@ -51,6 +50,11 @@ export class ContextPresentationComponent {
 
   documentIDChanged(contextRange: number) {
     this.getContext(contextRange);
+  }
+
+  documentIDSelected(documentID: string) {
+    this.selectedDocumentID = documentID;
+    this.getContext(3);
   }
 
   openLink() {
