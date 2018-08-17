@@ -51,7 +51,7 @@ def send_request(url):
         return requests.get(url)
 
 
-def extract_sentences(es_json):
+def extract_sentences(es_json, aggregate_duplicates=True):
     '''
     Extracts the sentences from an Elastic Search commoncrawl2 json result. (This is the default
     and can be changed in constants.py)
@@ -69,14 +69,14 @@ def extract_sentences(es_json):
         sentence_id = source['sentence_id'] if 'sentence_id' in source else ''
 
         if text.lower() in seen_sentences:
-            for i, x in enumerate(sentences):
-                if x.text.lower() == text.lower():
-                    if document_id not in x.id_pair:
-                        x.add_id_pair(document_id, sentence_id)
-                    elif document_id in x.id_pair and x.id_pair[document_id] > sentence_id:
-                        x.id_pair[document_id] = sentence_id
-                    break
-
+            if aggregate_duplicates:
+                for x in sentences:
+                    if x.text.lower() == text.lower():
+                        if document_id not in x.id_pair:
+                            x.add_id_pair(document_id, sentence_id)
+                        elif document_id in x.id_pair and x.id_pair[document_id] > sentence_id:
+                            x.id_pair[document_id] = sentence_id
+                        break
         else:
             seen_sentences.add(text.lower())
             sentences.append(
