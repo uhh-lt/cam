@@ -1,4 +1,4 @@
-<!-- <div class="toggle-button">
+<div class="toggle-button">
   <mat-button-toggle-group #group="matButtonToggleGroup" (change)="getContext(+group.value)">
     <mat-button-toggle value="3" [checked]="3 == selectedRange">
       Show Near
@@ -44,81 +44,4 @@
       <a target="_blank" href="{{selectedDocumentID}}">{{selectedDocumentID}}</a>
     </div>
   </mat-card>
-</div> -->
-
-
-<div *ngIf="documentIDs.length < 2">
-    <ng-template matStepLabel>Show Context</ng-template>
-    <div class="toggle-button">
-      <mat-button-toggle-group #group="matButtonToggleGroup" (change)="getContext(+group.value)">
-        <mat-button-toggle value="3" [checked]="3 == selectedRange">
-          Show Near
-        </mat-button-toggle>
-        <mat-button-toggle value="-1" [checked]="-1 == selectedRange">
-          Show All
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-    <div *ngIf="!showLoading || sentences != undefined" class="padding-right context">
-      <span style="font-size: 17px" *ngIf="selectedRange != -1">[...]&nbsp;</span>
-      <span *ngFor="let sentence of sentences">
-        <span *ngIf="getValues(sentence.id_pair) == data.IDpairs[selectedDocumentID]" class="sentence-mark" [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:[]:0:true"></span>
-        <span *ngIf="getValues(sentence.id_pair) != data.IDpairs[selectedDocumentID]">{{sentence.text}}&nbsp;</span>
-        <span>&nbsp;</span>
-      </span>
-      <span style="font-size: 17px" *ngIf="selectedRange != -1">[...]</span>
-    </div>
-    <div *ngIf='showLoading' class="text-center padding-right">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      <small>Loading context...</small>
-      <br>
-    </div>
-    <div *ngIf="selectedDocumentID" class="padding-right">
-      <mat-card>
-        <a target="_blank" href="{{selectedDocumentID}}">{{selectedDocumentID}}</a>
-      </mat-card>
-    </div>
 </div>
-<mat-horizontal-stepper #stepper [linear]="true" *ngIf="documentIDs.length > 1">
-  <mat-step editable="false">
-    <ng-template matStepLabel>Select Document id</ng-template>
-    <div *ngFor="let documentID of documentIDs">
-      <button mat-button matStepperNext (click)="documentIDSelected(documentID)">{{documentID}}</button>
-    </div>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Show Context</ng-template>
-    <div class="toggle-button">
-      <mat-button-toggle-group #group="matButtonToggleGroup" (change)="getContext(+group.value)">
-        <mat-button-toggle value="3" [checked]="3 == selectedRange">
-          Show Near
-        </mat-button-toggle>
-        <mat-button-toggle value="-1" [checked]="-1 == selectedRange">
-          Show All
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-    <div *ngIf="!showLoading || sentences != undefined" class="padding-right context">
-      <span style="font-size: 17px" *ngIf="selectedRange != -1">[...]&nbsp;</span>
-      <span *ngFor="let sentence of sentences">
-        <span *ngIf="getValues(sentence.id_pair) == data.IDpairs[selectedDocumentID]" class="sentence-mark" [innerHtml]="sentence.text | markClasses:data.dispensableResult:data.finalAspectList:[]:0:true"></span>
-        <span *ngIf="getValues(sentence.id_pair) != data.IDpairs[selectedDocumentID]">{{sentence.text}}&nbsp;</span>
-        <span>&nbsp;</span>
-      </span>
-      <span style="font-size: 17px" *ngIf="selectedRange != -1">[...]</span>
-    </div>
-    <div *ngIf='showLoading' class="text-center padding-right">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      <small>Loading context...</small>
-      <br>
-    </div>
-    <div *ngIf="selectedDocumentID" class="padding-right">
-      <mat-card>
-        <a target="_blank" href="{{selectedDocumentID}}">{{selectedDocumentID}}</a>
-      </mat-card>
-    </div>
-    <div>
-      <button mat-button (click)="stepper.reset(); sentences = []">Back to Selection</button>
-    </div>
-  </mat-step>
-</mat-horizontal-stepper>
