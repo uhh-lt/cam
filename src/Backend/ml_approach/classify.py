@@ -31,7 +31,7 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
 
     for index, row in prepared_sentences.iterrows():
         label = classification_results['max'][index]
-        if label == 'NONE' or classification_results[label][index] < 0.66:
+        if label == 'NONE' or classification_results[label][index] < 0.6:
             continue
 
         classification_confidence = classification_results[label][index]
