@@ -46,7 +46,7 @@ export class ScorePresentationComponent implements AfterViewInit {
         const chartInstance = this.chart;
         const ctx = chartInstance.ctx;
         ctx.textAlign = 'left';
-        ctx.font = '15px Open Sans';
+        ctx.font = '15px Roboto,"Helvetica Neue",sans-serif';
         ctx.fillStyle = '#000000';
 
         Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
@@ -66,7 +66,7 @@ export class ScorePresentationComponent implements AfterViewInit {
           ctx.textBaseline = 'middle';
           ctx.textAlign = 'center';
           ctx.fillStyle = '#000000';
-          ctx.font = '20px Open Sans';
+          ctx.font = '20px Roboto,"Helvetica Neue",sans-serif';
           ctx.fillText(label, labelPositionX, bar._model.y);
         }));
       }
