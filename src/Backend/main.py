@@ -118,8 +118,8 @@ def get_context():
     else:
         context = request_context_sentences(
             document_id, int(sentence_id), int(context_size))
-    context_sentences = extract_sentences(context)
-    context_sentences.sort(key=lambda elem: elem.sentence_id)
+    context_sentences = extract_sentences(context, False)
+    context_sentences.sort(key=lambda elem: next(iter(elem.id_pair.values())))
     return jsonify([context_sentence.__dict__ for context_sentence in context_sentences])
 
 

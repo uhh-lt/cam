@@ -51,7 +51,7 @@ def send_request(url):
         return requests.get(url)
 
 
-def extract_sentences(es_json):
+def extract_sentences(es_json, aggregate_duplicates=True):
     '''
     Extracts the sentences from an Elastic Search commoncrawl2 json result. (This is the default
     and can be changed in constants.py)
@@ -62,7 +62,6 @@ def extract_sentences(es_json):
     hits = es_json.json()['hits']['hits']
     sentences = []
     seen_sentences = set()
-    found_duplicate = False
     for hit in hits:
         source = hit['_source']
         text = source['text']
@@ -70,26 +69,18 @@ def extract_sentences(es_json):
         sentence_id = source['sentence_id'] if 'sentence_id' in source else ''
 
         if text.lower() in seen_sentences:
-            for i, x in enumerate(sentences):
-                if x.text.lower() == text.lower():
-                    if x.document_id != document_id:
-                        # found_duplicate = True
-                        # add documentID to a list of document ids corresponding to the sentence
+            if aggregate_duplicates:
+                for x in sentences:
+                    if x.text.lower() == text.lower():
+                        if document_id not in x.id_pair:
+                            x.add_id_pair(document_id, sentence_id)
+                        elif document_id in x.id_pair and x.id_pair[document_id] > sentence_id:
+                            x.id_pair[document_id] = sentence_id
                         break
-                    elif x.document_id == document_id and x.sentence_id < sentence_id:
-                        found_duplicate = True
-                        break
-                    else:
-                        del sentences[i]
         else:
             seen_sentences.add(text.lower())
-
-        if found_duplicate:
-            found_duplicate = False
-            continue
-
-        sentences.append(
-            Sentence(text, hit['_score'], document_id, sentence_id))
+            sentences.append(
+                Sentence(text, hit['_score'], document_id, sentence_id))
 
     return sentences
 

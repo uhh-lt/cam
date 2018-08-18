@@ -31,17 +31,24 @@ export class SentencePresentationComponent implements OnInit {
     }
   }
 
-  getContext(document_id, sentence_id) {
+  getContext(id_pair) {
     const dialogRef = this.dialog.open(ContextPresentationComponent, {
       width: '45%',
       data: {
         dispensableResult: this.dispensableResult,
         finalAspectList: this.finalAspectList,
         selectedAspects: this.selectedAspects,
-        sentenceID: sentence_id,
-        documentID: document_id
+        IDpairs: id_pair
       }
     });
+  }
+
+  contextIsThere(sentence: Sentence) {
+    return !('' in sentence.id_pair);
+  }
+
+  getKeyCount(dict: {}) {
+    return Object.keys(dict).length;
   }
 
 }

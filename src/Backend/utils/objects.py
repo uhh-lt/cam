@@ -6,8 +6,10 @@ class Sentence:
     def __init__(self, text, score, document_id, sentence_id):
         self.text = text
         self.score = score
-        self.document_id = document_id
-        self.sentence_id = sentence_id
+        self.id_pair = {document_id: sentence_id}
+
+    def add_id_pair(self, document_id, sentence_id):
+        self.id_pair[document_id] = sentence_id
 
 
 class Argument:
