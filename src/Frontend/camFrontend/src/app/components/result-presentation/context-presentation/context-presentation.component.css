@@ -31,3 +31,7 @@ mat-button-toggle {
     max-height: 400px;
     overflow-y:auto
 }
+
+.url-break {
+    word-break: break-all;
+}
