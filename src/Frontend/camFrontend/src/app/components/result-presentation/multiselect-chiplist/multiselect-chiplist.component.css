@@ -14,3 +14,9 @@
     font-weight: bold;
     font-size: 17px;
 }
+
+.chiplist-height {
+    height:100%;
+    display:inline-block;
+    width: 100%;
+}
