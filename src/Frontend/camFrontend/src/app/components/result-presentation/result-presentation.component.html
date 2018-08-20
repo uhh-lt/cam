@@ -5,9 +5,9 @@
   
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
 
-  <table style="height: 100%">
+  <table style="height: 100%; width: 100%">
     <tr>
-      <td style="width: 40%; height: 100%">
+      <td style="height: 100%" [ngStyle]="{'width': finalAspectList.length > 0 ? '40%' : '50%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.winner" [extractedAspects]="dispensableResult.winnerLinks"
           [arrange]="'left'" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
 
@@ -16,7 +16,7 @@
         <app-multiselect-chiplist [title]="'Entered Aspects'" [extractedAspects]="finalAspectList" [arrange]="'center'" (updatedSelection)="selectEnteredAspects($event)"></app-multiselect-chiplist>
 
       </td>
-      <td style="width: 40%; height: 100%">
+      <td style="height: 100%" [ngStyle]="{'width': finalAspectList.length > 0 ? '40%' : '50%'}">
           <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.looser" [extractedAspects]="dispensableResult.looserLinks"
           [arrange]="'right'" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
       </td>
