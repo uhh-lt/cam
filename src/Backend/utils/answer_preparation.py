@@ -65,25 +65,26 @@ def add_points(contained_aspects, winner, sentence, max_score, classification_sc
     '''
 
     points = 0
+    document_occurences = len(sentence.id_pair)
+    document_occurences = 1 if document_occurences == 0 else document_occurences
     if contained_aspects:
         if len(contained_aspects) == 1:
             aspect = contained_aspects[0]
             points = score_function(
                 sentence.score, max_score, aspect.weight, classification_score)
-            winner.add_points(aspect.name, points)
+            winner.add_points(aspect.name, points * document_occurences)
             winner.add_sentence([points, sentence])
         else:
             for aspect in contained_aspects:
-                points = points + \
-                    score_function(sentence.score, max_score,
-                                   aspect.weight, classification_score)
-            winner.add_points('multiple', points)
+                points += score_function(sentence.score, max_score,
+                                         aspect.weight, classification_score)
+            winner.add_points('multiple', points * document_occurences)
             winner.add_sentence([points, sentence])
     else:
         # multiple markers, multiple points
         points = score_function(
             sentence.score, max_score, 0, classification_score)
-        winner.add_points('none', points)
+        winner.add_points('none', points * document_occurences)
         winner.add_sentence([points, sentence])
 
 
