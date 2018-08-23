@@ -6,7 +6,7 @@ from utils.sentence_clearer import clear_sentences, remove_questions
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from ml_approach.classify import classify_sentences, evaluate
 from marker_approach.object_comparer import find_winner
-from main import Argument, Aspect
+from main import Argument, Aspect, load_config
 
 from score_determination import calculateEvaluationScores, set_counts, Scores
 from evaluation_triples import triples
@@ -19,7 +19,7 @@ def simulate_main(triple):
     aspects = [Aspect(triple[3].lower(), 5)]
     model = 'bow'
     # model = 'infersent'
-
+    load_config()
     if aspects:
         json_compl_triples = request_es_triple(obj_a, obj_b, aspects)
     json_compl = request_es_ML(fast_search, obj_a, obj_b)
