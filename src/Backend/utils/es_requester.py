@@ -68,22 +68,24 @@ def extract_sentences(es_json, aggregate_duplicates=True):
         document_id = source['document_id'] if 'document_id' in source else ''
         sentence_id = source['sentence_id'] if 'sentence_id' in source else ''
 
-        if text.lower() in seen_sentences:
+        if prepare_sentence_comparison(text) in seen_sentences:
             if aggregate_duplicates:
                 for x in sentences:
-                    if x.text.lower() == text.lower():
+                    if prepare_sentence_comparison(x.text) == prepare_sentence_comparison(text):
                         if document_id not in x.id_pair:
                             x.add_id_pair(document_id, sentence_id)
                         elif document_id in x.id_pair and x.id_pair[document_id] > sentence_id:
                             x.id_pair[document_id] = sentence_id
                         break
         else:
-            seen_sentences.add(text.lower())
+            seen_sentences.add(prepare_sentence_comparison(text))
             sentences.append(
                 Sentence(text, hit['_score'], document_id, sentence_id))
 
     return sentences
 
+def prepare_sentence_comparison(sentence):
+    return ''.join(e for e in sentence if e.isalnum()).lower()
 
 def request_context_sentences(document_id, sentence_id, context_size):
     url = build_context_url(document_id, sentence_id,
