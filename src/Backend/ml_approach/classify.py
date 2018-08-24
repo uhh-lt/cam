@@ -78,8 +78,6 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
     if len(sentences) > 0:
         max_sentscore = max(sentence.score for sentence in sentences)
 
-    print(max_sentscore)
-
     counts = count_confindences(
         prepared_sentences, classification_results, aspects)
     threshold_sentences = find_threshold(counts, 5)
@@ -98,7 +96,8 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
                 sentence = s
                 break
         sentences.remove(sentence)
-
+        sentence.set_confidence(classification_confidence.item())
+        
         contained_aspects = find_aspects(sentence.text, aspects)
         if (label == 'BETTER' and row['object_a'] == obj_a.name) or (label == 'WORSE' and row['object_b'] == obj_a.name):
             add_points(contained_aspects, obj_a, sentence,

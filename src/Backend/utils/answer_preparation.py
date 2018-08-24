@@ -72,7 +72,9 @@ def add_points(contained_aspects, winner, sentence, max_score, classification_sc
             aspect = contained_aspects[0]
             points = score_function(
                 sentence.score, max_score, aspect.weight, classification_score, threshold_sentences)
-            if classification_score > threshold_score:
+            if classification_score < threshold_score:
+                winner.add_points(aspect.name, (points/10) * document_occurences)
+            else:
                 winner.add_points(aspect.name, points * document_occurences)
             winner.add_sentence([points, sentence])
         else:

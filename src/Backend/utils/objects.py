@@ -7,9 +7,13 @@ class Sentence:
         self.text = text
         self.score = score
         self.id_pair = {document_id: sentence_id}
+        self.confidence = 0
 
     def add_id_pair(self, document_id, sentence_id):
         self.id_pair[document_id] = sentence_id
+
+    def set_confidence(self, confidence):
+        self.confidence = confidence
 
 
 class Argument:
