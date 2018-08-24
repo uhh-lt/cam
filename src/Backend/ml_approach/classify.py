@@ -11,7 +11,6 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "cam_pretrained"))
 from cam_pretrained.model_util import load_model
 
 USE_HEURISTICS = True
-SENTENCE_THRESHOLD = 5
 
 
 def classify_sentences(sentences, model):
@@ -26,7 +25,7 @@ def classify_sentences(sentences, model):
     return df
 
 
-def find_threshold(prepared_sentences, classification_results, aspects):
+def count_confindences(prepared_sentences, classification_results, aspects):
     perfect = 0
     excellent = 0
     good = 0
@@ -55,14 +54,19 @@ def find_threshold(prepared_sentences, classification_results, aspects):
     medium += good
     ok += medium
 
+    return (excellent, good, medium, ok)
+
+
+def find_threshold(counted_confidences, sentence_threshold):
+
     threshold = 0
-    if perfect > SENTENCE_THRESHOLD:
+    if counted_confidences[0] > sentence_threshold:
         threshold = 0.8
-    elif excellent > SENTENCE_THRESHOLD:
+    elif counted_confidences[1] > sentence_threshold:
         threshold = 0.7
-    elif good > SENTENCE_THRESHOLD:
+    elif counted_confidences[2] > sentence_threshold:
         threshold = 0.6
-    elif medium > SENTENCE_THRESHOLD:
+    elif counted_confidences[3] > sentence_threshold:
         threshold = 0.5
 
     print('Uses threshold', threshold)
@@ -76,12 +80,13 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
 
     print(max_sentscore)
 
-    threshold = find_threshold(
+    counts = count_confindences(
         prepared_sentences, classification_results, aspects)
+    threshold_sentences = find_threshold(counts, 5)
+    threshold_score = find_threshold(counts, 3)
 
     for index, row in prepared_sentences.iterrows():
         label = classification_results['max'][index]
-        # if label == 'NONE' or classification_results[label][index] < threshold:
         if label == 'NONE':
             continue
 
@@ -97,10 +102,10 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
         contained_aspects = find_aspects(sentence.text, aspects)
         if (label == 'BETTER' and row['object_a'] == obj_a.name) or (label == 'WORSE' and row['object_b'] == obj_a.name):
             add_points(contained_aspects, obj_a, sentence,
-                       max_sentscore, classification_confidence, score_function, threshold)
+                       max_sentscore, classification_confidence, score_function, threshold_sentences, threshold_score)
         else:
             add_points(contained_aspects, obj_b, sentence,
-                       max_sentscore, classification_confidence, score_function, threshold)
+                       max_sentscore, classification_confidence, score_function, threshold_sentences, threshold_score)
 
     if USE_HEURISTICS:
         for aspect in aspects:
@@ -117,7 +122,7 @@ def score_function(sentence_score, max_sentscore, weight, confidence, threshold)
     if weight < 1:
         weight = 1
     # return (sentence_score + confidence * max_sentscore) * weight
-    
+
     score = 0
     if confidence > threshold:
         score += max_sentscore
