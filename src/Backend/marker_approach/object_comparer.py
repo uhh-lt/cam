@@ -43,7 +43,7 @@ def find_winner(sentences, obj_a, obj_b, aspects):
 
 
 
-def score_function(sentence_score, max_sentscore, weight, marker_count):
+def score_function(sentence_score, max_sentscore, weight, marker_count, threshold):
     return (sentence_score / max_sentscore) * (weight + marker_count)
 
 

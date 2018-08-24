@@ -39,7 +39,7 @@ def sentences_to_JSON(sentences):
     return [sentence.__dict__ for sentence in sentences]
 
 
-def add_points(contained_aspects, winner, sentence, max_score, classification_score, score_function):
+def add_points(contained_aspects, winner, sentence, max_score, classification_score, score_function, threshold=0):
     '''
     Adds the points of the won sentence to the points of the winner.
 
@@ -71,19 +71,19 @@ def add_points(contained_aspects, winner, sentence, max_score, classification_sc
         if len(contained_aspects) == 1:
             aspect = contained_aspects[0]
             points = score_function(
-                sentence.score, max_score, aspect.weight, classification_score)
+                sentence.score, max_score, aspect.weight, classification_score, threshold)
             winner.add_points(aspect.name, points * document_occurences)
             winner.add_sentence([points, sentence])
         else:
             for aspect in contained_aspects:
                 points += score_function(sentence.score, max_score,
-                                         aspect.weight, classification_score)
+                                         aspect.weight, classification_score, threshold)
             winner.add_points('multiple', points * document_occurences)
             winner.add_sentence([points, sentence])
     else:
         # multiple markers, multiple points
         points = score_function(
-            sentence.score, max_score, 0, classification_score)
+            sentence.score, max_score, 0, classification_score, threshold)
         winner.add_points('none', points * document_occurences)
         winner.add_sentence([points, sentence])
 
