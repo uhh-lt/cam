@@ -2,6 +2,7 @@ import requests
 import sys
 from requests.auth import HTTPBasicAuth
 import json
+import re
 from utils.url_builder import build_object_urlpart, add_marker_urlpart, build_context_url, build_document_getter_url, get_query_range
 from utils.objects import Sentence
 
@@ -84,8 +85,11 @@ def extract_sentences(es_json, aggregate_duplicates=True):
 
     return sentences
 
+
 def prepare_sentence_comparison(sentence):
-    return ''.join(e for e in sentence if e.isalnum()).lower()
+    return re.sub('[^A-Za-z0-9]+', '', sentence).lower()
+    # return ''.join(e for e in sentence if e.isalnum()).lower()
+
 
 def request_context_sentences(document_id, sentence_id, context_size):
     url = build_context_url(document_id, sentence_id,
