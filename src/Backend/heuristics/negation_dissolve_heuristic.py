@@ -42,7 +42,7 @@ positive_contrary_comparatives = {
 }
 
 
-def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects):
+def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects, threshold_score):
 
     points_to_move = 0
     points_for_multiple = 0
@@ -51,12 +51,16 @@ def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects):
           'sentences from', from_object.name, 'to', to_object.name, '.')
     print('----')
     for sentence in sentences_to_move:
-        if len(find_aspects(sentence[1].text, aspects)) > 1:
-            points_for_multiple = points_for_multiple + sentence[0]
-        else:
-            points_to_move = points_to_move + sentence[0]
 
-        print('-' + re.sub(' +', ' ', re.sub('[^a-zA-Z0-9 ]', ' ', sentence[1].text)))
+        points = (sentence[0]) / 10 if sentence[1].confidence < threshold_score else sentence[0]
+
+        if len(find_aspects(sentence[1].text, aspects)) > 1:
+            points_for_multiple = points_for_multiple + points
+        else:
+            points_to_move = points_to_move + points
+
+        print('-' + re.sub(' +', ' ',
+                           re.sub('[^a-zA-Z0-9 ]', ' ', sentence[1].text)))
 
     from_object.sentences = [
         sentence for sentence in from_object.sentences if sentence not in sentences_to_move]
@@ -79,35 +83,42 @@ def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects):
     print('----')
 
 
-def negation_dissolve_heuristic(object_a, object_b, aspect, aspects):
+def negation_dissolve_heuristic(object_a, object_b, aspect, aspects, threshold_score):
     markers = positive_contrary_comparatives
-    filtered_sentences = get_matching_sentences(object_a.name, object_b.name, aspect, object_a.sentences, markers, True)
+    filtered_sentences = get_matching_sentences(
+        object_a.name, object_b.name, aspect, object_a.sentences, markers, True)
 
     if len(filtered_sentences) > 0:
         for sentence in filtered_sentences:
-            filtered_contrary = [v for k, v in markers.items() if k in sentence[1].text]
-            filtered_contrary = [item for sublist in filtered_contrary for item in sublist]
+            filtered_contrary = [
+                v for k, v in markers.items() if k in sentence[1].text]
+            filtered_contrary = [
+                item for sublist in filtered_contrary for item in sublist]
 
             if len(filtered_contrary) > 0:
                 same_meaning_sentences = get_matching_sentences(
                     object_b.name, object_a.name, aspect, object_b.sentences, filtered_contrary, False)
                 if len(same_meaning_sentences) > 0:
                     move_assignment(same_meaning_sentences,
-                                    object_b, object_a, aspect, aspects)
+                                    object_b, object_a, aspect, aspects, threshold_score)
 
 
 def get_matching_sentences(object_a, object_b, aspect, sentences, markers, is_positive):
-    locked_out_markers = [] 
+    locked_out_markers = []
     if is_positive:
-        locked_out_markers = [item for sublist in list(positive_contrary_comparatives.values()) for item in sublist]
+        locked_out_markers = [item for sublist in list(
+            positive_contrary_comparatives.values()) for item in sublist]
     else:
-        locked_out_markers = [marker for marker in positive_contrary_comparatives]
-    re_locked_out_markers = '|'.join([re.escape(x) for x in locked_out_markers])
+        locked_out_markers = [
+            marker for marker in positive_contrary_comparatives]
+    re_locked_out_markers = '|'.join(
+        [re.escape(x) for x in locked_out_markers])
     re_markers = '|'.join([re.escape(x) for x in markers])
 
     regex = re.compile(r'(?=.*(?:\b' + re.escape(object_a) + r'\b.*\b' + re.escape(aspect) +
                        r'\b.*\b' + re.escape(object_b) + r'\b))(?=.*(?:\b' + re_markers + r'\b))(?!.*(?:\b' + re_locked_out_markers + r'\b))', re.IGNORECASE)
 
-    filtered_sentences = [x for x in sentences if regex.search(x[1].text) != None]
+    filtered_sentences = [
+        x for x in sentences if regex.search(x[1].text) != None]
 
     return filtered_sentences
