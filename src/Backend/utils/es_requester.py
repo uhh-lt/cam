@@ -87,7 +87,8 @@ def extract_sentences(es_json, aggregate_duplicates=True):
 
 
 def prepare_sentence_comparison(sentence):
-    return re.sub('[^A-Za-z0-9]+', '', sentence).lower()
+    return sentence.lower()
+    # return re.sub('[^A-Za-z0-9]+', '', sentence).lower()
     # return ''.join(e for e in sentence if e.isalnum()).lower()
 
 
