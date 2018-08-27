@@ -76,7 +76,7 @@ def find_threshold(counted_confidences, sentence_threshold):
 def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects):
 
     if len(sentences) > 0:
-        max_sentscore = max(sentence.score for sentence in sentences)
+        max_sentscore = max(sentence.ES_score for sentence in sentences)
 
     counts = count_confindences(
         prepared_sentences, classification_results, aspects)

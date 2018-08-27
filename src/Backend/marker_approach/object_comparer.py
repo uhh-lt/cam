@@ -25,7 +25,7 @@ def find_winner(sentences, obj_a, obj_b, aspects):
                 list of Aspects
     '''
     if len(sentences) > 0:
-        max_sentscore = max(sentence.score for sentence in sentences)
+        max_sentscore = max(sentence.ES_score for sentence in sentences)
     for sentence in sentences:
         comp_result = what_is_better(sentence.text, obj_a, obj_b)
         if comp_result['winner'] == obj_a:  # objectA won the sentence
