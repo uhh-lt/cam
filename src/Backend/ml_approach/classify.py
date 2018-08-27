@@ -101,10 +101,10 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
         contained_aspects = find_aspects(sentence.text, aspects)
         if (label == 'BETTER' and row['object_a'] == obj_a.name) or (label == 'WORSE' and row['object_b'] == obj_a.name):
             add_points(contained_aspects, obj_a, sentence,
-                       max_sentscore, classification_confidence, score_function, threshold_sentences, threshold_score)
+                       max_sentscore, score_function, threshold_sentences, threshold_score)
         else:
             add_points(contained_aspects, obj_b, sentence,
-                       max_sentscore, classification_confidence, score_function, threshold_sentences, threshold_score)
+                       max_sentscore, score_function, threshold_sentences, threshold_score)
 
     if USE_HEURISTICS:
         for aspect in aspects:
@@ -117,16 +117,16 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
     return build_final_dict(obj_a, obj_b, sentences)
 
 
-def score_function(sentence_score, max_sentscore, weight, confidence, threshold):
+def score_function(sentence, max_sentscore, weight, threshold):
     if weight < 1:
         weight = 1
     # return (sentence_score + confidence * max_sentscore) * weight
 
     score = 0
-    if confidence > threshold:
+    if sentence.confidence > threshold:
         score += max_sentscore
 
-    return score + sentence_score + max_sentscore * weight
+    return score + sentence.ES_score + max_sentscore * weight
     # return sentence_score * weight
     # return confidence * weight
 

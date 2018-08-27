@@ -28,12 +28,13 @@ def find_winner(sentences, obj_a, obj_b, aspects):
         max_sentscore = max(sentence.ES_score for sentence in sentences)
     for sentence in sentences:
         comp_result = what_is_better(sentence.text, obj_a, obj_b)
+        sentence.set_confidence(comp_result['marker_cnt'])
         if comp_result['winner'] == obj_a:  # objectA won the sentence
             add_points(find_aspects(sentence.text, aspects), obj_a,
-                       sentence, max_sentscore, comp_result['marker_cnt'], score_function)
+                       sentence, max_sentscore, score_function)
         else:  # objectB won the sentence
             add_points(find_aspects(sentence.text, aspects), obj_b,
-                       sentence, max_sentscore, comp_result['marker_cnt'], score_function)
+                       sentence, max_sentscore, score_function)
 
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
@@ -43,8 +44,8 @@ def find_winner(sentences, obj_a, obj_b, aspects):
 
 
 
-def score_function(sentence_score, max_sentscore, weight, marker_count, threshold):
-    return (sentence_score / max_sentscore) * (weight + marker_count)
+def score_function(sentence, max_sentscore, weight, threshold):
+    return (sentence.ES_score / max_sentscore) * (weight + sentence.confidence)
 
 
 
