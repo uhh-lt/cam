@@ -73,25 +73,24 @@ def add_points(contained_aspects, winner, sentence, max_score, score_function, t
             points = score_function(
                 sentence, max_score, aspect.weight, threshold_sentences)
             if sentence.confidence < threshold_score:
-                winner.add_points(aspect.name, (points/10)
-                                  * document_occurences)
+                winner.add_points(aspect.name, points *
+                                  document_occurences * 0.1)
             else:
                 winner.add_points(aspect.name, points * document_occurences)
-            winner.add_sentence([points, sentence])
         else:
             for aspect in contained_aspects:
                 points += score_function(sentence, max_score,
                                          aspect.weight, threshold_sentences)
             winner.add_points('multiple', points * document_occurences)
-            winner.add_sentence([points, sentence])
     else:
         # multiple markers, multiple points
         points = score_function(sentence, max_score, 0, threshold_sentences)
-        # if classification_score > threshold_score:
         winner.add_points('none', points * document_occurences)
-        winner.add_sentence([points, sentence])
+
+    winner.add_sentence(sentence)
+    sentence.set_CAM_score(points)
 
 
-def prepare_sentence_list(sentences_with_score):
-    sentences_with_score.sort(key=lambda elem: elem[0], reverse=True)
-    return list(DataFrame(sentences_with_score, columns=['points', 'sentence'])['sentence'])
+def prepare_sentence_list(sentences):
+    sentences.sort(key=lambda elem: elem.CAM_score, reverse=True)
+    return sentences
