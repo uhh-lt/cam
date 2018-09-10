@@ -1,6 +1,6 @@
 from pandas import DataFrame
 import json
-from utils.link_extracter import extract_main_links
+from utils.pos_link_extracter import extract_main_links
 
 
 def build_final_dict(obj_a, obj_b, sentences):
