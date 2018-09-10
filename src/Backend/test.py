@@ -157,9 +157,6 @@ class Test(unittest.TestCase):
         self.assertEqual(obj_2['totalPoints'], 1.0)
         self.assertEqual(obj_1['points'], {'none': 2.0})
         self.assertEqual(obj_2['points'], {'none': 1.0})
-        self.assertEqual(
-            sorted(result['extractedAspectsObject1']), sorted(['way', 'dogs']))
-        self.assertEqual(result['extractedAspectsObject2'], [])
         sentences1 = [sentence['text'] for sentence in obj_1['sentences']]
         sentences2 = [sentence['text'] for sentence in obj_2['sentences']]
         self.assertEqual(sorted(sentences1), sorted(
@@ -168,32 +165,6 @@ class Test(unittest.TestCase):
             ['Cat is beautiful better than dog']))
         self.assertEqual(result['winner'], self.objA.name)
         self.assertEqual(result['sentenceCount'], 3.0)
-
-    '''
-    Test if all aspects are correctly extracted.
-    '''
-
-    def test_find_aspects1(self):
-        s = 'ObjA is better than ObjB because of lower pollution, lower price and higher speed.'
-        aspect1 = Aspect('pollution', 5)
-        aspect2 = Aspect('price', 1)
-        aspect3 = Aspect('wurstsalat', 1)
-        self.assertEqual(find_aspects(
-            s, [aspect1, aspect2, aspect3]), [aspect1, aspect2])
-        self.assertTrue(Aspect('speed', 1)
-                        not in find_aspects(s, [aspect1, aspect2]))
-
-    def test_find_aspects2(self):
-        s = ''
-        aspect1 = Aspect('pollution', 5)
-        aspect2 = Aspect('price', 1)
-        self.assertFalse(find_aspects(
-            s, [aspect1, aspect2]))
-
-    def test_find_aspects3(self):
-        s = 'Finding dory was better than finding nemo, because of the higher worldwide gross'
-        aspect1 = Aspect('worldwide gross', 5)
-        self.assertTrue(find_aspects(s, [aspect1]))
 
     def test_build_object_urlpart1(self):
         obj_a = Argument('ape')
