@@ -190,7 +190,7 @@ def get_index_for_reason_conjunctions(tag_list):
         indices_for_reason_conjunctions_mult = \
             [tag_list.index(pair) + 2 for pair in tag_list
              if pair[0] in REASON_CONJUNCTIONS_NEEDING_SUCCESSORS
-             and tag_list[tag_list.index(pair) + 2][1] in PRONOUNS
+             and tag_list[tag_list.index(pair) + 1][1] in PRONOUNS
              and 'VB' in tag_list[tag_list.index(pair) + 2][1]]
     except IndexError:
         if not indices_for_reason_conjunctions:
