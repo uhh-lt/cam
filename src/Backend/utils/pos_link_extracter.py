@@ -14,10 +14,10 @@ UNUSED_COMPARATIVE_SUCCESSOR_POS_TAGS = ["''", "--", "FW", "SYM", "WP$"]
 # POS tags that represent a pronoun
 PRONOUNS = ['PRP', 'PRP$', 'WP']
 # conjunctions that act as a trigger to make all subsequent nouns aspects
-REASON_CONJUNCTIONS = ['because']
+ASPECT_CONJUNCTIONS = ['because']
 # conjunctions that only act as a trigger to make all subsequent nouns aspects
 # if the conjunction is followed by a pronoun and a verb
-REASON_CONJUNCTIONS_NEEDING_PR_VB_SUCCESSORS = ['as', 'since', 'for']
+ASPECT_CONJUNCTIONS_NEEDING_PR_VB_SUCCESSORS = ['as', 'since', 'for']
 
 # we don't want negative comparative words as aspects but instead their
 # positive counterpart
@@ -44,7 +44,8 @@ UNUSED_ASPECTS = ['better', 'more', 'worse',
                   'yours', 'reason', 'need',
                   'lower', 'yea', 'why', 'everything',
                   'helluva', 'bc', 'hell',
-                  'opinion', 'nothing']
+                  'opinion', 'nothing', 'aspects',
+                  'aspect']
 
 # aspects should only contain letters, numbers and specific special characters
 regex = re.compile('[^a-zA-Z0-9+#]+')
@@ -74,7 +75,6 @@ def extract_main_links(sentences_a, sentences_b,
         [sentence.score for sentence in sentences_a], reverse=True)
     sentence_scores_b = sorted(
         [sentence.score for sentence in sentences_b], reverse=True)
-    print(sentence_scores_a)
     min_points_for_context_aspect_extraction_a = sentence_scores_a[
         int(len(sentence_scores_a) / 100 * context_sent_amount)]
     min_points_for_context_aspect_extraction_b = sentence_scores_b[
@@ -170,7 +170,7 @@ def successor_is_useful(successor):
 
 
 def get_comparative_aspects(aspect_dict, tag_list,
-                            object_a_name, object_b_name):
+                            a_name, b_name):
     '''
     Get comparative adjectives or adverbs as aspects.
 
@@ -185,13 +185,13 @@ def get_comparative_aspects(aspect_dict, tag_list,
     comparative_aspects = [comparative_aspect for comparative_aspect
                            in comparative_aspects
                            if is_useful(comparative_aspect,
-                                        object_a_name, object_b_name)]
+                                        a_name, b_name)]
     for comparative_aspect in comparative_aspects:
         comparative_aspect = map_to_positive(comparative_aspect)
         append_aspect(comparative_aspect, aspect_dict)
 
 
-def get_noun_aspects(aspect_dict, tag_list, object_a_name, object_b_name):
+def get_noun_aspects(aspect_dict, tag_list, a_name, b_name):
     '''
     Get nouns as aspects.
 
@@ -199,56 +199,129 @@ def get_noun_aspects(aspect_dict, tag_list, object_a_name, object_b_name):
 
     tag_list:       list containing pairs of words and their POS tags
     '''
-    reason_conjunction_index = get_index_for_reason_conjunctions(tag_list)
-    if reason_conjunction_index != -1:
+    aspect_conjunction_index = get_index_for_aspect_conjunctions(tag_list)
+    if aspect_conjunction_index != -1:
         # only nouns that appear after the triggering conjunction are relevant
         nouns = get_nouns_after_index(
-            reason_conjunction_index, tag_list, object_a_name, object_b_name)
+            aspect_conjunction_index, tag_list, a_name, b_name)
+        for noun in nouns:
+            append_aspect(noun, aspect_dict)
+
+    reason_index, before = get_index_for_reason(tag_list, a_name, b_name)
+    if reason_index != -1:
+        if before:
+            nouns = get_nouns_before_index(
+                reason_index, tag_list, a_name, b_name)
+        else:
+            nouns = get_nouns_after_index(
+                reason_index, tag_list, a_name, b_name)
         for noun in nouns:
             append_aspect(noun, aspect_dict)
 
 
-def get_index_for_reason_conjunctions(tag_list):
+def get_index_for_aspect_conjunctions(tag_list):
     '''
     Get the index of the first triggering conjunction or -1 if there is none.
     '''
-    indices_for_reason_conjunctions = [tag_list.index(pair)
-                                       for pair in tag_list
-                                       if pair[0] in REASON_CONJUNCTIONS]
+    indices = [tag_list.index(pair) for pair in tag_list if pair[0] in
+               ASPECT_CONJUNCTIONS]
+    pairs_needing_successors = [pair for pair in tag_list if pair[0] in
+                                ASPECT_CONJUNCTIONS_NEEDING_PR_VB_SUCCESSORS]
     try:
-        indices_for_reason_conjunctions_mult = \
-            [tag_list.index(pair) + 2 for pair in tag_list
-             if pair[0] in REASON_CONJUNCTIONS_NEEDING_PR_VB_SUCCESSORS
-             and tag_list[tag_list.index(pair) + 1][1] in PRONOUNS
-             and 'VB' in tag_list[tag_list.index(pair) + 2][1]]
-        indices = indices_for_reason_conjunctions + \
-            indices_for_reason_conjunctions_mult
+        for pair in pairs_needing_successors:
+            if tag_list[tag_list.index(pair) + 1][1] in PRONOUNS and 'VB' in \
+                    tag_list[tag_list.index(pair) + 2][1]:
+                indices.append(
+                    tag_list.index(pair))
     except IndexError:
         pass
+    remove_not_aspect_conjunction_indices(indices, tag_list)
     if indices:
-        remove_not_reason_conjunction_indices(
-            indices, tag_list)
         return min(indices)
     else:
         return -1
 
 
-def remove_not_reason_conjunction_indices(reason_conjunction_indices,
+def get_index_for_reason(tag_list, a_name, b_name):
+    '''
+    Get the index of the first appearance of reason or -1 if there is none,
+    as well as a Boolean that tells whether the relevant nouns should be looked
+    for before (True) or after (False) this index.
+    '''
+    reason_pairs = [pair for pair in tag_list if pair[0] == 'reason']
+    reasons_pairs = [pair for pair in tag_list if pair[0] == 'reasons']
+
+    reason_indices = [tag_list.index(pair) for pair in reason_pairs]
+    reason_index = len(tag_list) + 1
+    if reason_indices:
+        reason_index = min(reason_indices)
+    reasons_indices = [tag_list.index(pair) for pair in reasons_pairs]
+    reasons_index = len(tag_list) + 1
+    if reasons_indices:
+        reasons_index = min(reasons_indices)
+
+    if not reason_indices and not reasons_indices:
+        return -1, False
+
+    index = min(reason_index, reasons_index)
+    if reason_index < reasons_index:
+        word_to_look_for = 'is'
+    else:
+        word_to_look_for = 'was'
+    if index == -1:
+        return -1, False
+    try:
+        # example: "... reason object is better than object ..."
+        if (tag_list[index + 1][0] == a_name
+                or tag_list[index + 1][0] == b_name) \
+                and 'VB' in tag_list[index + 2][1] \
+                and tag_list[index + 3][1] in COMP_TAGS \
+                and tag_list[index + 4][0] == 'than' \
+                and (tag_list[index + 5][0] == a_name
+                     or tag_list[index + 5][0] == b_name) \
+                and tag_list[index + 1][0] != tag_list[index + 5][0]:
+            return index, get_before(tag_list, index, 5, word_to_look_for)
+        if tag_list[index + 1][0] in ['for', 'why']:
+            return index, get_before(tag_list, index, 1, word_to_look_for)
+        return -1, False
+    except IndexError:
+        return -1, False
+
+
+def get_before(tag_list, index, offset, word_to_look_for):
+    indices_before = [tag_list.index(pair) for pair in tag_list
+                      if pair[0] == word_to_look_for
+                      and tag_list.index(pair) < index]
+    indices_after = [tag_list.index(pair) for pair in tag_list
+                     if pair[0] == word_to_look_for
+                     and tag_list.index(pair) > index + offset]
+    distance_before = len(tag_list) + 1
+    if indices_before:
+        distance_before = index - max(indices_before)
+    distance_after = len(tag_list) + 1
+    if indices_after:
+        distance_after = min(indices_after) - index
+    if distance_before < distance_after:
+        return True
+    return False
+
+
+def remove_not_aspect_conjunction_indices(aspect_conjunction_indices,
                                           tag_list):
     '''
     Remove indices that belong to a conjunction that has a not before it.
     '''
     indices_to_remove = []
-    for reason_conjunction_index in reason_conjunction_indices:
-        if reason_conjunction_index > 0 \
+    for aspect_conjunction_index in aspect_conjunction_indices:
+        if aspect_conjunction_index > 0 \
                 and clean_word(
-                    tag_list[reason_conjunction_index - 1][0]) == 'not':
-            indices_to_remove.append(reason_conjunction_index)
+                    tag_list[aspect_conjunction_index - 1][0]) == 'not':
+            indices_to_remove.append(aspect_conjunction_index)
     for index in indices_to_remove:
-        reason_conjunction_indices.remove(index)
+        aspect_conjunction_indices.remove(index)
 
 
-def get_nouns_after_index(index, tag_list, object_a_name, object_b_name):
+def get_nouns_after_index(index, tag_list, a_name, b_name):
     '''
     Get all nouns that appear after the specified index.
     '''
@@ -256,17 +329,28 @@ def get_nouns_after_index(index, tag_list, object_a_name, object_b_name):
              and tag_list.index(pair) > index]
     nouns = [clean_word(noun) for noun in nouns]
     return [noun for noun in nouns
-            if is_useful(noun, object_a_name, object_b_name)]
+            if is_useful(noun, a_name, b_name)]
 
 
-def is_useful(word, object_a_name, object_b_name):
+def get_nouns_before_index(index, tag_list, a_name, b_name):
+    '''
+    Get all nouns that appear before the specified index.
+    '''
+    nouns = [pair[0] for pair in tag_list if 'NN' in pair[1]
+             and tag_list.index(pair) < index]
+    nouns = [clean_word(noun) for noun in nouns]
+    return [noun for noun in nouns
+            if is_useful(noun, a_name, b_name)]
+
+
+def is_useful(word, a_name, b_name):
     '''
     Check if the word is useful as an aspect when object_a and object_b are
     compared.
     '''
     return word not in STOPWORDS \
-        and word != object_a_name \
-        and word != object_b_name \
+        and word != a_name \
+        and word != b_name \
         and word not in NON_LINKS \
         and word not in NUMBER_STRINGS \
         and word not in UNUSED_ASPECTS \
