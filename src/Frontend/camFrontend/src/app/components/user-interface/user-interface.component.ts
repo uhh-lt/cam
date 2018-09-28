@@ -19,6 +19,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   aspects = new Array<Aspect>(new Aspect('')); // the rows of aspects currently shown in the UI
   private finalAspDict = {}; // holds all aspects after compare() was called
+  selectedContSize = "0"; // the size of the context for context aspect extraction
+  selectedContSentAmount = "1"; // the amount of sentences to use for context aspect extraction (percentage of all sentences)
   selectedModel = 'default'; // the comparison model to be used
   fastSearch = false; // the possibility to do a fast comparison
   showLoading = false; // boolean that checks if the loading screen should be shown
@@ -85,7 +87,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   requestScores() {
     this.httpRequestService.getScore(this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict,
-      this.selectedModel, this.fastSearch, this.statusID)).subscribe(
+      this.selectedModel, this.fastSearch, this.statusID, this.selectedContSize, this.selectedContSentAmount)).subscribe(
         data => {
           this.resultPresentation.saveResult(data, Object.keys(this.finalAspDict));
           this.showLoading = false; // hide the loading screen
@@ -137,6 +139,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.aspects = new Array<Aspect>(new Aspect(''));
     this.fastSearch = false;
     this.selectedModel = 'default';
+    this.selectedContSize = "0";
+    this.selectedContSentAmount = "1";
   }
 
   /**

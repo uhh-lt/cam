@@ -34,7 +34,7 @@ class Argument:
         else:
             self.points[aspect] = points
 
-    def add_sentence(self, sentence):
+    def add_sentence(self, sentence: Sentence):
         self.sentences.append(sentence)
 
 

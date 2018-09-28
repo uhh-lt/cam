@@ -1,18 +1,22 @@
-import requests
 import json
+import numbers
 import urllib
-from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences, request_document_by_id
-from utils.sentence_clearer import clear_sentences, remove_questions
-from utils.url_builder import set_index
-from utils.objects import Argument, Aspect
-from ml_approach.sentence_preparation_ML import prepare_sentence_DF
-from ml_approach.classify import classify_sentences, evaluate, set_use_heuristics
-from marker_approach.object_comparer import find_winner
 
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+import requests
 import sklearn
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
+from marker_approach.object_comparer import find_winner
+from ml_approach.classify import (classify_sentences, evaluate,
+                                  set_use_heuristics)
+from ml_approach.sentence_preparation_ML import prepare_sentence_DF
+from utils.es_requester import (extract_sentences, request_es, request_es_ML,
+                                request_es_triple)
+from utils.objects import Argument, Aspect
+from utils.sentence_clearer import clear_sentences, remove_questions
+from utils.sentence_context_getter import get_sentence_context
+from utils.url_builder import set_index
 
 app = Flask(__name__)
 CORS(app)
@@ -32,6 +36,18 @@ def cam():
     aspects = extract_aspects(request)
     model = request.args.get('model')
     statusID = request.args.get('statusID')
+    context_size = 0
+    try:
+        req_context_size = int(request.args.get('contsize'))
+        context_size = req_context_size
+    except ValueError:
+        pass
+    context_sent_amount = 0.1
+    try:
+        req_context_sent_amount = int(request.args.get('contsentamount'))
+        context_sent_amount = req_context_sent_amount
+    except ValueError:
+        pass
 
     if model == 'default' or model is None:
         # json obj with all ES hits containing obj_a, obj_b and a marker.
@@ -48,7 +64,8 @@ def cam():
 
         # find the winner of the two objects
         setStatus(statusID, 'Find winner')
-        return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
+        return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects,
+                                   context_size, context_sent_amount))
 
     else:
         setStatus(statusID, 'Request all sentences containing the objects')
@@ -76,9 +93,9 @@ def cam():
         classification_results = classify_sentences(prepared_sentences, model)
 
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
-        final_dict = evaluate(all_sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects)
-        
-        
+        final_dict = evaluate(all_sentences, prepared_sentences,
+                              classification_results, obj_a, obj_b, aspects)
+
         return jsonify(final_dict)
 
 
@@ -113,14 +130,7 @@ def get_context():
     document_id = urllib.parse.quote(request.args.get('documentID'))
     sentence_id = request.args.get('sentenceID')
     context_size = request.args.get('contextSize')
-    if context_size is None and sentence_id is None:
-        context = request_document_by_id(document_id)
-    else:
-        context = request_context_sentences(
-            document_id, int(sentence_id), int(context_size))
-    context_sentences = extract_sentences(context, False)
-    context_sentences.sort(key=lambda elem: next(iter(elem.id_pair.values())))
-    return jsonify([context_sentence.__dict__ for context_sentence in context_sentences])
+    return jsonify(get_sentence_context(document_id, sentence_id, context_size))
 
 
 def setStatus(statusID, statusText):
@@ -144,6 +154,7 @@ def extract_aspects(request):
             i = False
     return aspects
 
+
 def load_config():
     with open('config.json') as json_data_file:
         config = json.load(json_data_file)
@@ -155,4 +166,3 @@ if __name__ == "__main__":
     status = {}
     load_config()
     app.run(host="0.0.0.0", threaded=True)
-
