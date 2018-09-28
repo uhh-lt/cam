@@ -17,7 +17,7 @@ PRONOUNS = ['PRP', 'PRP$', 'WP']
 REASON_CONJUNCTIONS = ['because']
 # conjunctions that only act as a trigger to make all subsequent nouns aspects
 # if the conjunction is followed by a pronoun and a verb
-REASON_CONJUNCTIONS_NEEDING_SUCCESSORS = ['as', 'since', 'for']
+REASON_CONJUNCTIONS_NEEDING_PR_VB_SUCCESSORS = ['as', 'since', 'for']
 
 # we don't want negative comparative words as aspects but instead their
 # positive counterpart
@@ -56,9 +56,9 @@ def extract_main_links(sentences_a, sentences_b,
     '''
     Extract the most common aspects for two lists of strings.
 
-    sentences_a:    list of Sentence objects for object A, ordered by score
+    sentences_a:    list of Sentence objects for object A
 
-    sentences_b:    list of Sentence objects for object B, ordered by score
+    sentences_b:    list of Sentence objects for object B
 
     object_a:       the first object to be compared
 
@@ -70,8 +70,11 @@ def extract_main_links(sentences_a, sentences_b,
     '''
     object_a_aspect_dict = {}
     object_b_aspect_dict = {}
-    sentence_scores_a = [sentence.score for sentence in sentences_a]
-    sentence_scores_b = [sentence.score for sentence in sentences_b]
+    sentence_scores_a = sorted(
+        [sentence.score for sentence in sentences_a], reverse=True)
+    sentence_scores_b = sorted(
+        [sentence.score for sentence in sentences_b], reverse=True)
+    print(sentence_scores_a)
     min_points_for_context_aspect_extraction_a = sentence_scores_a[
         int(len(sentence_scores_a) / 100 * context_sent_amount)]
     min_points_for_context_aspect_extraction_b = sentence_scores_b[
@@ -207,7 +210,7 @@ def get_noun_aspects(aspect_dict, tag_list, object_a_name, object_b_name):
 
 def get_index_for_reason_conjunctions(tag_list):
     '''
-    Get the index of the first triggering conjuction or -1 if there is none.
+    Get the index of the first triggering conjunction or -1 if there is none.
     '''
     indices_for_reason_conjunctions = [tag_list.index(pair)
                                        for pair in tag_list
@@ -215,20 +218,16 @@ def get_index_for_reason_conjunctions(tag_list):
     try:
         indices_for_reason_conjunctions_mult = \
             [tag_list.index(pair) + 2 for pair in tag_list
-             if pair[0] in REASON_CONJUNCTIONS_NEEDING_SUCCESSORS
+             if pair[0] in REASON_CONJUNCTIONS_NEEDING_PR_VB_SUCCESSORS
              and tag_list[tag_list.index(pair) + 1][1] in PRONOUNS
              and 'VB' in tag_list[tag_list.index(pair) + 2][1]]
+        indices = indices_for_reason_conjunctions + \
+            indices_for_reason_conjunctions_mult
     except IndexError:
-        if not indices_for_reason_conjunctions:
-            # conjunctions from neither list have been found
-            return -1
-    for reason_conjunction_indices in [indices_for_reason_conjunctions,
-                                       indices_for_reason_conjunctions_mult]:
-        remove_not_reason_conjunction_indices(
-            reason_conjunction_indices, tag_list)
-    indices = indices_for_reason_conjunctions + \
-        indices_for_reason_conjunctions_mult
+        pass
     if indices:
+        remove_not_reason_conjunction_indices(
+            indices, tag_list)
         return min(indices)
     else:
         return -1

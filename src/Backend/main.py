@@ -40,13 +40,13 @@ def cam():
     try:
         req_context_size = int(request.args.get('contsize'))
         context_size = req_context_size
-    except ValueError:
+    except:
         pass
     context_sent_amount = 0.1
     try:
         req_context_sent_amount = int(request.args.get('contsentamount'))
         context_sent_amount = req_context_sent_amount
-    except ValueError:
+    except:
         pass
 
     if model == 'default' or model is None:
