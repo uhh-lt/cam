@@ -51,15 +51,10 @@ UNUSED_ASPECTS = ['better', 'more', 'worse',
 regex = re.compile('[^a-zA-Z0-9+#]+')
 
 
-def extract_main_links(sentences_a, sentences_b,
-                       object_a: Argument, object_b: Argument,
+def extract_main_links(object_a: Argument, object_b: Argument,
                        context_size, context_sent_amount):
     '''
     Extract the most common aspects for two lists of strings.
-
-    sentences_a:    list of Sentence objects for object A
-
-    sentences_b:    list of Sentence objects for object B
 
     object_a:       the first object to be compared
 
@@ -68,19 +63,22 @@ def extract_main_links(sentences_a, sentences_b,
     context_size:   int defining how many sentences before and after the
                     original sentence in its documents are to be taken into
                     account. -1 means the complete documents shall be used
+
+    context_sent_amount: Amount of sentences to be used for context aspect
+                         extraction for each object
     '''
     object_a_aspect_dict = {}
     object_b_aspect_dict = {}
     sentence_scores_a = sorted(
-        [sentence.score for sentence in sentences_a], reverse=True)
+        [sentence.score for sentence in object_a.sentences], reverse=True)
     sentence_scores_b = sorted(
-        [sentence.score for sentence in sentences_b], reverse=True)
+        [sentence.score for sentence in object_b.sentences], reverse=True)
     min_points_for_context_aspect_extraction_a = sentence_scores_a[
         int(len(sentence_scores_a) / 100 * context_sent_amount)]
     min_points_for_context_aspect_extraction_b = sentence_scores_b[
         int(len(sentence_scores_b) / 100 * context_sent_amount)]
     aspect_dicts = [object_a_aspect_dict, object_b_aspect_dict]
-    sentence_lists = [sentences_a, sentences_b]
+    sentence_lists = [object_a.sentences, object_b.sentences]
     min_points_list = [min_points_for_context_aspect_extraction_a,
                        min_points_for_context_aspect_extraction_b]
     for aspect_dict, sentence_list, min_points in zip(aspect_dicts,
@@ -88,16 +86,18 @@ def extract_main_links(sentences_a, sentences_b,
                                                       min_points_list):
         for sentence in sentence_list:
             for document_id in sentence.id_pair:
-                get_aspects(sentence.text, aspect_dict,
-                            object_a.name, object_b.name)
+                sentence.add_context_aspects(
+                    get_aspects(sentence.text, aspect_dict,
+                                object_a.name, object_b.name))
                 if sentence.score >= min_points \
                         and (context_size > 0 or context_size == -1):
                     context = get_sentence_context(
                         document_id, sentence.id_pair[document_id],
                         context_size)
                     for context_sentence in context:
-                        get_aspects(context_sentence['text'],
-                                    aspect_dict, object_a.name, object_b.name)
+                        sentence.add_context_aspects(get_aspects(
+                            context_sentence['text'], aspect_dict,
+                            object_a.name, object_b.name))
     do_tf_idf(object_a_aspect_dict, object_b_aspect_dict)
 
     object_a_aspects = get_top_10_aspects(object_a_aspect_dict)
@@ -110,14 +110,18 @@ def extract_main_links(sentences_a, sentences_b,
 
 
 def get_aspects(sentence, aspect_dict, a_name, b_name):
+    aspects = []
+
     tokenized_sentence = nltk.word_tokenize(sentence)
     tag_list = nltk.pos_tag(tokenized_sentence)
 
-    get_comparative_aspects_with_successors(aspect_dict, tag_list)
+    aspects += get_comparative_aspects_with_successors(aspect_dict, tag_list)
 
-    get_comparative_aspects(aspect_dict, tag_list, a_name, b_name)
+    aspects += get_comparative_aspects(aspect_dict, tag_list, a_name, b_name)
 
-    get_noun_aspects(aspect_dict, tag_list, a_name, b_name)
+    aspects += get_noun_aspects(aspect_dict, tag_list, a_name, b_name)
+
+    return aspects
 
 
 def get_comparative_aspects_with_successors(aspect_dict, tag_list):
@@ -129,6 +133,8 @@ def get_comparative_aspects_with_successors(aspect_dict, tag_list):
 
     tag_list:       list containing pairs of words and their POS tags
     '''
+    aspects = []
+
     for comparative_pair in [pair for pair in tag_list
                              if pair[1] in COMP_TAGS]:
         index_of_comparative_pair = tag_list.index(comparative_pair)
@@ -150,6 +156,7 @@ def get_comparative_aspects_with_successors(aspect_dict, tag_list):
                 except IndexError:
                     if current_index - index_of_comparative_pair > 2:
                         append_aspect(aspect, aspect_dict)
+                        aspects.append(aspect)
                     break
                 successor = clean_word(next_pair[0])
                 successor = map_to_positive(successor)
@@ -157,7 +164,9 @@ def get_comparative_aspects_with_successors(aspect_dict, tag_list):
                     aspect += ' ' + successor
                 else:
                     append_aspect(aspect, aspect_dict)
+                    aspects.append(aspect)
                     break
+    return aspects
 
 
 def successor_is_useful(successor):
@@ -178,6 +187,8 @@ def get_comparative_aspects(aspect_dict, tag_list,
 
     tag_list:       list containing pairs of words and their POS tags
     '''
+    aspects = []
+
     comparative_aspects = [pair[0]
                            for pair in tag_list if pair[1] in COMP_TAGS]
     comparative_aspects = [clean_word(comparative_aspect)
@@ -189,6 +200,8 @@ def get_comparative_aspects(aspect_dict, tag_list,
     for comparative_aspect in comparative_aspects:
         comparative_aspect = map_to_positive(comparative_aspect)
         append_aspect(comparative_aspect, aspect_dict)
+        aspects.append(comparative_aspect)
+    return aspects
 
 
 def get_noun_aspects(aspect_dict, tag_list, a_name, b_name):
@@ -199,6 +212,8 @@ def get_noun_aspects(aspect_dict, tag_list, a_name, b_name):
 
     tag_list:       list containing pairs of words and their POS tags
     '''
+    aspects = []
+
     aspect_conjunction_index = get_index_for_aspect_conjunctions(tag_list)
     if aspect_conjunction_index != -1:
         # only nouns that appear after the triggering conjunction are relevant
@@ -206,6 +221,7 @@ def get_noun_aspects(aspect_dict, tag_list, a_name, b_name):
             aspect_conjunction_index, tag_list, a_name, b_name)
         for noun in nouns:
             append_aspect(noun, aspect_dict)
+            aspects.append(noun)
 
     reason_index, before = get_index_for_reason(tag_list, a_name, b_name)
     if reason_index != -1:
@@ -217,6 +233,8 @@ def get_noun_aspects(aspect_dict, tag_list, a_name, b_name):
                 reason_index, tag_list, a_name, b_name)
         for noun in nouns:
             append_aspect(noun, aspect_dict)
+            aspects.append(noun)
+    return aspects
 
 
 def get_index_for_aspect_conjunctions(tag_list):

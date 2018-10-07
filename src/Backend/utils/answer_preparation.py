@@ -22,8 +22,7 @@ def build_final_dict(obj_a, obj_b, sentences, context_size, context_sent_amount)
         final_dict['winner'] = obj_b.name
     else:
         final_dict['winner'] = 'No winner found'
-    linked_words = extract_main_links(
-        obj_a.sentences, obj_b.sentences, obj_a, obj_b, context_size, context_sent_amount)
+    linked_words = extract_main_links(obj_a, obj_b, context_size, context_sent_amount)
 
     obj_a.sentences = sentences_to_JSON(obj_a.sentences)
     obj_b.sentences = sentences_to_JSON(obj_b.sentences)
