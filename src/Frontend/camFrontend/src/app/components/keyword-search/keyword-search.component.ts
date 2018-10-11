@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HTTPRequestService } from '../../shared/http-request.service';
 import { UrlBuilderService } from '../../shared/url-builder.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-keyword-search',
@@ -14,8 +15,9 @@ export class KeywordSearchComponent implements OnInit {
   public keywords = [];
   public query = '';
   public showLoading = false;
+  public sentQuery = false;
 
-  constructor(private httpService: HTTPRequestService, private urlBuilderService: UrlBuilderService) { }
+  constructor(private httpService: HTTPRequestService, private urlBuilderService: UrlBuilderService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
   }
@@ -32,9 +34,14 @@ export class KeywordSearchComponent implements OnInit {
         this.hits = this.sentences.length;
       },
       error => {
+        this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
+          duration: 3500,
+        });
         console.error(error);
+        this.showLoading = false;
       },
       () => {
+        this.sentQuery = true;        
       }
     );
   }

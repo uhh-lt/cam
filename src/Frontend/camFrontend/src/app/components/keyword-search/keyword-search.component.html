@@ -23,7 +23,7 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
 
-  <div *ngIf="hits > 0">
+  <div *ngIf="hits > 0 && !showLoading">
     <b>text</b>
     <table class="table text-styling">
       <tr *ngFor="let sentence of sentences">
@@ -35,7 +35,7 @@
     </table>
   </div>
 
-  <div *ngIf="hits == 0">
+  <div *ngIf="hits == 0 && sentQuery">
     <h2>No results found</h2>
     Unfortunately there weren't found results for your entered query. <br>
     Renfining your query can help: <br>
