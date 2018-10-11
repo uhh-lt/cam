@@ -24,7 +24,7 @@ import { MultiselectChiplistComponent } from './components/result-presentation/m
 import { SentenceFilterPipe } from './pipes/sentence-filter/sentence-filter.pipe';
 import { ScorePresentationComponent } from './components/result-presentation/score-presentation/score-presentation.component';
 import { SentencePresentationComponent } from './components/result-presentation/sentence-presentation/sentence-presentation.component';
-import { ContextPresentationComponent } from './components/result-presentation/context-presentation/context-presentation.component';
+import { ContextPresentationComponent } from './components/shared-components/context-presentation/context-presentation.component';
 import { KeywordSearchComponent } from './components/keyword-search/keyword-search.component';
 import { MarkQueryWordsPipe } from './components/keyword-search/mark-query-words.pipe';
 

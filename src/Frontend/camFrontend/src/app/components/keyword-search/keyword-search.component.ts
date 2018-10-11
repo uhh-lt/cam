@@ -3,8 +3,8 @@ import { HTTPRequestService } from '../../services/http-request.service';
 import { UrlBuilderService } from '../../services/url-builder.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Sentence } from '../../model/sentence';
-import { ContextPresentationComponent } from '../result-presentation/context-presentation/context-presentation.component';
 import { DispensableResult } from '../../model/dispensable-result';
+import { ContextPresentationComponent } from '../shared-components/context-presentation/context-presentation.component';
 
 @Component({
   selector: 'app-keyword-search',
