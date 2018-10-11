@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HTTPRequestService } from '../../shared/http-request.service';
 import { UrlBuilderService } from '../../shared/url-builder.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import { Sentence } from '../../model/sentence';
+import { ContextPresentationComponent } from '../result-presentation/context-presentation/context-presentation.component';
+import { DispensableResult } from '../../model/dispensable-result';
 
 @Component({
   selector: 'app-keyword-search',
@@ -18,7 +20,8 @@ export class KeywordSearchComponent implements OnInit {
   public showLoading = false;
   public sentQuery = false;
 
-  constructor(private httpService: HTTPRequestService, private urlBuilderService: UrlBuilderService, private snackBar: MatSnackBar) { }
+  constructor(private httpService: HTTPRequestService, private urlBuilderService: UrlBuilderService, private snackBar: MatSnackBar,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
   }
@@ -30,7 +33,6 @@ export class KeywordSearchComponent implements OnInit {
     this.showLoading = true;
     this.httpService.getSentences(url).subscribe(
       data => {
-        this.showLoading = false;
         this.sentences = data;
         this.hits = this.sentences.length;
       },
@@ -43,6 +45,7 @@ export class KeywordSearchComponent implements OnInit {
       },
       () => {
         this.sentQuery = true;
+        this.showLoading = false;
       }
     );
   }
@@ -56,5 +59,24 @@ export class KeywordSearchComponent implements OnInit {
         this.keywords.push(word);
       }
     });
+  }
+
+  getContext(id_pair) {
+    const dialogRef = this.dialog.open(ContextPresentationComponent, {
+      width: '45%',
+      data: {
+        dispensableResult: new DispensableResult(),
+        finalAspectList: [],
+        IDpairs: id_pair
+      }
+    });
+  }
+
+  contextIsThere(sentence: Sentence) {
+    return !('' in sentence.id_pair);
+  }
+
+  getKeyCount(dict: {}) {
+    return Object.keys(dict).length;
   }
 }

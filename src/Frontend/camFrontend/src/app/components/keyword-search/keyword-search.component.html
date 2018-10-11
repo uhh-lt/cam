@@ -23,13 +23,18 @@
   </div>
 
   <div *ngIf="hits > 0 && !showLoading">
-    <b>text</b>
     <table class="table text-styling">
       <tr *ngFor="let sentence of sentences; let i = index">
         <td>{{i+1}}.</td>
         <td>
-          <span [innerHtml]="sentence.text | markQueryWords:keywords">
-          </span>
+          <div id="sentence-hover" *ngIf="contextIsThere(sentence)" (click)="getContext(sentence.id_pair)">
+            <span matTooltip="Click, to show context." [innerHtml]="sentence.text | markQueryWords:keywords"></span>
+            <span *ngIf="getKeyCount(sentence.id_pair) > 1" matBadge="{{getKeyCount(sentence.id_pair)}}"
+              matBadgeOverlap="false"></span>
+          </div>
+          <div *ngIf="!contextIsThere(sentence)">
+            <span style='font-size: 17px' [innerHtml]="sentence.text | markQueryWords:keywords"></span>
+          </div>
         </td>
       </tr>
     </table>
