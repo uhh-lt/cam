@@ -61,7 +61,7 @@ const appRoute: Routes = [
     FlexLayoutModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoute, { useHash: true }),
+    RouterModule.forRoot(appRoute, { useHash: false }),
     MaterialModule,
     ScrollToModule.forRoot()
   ],
