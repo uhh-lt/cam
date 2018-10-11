@@ -9,6 +9,9 @@ from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from ml_approach.classify import classify_sentences, evaluate, set_use_heuristics
 from marker_approach.object_comparer import find_winner
 
+from requests.auth import HTTPBasicAuth
+import sys
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import sklearn
@@ -121,6 +124,27 @@ def get_context():
     context_sentences = extract_sentences(context, False)
     context_sentences.sort(key=lambda elem: next(iter(elem.id_pair.values())))
     return jsonify([context_sentence.__dict__ for context_sentence in context_sentences])
+
+@app.route('/search')
+@app.route('/cam/search', methods=['GET'])
+def search():
+    ES_HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/'
+    CRAWL_DATA_REPOS = 'depcc/_search?q=text:'
+    query = request.args.get('query')
+    url = ES_HOSTNAME + CRAWL_DATA_REPOS + \
+        '(' + query + ')' + '&from=0&size=500'
+    es_json = requests.get(url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
+
+    hits = es_json.json()['hits']['hits']
+    sentences = []
+    seen_sentences = set()
+    for i in range(0, len(hits)):
+        sentence = hits[i]['_source']['text']
+        if sentence.lower() in seen_sentences:
+            continue
+        sentences.append(sentence)
+        seen_sentences.add(sentence.lower())
+    return jsonify(sentences)
 
 
 def setStatus(statusID, statusText):

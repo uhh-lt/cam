@@ -33,4 +33,8 @@ export class HTTPRequestService {
   getContext(url: string) {
     return this.httpClient.get<Array<Sentence>>(url);
   }
+
+  getSentences(url: string) {
+    return this.httpClient.get<Array<string>>(url);
+  }
 }

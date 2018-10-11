@@ -1,0 +1,48 @@
+<div>
+  <br>
+  <div>
+    <label for="queryField"><span style="font-weight: bold">{{hits}}</span> hits</label>
+    <div>
+      <table style="width: 100%">
+        <tr>
+          <td style="width: 100%;">
+            <mat-form-field style="width: 100%;">
+              <input matInput placeholder="Search... (e.g. earth AND venus AND mass)" #queryInput style='font-size: 20px'
+                (keyup.enter)='search(queryInput.value)' id="queryField" [(ngModel)]="query">
+            </mat-form-field>
+          </td>
+          <td> <button mat-raised-button class="search-button" (click)="search(queryInput.value)">
+              <mat-icon>search</mat-icon>
+            </button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  
+  <div *ngIf="hits > 0">
+    <b>text</b>
+    <table class="table text-styling">
+      <tr *ngFor="let sentence of sentences">
+        <td>
+          <div [innerHtml]="sentence | markQueryWords:keywords">
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div *ngIf="hits == 0">
+    <h2>No results found</h2>
+    Unfortunately there weren't found results for your entered query. <br>
+    Renfining your query can help: <br>
+    The query can be build with two operators:
+    <ul>
+      <li>AND (both must be contained) </li>
+      <li>OR (either one of them or both must be contained)</li>
+    </ul>
+    If you want to use multi word aspects or objects you have to put the sequence in quotation marks. <br>
+    AND binds stronger than OR, because of that it could be necessary to put brackets around the OR part of the query.
+
+  </div>
+
+</div>

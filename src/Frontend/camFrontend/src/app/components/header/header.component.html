@@ -6,6 +6,8 @@
     <div fxLayout="row" fxShow="false" fxShow.gt-sm>
       <button mat-menu-item routerLink='' [ngClass]="{'nav-selected': selectedTab == 'home'}" (click)="setSelectedTab('home')">
         Home </button>
+      <button mat-menu-item routerLink='/Search' [ngClass]="{'nav-selected': selectedTab == 'search'}" (click)="setSelectedTab('search')">
+        Search </button>
       <button mat-menu-item routerLink='/About' [ngClass]="{'nav-selected': selectedTab == 'about'}" (click)="setSelectedTab('about')">
         About </button>
       <button mat-menu-item (click)='goToGit()'> GitHub </button>
@@ -23,6 +25,7 @@
 
 <mat-menu x-position="before" #menu="matMenu">
   <button mat-menu-item routerLink='' (click)="setSelectedTab('home')"> Home </button>
+  <button mat-menu-item routerLink='' (click)="setSelectedTab('search')"> Search </button>
   <button mat-menu-item routerLink='/About' (click)="setSelectedTab('about')"> About </button>
   <button mat-menu-item (click)='goToGit()'> GitHub </button>
   <button mat-menu-item routerLink='/API-Info' (click)="setSelectedTab('api')"> API </button>
