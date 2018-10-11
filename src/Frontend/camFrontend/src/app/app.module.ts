@@ -8,8 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { AppComponent } from './app.component';
-import { UrlBuilderService } from './shared/url-builder.service';
-import { HTTPRequestService } from './shared/http-request.service';
+import { UrlBuilderService } from './services/url-builder.service';
+import { HTTPRequestService } from './services/http-request.service';
 import { HeaderComponent } from './components/header/header.component';
 import { AboutComponent } from './components/about/about.component';
 import { ApiInfoComponent } from './components/api-info/api-info.component';

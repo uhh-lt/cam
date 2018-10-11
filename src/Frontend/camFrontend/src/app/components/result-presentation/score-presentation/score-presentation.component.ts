@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { DispensableResult } from '../../../model/dispensable-result';
 import { Chart } from 'chart.js';
 

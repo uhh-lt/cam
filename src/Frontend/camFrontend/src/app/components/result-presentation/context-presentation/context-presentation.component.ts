@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Sentence } from '../../../model/sentence';
-import { HTTPRequestService } from '../../../shared/http-request.service';
-import { UrlBuilderService } from '../../../shared/url-builder.service';
+import { HTTPRequestService } from '../../../services/http-request.service';
+import { UrlBuilderService } from '../../../services/url-builder.service';
 
 @Component({
   selector: 'app-context-presentation',
