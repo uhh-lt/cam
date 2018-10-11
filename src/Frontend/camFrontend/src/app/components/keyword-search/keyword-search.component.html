@@ -25,10 +25,11 @@
   <div *ngIf="hits > 0 && !showLoading">
     <b>text</b>
     <table class="table text-styling">
-      <tr *ngFor="let sentence of sentences">
+      <tr *ngFor="let sentence of sentences; let i = index">
+        <td>{{i+1}}.</td>
         <td>
-          <div [innerHtml]="sentence.text | markQueryWords:keywords">
-          </div>
+          <span [innerHtml]="sentence.text | markQueryWords:keywords">
+          </span>
         </td>
       </tr>
     </table>

@@ -1,7 +1,8 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
 
-    <span routerLink=''>Comparative Argumentative Machine</span>
+    <span *ngIf="selectedTab != 'search'">Comparative Argumentative Machine</span>
+    <span *ngIf="selectedTab == 'search'">Keyword Search</span>
     <span class="spacer"></span>
     <div fxLayout="row" fxShow="false" fxShow.gt-sm>
       <button mat-menu-item routerLink='' [ngClass]="{'nav-selected': selectedTab == 'cam'}" (click)="setSelectedTab('cam')">
