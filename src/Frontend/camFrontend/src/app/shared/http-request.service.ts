@@ -35,6 +35,6 @@ export class HTTPRequestService {
   }
 
   getSentences(url: string) {
-    return this.httpClient.get<Array<string>>(url);
+    return this.httpClient.get<Array<Sentence>>(url);
   }
 }

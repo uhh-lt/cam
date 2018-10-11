@@ -1,7 +1,7 @@
 import requests
 import json
 import urllib
-from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences, request_document_by_id
+from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences, request_document_by_id, request_keyword_query
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.url_builder import set_index
 from utils.objects import Argument, Aspect
@@ -128,23 +128,10 @@ def get_context():
 @app.route('/search')
 @app.route('/cam/search', methods=['GET'])
 def search():
-    ES_HOSTNAME = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/'
-    CRAWL_DATA_REPOS = 'depcc/_search?q=text:'
     query = request.args.get('query')
-    url = ES_HOSTNAME + CRAWL_DATA_REPOS + \
-        '(' + query + ')' + '&from=0&size=500'
-    es_json = requests.get(url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
-
-    hits = es_json.json()['hits']['hits']
-    sentences = []
-    seen_sentences = set()
-    for i in range(0, len(hits)):
-        sentence = hits[i]['_source']['text']
-        if sentence.lower() in seen_sentences:
-            continue
-        sentences.append(sentence)
-        seen_sentences.add(sentence.lower())
-    return jsonify(sentences)
+    es_json = request_keyword_query(query, 500)
+    sentences = extract_sentences(es_json)
+    return jsonify([sentence.__dict__ for sentence in sentences])
 
 
 def setStatus(statusID, statusText):

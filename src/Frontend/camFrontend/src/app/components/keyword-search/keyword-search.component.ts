@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HTTPRequestService } from '../../shared/http-request.service';
 import { UrlBuilderService } from '../../shared/url-builder.service';
 import { MatSnackBar } from '@angular/material';
+import { Sentence } from '../../model/sentence';
 
 @Component({
   selector: 'app-keyword-search',
@@ -11,7 +12,7 @@ import { MatSnackBar } from '@angular/material';
 export class KeywordSearchComponent implements OnInit {
 
   public hits = 0;
-  public sentences = new Array<string>();
+  public sentences = new Array<Sentence>();
   public keywords = [];
   public query = '';
   public showLoading = false;
@@ -41,7 +42,7 @@ export class KeywordSearchComponent implements OnInit {
         this.showLoading = false;
       },
       () => {
-        this.sentQuery = true;        
+        this.sentQuery = true;
       }
     );
   }

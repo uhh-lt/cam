@@ -28,7 +28,7 @@
     <table class="table text-styling">
       <tr *ngFor="let sentence of sentences">
         <td>
-          <div [innerHtml]="sentence | markQueryWords:keywords">
+          <div [innerHtml]="sentence.text | markQueryWords:keywords">
           </div>
         </td>
       </tr>
