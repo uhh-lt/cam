@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     this.selectedTab = url.substr(routeStart);
 
     if (this.selectedTab === '') {
-      this.selectedTab = 'CAM';
+      this.selectedTab = 'cam';
     }
     console.log('2' + this.selectedTab);
 

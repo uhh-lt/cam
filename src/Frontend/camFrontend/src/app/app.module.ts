@@ -30,10 +30,10 @@ import { MarkQueryWordsPipe } from './components/keyword-search/mark-query-words
 
 const appRoute: Routes = [
   { path: '', component: UserInterfaceComponent },
-  { path: 'Search', component: KeywordSearchComponent },
-  { path: 'About', component: AboutComponent },
-  { path: 'API-Info', component: ApiInfoComponent },
-  { path: 'Contact', component: ContactComponent }
+  { path: 'search', component: KeywordSearchComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'api-info', component: ApiInfoComponent },
+  { path: 'contact', component: ContactComponent }
 
 ];
 
