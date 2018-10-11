@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
     const url = window.location.href;
     console.log('1' + url);
 
-    const routeStart = url.indexOf('#/') + 2;
+    const routeStart = url.lastIndexOf('/') + 1;
     this.selectedTab = url.substr(routeStart);
 
     if (this.selectedTab === '') {
