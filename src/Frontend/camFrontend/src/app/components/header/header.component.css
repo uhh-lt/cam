@@ -11,3 +11,7 @@
 .nav-selected {
     color:  rgba(255, 255, 255, 0.5);
 }
+
+button.mat-menu-item {
+    width: auto;
+}
