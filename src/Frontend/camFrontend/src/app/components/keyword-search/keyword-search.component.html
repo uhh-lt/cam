@@ -18,7 +18,11 @@
       </table>
     </div>
   </div>
-  
+
+  <div *ngIf='showLoading' class="text-center">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+
   <div *ngIf="hits > 0">
     <b>text</b>
     <table class="table text-styling">

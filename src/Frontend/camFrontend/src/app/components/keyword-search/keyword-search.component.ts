@@ -13,6 +13,7 @@ export class KeywordSearchComponent implements OnInit {
   public sentences = new Array<string>();
   public keywords = [];
   public query = '';
+  public showLoading = false;
 
   constructor(private httpService: HTTPRequestService, private urlBuilderService: UrlBuilderService) { }
 
@@ -23,8 +24,10 @@ export class KeywordSearchComponent implements OnInit {
     this.query = query;
     const url = this.urlBuilderService.getKeywordSearchURL(query);
     this.getKeywords(query);
+    this.showLoading = true;
     this.httpService.getSentences(url).subscribe(
       data => {
+        this.showLoading = false;
         this.sentences = data;
         this.hits = this.sentences.length;
       },
