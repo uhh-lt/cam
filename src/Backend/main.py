@@ -94,7 +94,7 @@ def cam():
 
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
         final_dict = evaluate(all_sentences, prepared_sentences,
-                              classification_results, obj_a, obj_b, aspects)
+                              classification_results, obj_a, obj_b, aspects, context_size, context_sent_amount)
 
         return jsonify(final_dict)
 
