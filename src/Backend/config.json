@@ -3,5 +3,7 @@
         "name": "depcc"
         
     },
-    "use_heuristics": "True"
+    "use_heuristics": "True",
+    "context_size": 1,
+    "amount_of_sentences": 0.1
 }

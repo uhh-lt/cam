@@ -5,6 +5,7 @@ from utils.es_requester import request_es, extract_sentences, request_es_ML, req
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.url_builder import set_index
 from utils.objects import Argument, Aspect
+from utils.sentence_context_getter import get_sentence_context
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from ml_approach.classify import classify_sentences, evaluate, set_use_heuristics
 from marker_approach.object_comparer import find_winner
@@ -35,18 +36,8 @@ def cam():
     aspects = extract_aspects(request)
     model = request.args.get('model')
     statusID = request.args.get('statusID')
-    context_size = 0
-    try:
-        req_context_size = int(request.args.get('contsize'))
-        context_size = req_context_size
-    except:
-        pass
-    context_sent_amount = 0.1
-    try:
-        req_context_sent_amount = int(request.args.get('contsentamount'))
-        context_sent_amount = req_context_sent_amount
-    except:
-        pass
+
+    print(amount_of_sentences, context_size)
 
     if model == 'default' or model is None:
         # json obj with all ES hits containing obj_a, obj_b and a marker.
@@ -64,7 +55,7 @@ def cam():
         # find the winner of the two objects
         setStatus(statusID, 'Find winner')
         return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects,
-                                   context_size, context_sent_amount))
+                                   context_size, amount_of_sentences))
 
     else:
         setStatus(statusID, 'Request all sentences containing the objects')
@@ -93,7 +84,7 @@ def cam():
 
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
         final_dict = evaluate(all_sentences, prepared_sentences,
-                              classification_results, obj_a, obj_b, aspects, context_size, context_sent_amount)
+                              classification_results, obj_a, obj_b, aspects, context_size, amount_of_sentences)
 
         return jsonify(final_dict)
 
@@ -167,9 +158,14 @@ def load_config():
         config = json.load(json_data_file)
     set_index(config['index']['name'])
     set_use_heuristics(config['use_heuristics'] == 'True')
+    global context_size, amount_of_sentences
+    context_size = config['context_size']
+    amount_of_sentences = config['amount_of_sentences']
 
 
 if __name__ == "__main__":
     status = {}
+    context_size = 0
+    amount_of_sentences = 0
     load_config()
     app.run(host="0.0.0.0", threaded=True)

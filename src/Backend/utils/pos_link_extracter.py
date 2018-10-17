@@ -70,9 +70,9 @@ def extract_main_links(object_a: Argument, object_b: Argument,
     object_a_aspect_dict = {}
     object_b_aspect_dict = {}
     sentence_scores_a = sorted(
-        [sentence.score for sentence in object_a.sentences], reverse=True)
+        [sentence.ES_score for sentence in object_a.sentences], reverse=True)
     sentence_scores_b = sorted(
-        [sentence.score for sentence in object_b.sentences], reverse=True)
+        [sentence.ES_score for sentence in object_b.sentences], reverse=True)
     min_points_for_context_aspect_extraction_a = sentence_scores_a[
         int(len(sentence_scores_a) / 100 * context_sent_amount)]
     min_points_for_context_aspect_extraction_b = sentence_scores_b[
@@ -89,7 +89,7 @@ def extract_main_links(object_a: Argument, object_b: Argument,
                 sentence.add_context_aspects(
                     get_aspects(sentence.text, aspect_dict,
                                 object_a.name, object_b.name))
-                if sentence.score >= min_points \
+                if sentence.ES_score >= min_points \
                         and (context_size > 0 or context_size == -1):
                     context = get_sentence_context(
                         document_id, sentence.id_pair[document_id],
