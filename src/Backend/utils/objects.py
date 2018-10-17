@@ -9,6 +9,7 @@ class Sentence:
         self.CAM_score = 0
         self.id_pair = {document_id: sentence_id}
         self.confidence = 0
+        self.context_aspects = []
 
     def add_id_pair(self, document_id, sentence_id):
         self.id_pair[document_id] = sentence_id
@@ -18,6 +19,9 @@ class Sentence:
 
     def set_CAM_score(self, CAM_score):
         self.CAM_score = CAM_score
+        
+    def add_context_aspects(self, context_aspects):
+        self.context_aspects += context_aspects
 
 
 class Argument:
@@ -38,7 +42,7 @@ class Argument:
         else:
             self.points[aspect] = points
 
-    def add_sentence(self, sentence):
+    def add_sentence(self, sentence: Sentence):
         self.sentences.append(sentence)
 
 
