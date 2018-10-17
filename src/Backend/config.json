@@ -4,6 +4,6 @@
         
     },
     "use_heuristics": "True",
-    "context_size": 1,
-    "amount_of_sentences": 0.1
+    "context_size": 2,
+    "amount_of_sentences": 0.5
 }
