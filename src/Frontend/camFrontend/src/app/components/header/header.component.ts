@@ -11,6 +11,24 @@ export class HeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.setSelectedTabFromUrl();
+  }
+
+  /**
+   * Selects a tab according to the given information in the url (see Tabs object for the allocation)
+   */
+  setSelectedTabFromUrl() {
+    const url = window.location.href;
+    console.log('1' + url);
+
+    const routeStart = url.lastIndexOf('/') + 1;
+    this.selectedTab = url.substr(routeStart);
+
+    if (this.selectedTab === '') {
+      this.selectedTab = 'cam';
+    }
+    console.log('2' + this.selectedTab);
+
   }
 
   setSelectedTab(tab: string) {
@@ -21,5 +39,7 @@ export class HeaderComponent implements OnInit {
     window.location.href = 'https://github.com/uhh-lt/cam-hci';
   }
 
+
+  
 
 }

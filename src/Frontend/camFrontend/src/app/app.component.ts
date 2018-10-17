@@ -1,6 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { UrlBuilderService } from './shared/url-builder.service';
-import { HTTPRequestService } from './shared/http-request.service';
 
 /**
  * UI for the Comparative Argument Machine. Currently everything is done by this one class --

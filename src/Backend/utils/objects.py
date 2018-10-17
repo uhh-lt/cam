@@ -3,9 +3,10 @@ class Sentence:
     Sentence class to hold sentence related values
     '''
 
-    def __init__(self, text, score, document_id, sentence_id):
+    def __init__(self, text, ES_score, document_id, sentence_id):
         self.text = text
-        self.score = score
+        self.ES_score = ES_score
+        self.CAM_score = 0
         self.id_pair = {document_id: sentence_id}
         self.confidence = 0
 
@@ -14,6 +15,9 @@ class Sentence:
 
     def set_confidence(self, confidence):
         self.confidence = confidence
+
+    def set_CAM_score(self, CAM_score):
+        self.CAM_score = CAM_score
 
 
 class Argument:

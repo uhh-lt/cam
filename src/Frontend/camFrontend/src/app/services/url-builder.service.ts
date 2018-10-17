@@ -97,4 +97,8 @@ export class UrlBuilderService {
     return `${this.HOSTNAME_DEFAULT}/context?documentID=${encodeURIComponent(documentID)}`;
   }
 
+  getKeywordSearchURL(query: string) {
+    return `${this.HOSTNAME_DEFAULT}/search?query=${query}`;
+  }
+
 }

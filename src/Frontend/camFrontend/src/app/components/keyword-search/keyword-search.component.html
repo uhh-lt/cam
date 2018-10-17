@@ -1,0 +1,57 @@
+<div>
+  <div>
+    <label for="queryField"><span style="font-weight: bold">{{hits}}</span> hits</label>
+    <div>
+      <table style="width: 100%">
+        <tr>
+          <td style="width: 100%;">
+            <mat-form-field style="width: 100%;">
+              <input matInput placeholder="Search... (e.g. earth AND venus AND mass)" #queryInput style='font-size: 20px'
+                (keyup.enter)='search(queryInput.value)' id="queryField" [(ngModel)]="query">
+            </mat-form-field>
+          </td>
+          <td> <button mat-raised-button class="search-button" (click)="search(queryInput.value)">
+              <mat-icon>search</mat-icon>
+            </button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf='showLoading' class="text-center">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+
+  <div *ngIf="hits > 0 && !showLoading">
+    <table class="table text-styling">
+      <tr *ngFor="let sentence of sentences; let i = index">
+        <td>{{i+1}}.</td>
+        <td>
+          <div id="sentence-hover" *ngIf="contextIsThere(sentence)" (click)="getContext(sentence.id_pair)">
+            <span matTooltip="Click, to show context." [innerHtml]="sentence.text | markQueryWords:keywords"></span>
+            <span *ngIf="getKeyCount(sentence.id_pair) > 1" matBadge="{{getKeyCount(sentence.id_pair)}}"
+              matBadgeOverlap="false"></span>
+          </div>
+          <div *ngIf="!contextIsThere(sentence)">
+            <span style='font-size: 17px' [innerHtml]="sentence.text | markQueryWords:keywords"></span>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div *ngIf="hits == 0 && sentQuery">
+    <h2>No results found</h2>
+    Unfortunately there weren't found results for your entered query. <br>
+    Renfining your query can help: <br>
+    The query can be build with two operators:
+    <ul>
+      <li>AND (both must be contained) </li>
+      <li>OR (either one of them or both must be contained)</li>
+    </ul>
+    If you want to use multi word aspects or objects you have to put the sequence in quotation marks. <br>
+    AND binds stronger than OR, because of that it could be necessary to put brackets around the OR part of the query.
+
+  </div>
+
+</div>

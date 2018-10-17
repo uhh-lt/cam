@@ -11,6 +11,7 @@ from main import Argument, Aspect, load_config
 from score_determination import calculateEvaluationScores, set_counts, Scores
 from evaluation_triples import triples
 
+import statistics
 
 def simulate_main(triple):
     fast_search = 'true'
@@ -76,13 +77,17 @@ def main():
 
     summed_deviation = 0
     total = len(scores)
+    assigned_scores = []
     for score in scores:
         if score[3] == '' or score[0] == 'index':
             total = total - 1
             continue
+        assigned_scores.append(float(score[3]))
         summed_deviation = summed_deviation + float(score[3])
 
-    print('Average deviation:', summed_deviation / total, 'Incorrect:', score_counts.totalWrong, 'Correct:', score_counts.totalRight)
+    print(assigned_scores)
+
+    print('Average deviation:', summed_deviation / total, 'Incorrect:', score_counts.totalWrong, 'Correct:', score_counts.totalRight, 'Std. dev:', statistics.stdev(assigned_scores))
     totalPercentRight = round(score_counts.totalRight * 100 / (score_counts.totalRight + score_counts.totalWrong), 2)
     evaluation_scores = [['label', 'precision', 'recall', 'f_1', 'accuracy', 'total accuracy']]
     evaluation_scores.append(calculateEvaluationScores('BETTER', score_counts.betterTP, score_counts.betterTN, score_counts.betterFP, score_counts.betterFN, 2, ''))
@@ -93,7 +98,9 @@ def main():
         writer.writerows([list(x) for x in zip(*evaluation_scores)])
 
     scores.append(['', '', 'ava. deviation:', summed_deviation/total])
+    scores.append(['', '', 'std deviation:', statistics.stdev(assigned_scores)])
     scores.append(['', '', 'Incorrect:', score_counts.totalWrong])
+    scores.append(['', '', 'Correct:', score_counts.totalRight])
 
     with open('./aspect_scores.csv', 'w', newline='', encoding="UTF-8") as f:
         writer = csv.writer(f)

@@ -52,15 +52,15 @@ def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects, 
     print('----')
     for sentence in sentences_to_move:
 
-        points = (sentence[0]) / 10 if sentence[1].confidence < threshold_score else sentence[0]
+        points = (sentence.CAM_score) / 10 if sentence.confidence < threshold_score else sentence.CAM_score
 
-        if len(find_aspects(sentence[1].text, aspects)) > 1:
+        if len(find_aspects(sentence.text, aspects)) > 1:
             points_for_multiple = points_for_multiple + points
         else:
             points_to_move = points_to_move + points
 
         print('-' + re.sub(' +', ' ',
-                           re.sub('[^a-zA-Z0-9 ]', ' ', sentence[1].text)))
+                           re.sub('[^a-zA-Z0-9 ]', ' ', sentence.text)))
 
     from_object.sentences = [
         sentence for sentence in from_object.sentences if sentence not in sentences_to_move]
@@ -91,7 +91,7 @@ def negation_dissolve_heuristic(object_a, object_b, aspect, aspects, threshold_s
     if len(filtered_sentences) > 0:
         for sentence in filtered_sentences:
             filtered_contrary = [
-                v for k, v in markers.items() if k in sentence[1].text]
+                v for k, v in markers.items() if k in sentence.text]
             filtered_contrary = [
                 item for sublist in filtered_contrary for item in sublist]
 
@@ -119,6 +119,6 @@ def get_matching_sentences(object_a, object_b, aspect, sentences, markers, is_po
                        r'\b.*\b' + re.escape(object_b) + r'\b))(?=.*(?:\b' + re_markers + r'\b))(?!.*(?:\b' + re_locked_out_markers + r'\b))', re.IGNORECASE)
 
     filtered_sentences = [
-        x for x in sentences if regex.search(x[1].text) != None]
+        x for x in sentences if regex.search(x.text) != None]
 
     return filtered_sentences

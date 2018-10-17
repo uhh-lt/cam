@@ -1,13 +1,16 @@
 import requests
 import json
 import urllib
-from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences, request_document_by_id
+from utils.es_requester import request_es, extract_sentences, request_es_ML, request_es_triple, request_context_sentences, request_document_by_id, request_keyword_query
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.url_builder import set_index
 from utils.objects import Argument, Aspect
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from ml_approach.classify import classify_sentences, evaluate, set_use_heuristics
 from marker_approach.object_comparer import find_winner
+
+from requests.auth import HTTPBasicAuth
+import sys
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -121,6 +124,14 @@ def get_context():
     context_sentences = extract_sentences(context, False)
     context_sentences.sort(key=lambda elem: next(iter(elem.id_pair.values())))
     return jsonify([context_sentence.__dict__ for context_sentence in context_sentences])
+
+@app.route('/search')
+@app.route('/cam/search', methods=['GET'])
+def search():
+    query = request.args.get('query')
+    es_json = request_keyword_query(query, 500)
+    sentences = extract_sentences(es_json)
+    return jsonify([sentence.__dict__ for sentence in sentences])
 
 
 def setStatus(statusID, statusText):
