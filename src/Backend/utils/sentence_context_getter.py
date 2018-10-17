@@ -14,3 +14,4 @@ def get_sentence_context(document_id, sentence_id, context_size):
     context_sentences = extract_sentences(context, False)
     context_sentences.sort(key=lambda elem: next(iter(elem.id_pair.values())))
     return [context_sentence.__dict__ for context_sentence in context_sentences]
+    

@@ -37,8 +37,6 @@ def cam():
     model = request.args.get('model')
     statusID = request.args.get('statusID')
 
-    print(amount_of_sentences, context_size)
-
     if model == 'default' or model is None:
         # json obj with all ES hits containing obj_a, obj_b and a marker.
         setStatus(statusID, 'Request ES')
@@ -117,7 +115,7 @@ def register():
 @app.route('/context', methods=['GET'])
 @app.route('/cam/context', methods=['GET'])
 def get_context():
-    document_id = urllib.parse.quote(request.args.get('documentID'))
+    document_id = request.args.get('documentID')
     sentence_id = request.args.get('sentenceID')
     context_size = request.args.get('contextSize')
     return jsonify(get_sentence_context(document_id, sentence_id, context_size))
