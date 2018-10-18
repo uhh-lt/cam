@@ -6,7 +6,7 @@ from utils.answer_preparation import add_points, prepare_sentence_list, build_fi
 
 
 
-def find_winner(sentences, obj_a, obj_b, aspects, context_size, context_sent_amount):
+def find_winner(sentences, obj_a, obj_b, aspects):
     '''
     Finds the winner of two objects for given sentences and aspects. Returns a dictionary
     containing all the information of the comparison (winner, sentences for each object, score for
@@ -38,7 +38,7 @@ def find_winner(sentences, obj_a, obj_b, aspects, context_size, context_sent_amo
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
 
-    return build_final_dict(obj_a, obj_b, sentences, context_size, context_sent_amount)
+    return build_final_dict(obj_a, obj_b, sentences)
 
 
 
