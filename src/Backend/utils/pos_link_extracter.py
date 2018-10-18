@@ -286,7 +286,7 @@ def get_index_for_reason(tag_list, a_name, b_name):
     if reason_index < reasons_index:
         word_to_look_for = 'is'
     else:
-        word_to_look_for = 'was'
+        word_to_look_for = 'are'
     if index == -1:
         return -1, False
     try:
