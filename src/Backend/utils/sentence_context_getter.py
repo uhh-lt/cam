@@ -11,8 +11,6 @@ def get_sentence_context(document_id, sentence_id, context_size):
     else:
         context = request_context_sentences(
             document_id, int(sentence_id), int(context_size))
-    if 'hits' not in context.keys() or 'hits' not in context['hits'].keys():
-        return {}
     context_sentences = extract_sentences(context, False)
     context_sentences.sort(key=lambda elem: next(iter(elem.id_pair.values())))
     return [context_sentence.__dict__ for context_sentence in context_sentences]
