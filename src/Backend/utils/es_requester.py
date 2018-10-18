@@ -63,7 +63,7 @@ def extract_sentences(es_json, aggregate_duplicates=True):
     try:
         hits = es_json.json()['hits']['hits']
     except KeyError:
-        return {}
+        return []
     sentences = []
     seen_sentences = set()
     for hit in hits:
