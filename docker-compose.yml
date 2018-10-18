@@ -6,15 +6,15 @@ networks:
 services:
   frontend:
     build: ./src/Frontend/camFrontend/
-    image: cam-frontend
+    image: cam-frontend3
     ports:
-      - 10101:4200
+      - 10105:4200
     networks:
       - cam
   backend:
     build: ./src/Backend/
-    image: cam-backend
+    image: cam-backend3
     ports:
-      - 10100:5000
+      - 10104:5000
     networks:
       - cam
