@@ -14,7 +14,8 @@ export class MarkQueryWordsPipe implements PipeTransform {
 
   private markKeywords(sentence: string, keywords: string) {
     for (const keyword of keywords) {
-      sentence = sentence.replace(new RegExp(keyword, 'ig'), `<mark style="background-color: #ffff00;">${keyword}</mark>`);
+      sentence = sentence.replace(new RegExp(keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig'),
+        `<mark style="background-color: #ffff00;">${keyword}</mark>`);
     }
     return sentence;
   }
