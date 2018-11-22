@@ -116,7 +116,9 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
         aspectList[element] = 0;
       }
     }
-    this.httpRequestService.register(this.urlBuilderService.buildSqliteAspectSavingURL(this.object_A, this.object_B, aspectList)).subscribe(data => {
+    const url = this.urlBuilderService.buildSqliteAspectSavingURL(this.object_A, this.object_B, aspectList);
+    console.log(url);
+    this.httpRequestService.register(url).subscribe(data => {
       this.reset();
       this.showLoading = false;
     })
