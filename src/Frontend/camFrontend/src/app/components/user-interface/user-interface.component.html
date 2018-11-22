@@ -19,48 +19,6 @@
           <mat-divider></mat-divider>
         </td>
       </tr>
-      <tr *ngFor='let aspect of aspects; let i = index'>
-        <td class='text-right'>
-          <mat-form-field>
-            <input matInput placeholder='Aspect' [(ngModel)]='aspect.value' name="i" [ngModelOptions]="{standalone: true}" style='font-size: 17px'>
-            <mat-hint align="start">
-              e.g. price
-            </mat-hint>
-          </mat-form-field>
-        </td>
-        <td class='align-middle text-center'>
-          <button (click)='removeAspect(i)' mat-mini-fab type="button" color="primary" [disabled]='!aspect.value && aspects.length == 1'>
-            <mat-icon aria-hidden='true'>remove
-            </mat-icon>
-          </button>
-        </td>
-
-        <td>
-          <div class='slidecontainer'>
-            <label for="importance">Aspect importance:</label>
-            <mat-slider class='slider' min='1' max='5' step='1' thumb-label="true" tick-interval="1" [(ngModel)]='aspect.weight' [ngModelOptions]="{standalone: true}"
-              (keyup.enter)='compIfEntered()'>
-            </mat-slider>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class='align-middle text-center'>
-          <button (click)='addAspect()' mat-mini-fab type="button" color="primary">
-            <mat-icon aria-hidden='true'>add
-            </mat-icon>
-          </button>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <mat-divider dotted></mat-divider>
-        </td>
-        <td></td>
-      </tr>
       <tr>
         <td class='align-middle text-right'>
           <mat-form-field>

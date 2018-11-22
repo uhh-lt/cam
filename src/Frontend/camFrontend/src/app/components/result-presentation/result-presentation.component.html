@@ -7,17 +7,12 @@
 
   <table style="height: 100%; width: 100%">
     <tr style="height: 100%">
-      <td [ngStyle]="{'width': finalAspectList.length > 0 ? '40%' : '50%'}">
+      <td [ngStyle]="{'width': '50%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.winner" [extractedAspects]="dispensableResult.winnerLinks"
           [arrange]="'flex-start'" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
 
       </td>
-      <td style="width: 20%" *ngIf="finalAspectList.length > 0">
-        <app-multiselect-chiplist [title]="'Entered Aspects'" [extractedAspects]="finalAspectList" [arrange]="'center'"
-          (updatedSelection)="selectEnteredAspects($event)"></app-multiselect-chiplist>
-
-      </td>
-      <td [ngStyle]="{'width': finalAspectList.length > 0 ? '40%' : '50%'}">
+      <td [ngStyle]="{'width': '50%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.looser" [extractedAspects]="dispensableResult.looserLinks"
           [arrange]="'flex-end'" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
       </td>
