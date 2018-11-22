@@ -22,8 +22,6 @@ export class ResultPresentationComponent {
 
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
-  public selectedEnteredAspects = new Array<string>();
-  public finalAspectList = new Array<string>();
 
   public trigger = 0;
 
@@ -40,9 +38,7 @@ export class ResultPresentationComponent {
    *
    * @param result the search results to be saved
    */
-  saveResult(result: Result, finalAspectList: Array<string>) {
-    this.finalAspectList = finalAspectList;
-
+  saveResult(result: Result) {
     // count the number of sentences used for comparison
     this.sentenceCount = result.sentenceCount;
 
@@ -67,7 +63,6 @@ export class ResultPresentationComponent {
     this.showResult = false;
     this.selectedWinnerAspects = new Array<string>();
     this.selectedLooserAspects = new Array<string>();
-    this.selectedEnteredAspects = new Array<string>();
     this.categoriesChartOrder = [];
   }
 
@@ -154,12 +149,6 @@ export class ResultPresentationComponent {
     } else {
       this.selectedLooserAspects = selectedAspects;
     }
-    this.trigger++;
-  }
-
-  selectEnteredAspects(selectedAspects: Array<string>) {
-    console.log('select entered aspects');
-    this.selectedEnteredAspects = selectedAspects;
     this.trigger++;
   }
 

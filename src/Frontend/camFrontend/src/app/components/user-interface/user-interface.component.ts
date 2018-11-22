@@ -17,7 +17,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(ResultPresentationComponent) resultPresentation: ResultPresentationComponent;
 
-  aspects = new Array<Aspect>(new Aspect('')); // the rows of aspects currently shown in the UI
   private finalAspDict = {}; // holds all aspects after compare() was called
   selectedModel = 'default'; // the comparison model to be used
   fastSearch = false; // the possibility to do a fast comparison
@@ -66,12 +65,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   compare() {
     this.showLoading = true; // show the loading screen
     this.reset(); // reset everything to its default and hide the result table
-    // read the aspects entered by the user and store them with their weight
-    for (const aspect of this.aspects) {
-      if (aspect.value !== '' && aspect.value !== undefined) {
-        this.finalAspDict[aspect.value] = aspect.weight;
-      }
-    }
     // read the objects entered, build the URL and start the search request
     this.httpRequestService.register(this.urlBuilderService.getRegisterURL()).subscribe(
       data => {
@@ -87,7 +80,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.httpRequestService.getScore(this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict,
       this.selectedModel, this.fastSearch, this.statusID)).subscribe(
         data => {
-          this.resultPresentation.saveResult(data, Object.keys(this.finalAspDict));
+          this.resultPresentation.saveResult(data);
           this.showLoading = false; // hide the loading screen
           this.showResult = true;
           this.status = '';
@@ -134,7 +127,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   resetInput() {
     this.object_A = '';
     this.object_B = '';
-    this.aspects = new Array<Aspect>(new Aspect(''));
     this.fastSearch = false;
     this.selectedModel = 'default';
   }
@@ -155,35 +147,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   compIfEntered() {
     if (this.objectsEntered()) {
       this.compare();
-    }
-  }
-
-  /**
-   * Adds an aspect to the list of currently shown aspects.
-   *
-   */
-  addAspect() {
-    this.aspects.push(new Aspect(''));
-  }
-
-  /**
-   * Removes an aspect from the list of currently shown aspects which makes the UI remove this
-   * aspect row.
-   *
-   * @param aspect the aspect row to be removed, given as a number
-   */
-  removeAspect(aspect: number) {
-    this.aspects.splice(aspect, 1);
-    if (this.aspects.length === 0) {
-      this.addAspect();
-    }
-  }
-
-  chipSelected(selectedChip: string) {
-    if (this.aspects[this.aspects.length - 1].value === '') {
-      this.aspects[this.aspects.length - 1].value = selectedChip;
-    } else {
-      this.aspects.push(new Aspect(selectedChip));
     }
   }
 }
