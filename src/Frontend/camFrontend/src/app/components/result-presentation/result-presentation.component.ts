@@ -157,6 +157,7 @@ export class ResultPresentationComponent {
 
   updatedMarks(markedAspects: Array<string>) {
     this.markedAspects = markedAspects;
+    console.log(this.markedAspects)
   }
 
 

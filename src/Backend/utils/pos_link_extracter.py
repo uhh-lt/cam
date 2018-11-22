@@ -88,6 +88,8 @@ def extract_main_links(object_a: Argument, object_b: Argument):
                                                       sentence_lists,
                                                       min_points_list):
         for sentence in sentence_list:
+            get_aspects(
+                sentence.text, aspect_dict, object_a.name, object_b.name)
             if sentence.ES_score >= min_points:
                 document_id = list(sentence.id_pair.keys())[0]
                 context = get_sentence_context(
