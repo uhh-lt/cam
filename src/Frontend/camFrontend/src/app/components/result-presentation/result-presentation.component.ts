@@ -164,7 +164,8 @@ export class ResultPresentationComponent {
     window.open(url, '_blank');
   }
 
-  submit() {
+  submitAspectRatings() {
     this.submitRatings.emit(this.markedAspects);
+    console.log('ratings submitted')
   }
 }

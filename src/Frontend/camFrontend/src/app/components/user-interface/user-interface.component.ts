@@ -106,7 +106,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       );
   }
 
-  submitRatings(markedAspects: Array<string>) {
+  submitRatingsToBackend(markedAspects: Array<string>) {
     const aspectList = {}
     for (let index = 0; index < markedAspects.length; index++) {
       const element = markedAspects[index];

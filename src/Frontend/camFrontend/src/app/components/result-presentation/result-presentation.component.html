@@ -12,6 +12,9 @@
         and after you marked all aspects, hit Submit.
       </th>
     </tr>
+  </table>
+
+  <table style="height: 100%; width: 100%">
     <tr style="height: 100%">
       <td [ngStyle]="{'width': '40%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.winner" [extractedAspects]="dispensableResult.winnerLinks"
@@ -19,7 +22,7 @@
 
       </td>
       <th class='align-middle text-center'>
-        <button (click)='submit()' mat-raised-button type="button">
+        <button (click)='submitAspectRatings()' mat-raised-button type="button">
           Submit
         </button>
       </th>

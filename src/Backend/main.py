@@ -94,6 +94,7 @@ def cam():
 @app.route('/sqliteAspectSaving', methods=['GET'])
 @app.route('/cam/sqliteAspectSaving', methods=['GET'])
 def saveRatings():
+    print('backend received ratings')
     obj_a = Argument(request.args.get('objectA').lower().strip())
     obj_b = Argument(request.args.get('objectB').lower().strip())
     aspects = extract_aspects(request)
