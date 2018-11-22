@@ -93,8 +93,6 @@ def cam():
 
 @app.route('/sqliteAspectSaving', methods=['GET'])
 @app.route('/cam/sqliteAspectSaving', methods=['GET'])
-@app.route('/cam3/sqliteAspectSaving', methods=['GET'])
-@app.route('/cam-api3/sqliteAspectSaving', methods=['GET'])
 def saveRatings():
     print('backend received ratings')
     obj_a = Argument(request.args.get('objectA').lower().strip())
