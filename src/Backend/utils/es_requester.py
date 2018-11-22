@@ -64,7 +64,10 @@ def extract_sentences(es_json, aggregate_duplicates=True):
     es_json:    Dictionary
                 the JSON object resulting from Elastic Search commoncrawl2
     '''
-    hits = es_json.json()['hits']['hits']
+    try:
+        hits = es_json.json()['hits']['hits']
+    except KeyError:
+        return []
     sentences = []
     seen_sentences = set()
     for hit in hits:

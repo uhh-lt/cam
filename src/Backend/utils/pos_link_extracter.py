@@ -51,32 +51,35 @@ UNUSED_ASPECTS = ['better', 'more', 'worse',
 regex = re.compile('[^a-zA-Z0-9+#]+')
 
 
-def extract_main_links(object_a: Argument, object_b: Argument,
-                       context_size, context_sent_amount):
+def extract_main_links(object_a: Argument, object_b: Argument):
     '''
     Extract the most common aspects for two lists of strings.
 
     object_a:       the first object to be compared
 
     object_b:       the second object to be compared
-
-    context_size:   int defining how many sentences before and after the
-                    original sentence in its documents are to be taken into
-                    account. -1 means the complete documents shall be used
-
-    context_sent_amount: Amount of sentences to be used for context aspect
-                         extraction for each object
     '''
+    # amount of sentences to use for context aspect generation
+    context_sent_amount = 10
+    # amount of sentences to use within each context (before and after the
+    # actual sentence)
+    context_size = 2
+
     object_a_aspect_dict = {}
     object_b_aspect_dict = {}
     sentence_scores_a = sorted(
         [sentence.ES_score for sentence in object_a.sentences], reverse=True)
     sentence_scores_b = sorted(
         [sentence.ES_score for sentence in object_b.sentences], reverse=True)
-    min_points_for_context_aspect_extraction_a = sentence_scores_a[
-        int(len(sentence_scores_a) / 100 * context_sent_amount)]
-    min_points_for_context_aspect_extraction_b = sentence_scores_b[
-        int(len(sentence_scores_b) / 100 * context_sent_amount)]
+    min_points_for_context_aspect_extraction_a = 0
+    min_points_for_context_aspect_extraction_b = 0
+    if sentence_scores_a:
+        min_points_for_context_aspect_extraction_a = sentence_scores_a[
+            min(len(sentence_scores_a) - 1, context_sent_amount)]
+    if sentence_scores_b:
+        min_points_for_context_aspect_extraction_b = sentence_scores_b[
+            min(len(sentence_scores_b) - 1, context_sent_amount)]
+
     aspect_dicts = [object_a_aspect_dict, object_b_aspect_dict]
     sentence_lists = [object_a.sentences, object_b.sentences]
     min_points_list = [min_points_for_context_aspect_extraction_a,
@@ -85,19 +88,17 @@ def extract_main_links(object_a: Argument, object_b: Argument,
                                                       sentence_lists,
                                                       min_points_list):
         for sentence in sentence_list:
-            for document_id in sentence.id_pair:
-                sentence.add_context_aspects(
-                    get_aspects(sentence.text, aspect_dict,
-                                object_a.name, object_b.name))
-                if sentence.ES_score >= min_points \
-                        and (context_size > 0 or context_size == -1):
-                    context = get_sentence_context(
-                        document_id, sentence.id_pair[document_id],
-                        context_size)
-                    for context_sentence in context:
-                        sentence.add_context_aspects(get_aspects(
-                            context_sentence['text'], aspect_dict,
-                            object_a.name, object_b.name))
+            get_aspects(
+                sentence.text, aspect_dict, object_a.name, object_b.name)
+            if sentence.ES_score >= min_points:
+                document_id = list(sentence.id_pair.keys())[0]
+                context = get_sentence_context(
+                    document_id, sentence.id_pair[document_id],
+                    context_size)
+                for context_sentence in context:
+                    sentence.add_context_aspects(get_aspects(
+                        context_sentence['text'], aspect_dict,
+                        object_a.name, object_b.name))
     do_tf_idf(object_a_aspect_dict, object_b_aspect_dict)
 
     object_a_aspects = get_top_10_aspects(object_a_aspect_dict)
@@ -285,7 +286,7 @@ def get_index_for_reason(tag_list, a_name, b_name):
     if reason_index < reasons_index:
         word_to_look_for = 'is'
     else:
-        word_to_look_for = 'was'
+        word_to_look_for = 'are'
     if index == -1:
         return -1, False
     try:

@@ -19,8 +19,8 @@ export class UrlBuilderService {
    * @param model the backend model to be used for the comparison
    * @returns the URL
    */
-  public buildURL(objA, objB, aspectList, model, fastSearch, statusID, contSize, contSentAmount) {
-    let URL = `${this.getUrlBase(model)}fs=${fastSearch}&objectA=${objA}&objectB=${objB}&statusID=${statusID}&contsize=${contSize}&contsentamount=${contSentAmount}`;
+  public buildURL(objA, objB, aspectList, model, fastSearch, statusID) {
+    let URL = `${this.getUrlBase(model)}fs=${fastSearch}&objectA=${objA}&objectB=${objB}&statusID=${statusID}`;
     URL += this.addAspectURL(aspectList);
     return URL;
   }

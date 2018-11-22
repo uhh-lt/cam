@@ -147,7 +147,7 @@ class Test(unittest.TestCase):
     def test_find_winner1(self):
         s = [Sentence('Dog is better than cat', 10, 'http://test.com', 5), Sentence('Cat is beautiful better than dog', 10, 'http://test2.com', 7),
              Sentence('Dogs are way better than cat', 10, 'http://test3.com', 6)]
-        result = find_winner(s, self.objA, self.objB, [], 0, 1)
+        result = find_winner(s, self.objA, self.objB, [])
         obj_1 = result['object1']
         obj_2 = result['object2']
 

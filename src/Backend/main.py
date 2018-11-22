@@ -40,18 +40,6 @@ def cam():
     aspects = extract_aspects(request)
     model = request.args.get('model')
     statusID = request.args.get('statusID')
-    context_size = 0
-    try:
-        req_context_size = int(request.args.get('contsize'))
-        context_size = req_context_size
-    except:
-        pass
-    context_sent_amount = 0.1
-    try:
-        req_context_sent_amount = int(request.args.get('contsentamount'))
-        context_sent_amount = req_context_sent_amount
-    except:
-        pass
 
     if model == 'default' or model is None:
         # json obj with all ES hits containing obj_a, obj_b and a marker.
@@ -68,8 +56,7 @@ def cam():
 
         # find the winner of the two objects
         setStatus(statusID, 'Find winner')
-        return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects,
-                                   context_size, context_sent_amount))
+        return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
 
     else:
         setStatus(statusID, 'Request all sentences containing the objects')
@@ -98,7 +85,7 @@ def cam():
 
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
         final_dict = evaluate(all_sentences, prepared_sentences,
-                              classification_results, obj_a, obj_b, aspects)
+                              classification_results, obj_a, obj_b, aspects, context_size, context_sent_amount)
 
         return jsonify(final_dict)
 

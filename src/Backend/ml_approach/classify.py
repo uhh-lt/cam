@@ -73,7 +73,7 @@ def find_threshold(counted_confidences, sentence_threshold):
     return threshold
 
 
-def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects):
+def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects, context_size, context_sent_amount):
 
     if len(sentences) > 0:
         max_sentscore = max(sentence.ES_score for sentence in sentences)
@@ -114,7 +114,7 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
     obj_a.sentences = prepare_sentence_list(obj_a.sentences)
     obj_b.sentences = prepare_sentence_list(obj_b.sentences)
 
-    return build_final_dict(obj_a, obj_b, sentences)
+    return build_final_dict(obj_a, obj_b, sentences, context_size, context_sent_amount)
 
 
 def score_function(sentence, max_sentscore, weight, threshold):
