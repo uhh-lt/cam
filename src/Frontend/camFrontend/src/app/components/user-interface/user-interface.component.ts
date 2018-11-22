@@ -29,6 +29,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   private statusID = '-1';
 
+  private generatedAspects = [];
+
   private preSelectedObjects = [
     ['python', 'java'],
     ['php', 'javascript'],
@@ -81,6 +83,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       this.selectedModel, this.fastSearch, this.statusID)).subscribe(
         data => {
           this.resultPresentation.saveResult(data);
+          this.generatedAspects = data.extractedAspectsObject1.concat(data.extractedAspectsObject2);
           this.showLoading = false; // hide the loading screen
           this.showResult = true;
           this.status = '';
@@ -101,6 +104,22 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
           console.error(error);
         }
       );
+  }
+
+  submitRatings(markedAspects: Array<string>) {
+    const aspectList = {}
+    for (let index = 0; index < markedAspects.length; index++) {
+      const element = markedAspects[index];
+      if (markedAspects.indexOf(element) > -1) {
+        aspectList[element] = 1;
+      } else {
+        aspectList[element] = 0;
+      }
+    }
+    this.httpRequestService.register(this.urlBuilderService.buildSqliteAspectSavingURL(this.object_A, this.object_B, aspectList)).subscribe(data => {
+      this.reset();
+      this.showLoading = false;
+    })
   }
 
   getStatus() {

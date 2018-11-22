@@ -6,15 +6,26 @@
   <app-score-presentation [dispensableResult]="dispensableResult" [categories]="categoriesChartOrder"></app-score-presentation>
 
   <table style="height: 100%; width: 100%">
+    <tr>
+      <th class='align-middle text-center'>
+        Please mark (+) the aspects that you think are a good description for why one object is better than the other
+        and after you marked all aspects, hit Submit.
+      </th>
+    </tr>
     <tr style="height: 100%">
-      <td [ngStyle]="{'width': '50%'}">
+      <td [ngStyle]="{'width': '40%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.winner" [extractedAspects]="dispensableResult.winnerLinks"
-          [arrange]="'flex-start'" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
+          [arrange]="'flex-start'" (updatedSelection)="updatedSelection($event, true)" (updatedMarks)="updatedMarks($event)"></app-multiselect-chiplist>
 
       </td>
-      <td [ngStyle]="{'width': '50%'}">
+      <th class='align-middle text-center'>
+        <button (click)='submit()' mat-raised-button type="button">
+          Submit
+        </button>
+      </th>
+      <td [ngStyle]="{'width': '40%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.looser" [extractedAspects]="dispensableResult.looserLinks"
-          [arrange]="'flex-end'" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
+          [arrange]="'flex-end'" (updatedSelection)="updatedSelection($event, false)" (updatedMarks)="updatedMarks($event)"></app-multiselect-chiplist>
       </td>
     </tr>
   </table>

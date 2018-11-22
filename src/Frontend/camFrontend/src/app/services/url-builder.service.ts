@@ -9,6 +9,7 @@ export class UrlBuilderService {
     */
   // private HOSTNAME_DEFAULT = 'http://localhost:5000/cam';
   private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
+  private HOSTNAME_SQLITE = 'http://ltdemos.informatik.uni-hamburg.de/sqliteAspectSaving';
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
@@ -21,6 +22,12 @@ export class UrlBuilderService {
    */
   public buildURL(objA, objB, aspectList, model, fastSearch, statusID) {
     let URL = `${this.getUrlBase(model)}fs=${fastSearch}&objectA=${objA}&objectB=${objB}&statusID=${statusID}`;
+    URL += this.addAspectURL(aspectList);
+    return URL;
+  }
+
+  public buildSqliteAspectSavingURL(objA, objB, aspectList) {
+    let URL = `${this.HOSTNAME_SQLITE}?objectA=${objA}&objectB=${objB}`;
     URL += this.addAspectURL(aspectList);
     return URL;
   }

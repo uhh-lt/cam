@@ -11,6 +11,7 @@ import { Sentence } from '../../model/sentence';
 export class ResultPresentationComponent {
 
   @Output() chipSelected = new EventEmitter<string>();
+  @Output() submitRatings = new EventEmitter<Array<string>>();
 
   private dispensableResult = new DispensableResult();
   private categoriesChartOrder = new Array<string>();
@@ -22,6 +23,7 @@ export class ResultPresentationComponent {
 
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
+  public markedAspects = new Array<string>();
 
   public trigger = 0;
 
@@ -153,7 +155,16 @@ export class ResultPresentationComponent {
   }
 
 
+  updatedMarks(markedAspects: Array<string>) {
+    this.markedAspects = markedAspects;
+  }
+
+
   openLink(url: string) {
     window.open(url, '_blank');
+  }
+
+  submit() {
+    this.submitRatings.emit(this.markedAspects);
   }
 }

@@ -15,9 +15,11 @@ export class MultiselectChiplistComponent {
   }
   @Input() title = '';
   @Output() updatedSelection = new EventEmitter<Array<string>>();
+  @Output() updatedMarks = new EventEmitter<Array<string>>();
 
 
   selectedAspects: any[] = [];
+  markedAspects: any[] = [];
 
   constructor(private elementRef: ElementRef) { }
 
@@ -37,6 +39,24 @@ export class MultiselectChiplistComponent {
     }
 
     this.updatedSelection.emit(this.selectedAspects);
+  }
+
+  isMarked(fruit: any): boolean {
+    const index = this.markedAspects.indexOf(fruit);
+    return index >= 0;
+  }
+
+
+  markAspect(fruit: any): void {
+    const index = this.markedAspects.indexOf(fruit);
+
+    if (index >= 0) {
+      this.markedAspects.splice(index, 1);
+    } else {
+      this.markedAspects.push(fruit);
+    }
+
+    this.updatedMarks.emit(this.markedAspects);
   }
 
 }
