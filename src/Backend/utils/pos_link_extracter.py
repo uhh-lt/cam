@@ -89,7 +89,7 @@ def extract_main_links(object_a: Argument, object_b: Argument,
                 sentence.add_context_aspects(
                     get_aspects(sentence.text, aspect_dict,
                                 object_a.name, object_b.name))
-                if sentence.score >= min_points \
+                if sentence.ES_score >= min_points \
                         and (context_size > 0 or context_size == -1):
                     context = get_sentence_context(
                         document_id, sentence.id_pair[document_id],
