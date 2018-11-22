@@ -21,6 +21,7 @@ from utils.objects import Argument, Aspect
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.sentence_context_getter import get_sentence_context
 from utils.url_builder import set_index
+from sqlite.sqlite_connecter import Rating, insert_rating
 
 app = Flask(__name__)
 CORS(app)
@@ -85,9 +86,20 @@ def cam():
 
         setStatus(statusID, 'Evaluate classified sentences; Find winner')
         final_dict = evaluate(all_sentences, prepared_sentences,
-                              classification_results, obj_a, obj_b, aspects, context_size, context_sent_amount)
+                              classification_results, obj_a, obj_b, aspects)
 
         return jsonify(final_dict)
+
+
+@app.route('/sqliteAspectSaving', methods=['GET'])
+@app.route('/cam/sqliteAspectSaving', methods=['GET'])
+def saveRatings():
+    obj_a = Argument(request.args.get('objectA').lower().strip())
+    obj_b = Argument(request.args.get('objectB').lower().strip())
+    aspects = extract_aspects(request)
+    for aspect in aspects:
+        insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b))
+    return jsonify('Success! Thanks!')
 
 
 @app.route('/status', methods=['GET'])
