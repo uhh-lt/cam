@@ -57,6 +57,6 @@ export class MultiselectChiplistComponent {
     }
 
     this.updatedMarks.emit(this.markedAspects);
+    console.log(this.markedAspects);
   }
-
 }

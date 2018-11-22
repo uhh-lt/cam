@@ -157,7 +157,7 @@ export class ResultPresentationComponent {
 
   updatedMarks(markedAspects: Array<string>) {
     this.markedAspects = markedAspects;
-    console.log(this.markedAspects)
+    console.log(this.markedAspects);
   }
 
 
@@ -167,6 +167,6 @@ export class ResultPresentationComponent {
 
   submitAspectRatings() {
     this.submitRatings.emit(this.markedAspects);
-    console.log('ratings submitted')
+    console.log('ratings submitted');
   }
 }
