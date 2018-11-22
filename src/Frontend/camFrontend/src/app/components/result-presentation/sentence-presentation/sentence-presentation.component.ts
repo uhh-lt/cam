@@ -15,9 +15,7 @@ export class SentencePresentationComponent implements OnInit {
   @Input() dispensableResult: DispensableResult;
   @Input() isWinner: boolean;
   @Input() selectedAspects = new Array<string>();
-  @Input() selectedEnteredAspects = new Array<string>();
   @Input() trigger = 0;
-  @Input() finalAspectList = new Array<Aspect>();
 
   public sentences: Array<Sentence>;
 
@@ -36,7 +34,6 @@ export class SentencePresentationComponent implements OnInit {
       width: '45%',
       data: {
         dispensableResult: this.dispensableResult,
-        finalAspectList: this.finalAspectList,
         selectedAspects: this.selectedAspects,
         IDpairs: id_pair
       }
