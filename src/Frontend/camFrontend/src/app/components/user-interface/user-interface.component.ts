@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { UrlBuilderService } from '../../shared/url-builder.service';
-import { HTTPRequestService } from '../../shared/http-request.service';
+import { UrlBuilderService } from '../../services/url-builder.service';
+import { HTTPRequestService } from '../../services/http-request.service';
 import { ResultPresentationComponent } from '../result-presentation/result-presentation.component';
 import { MatSnackBar } from '@angular/material';
 import { TimerObservable } from 'rxjs/observable/TimerObservable';

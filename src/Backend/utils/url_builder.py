@@ -26,6 +26,9 @@ def build_document_getter_url(document_id):
 def get_query_range(maximum):
     return '&from=0&size={}'.format(maximum)
 
+def build_keyword_search_url(query, size):
+    return build_url_base() + 'text:({})&from=0&size={}'.format(query, size)
+
 
 def build_object_urlpart(obj_a, obj_b):
     '''

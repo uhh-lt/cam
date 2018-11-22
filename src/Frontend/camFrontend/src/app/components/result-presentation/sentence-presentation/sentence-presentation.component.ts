@@ -3,7 +3,7 @@ import { DispensableResult } from '../../../model/dispensable-result';
 import { Aspect } from '../../../model/aspect';
 import { Sentence } from '../../../model/sentence';
 import { MatDialog } from '@angular/material';
-import { ContextPresentationComponent } from '../context-presentation/context-presentation.component';
+import { ContextPresentationComponent } from '../../shared-components/context-presentation/context-presentation.component';
 
 @Component({
   selector: 'app-sentence-presentation',

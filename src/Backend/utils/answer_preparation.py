@@ -38,7 +38,7 @@ def sentences_to_JSON(sentences):
     return [sentence.__dict__ for sentence in sentences]
 
 
-def add_points(contained_aspects, winner, sentence, max_score, classification_score, score_function, threshold_sentences=0, threshold_score=0):
+def add_points(contained_aspects, winner, sentence, max_score, score_function, threshold_sentences=0, threshold_score=0):
     '''
     Adds the points of the won sentence to the points of the winner.
 
@@ -70,27 +70,26 @@ def add_points(contained_aspects, winner, sentence, max_score, classification_sc
         if len(contained_aspects) == 1:
             aspect = contained_aspects[0]
             points = score_function(
-                sentence.score, max_score, aspect.weight, classification_score, threshold_sentences)
-            if classification_score < threshold_score:
-                winner.add_points(aspect.name, (points/10) * document_occurences)
+                sentence, max_score, aspect.weight, threshold_sentences)
+            if sentence.confidence < threshold_score:
+                winner.add_points(aspect.name, points *
+                                  document_occurences * 0.1)
             else:
                 winner.add_points(aspect.name, points * document_occurences)
-            winner.add_sentence([points, sentence])
         else:
             for aspect in contained_aspects:
-                points += score_function(sentence.score, max_score,
-                                         aspect.weight, classification_score, threshold_sentences)
+                points += score_function(sentence, max_score,
+                                         aspect.weight, threshold_sentences)
             winner.add_points('multiple', points * document_occurences)
-            winner.add_sentence([points, sentence])
     else:
         # multiple markers, multiple points
-        points = score_function(
-            sentence.score, max_score, 0, classification_score, threshold_sentences)
-        # if classification_score > threshold_score:
+        points = score_function(sentence, max_score, 0, threshold_sentences)
         winner.add_points('none', points * document_occurences)
-        winner.add_sentence([points, sentence])
+
+    winner.add_sentence(sentence)
+    sentence.set_CAM_score(points)
 
 
-def prepare_sentence_list(sentences_with_score):
-    sentences_with_score.sort(key=lambda elem: elem[0], reverse=True)
-    return list(DataFrame(sentences_with_score, columns=['points', 'sentence'])['sentence'])
+def prepare_sentence_list(sentences):
+    sentences.sort(key=lambda elem: elem.CAM_score, reverse=True)
+    return sentences

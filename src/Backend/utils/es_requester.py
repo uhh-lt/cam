@@ -3,7 +3,7 @@ import sys
 from requests.auth import HTTPBasicAuth
 import json
 import re
-from utils.url_builder import build_object_urlpart, add_marker_urlpart, build_context_url, build_document_getter_url, get_query_range
+from utils.url_builder import build_object_urlpart, add_marker_urlpart, build_context_url, build_document_getter_url, get_query_range, build_keyword_search_url
 from utils.objects import Sentence
 
 
@@ -42,6 +42,10 @@ def request_es_ML(fast_search, obj_a, obj_b):
     if fast_search == 'true':
         size = 500
     url += get_query_range(size)
+    return send_request(url)
+
+def request_keyword_query(query, size):
+    url = build_keyword_search_url(query, size)
     return send_request(url)
 
 

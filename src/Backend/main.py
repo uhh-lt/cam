@@ -1,18 +1,22 @@
 import json
 import numbers
+import sys
 import urllib
 
 import requests
 import sklearn
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from requests.auth import HTTPBasicAuth
 
 from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
-from utils.es_requester import (extract_sentences, request_es, request_es_ML,
-                                request_es_triple)
+from utils.es_requester import (extract_sentences, request_context_sentences,
+                                request_document_by_id, request_es,
+                                request_es_ML, request_es_triple,
+                                request_keyword_query)
 from utils.objects import Argument, Aspect
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.sentence_context_getter import get_sentence_context
@@ -131,6 +135,14 @@ def get_context():
     sentence_id = request.args.get('sentenceID')
     context_size = request.args.get('contextSize')
     return jsonify(get_sentence_context(document_id, sentence_id, context_size))
+
+@app.route('/search')
+@app.route('/cam/search', methods=['GET'])
+def search():
+    query = request.args.get('query')
+    es_json = request_keyword_query(query, 500)
+    sentences = extract_sentences(es_json)
+    return jsonify([sentence.__dict__ for sentence in sentences])
 
 
 def setStatus(statusID, statusText):

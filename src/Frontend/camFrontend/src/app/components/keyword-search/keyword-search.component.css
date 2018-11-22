@@ -1,0 +1,16 @@
+.text-styling {
+    font-size: 17px;
+}
+
+.search-button{
+    background-color: #666666;
+}
+
+::ng-deep .mat-tooltip {
+    font-size: 13px;
+}
+
+#sentence-hover:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
