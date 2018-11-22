@@ -60,10 +60,10 @@ def extract_main_links(object_a: Argument, object_b: Argument):
     object_b:       the second object to be compared
     '''
     # amount of sentences to use for context aspect generation
-    context_sent_amount = 10
+    context_sent_amount = 0
     # amount of sentences to use within each context (before and after the
     # actual sentence)
-    context_size = 2
+    context_size = 0
 
     object_a_aspect_dict = {}
     object_b_aspect_dict = {}
