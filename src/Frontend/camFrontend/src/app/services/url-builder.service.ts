@@ -8,8 +8,7 @@ export class UrlBuilderService {
     *  The name of the backend server.
     */
   // private HOSTNAME_DEFAULT = 'http://localhost:5000/cam';
-  private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
-  private HOSTNAME_SQLITE = 'http://ltdemos.informatik.uni-hamburg.de/sqliteAspectSaving';
+  private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api3';
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
@@ -27,7 +26,7 @@ export class UrlBuilderService {
   }
 
   public buildSqliteAspectSavingURL(objA, objB, aspectList) {
-    let URL = `${this.HOSTNAME_SQLITE}?objectA=${objA}&objectB=${objB}`;
+    let URL = `${this.HOSTNAME_DEFAULT}/sqliteAspectSaving?objectA=${objA}&objectB=${objB}`;
     URL += this.addAspectURL(aspectList);
     return URL;
   }
