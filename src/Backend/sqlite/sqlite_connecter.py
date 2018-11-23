@@ -17,7 +17,7 @@ class Rating:
 
 
 def get_connection():
-    connection = sqlite3.connect('cam_aspects.db')
+    connection = sqlite3.connect('/srv/docker/pan-cam3/src/Backend/sqlite/cam_aspects.db')
     return connection, connection.cursor()
 
 
