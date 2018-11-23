@@ -2,7 +2,8 @@ import json
 import numbers
 import sys
 import urllib
-from os.path import dirname, abspath
+from os.path import abspath, dirname
+
 import requests
 import sklearn
 from flask import Flask, jsonify, request
@@ -13,6 +14,7 @@ from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
+from sqlite.sqlite_connecter import Rating, insert_rating
 from utils.es_requester import (extract_sentences, request_context_sentences,
                                 request_document_by_id, request_es,
                                 request_es_ML, request_es_triple,
@@ -21,7 +23,6 @@ from utils.objects import Argument, Aspect
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.sentence_context_getter import get_sentence_context
 from utils.url_builder import set_index
-from sqlite.sqlite_connecter import Rating, insert_rating
 
 app = Flask(__name__)
 CORS(app)

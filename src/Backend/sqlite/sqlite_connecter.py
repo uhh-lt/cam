@@ -41,4 +41,8 @@ def insert_rating(rating: Rating):
         cursor.execute('''CREATE TABLE ratings (aspect text NOT NULL, rating int
                        NOT NULL, obja text NOT NULL, objb text NOT NULL)''')
         cursor.execute('INSERT INTO ratings VALUES (?,?,?,?)', rating.get_value())
+    cursor.execute("PRAGMA database_list")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row[0], row[1], row[2])
     close_connection(connection)
