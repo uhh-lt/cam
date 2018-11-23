@@ -93,15 +93,12 @@ def cam():
 
 @app.route('/sqliteAspectSaving', methods=['GET'])
 @app.route('/cam/sqliteAspectSaving', methods=['GET'])
-@app.route('/cam-api3/sqliteAspectSaving', methods=['GET'])
 def saveRatings():
     obj_a = request.args.get('objectA').lower().strip()
     obj_b = request.args.get('objectB').lower().strip()
     aspects = extract_aspects(request)
     for aspect in aspects:
         insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b))
-        print(Rating(aspect.name, aspect.weight, obj_a, obj_b), ' saved')
-    print(dirname(abspath(__file__)))
     return jsonify({'success':'Thanks!'})
 
 
