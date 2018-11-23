@@ -35,5 +35,10 @@ def create_db():
 
 def insert_rating(rating: Rating):
     connection, cursor = get_connection()
-    cursor.execute('INSERT INTO ratings VALUES (?,?,?,?)', rating.get_value())
+    try:
+        cursor.execute('INSERT INTO ratings VALUES (?,?,?,?)', rating.get_value())
+    except sqlite3.OperationalError:
+        cursor.execute('''CREATE TABLE ratings (aspect text NOT NULL, rating int
+                       NOT NULL, obja text NOT NULL, objb text NOT NULL)''')
+        cursor.execute('INSERT INTO ratings VALUES (?,?,?,?)', rating.get_value())
     close_connection(connection)
