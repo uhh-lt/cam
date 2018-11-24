@@ -24,6 +24,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   showResult = false; // boolean that checks if the result table should be shown
   showStartText = false;
   showNextText = false;
+  showLastText = false;
   status = '';
 
   object_A = ''; // the first object currently entered
@@ -105,19 +106,27 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       }
     }
     this.httpRequestService.register(this.urlBuilderService.buildSqliteAspectSavingURL(this.object_A, this.object_B, aspectList)).subscribe(data => {
-      this.reset();
-      this.showLoading = false;
-      if (this.indexOfSelectedObject + 1 < this.preSelectedObjects.length) {
-        this.indexOfSelectedObject++;
-      } else {
-        this.indexOfSelectedObject = 0;
-      }
-      this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
-      this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
-      this.showNextText = true;
+      this.prepareNextComparison();
     });
   }
 
+  skipPair() {
+    this.prepareNextComparison();
+  }
+
+  prepareNextComparison() {
+    this.reset();
+    this.showLoading = false;
+    if (this.indexOfSelectedObject + 1 < this.preSelectedObjects.length) {
+      this.indexOfSelectedObject++;
+      this.showNextText = true;
+    } else {
+      this.indexOfSelectedObject = 0;
+      this.showLastText = true;
+    }
+    this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
+    this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
+  }
 
   start() {
     this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
@@ -144,6 +153,9 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.showResult = false;
     this.finalAspDict = {};
     this.resultPresentation.reset();
+    this.showStartText = false;
+    this.showNextText = false;
+    this.showLastText = false;
   }
 
   resetInput() {

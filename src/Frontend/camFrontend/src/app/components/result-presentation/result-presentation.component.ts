@@ -12,6 +12,7 @@ export class ResultPresentationComponent {
 
   @Output() chipSelected = new EventEmitter<string>();
   @Output() submitRatings = new EventEmitter<Array<string>>();
+  @Output() skipRating = new EventEmitter();
 
   private dispensableResult = new DispensableResult();
   private categoriesChartOrder = new Array<string>();
@@ -171,5 +172,9 @@ export class ResultPresentationComponent {
 
   submitAspectRatings() {
     this.submitRatings.emit(this.markedAspectsA.concat(this.markedAspectsB));
+  }
+
+  skip() {
+    this.skipRating.emit();
   }
 }
