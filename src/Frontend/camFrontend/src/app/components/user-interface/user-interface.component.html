@@ -21,7 +21,12 @@
       </tr>
       <tr>
         <td>
-          
+          <div *ngIf='showStartText' class="text-center">
+            Thanks for taking part in rating CAM's generated aspects. Click on Start to get started!
+          </div>
+          <div *ngIf='showNextText' class="text-center">
+            Success! Your rating has been saved. Start the next comparison?
+          </div>
         </td>
         <th class='align-middle text-center'>
           <button type="submit" mat-raised-button color="primary" [disabled]='!objectsEntered()'>

@@ -22,6 +22,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   fastSearch = false; // the possibility to do a fast comparison
   showLoading = false; // boolean that checks if the loading screen should be shown
   showResult = false; // boolean that checks if the result table should be shown
+  showStartText = false;
+  showNextText = false;
   status = '';
 
   object_A = ''; // the first object currently entered
@@ -41,6 +43,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.httpRequestService.getPredefinedPairs(this.urlBuilderService.getPredefinedPairsURL()).subscribe(data => {
       this.preSelectedObjects = data;
     });
+    this.showStartText = true;
   }
 
   ngAfterViewInit() {
@@ -111,6 +114,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       }
       this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
       this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
+      this.showNextText = true;
     });
   }
 
@@ -118,6 +122,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   start() {
     this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
     this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
+    this.showStartText = false;
   }
 
   getStatus() {
