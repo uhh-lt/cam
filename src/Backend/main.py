@@ -100,7 +100,7 @@ def saveRatings():
     aspects = extract_aspects(request)
     for aspect in aspects:
         insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b))
-    return jsonify(get_connection_path)
+    return jsonify(get_connection_path())
 
 
 @app.route('/status', methods=['GET'])
