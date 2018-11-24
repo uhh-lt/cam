@@ -40,11 +40,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.httpRequestService.getPredefinedPairs(this.urlBuilderService.getPredefinedPairsURL()).subscribe(data => {
       this.preSelectedObjects = data;
-      console.log(data);
-      console.log(this.preSelectedObjects);
     });
-    this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
-    this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
   }
 
   ngAfterViewInit() {
@@ -116,6 +112,12 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
       this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
     });
+  }
+
+
+  start() {
+    this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
+    this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
   }
 
   getStatus() {

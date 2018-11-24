@@ -20,33 +20,19 @@
         </td>
       </tr>
       <tr>
-        <td class='align-middle text-right'>
-          <mat-form-field>
-            <mat-select [(ngModel)]='selectedModel' name="modelSelect">
-              <mat-option selected value="default">
-                Default
-              </mat-option>
-              <mat-option value="ml1">
-                ML BoW
-              </mat-option>
-              <mat-option value="ml2">
-                ML Infersent
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <td>
+          
         </td>
         <th class='align-middle text-center'>
           <button type="submit" mat-raised-button color="primary" [disabled]='!objectsEntered()'>
             Compare!
           </button>
-          &nbsp;
-          <button (click)='resetInput()' mat-raised-button type="button">
-            Reset
+        </th>
+        <th class='align-middle text-center'>
+          <button (click)='start()' mat-raised-button color="primary" [disabled]='objectsEntered()'>
+            Start!
           </button>
         </th>
-        <td class='align-middle'>
-          <mat-checkbox [(ngModel)]="fastSearch" name="fastSearch">Faster Search</mat-checkbox>
-        </td>
       </tr>
       </tbody>
     </table>
