@@ -21,18 +21,14 @@
           [arrange]="'flex-start'" (updatedSelection)="updatedSelection($event, true)" (updatedMarks)="updatedMarks($event, 0)"></app-multiselect-chiplist>
 
       </td>
-      <tr>
       <th class='align-middle text-center'>
         <button (click)='submitAspectRatings()' mat-raised-button type="button">
           Submit
         </button>
-      </tr>
-      <tr>
       <th class='align-middle text-center'>
         <button (click)='skip()' mat-raised-button type="button">
           Skip this
         </button>
-      </tr>
       </th>
       <td [ngStyle]="{'width': '40%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.looser" [extractedAspects]="dispensableResult.looserLinks"
