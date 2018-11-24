@@ -3,7 +3,6 @@ FROM python:3.6.1
 
 # Set the working directory to /app
 WORKDIR /app
-RUN mkdir /sqlitedb
 
 # Copy the current directory contents into the container at /app
 ADD . /app
