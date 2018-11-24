@@ -18,3 +18,5 @@ services:
       - 10100:5000
     networks:
       - cam
+    volumes:
+      - /srv/docker/pan-cam3/sqlitedb:/sqlitedb

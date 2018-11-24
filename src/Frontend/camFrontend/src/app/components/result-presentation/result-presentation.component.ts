@@ -23,7 +23,8 @@ export class ResultPresentationComponent {
 
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
-  public markedAspects = new Array<string>();
+  public markedAspectsA = new Array<string>();
+  public markedAspectsB = new Array<string>();
 
   public trigger = 0;
 
@@ -155,8 +156,12 @@ export class ResultPresentationComponent {
   }
 
 
-  updatedMarks(markedAspects: Array<string>) {
-    this.markedAspects = markedAspects;
+  updatedMarks(markedAspects: Array<string>, obj) {
+    if (obj === 0) {
+      this.markedAspectsA = markedAspects;
+    } else {
+      this.markedAspectsB = markedAspects;
+    }
   }
 
 
@@ -165,6 +170,6 @@ export class ResultPresentationComponent {
   }
 
   submitAspectRatings() {
-    this.submitRatings.emit(this.markedAspects);
+    this.submitRatings.emit(this.markedAspectsA.concat(this.markedAspectsB));
   }
 }

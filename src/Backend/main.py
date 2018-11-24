@@ -3,6 +3,7 @@ import numbers
 import sys
 import urllib
 from os.path import abspath, dirname
+from random import random
 
 import requests
 import sklearn
@@ -14,7 +15,7 @@ from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
-from sqlite.sqlite_connecter import Rating, insert_rating, get_data
+from sqlite.sqlite_connecter import Rating, insert_rating, get_predefined_pairs
 from utils.es_requester import (extract_sentences, request_context_sentences,
                                 request_document_by_id, request_es,
                                 request_es_ML, request_es_triple,
@@ -100,7 +101,36 @@ def saveRatings():
     aspects = extract_aspects(request)
     for aspect in aspects:
         insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b))
-    return jsonify(get_data())
+    return jsonify(True)
+
+
+@app.route('/getPredefinedPairs', methods=['GET'])
+@app.route('/cam/getPredefinedPairs', methods=['GET'])
+def getPredefinedPairs():
+    pairs = get_predefined_pairs()
+    cumulative_sums = []
+    current_value = 0
+    for pair in pairs:
+        if pair[2] != 0:
+            pair_value = 1 / pair[2]
+        else:
+            pair_value = 2
+        cumulative_sums.append(current_value + pair_value)
+        current_value += pair_value
+    amount_of_pairs = len(pairs)
+    pairs_to_return = []
+    print(cumulative_sums)
+    for i in range(0, amount_of_pairs):
+        rand = random() * max(cumulative_sums)
+        for s in cumulative_sums:
+            if rand < s:
+                index = cumulative_sums.index(s)
+                pair = pairs[index]
+                pairs_to_return.append([pair[0], pair[1]])
+                pairs.remove(pair)
+                cumulative_sums.remove(s)
+                break
+    return jsonify(pairs_to_return)
 
 
 @app.route('/status', methods=['GET'])
@@ -135,6 +165,7 @@ def get_context():
     sentence_id = request.args.get('sentenceID')
     context_size = request.args.get('contextSize')
     return jsonify(get_sentence_context(document_id, sentence_id, context_size))
+
 
 @app.route('/search')
 @app.route('/cam/search', methods=['GET'])

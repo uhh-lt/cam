@@ -18,7 +18,7 @@
     <tr style="height: 100%">
       <td [ngStyle]="{'width': '40%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.winner" [extractedAspects]="dispensableResult.winnerLinks"
-          [arrange]="'flex-start'" (updatedSelection)="updatedSelection($event, true)" (updatedMarks)="updatedMarks($event)"></app-multiselect-chiplist>
+          [arrange]="'flex-start'" (updatedSelection)="updatedSelection($event, true)" (updatedMarks)="updatedMarks($event, 0)"></app-multiselect-chiplist>
 
       </td>
       <th class='align-middle text-center'>
@@ -28,7 +28,7 @@
       </th>
       <td [ngStyle]="{'width': '40%'}">
         <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.looser" [extractedAspects]="dispensableResult.looserLinks"
-          [arrange]="'flex-end'" (updatedSelection)="updatedSelection($event, false)" (updatedMarks)="updatedMarks($event)"></app-multiselect-chiplist>
+          [arrange]="'flex-end'" (updatedSelection)="updatedSelection($event, false)" (updatedMarks)="updatedMarks($event, 1)"></app-multiselect-chiplist>
       </td>
     </tr>
   </table>

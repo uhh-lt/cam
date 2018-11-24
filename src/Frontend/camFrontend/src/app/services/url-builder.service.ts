@@ -94,6 +94,11 @@ export class UrlBuilderService {
   }
 
 
+  getPredefinedPairsURL() {
+    return `${this.HOSTNAME_DEFAULT}/getPredefinedPairs`;
+  }
+
+
   getContextURL(documentID: string, sentenceID: number, contextSize: number) {
     return `${this.HOSTNAME_DEFAULT}/context?documentID=${encodeURIComponent(documentID)}`
       + `&sentenceID=${sentenceID}&contextSize=${contextSize}`;

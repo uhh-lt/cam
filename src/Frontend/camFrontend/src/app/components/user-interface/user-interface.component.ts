@@ -31,31 +31,18 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   private generatedAspects = [];
 
-  private preSelectedObjects = [
-    ['python', 'java'],
-    ['php', 'javascript'],
-    ['perl', 'python'],
-    ['ios', 'android'],
-    ['cuda', 'opencl'],
-    ['bluetooth', 'ethernet'],
-    ['bmw', 'toyota'],
-    ['apple', 'microsoft'],
-    ['gamecube', 'ps2'],
-    ['milk', 'beer'],
-    ['motorcycle', 'truck'],
-    ['oregon', 'michigan'],
-    ['pepsi', 'coca-cola'],
-    ['potato', 'steak'],
-    ['tennis', 'golf']
-  ];
+  private preSelectedObjects = [];
+  private indexOfSelectedObject = 0;
 
   constructor(private urlBuilderService: UrlBuilderService, private httpRequestService: HTTPRequestService,
     private snackBar: MatSnackBar, private scrollToService: ScrollToService) { }
 
   ngOnInit() {
-    const index = Math.floor(Math.random() * 15);
-    this.object_A = this.preSelectedObjects[index][0];
-    this.object_B = this.preSelectedObjects[index][1];
+    this.httpRequestService.getPredefinedPairs(this.urlBuilderService.getPredefinedPairsURL()).subscribe(data => {
+      this.preSelectedObjects = data;
+    });
+    this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
+    this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
   }
 
   ngAfterViewInit() {
@@ -108,21 +95,25 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   submitRatingsToBackend(markedAspects: Array<string>) {
     const aspectList = {}
-    for (let index = 0; index < markedAspects.length; index++) {
-      const element = markedAspects[index];
+    for (let index = 0; index < this.generatedAspects.length; index++) {
+      const element = this.generatedAspects[index];
       if (markedAspects.indexOf(element) > -1) {
         aspectList[element] = 1;
       } else {
         aspectList[element] = 0;
       }
     }
-    const url = this.urlBuilderService.buildSqliteAspectSavingURL(this.object_A, this.object_B, aspectList);
-    console.log(url);
-    this.httpRequestService.register(url).subscribe(data => {
-      console.log(data)
+    this.httpRequestService.register(this.urlBuilderService.buildSqliteAspectSavingURL(this.object_A, this.object_B, aspectList)).subscribe(data => {
       this.reset();
       this.showLoading = false;
-    })
+      if (this.indexOfSelectedObject + 1 < this.preSelectedObjects.length) {
+        this.indexOfSelectedObject++;
+      } else {
+        this.indexOfSelectedObject = 0;
+      }
+      this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
+      this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
+    });
   }
 
   getStatus() {

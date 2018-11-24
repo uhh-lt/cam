@@ -37,4 +37,8 @@ export class HTTPRequestService {
   getSentences(url: string) {
     return this.httpClient.get<Array<Sentence>>(url);
   }
+
+  getPredefinedPairs(url: string) {
+    return this.httpClient.get<Array<Array<String>>>(url);
+  }
 }
