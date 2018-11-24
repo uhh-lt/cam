@@ -19,4 +19,4 @@ services:
     networks:
       - cam
     volumes:
-      - /srv/docker/pan-cam3/sqlitedb:/sqlitedb
+      - /srv/docker/pan-cam3/sqlitedb:/sqlite

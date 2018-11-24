@@ -17,7 +17,7 @@ class Rating:
 
 
 def get_connection():
-    connection = sqlite3.connect('sqlitedb/cam_aspects.db')
+    connection = sqlite3.connect('sqlite/cam_aspects.db')
     return connection, connection.cursor()
 
 
