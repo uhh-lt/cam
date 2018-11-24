@@ -23,8 +23,15 @@
           <div *ngIf='showNextText' class="text-center">
             Success! Your rating has been saved. Start the next comparison?
           </div>
+          <div *ngIf='showSkipText' class="text-center">
+            The last comparison has been skipped. Start the next comparison?
+          </div>
           <div *ngIf='showLastText' class="text-center">
             Success! Your rating has been saved. You have gone through all of CAM's predefined pairs but if you want
+            you can start all over.
+          </div>
+          <div *ngIf='showSkipLastText' class="text-center">
+            The last comparison has been skipped. You have gone through all of CAM's predefined pairs but if you want
             you can start all over.
           </div>
         </td>
