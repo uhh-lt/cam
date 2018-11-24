@@ -17,7 +17,8 @@ class Rating:
 
 
 def get_connection():
-    connection = sqlite3.connect('/srv/docker/pan-cam3/src/Backend/sqlite/cam_aspects.db')
+    #connection = sqlite3.connect('/srv/docker/pan-cam3/src/Backend/sqlite/cam_aspects.db')
+    connection = sqlite3.connect('cam_aspects.db')
     return connection, connection.cursor()
 
 
@@ -41,8 +42,12 @@ def insert_rating(rating: Rating):
         cursor.execute('''CREATE TABLE ratings (aspect text NOT NULL, rating int
                        NOT NULL, obja text NOT NULL, objb text NOT NULL)''')
         cursor.execute('INSERT INTO ratings VALUES (?,?,?,?)', rating.get_value())
+    close_connection(connection)
+
+
+def get_connection_path():
+    connection, cursor = get_connection()
     cursor.execute("PRAGMA database_list")
     rows = cursor.fetchall()
     for row in rows:
-        print(row[0], row[1], row[2])
-    close_connection(connection)
+        return row[2]
