@@ -45,9 +45,11 @@ def insert_rating(rating: Rating):
     close_connection(connection)
 
 
-def get_connection_path():
+def get_data():
     connection, cursor = get_connection()
-    cursor.execute("PRAGMA database_list")
+    cursor.execute("SELECT * FROM ratings")
     rows = cursor.fetchall()
+    x = []
     for row in rows:
-        return row[2]
+        x += row
+    return x
