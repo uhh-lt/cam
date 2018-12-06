@@ -18,8 +18,6 @@ services:
       - 10104:5000
     networks:
       - cam
-    links:
-      - mysql:mysql
   mysql:
     container_name: cam_mysql
     restart: always
