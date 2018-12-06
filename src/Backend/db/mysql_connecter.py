@@ -123,14 +123,9 @@ def raise_value_of_pair(pair, cursor):
 
 
 def export_rating(rating: Rating):
-    connection = get_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM ratings")
-    ratings = cursor.fetchall()
     target_dir = dirname(dirname(dirname(dirname(abspath(__file__)))))
     with open(target_dir + '/ratingresults/ratings.csv', 'a') as target_file:
         target_file.write(';'.join([str(col) for col in rating[1:]]) + '\n')
-    close_connection(connection, cursor)
 
 
 def close_connection(connection, cursor):
