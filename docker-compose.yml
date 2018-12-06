@@ -32,5 +32,3 @@ services:
       - /srv/docker/pan-cam3/camsqlvolume:/var/lib/mysql
     networks:
       - cam
-volumes:
-  /srv/docker/pan-cam3/camsqlvolume:
