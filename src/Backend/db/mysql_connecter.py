@@ -125,7 +125,7 @@ def raise_value_of_pair(pair, cursor):
 def export_rating(rating: Rating):
     target_dir = dirname(dirname(dirname(dirname(abspath(__file__)))))
     with open(target_dir + '/ratingresults/ratings.csv', 'a') as target_file:
-        target_file.write(';'.join([str(col) for col in rating[1:]]) + '\n')
+        target_file.write(';'.join([str(col) for col in rating.get_value()]) + '\n')
 
 
 def close_connection(connection, cursor):
