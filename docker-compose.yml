@@ -19,6 +19,8 @@ services:
     networks:
       - cam
   mysql:
+    container_name: cam_mysql
+    restart: always
     image: mysql:latest
     ports:
       - 3306:3306
@@ -28,5 +30,7 @@ services:
       MYSQL_PASS: 'campass'
     volumes:
       - camsqlvolume:/var/lib/mysql
+    networks:
+      - cam
 volumes:
   camsqlvolume:
