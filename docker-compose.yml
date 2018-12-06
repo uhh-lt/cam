@@ -20,6 +20,8 @@ services:
       - cam
     links:
       - cam_mysql:mysql
+    volumes:
+      - /srv/docker/pan-cam3/ratingresults:/ratingresults
   cam_mysql:
     restart: always
     image: mysql:latest
