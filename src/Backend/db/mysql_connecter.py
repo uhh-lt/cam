@@ -105,7 +105,8 @@ def get_predefined_pairs():
 
 
 def insert_rating(rating: Rating):
-    connection, cursor = get_connection()
+    connection = get_connection()
+    cursor = connection.cursor()
     cursor.execute("INSERT INTO `ratings` VALUES (%s,%s,%s,%s)",
                    rating.get_value())
     raise_value_of_pair(rating.get_pair(), cursor)
