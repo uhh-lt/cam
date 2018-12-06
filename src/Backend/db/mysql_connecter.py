@@ -92,7 +92,7 @@ def insert_predefined_pairs(connection, predefined_pairs):
     cursor = connection.cursor()
     for pair in predefined_pairs:
         pair.sort()
-        cursor.execute("INSERT INTO `pairs` VALUES (%s,%s,0)", pair)
+        cursor.execute("INSERT INTO `pairs` (`obja`,`objb`,`amount`) VALUES (%s,%s,0)", pair)
     connection.commit()
     cursor.close()
 
@@ -107,7 +107,7 @@ def get_predefined_pairs():
 def insert_rating(rating: Rating):
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO `ratings` VALUES (aspect=%s,rating=%s,obja=%s,objb=%s)",
+    cursor.execute("INSERT INTO `ratings` (`aspect`,`rating`,`obja`,`objb`) VALUES (%s,%s,%s,%s)",
                    rating.get_value())
     raise_value_of_pair(rating.get_pair(), cursor)
     close_connection(connection, cursor)
