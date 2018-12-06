@@ -18,6 +18,8 @@ services:
       - 10104:5000
     networks:
       - cam
+    links:
+      - mysql:mysql
   mysql:
     container_name: cam_mysql
     restart: always
@@ -29,8 +31,8 @@ services:
       MYSQL_USER: 'camuser'
       MYSQL_PASS: 'campass'
     volumes:
-      - camsqlvolume:/var/lib/mysql
+      - /srv/docker/pan-cam3/camsqlvolume:/var/lib/mysql
     networks:
       - cam
 volumes:
-  camsqlvolume:
+  /srv/docker/pan-cam3/camsqlvolume:
