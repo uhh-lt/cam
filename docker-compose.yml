@@ -18,8 +18,9 @@ services:
       - 10104:5000
     networks:
       - cam
-  mysql:
-    container_name: cam_mysql
+    links:
+      - cam_mysql:mysql
+  cam_mysql:
     restart: always
     image: mysql:latest
     ports:
