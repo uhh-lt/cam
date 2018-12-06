@@ -23,15 +23,15 @@ pre_selected_objects = [
 DB_NAME = 'cam_aspects'
 create_ratings_table_sql = ("CREATE TABLE `ratings` ("
                             "`ratingno` int NOT NULL AUTO_INCREMENT,"
-                            " `aspect` text NOT NULL,"
+                            " `aspect` varchar(200) NOT NULL,"
                             " `rating` int NOT NULL,"
-                            " `obja` text NOT NULL,"
-                            " `objb` text NOT NULL,"
+                            " `obja` varchar(200) NOT NULL,"
+                            " `objb` varchar(200) NOT NULL,"
                             " PRIMARY KEY (`ratingno`)"
                             ") ENGINE=InnoDB")
 create_pairs_table_sql = ("CREATE TABLE `pairs` ("
-                          " `obja` text NOT NULL,"
-                          " `objb` text NOT NULL,"
+                          " `obja` varchar(200) NOT NULL,"
+                          " `objb` varchar(200) NOT NULL,"
                           " `amount` int NOT NULL,"
                           " PRIMARY KEY (`obja`, `objb`)"
                           ") ENGINE=InnoDB")
