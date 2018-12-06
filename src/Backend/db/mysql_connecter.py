@@ -63,15 +63,17 @@ def get_connection():
         cursor.execute("USE {}".format(DB_NAME))
     except:
         print("Database {} does not exists.".format(DB_NAME))
-        create_database(cursor)
+        create_database(connection)
         print("Database {} created successfully.".format(DB_NAME))
         connection.database = DB_NAME
-        create_table(cursor, create_ratings_table_sql)
-        create_table(cursor, create_pairs_table_sql)
-    return connection, cursor
+        create_table(connection, create_ratings_table_sql)
+        create_table(connection, create_pairs_table_sql)
+        insert_predefined_pairs(connection, pre_selected_objects)
+    return connection
 
 
-def create_database(cursor):
+def create_database(connection):
+    cursor = connection.cursor()
     try:
         cursor.execute(
             "CREATE DATABASE {} DEFAULT CHARACTER SET 'utf8'".format(DB_NAME))
@@ -80,7 +82,8 @@ def create_database(cursor):
         exit(1)
 
 
-def create_table(cursor, sql_command):
+def create_table(connection, sql_command):
+    cursor = connection.cursor()
     try:
         print("Creating table")
         cursor.execute(sql_command)
@@ -93,8 +96,8 @@ def create_table(cursor, sql_command):
         print("OK")
 
 
-def insert_predefined_pairs(predefined_pairs):
-    connection, cursor = get_connection()
+def insert_predefined_pairs(connection, predefined_pairs):
+    cursor = connection.cursor()
     for pair in predefined_pairs:
         pair.sort()
         cursor.execute('INSERT INTO pairs VALUES (?,?,0)', pair)
