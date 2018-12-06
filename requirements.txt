@@ -3,7 +3,7 @@ flask-cors
 nltk
 requests
 inflect
-mysql-connector
+mysql-connector-python-rf
 # From here all dependencies for ml
 scipy
 sklearn
