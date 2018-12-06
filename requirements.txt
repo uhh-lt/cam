@@ -4,6 +4,8 @@ nltk
 requests
 inflect
 mysql-connector-python-rf
+mysql-connector-python
+mysql-connector
 # From here all dependencies for ml
 scipy
 sklearn
