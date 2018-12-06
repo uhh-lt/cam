@@ -129,9 +129,10 @@ def export_ratings():
     ratings = cursor.fetchall()
     target_dir = dirname(dirname(dirname(dirname(abspath(__file__)))))
     with open(target_dir + 'ratings.csv', 'w') as target_file:
-        target_file.writelines(ratings)
+        target_file.writelines(
+            [rating[0] + ';' + rating[1] + ';' + rating[2] + ';' + rating[3] for rating in ratings])
         target_file.close()
-    close_connection()
+    close_connection(connection, cursor)
 
 
 def close_connection(connection, cursor):
