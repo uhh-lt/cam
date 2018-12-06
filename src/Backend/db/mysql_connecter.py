@@ -57,7 +57,7 @@ class Rating:
 
 def get_connection():
     connection = mysql.connector.connect(
-        user='camuser', password='campass', host='localhost:3306')
+        user='camuser', password='campass', host='localhost')
     cursor = connection.cursor()
     try:
         cursor.execute("USE {}".format(DB_NAME))
