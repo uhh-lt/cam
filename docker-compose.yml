@@ -6,17 +6,31 @@ networks:
 services:
   frontend:
     build: ./src/Frontend/camFrontend/
-    image: cam-frontend
+    image: cam-frontend3
     ports:
-      - 10101:4200
+      - 10105:4200
     networks:
       - cam
   backend:
     build: ./src/Backend/
-    image: cam-backend
+    image: cam-backend3
     ports:
-      - 10100:5000
+      - 10104:5000
     networks:
       - cam
+  mysql:
+    container_name: cam_mysql
+    restart: always
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 'cam_root_pass' # TODO: Change this
+      MYSQL_USER: 'camuser'
+      MYSQL_PASS: 'campass'
     volumes:
-      - /srv/docker/pan-cam3/sqlitedb:/sqlite
+      - camsqlvolume:/var/lib/mysql
+    networks:
+      - cam
+volumes:
+  camsqlvolume:
