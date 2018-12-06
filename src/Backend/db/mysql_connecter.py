@@ -20,7 +20,7 @@ pre_selected_objects = [
     ['tennis', 'golf']
 ]
 
-DB_NAME = 'cam_aspects.db'
+DB_NAME = 'cam_aspects'
 create_ratings_table_sql = ("CREATE TABLE `ratings` ("
                             "`ratingno` int NOT NULL AUTO_INCREMENT,"
                             " `aspect` text NOT NULL,"
