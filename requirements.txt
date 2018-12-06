@@ -3,7 +3,7 @@ flask-cors
 nltk
 requests
 inflect
-https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-cext-py3_8.0.13-1ubuntu16.04_i386.deb
+mysql-connector-python
 # From here all dependencies for ml
 scipy
 sklearn
