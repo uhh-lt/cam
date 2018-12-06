@@ -61,17 +61,13 @@ def get_connection():
     cursor = connection.cursor()
     try:
         cursor.execute("USE {}".format(DB_NAME))
-    except mysql.connector.Error as err:
+    except:
         print("Database {} does not exists.".format(DB_NAME))
-        if err.errno == errorcode.ER_BAD_DB_ERROR:
-            create_database(cursor)
-            print("Database {} created successfully.".format(DB_NAME))
-            connection.database = DB_NAME
-            create_table(cursor, create_ratings_table_sql)
-            create_table(cursor, create_pairs_table_sql)
-        else:
-            print(err)
-            exit(1)
+        create_database(cursor)
+        print("Database {} created successfully.".format(DB_NAME))
+        connection.database = DB_NAME
+        create_table(cursor, create_ratings_table_sql)
+        create_table(cursor, create_pairs_table_sql)
     return connection, cursor
 
 
