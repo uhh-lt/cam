@@ -128,7 +128,7 @@ def export_rating(rating: Rating):
     cursor.execute("SELECT * FROM ratings")
     ratings = cursor.fetchall()
     target_dir = dirname(dirname(dirname(dirname(abspath(__file__)))))
-    with open(target_dir + '/ratingresults/ratings.csv', 'w') as target_file:
+    with open(target_dir + '/ratingresults/ratings.csv', 'a') as target_file:
         target_file.write(';'.join([str(col) for col in rating[1:]]) + '\n')
     close_connection(connection, cursor)
 
