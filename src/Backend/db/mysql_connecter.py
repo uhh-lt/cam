@@ -100,19 +100,20 @@ def insert_predefined_pairs(connection, predefined_pairs):
     cursor = connection.cursor()
     for pair in predefined_pairs:
         pair.sort()
-        cursor.execute('INSERT INTO pairs VALUES (?,?,0)', pair)
+        cursor.execute('INSERT INTO pairs VALUES (%s,%s,0)', pair)
     close_connection(connection, cursor)
 
 
 def get_predefined_pairs():
-    cursor = get_connection()[1]
+    connection = get_connection()
+    cursor = connection.cursor()
     cursor.execute('SELECT * FROM pairs')
     return cursor.fetchall()
 
 
 def insert_rating(rating: Rating):
     connection, cursor = get_connection()
-    cursor.execute('INSERT INTO ratings VALUES (?,?,?,?)',
+    cursor.execute('INSERT INTO ratings VALUES (%s,%s,%s,%s)',
                    rating.get_value())
     raise_value_of_pair(rating.get_pair(), cursor)
     close_connection(connection, cursor)
@@ -120,7 +121,7 @@ def insert_rating(rating: Rating):
 
 def raise_value_of_pair(pair, cursor):
     pair.sort()
-    cursor.execute('UPDATE pairs SET amount = amount + 1 WHERE obja = ? AND objb = ?', pair)
+    cursor.execute('UPDATE pairs SET amount = amount + 1 WHERE obja = %s AND objb = %s', pair)
 
 
 def close_connection(connection, cursor):
