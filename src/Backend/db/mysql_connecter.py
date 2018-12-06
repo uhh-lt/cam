@@ -1,6 +1,7 @@
+from os.path import abspath, dirname
+
 import mysql.connector
 from mysql.connector import errorcode
-
 
 pre_selected_objects = [
     ['python', 'java'],
@@ -92,7 +93,8 @@ def insert_predefined_pairs(connection, predefined_pairs):
     cursor = connection.cursor()
     for pair in predefined_pairs:
         pair.sort()
-        cursor.execute("INSERT INTO `pairs` (`obja`,`objb`,`amount`) VALUES (%s,%s,0)", pair)
+        cursor.execute(
+            "INSERT INTO `pairs` (`obja`,`objb`,`amount`) VALUES (%s,%s,0)", pair)
     connection.commit()
     cursor.close()
 
@@ -111,12 +113,25 @@ def insert_rating(rating: Rating):
                    rating.get_value())
     raise_value_of_pair(rating.get_pair(), cursor)
     close_connection(connection, cursor)
+    export_ratings()
 
 
 def raise_value_of_pair(pair, cursor):
     pair.sort()
     cursor.execute(
         "UPDATE pairs SET amount = amount + 1 WHERE obja = %s AND objb = %s", pair)
+
+
+def export_ratings():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM ratings")
+    ratings = cursor.fetchall()
+    target_dir = dirname(dirname(dirname(dirname(abspath(__file__)))))
+    with open(target_dir + 'ratings.csv', 'w') as target_file:
+        target_file.writelines(ratings)
+        target_file.close()
+    close_connection()
 
 
 def close_connection(connection, cursor):
