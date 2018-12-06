@@ -113,7 +113,7 @@ def insert_rating(rating: Rating):
                    rating.get_value())
     raise_value_of_pair(rating.get_pair(), cursor)
     close_connection(connection, cursor)
-    export_ratings()
+    export_rating(rating)
 
 
 def raise_value_of_pair(pair, cursor):
@@ -122,16 +122,14 @@ def raise_value_of_pair(pair, cursor):
         "UPDATE pairs SET amount = amount + 1 WHERE obja = %s AND objb = %s", pair)
 
 
-def export_ratings():
+def export_rating(rating: Rating):
     connection = get_connection()
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM ratings")
     ratings = cursor.fetchall()
     target_dir = dirname(dirname(dirname(dirname(abspath(__file__)))))
     with open(target_dir + '/ratingresults/ratings.csv', 'w') as target_file:
-        for rating in ratings:
-            target_file.write(';'.join([str(col) for col in rating[1:]]) + '\n')
-        target_file.close()
+        target_file.write(';'.join([str(col) for col in rating[1:]]) + '\n')
     close_connection(connection, cursor)
 
 
