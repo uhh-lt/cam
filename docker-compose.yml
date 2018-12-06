@@ -19,7 +19,6 @@ services:
     networks:
       - cam
   mysql:
-    container_name: cam_mysql
     restart: always
     image: mysql:latest
     ports:
