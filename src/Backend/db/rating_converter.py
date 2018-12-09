@@ -35,16 +35,16 @@ def convert_exported_ratings():
             target_file.write(
                 'aspects with the most GOOD ratings for ' + pair + ':\n')
             for aspect in sorted(good_dict, key=good_dict.__getitem__, reverse=True):
-                target_file.write(aspect + ';' + good_dict[aspect] + '\n')
+                target_file.write(aspect + ';' + str(good_dict[aspect]) + '\n')
             target_file.write('\n\n')
 
             target_file.write(
                 'aspects with the most BAD ratings for ' + pair + ':\n')
             for aspect in sorted(bad_dict, key=bad_dict.__getitem__, reverse=True):
-                target_file.write(aspect + ';' + bad_dict[aspect] + '\n')
+                target_file.write(aspect + ';' + str(bad_dict[aspect]) + '\n')
             target_file.write('\n\n')
 
             target_file.write('average aspect ratings for ' + pair + ':\n')
             for aspect in sorted(average_dict, key=average_dict.__getitem__, reverse=True):
-                target_file.write(aspect + ';' + average_dict[aspect] + '\n')
+                target_file.write(aspect + ';' + str(average_dict[aspect]) + '\n')
             target_file.write('\n\n')
