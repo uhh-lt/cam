@@ -1,3 +1,6 @@
+from os.path import abspath, dirname
+
+TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
 RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/ratings.csv'
 CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
 
