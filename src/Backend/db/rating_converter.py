@@ -1,5 +1,3 @@
-import numpy
-
 from mysql_connecter import CONVERTED_RATINGS_FILE_NAME, RATINGS_FILE_NAME
 
 
@@ -27,7 +25,7 @@ def convert_exported_ratings():
                 bad_dict[aspect] = rating_list.count(0)
             average_dict = {}
             for aspect in rating_dict[pair].keys():
-                average_dict[aspect] = numpy.mean(rating_list)
+                average_dict[aspect] = sum(rating_list) / float(len(rating_list))
 
             target_file.write('aspects with the most GOOD ratings for ' + pair + ':\n')
             for aspect in sorted(good_dict, key=good_dict.__getitem__, reverse=True):
