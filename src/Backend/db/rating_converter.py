@@ -35,11 +35,11 @@ def convert_exported_ratings():
                 bad_ratings = rating_dict[pair][aspect].count(0)
 
                 if good_ratings > bad_ratings:
-                    most_frequent_rating = 'good'
+                    most_frequent_rating = 'GOOD'
                     confidence = good_ratings / \
                         float(good_ratings + bad_ratings)
                 else:
-                    most_frequent_rating = 'bad'
+                    most_frequent_rating = 'BAD'
                     confidence = bad_ratings / \
                         float(good_ratings + bad_ratings)
 
