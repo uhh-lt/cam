@@ -38,9 +38,13 @@ def convert_exported_ratings():
                     most_frequent_rating = 'GOOD'
                     confidence = good_ratings / \
                         float(good_ratings + bad_ratings)
-                else:
+                elif bad_ratings > good_ratings:
                     most_frequent_rating = 'BAD'
                     confidence = bad_ratings / \
+                        float(good_ratings + bad_ratings)
+                else:
+                    most_frequent_rating = 'NONE'
+                    confidence = good_ratings / \
                         float(good_ratings + bad_ratings)
 
                 target_file.write(most_frequent_rating + ';' + str(confidence) +
