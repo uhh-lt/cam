@@ -12,6 +12,7 @@ def convert_exported_ratings():
         for line in source_file:
             aspect, rating_str, pair_str = line.split(';', 2)
             pair = pair_str.replace(';', '///')
+            pair = pair.replace('\n', '')
             rating = int(rating_str)
             if pair not in rating_dict.keys():
                 rating_dict[pair] = {}
@@ -21,15 +22,14 @@ def convert_exported_ratings():
 
     with open(CONVERTED_RATINGS_FILE_NAME, 'w') as target_file:
         target_file.write(
-            'object_a;object_b;aspect;most_frequent_rating;confidence;good_ratings;bad_ratings')
+            'OBJECT A;OBJECT B;ASPECT;MOST FREQUENT RATING;CONFIDENCE;AMOUNT OF GOOD RATINGS;AMOUNT OF BAD RATINGS\n')
 
         for pair in rating_dict.keys():
             object_a, object_b = pair.split('///', 1)
 
-            target_file.write(object_a + ';' + object_b + ';')
-
             for aspect in rating_dict[pair].keys():
-                target_file.write(aspect + ';')
+                target_file.write(
+                    object_a + ';' + object_b + ';' + aspect + ';')
 
                 good_ratings = rating_dict[pair][aspect].count(1)
                 bad_ratings = rating_dict[pair][aspect].count(0)
