@@ -10,6 +10,9 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY package.json /usr/src/app/package.json
+CMD ng update @angular/cli
+CMD ng update @angular/core
+CMD update @angular/flex-layout version to "^6.0.0-beta.18"
 RUN npm install
 RUN npm install -g @angular/cli
 RUN npm audit fix
