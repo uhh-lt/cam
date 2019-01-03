@@ -27,8 +27,8 @@ export class ResultPresentationComponent {
 
   private objectA: string;
   private objectB: string;
-  private aspectMapA = new Map<string, Map<string, string>>();
-  private aspectMapB = new Map<string, Map<string, string>>();
+  private aspectMapA = new Map();
+  private aspectMapB = new Map();
   private sentencesA: Array<Sentence>;
   private sentencesB: Array<Sentence>;
 
@@ -55,7 +55,7 @@ export class ResultPresentationComponent {
     this.objectB = result.object2.name;
 
     result.extractedAspectsObject1.forEach(aspect => {
-      const newMap = new Map<string, string>();
+      const newMap = new Map();
       newMap.set('rating', '0');
       newMap.set('sentex1', '');
       newMap.set('sentex2', '');
@@ -63,7 +63,7 @@ export class ResultPresentationComponent {
       this.aspectMapA.set(aspect, newMap);
     });
     result.extractedAspectsObject2.forEach(aspect => {
-      const newMap = new Map<string, string>();
+      const newMap = new Map();
       newMap.set('rating', '0');
       newMap.set('sentex1', '');
       newMap.set('sentex2', '');
@@ -232,7 +232,7 @@ export class ResultPresentationComponent {
   }
 
   submitAspectRatings() {
-    const aspectMap = new Map<string, Map<string, Map<string, string>>>();
+    const aspectMap = new Map();
     aspectMap.set(this.objectA, this.aspectMapA);
     aspectMap.set(this.objectB, this.aspectMapB);
     this.submitRatings.emit(aspectMap);
