@@ -11,7 +11,12 @@ import { Sentence } from '../../model/sentence';
 export class ResultPresentationComponent {
 
   @Output() chipSelected = new EventEmitter<string>();
-  @Output() submitRatings = new EventEmitter<Map<string, Map<string, Map<string, string>>>>();
+  @Output() submitAspectsA = new EventEmitter<Array<string>>();
+  @Output() submitAspectsB = new EventEmitter<Array<string>>();
+  @Output() submitRatingsA = new EventEmitter<Array<string>>();
+  @Output() submitRatingsB = new EventEmitter<Array<string>>();
+  @Output() submitSentexsA = new EventEmitter<Array<Array<string>>>();
+  @Output() submitSentexsB = new EventEmitter<Array<Array<string>>>();
   @Output() skipRating = new EventEmitter();
 
   private dispensableResult = new DispensableResult();
@@ -20,17 +25,15 @@ export class ResultPresentationComponent {
   private multiple = 'multiple';  // label for sentences with multiple aspects
   private categoryLabels = {};
 
-  private sentenceCount: number; // total amount of sentences used for comparison
-
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
 
-  private objectA: string;
-  private objectB: string;
-  private aspectMapA = new Map();
-  private aspectMapB = new Map();
-  private sentencesA: Array<Sentence>;
-  private sentencesB: Array<Sentence>;
+  private aspectsA: Array<string>;
+  private aspectsB: Array<string>;
+  private ratingsA = new Array();
+  private ratingsB = new Array();
+  private sentexsA = new Array();
+  private sentexsB = new Array();
 
   public trigger = 0;
 
@@ -48,52 +51,48 @@ export class ResultPresentationComponent {
    * @param result the search results to be saved
    */
   saveResult(result: Result) {
-    // count the number of sentences used for comparison
-    this.sentenceCount = result.sentenceCount;
+    this.aspectsA = result.extractedAspectsObject1;
+    this.aspectsB = result.extractedAspectsObject2;
 
-    this.objectA = result.object1.name;
-    this.objectB = result.object2.name;
+    for (const aspect of this.aspectsA) {
+      this.ratingsA.push('0');
+    }
+    
+    for (const aspect of this.aspectsB) {
+      this.ratingsB.push('0');
+    }
 
-    result.extractedAspectsObject1.forEach(aspect => {
-      const newMap = new Map();
-      newMap.set('rating', '0');
-      newMap.set('sentex1', '');
-      newMap.set('sentex2', '');
-      newMap.set('sentex3', '');
-      this.aspectMapA.set(aspect, newMap);
-    });
-    result.extractedAspectsObject2.forEach(aspect => {
-      const newMap = new Map();
-      newMap.set('rating', '0');
-      newMap.set('sentex1', '');
-      newMap.set('sentex2', '');
-      newMap.set('sentex3', '');
-      this.aspectMapB.set(aspect, newMap);
-    });
-
-    this.sentencesA = result.object1.sentences;
-    this.sentencesB = result.object2.sentences;
-
-    this.aspectMapA.forEach((value: Map<string, string>, aspect: string) => {
+    for (const aspect of this.aspectsA) {
       let index = 1;
-      this.sentencesA.forEach(sentence => {
-        if (index < 4 && sentence.text.indexOf(aspect) > -1) {
-          const sentexIndex = 'sentex' + index.toString();
-          value.set(sentexIndex, sentence.text);
+      for (const sentence of result.object1.sentences) {
+        if (sentence.text.indexOf(aspect) > -1) {
+          if (index === 1) {
+            this.sentexsA[this.aspectsA.indexOf(aspect)] = new Array();
+          }
+          this.sentexsA[this.aspectsA.indexOf(aspect)].push(sentence.text);
           index++;
+          if (index > 3) {
+            break;
+          }
         };
-      });
-    });
-    this.aspectMapB.forEach((value: Map<string, string>, aspect: string) => {
+      }
+    }
+
+    for (const aspect of this.aspectsB) {
       let index = 1;
-      this.sentencesB.forEach(sentence => {
-        if (index < 4 && sentence.text.indexOf(aspect) > -1) {
-          const sentexIndex = 'sentex' + index.toString();
-          value.set(sentexIndex, sentence.text);
+      for (const sentence of result.object2.sentences) {
+        if (sentence.text.indexOf(aspect) > -1) {
+          if (index === 1) {
+            this.sentexsB[this.aspectsB.indexOf(aspect)] = new Array();
+          }
+          this.sentexsB[this.aspectsB.indexOf(aspect)].push(sentence.text);
           index++;
+          if (index > 3) {
+            break;
+          }
         };
-      });
-    });
+      }
+    }
 
     if (result.winner === result.object1.name) {
       this.saveWinner(result.object1.name, result.object2.name);
@@ -112,7 +111,6 @@ export class ResultPresentationComponent {
 
   reset() {
     this.dispensableResult = new DispensableResult();
-    this.sentenceCount = 0;
     this.showResult = false;
     this.selectedWinnerAspects = new Array<string>();
     this.selectedLooserAspects = new Array<string>();
@@ -208,21 +206,21 @@ export class ResultPresentationComponent {
 
   updatedMarks(markedAspects: Array<string>, obj) {
     if (obj === 0) {
-      this.aspectMapA.forEach((value: Map<string, string>, key: string) => {
-        if (markedAspects.indexOf(key) > -1) {
-          this.aspectMapA.get(key).set('rating', '1');
+      for (const aspect of this.aspectsA) {
+        if (markedAspects.indexOf(aspect) > -1) {
+          this.ratingsA[this.aspectsA.indexOf(aspect)] = 1;
         } else {
-          this.aspectMapA.get(key).set('rating', '0');
+          this.ratingsA[this.aspectsA.indexOf(aspect)] = 0;
         }
-      });
+      }
     } else {
-      this.aspectMapB.forEach((value: Map<string, string>, key: string) => {
-        if (markedAspects.indexOf(key) > -1) {
-          this.aspectMapB.get(key).set('rating', '1');
+      for (const aspect of this.aspectsB) {
+        if (markedAspects.indexOf(aspect) > -1) {
+          this.ratingsB[this.aspectsB.indexOf(aspect)] = 1;
         } else {
-          this.aspectMapB.get(key).set('rating', '0');
+          this.ratingsB[this.aspectsB.indexOf(aspect)] = 0;
         }
-      });
+      }
     }
   }
 
@@ -232,10 +230,12 @@ export class ResultPresentationComponent {
   }
 
   submitAspectRatings() {
-    const aspectMap = new Map();
-    aspectMap.set(this.objectA, this.aspectMapA);
-    aspectMap.set(this.objectB, this.aspectMapB);
-    this.submitRatings.emit(aspectMap);
+    this.submitAspectsA.emit(this.aspectsA);
+    this.submitAspectsB.emit(this.aspectsB);
+    this.submitSentexsA.emit(this.sentexsA);
+    this.submitSentexsB.emit(this.sentexsB);
+    this.submitRatingsA.emit(this.ratingsA);
+    this.submitRatingsB.emit(this.ratingsB);
   }
 
   skip() {

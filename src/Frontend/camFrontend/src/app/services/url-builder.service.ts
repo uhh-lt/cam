@@ -25,12 +25,12 @@ export class UrlBuilderService {
     return URL;
   }
 
-  public buildSqlAspectSavingURL(objects, object: string, aspect: string, aspectMap: Map<string, string>) {
-    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objects[0]}&objectB=${objects[1]}&object=${object}&aspect=${aspect}`;
-    URL += `&rating=${aspectMap.get('rating')}`;
-    URL += `&sentex1=${aspectMap.get('sentex1')}`;
-    URL += `&sentex2=${aspectMap.get('sentex2')}`;
-    URL += `&sentex3=${aspectMap.get('sentex3')}`;
+  public buildSqlAspectSavingURL(objA: string, objB: string, object: string, aspect: string, rating: string, sentexs: Array<string>) {
+    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objA}&objectB=${objB}&object=${object}&aspect=${aspect}`;
+    URL += `&rating=${rating}`;
+    URL += `&sentex1=${sentexs[0]}`;
+    URL += `&sentex2=${sentexs[1]}`;
+    URL += `&sentex3=${sentexs[2]}`;
     return URL;
   }
 

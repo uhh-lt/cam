@@ -32,9 +32,16 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   object_A = ''; // the first object currently entered
   object_B = ''; // the second object currently entered
 
-  private statusID = '-1';
+  private objectA: string;
+  private objectB: string;
+  private aspectsA: Array<string>;
+  private aspectsB: Array<string>;
+  private ratingsA = new Array();
+  private ratingsB = new Array();
+  private sentexsA = new Array();
+  private sentexsB = new Array();
 
-  private generatedAspects = [];
+  private statusID = '-1';
 
   private preSelectedObjects = [];
   private indexOfSelectedObject = 0;
@@ -74,10 +81,12 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       this.selectedModel, this.fastSearch, this.statusID)).subscribe(
         data => {
           this.resultPresentation.saveResult(data);
-          this.generatedAspects = data.extractedAspectsObject1.concat(data.extractedAspectsObject2);
           this.showLoading = false; // hide the loading screen
           this.showResult = true;
           this.status = '';
+
+          this.objectA = data.object1.name;
+          this.objectB = data.object2.name;
 
           const config: ScrollToConfigOptions = {
             target: 'resultPresentation'
@@ -97,17 +106,33 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       );
   }
 
-  submitRatingsToBackend(markedAspects: Map<string, Map<string, Map<string, string>>>) {
-    const objs = [];
-    markedAspects.forEach((_objMap: Map<string, Map<string, string>>, obj: string) => {
-      objs.push(obj);
-    });
-    markedAspects.forEach((objMap: Map<string, Map<string, string>>, obj: string) => {
-      objMap.forEach((aspectMap: Map<string, string>, aspect: string) => {
-        this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURL(objs, obj, aspect, aspectMap)).subscribe(_data => {
-        });
+  saveAspectsA(aspectsA: Array<string>) {
+    this.aspectsA = aspectsA;
+  }
+
+  saveAspectsB(aspectsB: Array<string>) {
+    this.aspectsB = aspectsB;
+  }
+
+  saveSentexsA(sentexsA: Array<string>) {
+    this.sentexsA = sentexsA;
+  }
+
+  saveSentexsB(sentexsB: Array<string>) {
+    this.sentexsB = sentexsB;
+  }
+
+  saveRatingsA(ratingsA: Array<string>) {
+    this.ratingsA = ratingsA;
+  }
+
+  submitRatingsToBackend(ratingsB: Array<string>) {
+    this.ratingsB = ratingsB;
+
+    for (const aspect of this.aspectsA) {
+      this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURL(this.objectA, this.objectB, this.objectA, aspect, this.ratingsA[this.aspectsA.indexOf(aspect)], this.sentexsA[this.aspectsA.indexOf(aspect)])).subscribe(_data => {
       });
-    });
+    }
     this.prepareNextComparison(false);
   }
 
