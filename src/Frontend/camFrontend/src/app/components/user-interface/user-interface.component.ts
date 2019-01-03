@@ -97,19 +97,18 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       );
   }
 
-  submitRatingsToBackend(markedAspects: Array<string>) {
-    const aspectList = {}
-    for (let index = 0; index < this.generatedAspects.length; index++) {
-      const element = this.generatedAspects[index];
-      if (markedAspects.indexOf(element) > -1) {
-        aspectList[element] = 1;
-      } else {
-        aspectList[element] = 0;
-      }
-    }
-    this.httpRequestService.register(this.urlBuilderService.buildSqliteAspectSavingURL(this.object_A, this.object_B, aspectList)).subscribe(data => {
-      this.prepareNextComparison(false);
+  submitRatingsToBackend(markedAspects: Map<string, Map<string, Map<string, string>>>) {
+    const objs = [];
+    markedAspects.forEach((_objMap: Map<string, Map<string, string>>, obj: string) => {
+      objs.push(obj);
     });
+    markedAspects.forEach((objMap: Map<string, Map<string, string>>, obj: string) => {
+      objMap.forEach((aspectMap: Map<string, string>, aspect: string) => {
+        this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURL(objs, obj, aspect, aspectMap)).subscribe(_data => {
+        });
+      });
+    });
+    this.prepareNextComparison(false);
   }
 
   skipPair() {

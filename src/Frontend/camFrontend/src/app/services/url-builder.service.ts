@@ -25,9 +25,12 @@ export class UrlBuilderService {
     return URL;
   }
 
-  public buildSqliteAspectSavingURL(objA, objB, aspectList) {
-    let URL = `${this.HOSTNAME_DEFAULT}/sqliteAspectSaving?objectA=${objA}&objectB=${objB}`;
-    URL += this.addAspectURL(aspectList);
+  public buildSqlAspectSavingURL(objects, object: string, aspect: string, aspectMap: Map<string, string>) {
+    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objects[0]}&objectB=${objects[1]}&object=${object}&aspect=${aspect}`;
+    URL += `&rating=${aspectMap.get('rating')}`;
+    URL += `&sentex1=${aspectMap.get('sentex1')}`;
+    URL += `&sentex2=${aspectMap.get('sentex2')}`;
+    URL += `&sentex3=${aspectMap.get('sentex3')}`;
     return URL;
   }
 
