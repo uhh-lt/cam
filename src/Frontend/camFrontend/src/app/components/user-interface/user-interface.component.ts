@@ -133,6 +133,11 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURL(this.objectA, this.objectB, this.objectA, aspect, this.ratingsA[this.aspectsA.indexOf(aspect)], this.sentexsA[this.aspectsA.indexOf(aspect)])).subscribe(_data => {
       });
     }
+
+    for (const aspect of this.aspectsB) {
+      this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURL(this.objectA, this.objectB, this.objectB, aspect, this.ratingsB[this.aspectsB.indexOf(aspect)], this.sentexsB[this.aspectsB.indexOf(aspect)])).subscribe(_data => {
+      });
+    }
     this.prepareNextComparison(false);
   }
 

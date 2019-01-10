@@ -7,7 +7,7 @@
       <mat-chip *ngFor="let aspect of extractedAspects" [selected]="isSelected(aspect)" (click)="selectAspect(aspect)">
         {{aspect}}
         <mat-chip [selected]="isMarked(aspect)" (click)="markAspect(aspect)">
-          ++good++
+          +
         </mat-chip>
       </mat-chip>
     </mat-chip-list>
