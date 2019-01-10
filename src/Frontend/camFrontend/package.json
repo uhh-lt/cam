@@ -16,7 +16,7 @@
     "@angular/common": "^6.0.3",
     "@angular/compiler": "^6.0.3",
     "@angular/core": "^6.0.3",
-    "@angular/flex-layout": "^6.0.0-beta.15",
+    "@angular/flex-layout": "^6.0.0-beta.18",
     "@angular/forms": "^6.0.3",
     "@angular/http": "^6.0.3",
     "@angular/material": "^6.2.0",
@@ -31,7 +31,7 @@
     "jquery": "^3.3.1",
     "npm": "^6.1.0",
     "popper.js": "^1.14.3",
-    "rxjs": "^6.0.0",
+    "rxjs": "^6.3.2",
     "rxjs-compat": "^6.2.0",
     "zone.js": "^0.8.26"
   },
@@ -54,6 +54,6 @@
     "protractor": "~5.3.0",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
-    "typescript": "~2.7.2"
+    "typescript": "~2.9.2"
   }
 }
