@@ -12,6 +12,7 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json /usr/src/app/package.json
 RUN npm i npm@latest -g
 RUN npm install -g @angular/cli@latest
+RUN npm i --package-lock-only
 RUN npm audit fix
 
 # add app
