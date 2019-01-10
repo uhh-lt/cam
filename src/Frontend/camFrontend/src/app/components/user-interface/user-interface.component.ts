@@ -32,11 +32,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   object_A = ''; // the first object currently entered
   object_B = ''; // the second object currently entered
 
-  private objectA: string;
-  private objectB: string;
-  private aspectsA: Array<string>;
-  private aspectsB: Array<string>;
-
   private statusID = '-1';
 
   private generatedAspects = [];
@@ -84,11 +79,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
           this.showResult = true;
           this.status = '';
 
-          this.objectA = data.object1.name;
-          this.objectB = data.object2.name;
-          this.aspectsA = data.extractedAspectsObject1;
-          this.aspectsB = data.extractedAspectsObject2;
-
           const config: ScrollToConfigOptions = {
             target: 'resultPresentation'
           };
@@ -108,30 +98,16 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   }
 
   submitRatingsToBackend(markedAspects: Array<string>) {
-    const aspectListA = {}
-    for (let index = 0; index < this.aspectsA.length; index++) {
-      const element = this.aspectsA[index];
+    const aspectList = {}
+    for (let index = 0; index < this.generatedAspects.length; index++) {
+      const element = this.generatedAspects[index];
       if (markedAspects.indexOf(element) > -1) {
-        aspectListA[element] = 1;
+        aspectList[element] = 1;
       } else {
-        aspectListA[element] = 0;
+        aspectList[element] = 0;
       }
     }
-
-    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.objectA, this.objectB, aspectListA)).subscribe(_data => {
-    });
-    
-    const aspectListB = {}
-    for (let index = 0; index < this.aspectsB.length; index++) {
-      const element = this.aspectsB[index];
-      if (markedAspects.indexOf(element) > -1) {
-        aspectListB[element] = 1;
-      } else {
-        aspectListB[element] = 0;
-      }
-    }
-
-    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.objectA, this.objectB, aspectListB)).subscribe(_data => {
+    this.httpRequestService.register(this.urlBuilderService.buildSqliteAspectSavingURL(this.object_A, this.object_B, aspectList)).subscribe(data => {
       this.prepareNextComparison(false);
     });
   }

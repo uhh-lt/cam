@@ -24,7 +24,6 @@ export class ResultPresentationComponent {
 
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
-
   public markedAspectsA = new Array<string>();
   public markedAspectsB = new Array<string>();
 

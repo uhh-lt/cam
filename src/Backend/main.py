@@ -93,15 +93,14 @@ def cam():
         return jsonify(final_dict)
 
 
-@app.route('/sqlAspectSaving', methods=['GET'])
-@app.route('/cam/sqlAspectSaving', methods=['GET'])
+@app.route('/sqliteAspectSaving', methods=['GET'])
+@app.route('/cam/sqliteAspectSaving', methods=['GET'])
 def saveRatings():
-    obj_a = request.args.get('objectA')
-    obj_b = request.args.get('objectB')
-    obj = request.args.get('object')
+    obj_a = request.args.get('objectA').lower().strip()
+    obj_b = request.args.get('objectB').lower().strip()
     aspects = extract_aspects(request)
     for aspect in aspects:
-        insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b, obj))
+        insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b))
     return jsonify(True)
 
 
@@ -121,7 +120,7 @@ def getPredefinedPairs():
     amount_of_pairs = len(pairs)
     pairs_to_return = []
     print(cumulative_sums)
-    for _i in range(0, amount_of_pairs):
+    for i in range(0, amount_of_pairs):
         rand = random() * max(cumulative_sums)
         for s in cumulative_sums:
             if rand < s:

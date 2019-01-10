@@ -25,16 +25,8 @@ export class UrlBuilderService {
     return URL;
   }
 
-  public buildSqlAspectSavingURLA(objA, objB, aspectList) {
-    return this.buildSqlAspectSavingURL(objA, objB, aspectList, objA);
-  }
-
-  public buildSqlAspectSavingURLB(objA, objB, aspectList) {
-    return this.buildSqlAspectSavingURL(objA, objB, aspectList, objB);
-  }
-
-  private buildSqlAspectSavingURL(objA, objB, aspectList, obj) {
-    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objA}&objectB=${objB}&objectB=${obj}`;
+  public buildSqliteAspectSavingURL(objA, objB, aspectList) {
+    let URL = `${this.HOSTNAME_DEFAULT}/sqliteAspectSaving?objectA=${objA}&objectB=${objB}`;
     URL += this.addAspectURL(aspectList);
     return URL;
   }

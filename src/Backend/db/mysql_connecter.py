@@ -3,9 +3,6 @@ from os.path import abspath, dirname
 import mysql.connector
 from mysql.connector import errorcode
 
-TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
-CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
-
 pre_selected_objects = [
     ['python', 'java'],
     ['php', 'javascript'],
@@ -31,7 +28,6 @@ create_ratings_table_sql = ("CREATE TABLE `ratings` ("
                             " `rating` int NOT NULL,"
                             " `obja` varchar(200) NOT NULL,"
                             " `objb` varchar(200) NOT NULL,"
-                            " `obj` varchar(200) NOT NULL,"
                             " PRIMARY KEY (`ratingno`)"
                             ") ENGINE=InnoDB")
 create_pairs_table_sql = ("CREATE TABLE `pairs` ("
@@ -50,17 +46,14 @@ class Rating:
     A single rating of an aspect
     '''
 
-    def __init__(self, aspect: str, rating: int, obja: str, objb: str, obj: str):
+    def __init__(self, aspect: str, rating: int, obja: str, objb: str):
         self.aspect = aspect
         self.rating = rating
-        pairs = [obja, objb]
-        pairs.sort()
-        self.obja = pairs[0]
-        self.objb = pairs[1]
-        self.obj = obj
+        self.obja = obja
+        self.objb = objb
 
     def get_value(self):
-        return [self.aspect, self.rating, self.obja, self.objb, self.obj]
+        return [self.aspect, self.rating, self.obja, self.objb]
 
     def get_pair(self):
         return [self.obja, self.objb]
@@ -119,62 +112,24 @@ def get_predefined_pairs():
 def insert_rating(rating: Rating):
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO `ratings` (`aspect`,`rating`,`obja`,`objb`,`obj`) VALUES (%s,%s,%s,%s,%s)",
+    cursor.execute("INSERT INTO `ratings` (`aspect`,`rating`,`obja`,`objb`) VALUES (%s,%s,%s,%s)",
                    rating.get_value())
     raise_value_of_pair(rating.get_pair(), cursor)
     close_connection(connection, cursor)
-
-
-def get_ratings():
-    connection = get_connection()
-    cursor = connection.cursor()
-    cursor.execute(
-        "SELECT `obja`, `objb`, `aspect`, `obj`, `rating` FROM `ratings`")
-    return cursor.fetchall()
+    export_rating(rating)
 
 
 def raise_value_of_pair(pair, cursor):
+    pair.sort()
     cursor.execute(
         "UPDATE pairs SET amount = amount + 1 WHERE obja = %s AND objb = %s", pair)
 
+
+def export_rating(rating: Rating):
+    with open(RATINGS_FILE_NAME, 'a') as target_file:
+        target_file.write(';'.join([str(col) for col in rating.get_value()]) + '\n')
 
 def close_connection(connection, cursor):
     connection.commit()
     cursor.close()
     connection.close()
-
-
-def export_ratings():
-    with open(CONVERTED_RATINGS_FILE_NAME, 'w') as target_file:
-        target_file.write(
-            'OBJECT A;OBJECT B;ASPECT;ASPECT BELONGS TO;MOST FREQUENT RATING;CONFIDENCE;AMOUNT OF GOOD RATINGS;AMOUNT OF BAD RATINGS\n')
-        rating_dict = {}
-
-        for rating in get_ratings():
-            key = ';'.join(rating[:4])
-            if key not in rating_dict.keys():
-                rating_dict[key] = {}
-                rating_dict[key]['ratings'] = []
-            rating_dict[key]['ratings'].append(rating[4])
-
-        for aspect_key in rating_dict.keys():
-            target_file.write(aspect_key + ';')
-
-            good_ratings = rating_dict[aspect_key]['ratings'].count(1)
-            bad_ratings = rating_dict[aspect_key]['ratings'].count(0)
-
-            if good_ratings > bad_ratings:
-                most_frequent_rating = 'GOOD'
-                confidence = good_ratings / \
-                    float(good_ratings + bad_ratings)
-            elif bad_ratings > good_ratings:
-                most_frequent_rating = 'BAD'
-                confidence = bad_ratings / \
-                    float(good_ratings + bad_ratings)
-            else:
-                most_frequent_rating = 'EVEN'
-                confidence = good_ratings / \
-                    float(good_ratings + bad_ratings)
-
-            target_file.write(most_frequent_rating + ';' + str(confidence) +
-                              ';' + str(good_ratings) + ';' + str(bad_ratings) + '\n')
