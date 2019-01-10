@@ -96,11 +96,12 @@ def cam():
 @app.route('/sqlAspectSaving', methods=['GET'])
 @app.route('/cam/sqlAspectSaving', methods=['GET'])
 def saveRatings():
-    obj_a = request.args.get('objectA').lower().strip()
-    obj_b = request.args.get('objectB').lower().strip()
+    obj_a = request.args.get('objectA')
+    obj_b = request.args.get('objectB')
+    obj = request.args.get('object')
     aspects = extract_aspects(request)
     for aspect in aspects:
-        insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b))
+        insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b, obj))
     return jsonify(True)
 
 

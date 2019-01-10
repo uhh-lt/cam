@@ -20,6 +20,8 @@ export class ResultPresentationComponent {
   private multiple = 'multiple';  // label for sentences with multiple aspects
   private categoryLabels = {};
 
+  private sentenceCount: number; // total amount of sentences used for comparison
+
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
 
@@ -42,6 +44,9 @@ export class ResultPresentationComponent {
    * @param result the search results to be saved
    */
   saveResult(result: Result) {
+    // count the number of sentences used for comparison
+    this.sentenceCount = result.sentenceCount;
+
     if (result.winner === result.object1.name) {
       this.saveWinner(result.object1.name, result.object2.name);
       this.saveScores(result.object1.points, result.object2.points, result.object1.totalPoints, result.object2.totalPoints);
@@ -59,6 +64,7 @@ export class ResultPresentationComponent {
 
   reset() {
     this.dispensableResult = new DispensableResult();
+    this.sentenceCount = 0;
     this.showResult = false;
     this.selectedWinnerAspects = new Array<string>();
     this.selectedLooserAspects = new Array<string>();

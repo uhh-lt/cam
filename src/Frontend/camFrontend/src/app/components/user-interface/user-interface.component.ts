@@ -39,6 +39,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   private statusID = '-1';
 
+  private generatedAspects = [];
+
   private preSelectedObjects = [];
   private indexOfSelectedObject = 0;
 
@@ -77,6 +79,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       this.selectedModel, this.fastSearch, this.statusID)).subscribe(
         data => {
           this.resultPresentation.saveResult(data);
+          this.generatedAspects = data.extractedAspectsObject1.concat(data.extractedAspectsObject2);
           this.showLoading = false; // hide the loading screen
           this.showResult = true;
           this.status = '';
@@ -115,12 +118,12 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       }
     }
 
-    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.object_A, this.object_B, aspectListA)).subscribe(_data => {
+    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.objectA, this.objectB, aspectListA)).subscribe(_data => {
     });
     
     const aspectListB = {}
-    for (let index = 0; index < this.aspectsA.length; index++) {
-      const element = this.aspectsA[index];
+    for (let index = 0; index < this.aspectsB.length; index++) {
+      const element = this.aspectsB[index];
       if (markedAspects.indexOf(element) > -1) {
         aspectListB[element] = 1;
       } else {
@@ -128,7 +131,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       }
     }
 
-    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.object_A, this.object_B, aspectListB)).subscribe(_data => {
+    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.objectA, this.objectB, aspectListB)).subscribe(_data => {
       this.prepareNextComparison(false);
     });
   }
