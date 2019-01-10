@@ -11,12 +11,7 @@ import { Sentence } from '../../model/sentence';
 export class ResultPresentationComponent {
 
   @Output() chipSelected = new EventEmitter<string>();
-  @Output() submitAspectsA = new EventEmitter<Array<string>>();
-  @Output() submitAspectsB = new EventEmitter<Array<string>>();
-  @Output() submitRatingsA = new EventEmitter<Array<string>>();
-  @Output() submitRatingsB = new EventEmitter<Array<string>>();
-  @Output() submitSentexsA = new EventEmitter<Array<Array<string>>>();
-  @Output() submitSentexsB = new EventEmitter<Array<Array<string>>>();
+  @Output() submitRatings = new EventEmitter<Array<string>>();
   @Output() skipRating = new EventEmitter();
 
   private dispensableResult = new DispensableResult();
@@ -28,12 +23,8 @@ export class ResultPresentationComponent {
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
 
-  private aspectsA: Array<string>;
-  private aspectsB: Array<string>;
-  private ratingsA = new Array();
-  private ratingsB = new Array();
-  private sentexsA = new Array();
-  private sentexsB = new Array();
+  public markedAspectsA = new Array<string>();
+  public markedAspectsB = new Array<string>();
 
   public trigger = 0;
 
@@ -51,49 +42,6 @@ export class ResultPresentationComponent {
    * @param result the search results to be saved
    */
   saveResult(result: Result) {
-    this.aspectsA = result.extractedAspectsObject1;
-    this.aspectsB = result.extractedAspectsObject2;
-
-    for (const aspect of this.aspectsA) {
-      this.ratingsA.push('0');
-    }
-    
-    for (const aspect of this.aspectsB) {
-      this.ratingsB.push('0');
-    }
-
-    for (const aspect of this.aspectsA) {
-      let index = 1;
-      for (const sentence of result.object1.sentences) {
-        if (sentence.text.indexOf(aspect) > -1) {
-          if (index === 1) {
-            this.sentexsA[this.aspectsA.indexOf(aspect)] = new Array();
-          }
-          this.sentexsA[this.aspectsA.indexOf(aspect)].push(sentence.text);
-          index++;
-          if (index > 3) {
-            break;
-          }
-        };
-      }
-    }
-
-    for (const aspect of this.aspectsB) {
-      let index = 1;
-      for (const sentence of result.object2.sentences) {
-        if (sentence.text.indexOf(aspect) > -1) {
-          if (index === 1) {
-            this.sentexsB[this.aspectsB.indexOf(aspect)] = new Array();
-          }
-          this.sentexsB[this.aspectsB.indexOf(aspect)].push(sentence.text);
-          index++;
-          if (index > 3) {
-            break;
-          }
-        };
-      }
-    }
-
     if (result.winner === result.object1.name) {
       this.saveWinner(result.object1.name, result.object2.name);
       this.saveScores(result.object1.points, result.object2.points, result.object1.totalPoints, result.object2.totalPoints);
@@ -206,21 +154,9 @@ export class ResultPresentationComponent {
 
   updatedMarks(markedAspects: Array<string>, obj) {
     if (obj === 0) {
-      for (const aspect of this.aspectsA) {
-        if (markedAspects.indexOf(aspect) > -1) {
-          this.ratingsA[this.aspectsA.indexOf(aspect)] = 1;
-        } else {
-          this.ratingsA[this.aspectsA.indexOf(aspect)] = 0;
-        }
-      }
+      this.markedAspectsA = markedAspects;
     } else {
-      for (const aspect of this.aspectsB) {
-        if (markedAspects.indexOf(aspect) > -1) {
-          this.ratingsB[this.aspectsB.indexOf(aspect)] = 1;
-        } else {
-          this.ratingsB[this.aspectsB.indexOf(aspect)] = 0;
-        }
-      }
+      this.markedAspectsB = markedAspects;
     }
   }
 
@@ -230,12 +166,7 @@ export class ResultPresentationComponent {
   }
 
   submitAspectRatings() {
-    this.submitAspectsA.emit(this.aspectsA);
-    this.submitAspectsB.emit(this.aspectsB);
-    this.submitSentexsA.emit(this.sentexsA);
-    this.submitSentexsB.emit(this.sentexsB);
-    this.submitRatingsA.emit(this.ratingsA);
-    this.submitRatingsB.emit(this.ratingsB);
+    this.submitRatings.emit(this.markedAspectsA.concat(this.markedAspectsB));
   }
 
   skip() {

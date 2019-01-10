@@ -1,5 +1,5 @@
 # base image
-FROM node:latest
+FROM node:8.11.3
 
 # set working directory
 RUN mkdir /usr/src/app
@@ -10,9 +10,8 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY package.json /usr/src/app/package.json
-RUN npm i npm@latest -g
-RUN npm install -g @angular/cli@latest
-RUN npm i --package-lock-only
+RUN npm install
+RUN npm install -g @angular/cli
 RUN npm audit fix
 
 # add app

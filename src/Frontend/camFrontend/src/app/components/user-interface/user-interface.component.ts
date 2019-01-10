@@ -36,10 +36,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   private objectB: string;
   private aspectsA: Array<string>;
   private aspectsB: Array<string>;
-  private ratingsA = new Array();
-  private ratingsB = new Array();
-  private sentexsA = new Array();
-  private sentexsB = new Array();
 
   private statusID = '-1';
 
@@ -87,6 +83,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
           this.objectA = data.object1.name;
           this.objectB = data.object2.name;
+          this.aspectsA = data.extractedAspectsObject1;
+          this.aspectsB = data.extractedAspectsObject2;
 
           const config: ScrollToConfigOptions = {
             target: 'resultPresentation'
@@ -106,39 +104,33 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       );
   }
 
-  saveAspectsA(aspectsA: Array<string>) {
-    this.aspectsA = aspectsA;
-  }
-
-  saveAspectsB(aspectsB: Array<string>) {
-    this.aspectsB = aspectsB;
-  }
-
-  saveSentexsA(sentexsA: Array<string>) {
-    this.sentexsA = sentexsA;
-  }
-
-  saveSentexsB(sentexsB: Array<string>) {
-    this.sentexsB = sentexsB;
-  }
-
-  saveRatingsA(ratingsA: Array<string>) {
-    this.ratingsA = ratingsA;
-  }
-
-  submitRatingsToBackend(ratingsB: Array<string>) {
-    this.ratingsB = ratingsB;
-
-    for (const aspect of this.aspectsA) {
-      this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURL(this.objectA, this.objectB, this.objectA, aspect, this.ratingsA[this.aspectsA.indexOf(aspect)], this.sentexsA[this.aspectsA.indexOf(aspect)])).subscribe(_data => {
-      });
+  submitRatingsToBackend(markedAspects: Array<string>) {
+    const aspectListA = {}
+    for (let index = 0; index < this.aspectsA.length; index++) {
+      const element = this.aspectsA[index];
+      if (markedAspects.indexOf(element) > -1) {
+        aspectListA[element] = 1;
+      } else {
+        aspectListA[element] = 0;
+      }
     }
 
-    for (const aspect of this.aspectsB) {
-      this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURL(this.objectA, this.objectB, this.objectB, aspect, this.ratingsB[this.aspectsB.indexOf(aspect)], this.sentexsB[this.aspectsB.indexOf(aspect)])).subscribe(_data => {
-      });
+    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.object_A, this.object_B, aspectListA)).subscribe(_data => {
+    });
+    
+    const aspectListB = {}
+    for (let index = 0; index < this.aspectsA.length; index++) {
+      const element = this.aspectsA[index];
+      if (markedAspects.indexOf(element) > -1) {
+        aspectListB[element] = 1;
+      } else {
+        aspectListB[element] = 0;
+      }
     }
-    this.prepareNextComparison(false);
+
+    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.object_A, this.object_B, aspectListB)).subscribe(_data => {
+      this.prepareNextComparison(false);
+    });
   }
 
   skipPair() {

@@ -56,6 +56,5 @@
 </mat-card>
 <br>
 <br>
-<app-result-presentation id="resultPresentation" (chipSelected)="chipSelected($event)" (submitAspectsA)="saveAspectsA($event)"
-  (submitAspectsB)="saveAspectsB($event)" (submitSentexsA)="saveSentexsA($event)" (submitSentexsB)="saveSentexsB($event)"
-  (submitRatingsA)="saveRatingsA($event)" (submitRatingsB)="submitRatingsToBackend($event)" (skipRating)="skipPair()"></app-result-presentation>
+<app-result-presentation id="resultPresentation" (chipSelected)="chipSelected($event)" (submitRatings)="submitRatingsToBackend($event)"
+  (skipRating)="skipPair()"></app-result-presentation>
