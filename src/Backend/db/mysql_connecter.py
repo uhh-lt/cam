@@ -3,6 +3,9 @@ from os.path import abspath, dirname
 import mysql.connector
 from mysql.connector import errorcode
 
+TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
+CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
+
 pre_selected_objects = [
     ['python', 'java'],
     ['php', 'javascript'],
@@ -28,6 +31,7 @@ create_ratings_table_sql = ("CREATE TABLE `ratings` ("
                             " `rating` int NOT NULL,"
                             " `obja` varchar(200) NOT NULL,"
                             " `objb` varchar(200) NOT NULL,"
+                            " `obj` varchar(200) NOT NULL,"
                             " PRIMARY KEY (`ratingno`)"
                             ") ENGINE=InnoDB")
 create_pairs_table_sql = ("CREATE TABLE `pairs` ("
@@ -36,6 +40,16 @@ create_pairs_table_sql = ("CREATE TABLE `pairs` ("
                           " `amount` int NOT NULL,"
                           " PRIMARY KEY (`obja`, `objb`)"
                           ") ENGINE=InnoDB")
+create_sentexs_table_sql = ("CREATE TABLE `sentexs` ("
+                            " `obja` varchar(200) NOT NULL,"
+                            " `objb` varchar(200) NOT NULL,"
+                            " `obj` varchar(200) NOT NULL,"
+                            " `aspect` varchar(200) NOT NULL,"
+                            " `sentex1` varchar(2000) NOT NULL,"
+                            " `sentex2` varchar(2000) NOT NULL,"
+                            " `sentex3` varchar(2000) NOT NULL,"
+                            " PRIMARY KEY (`obja`, `objb`, `obj`, `aspect`)"
+                            ") ENGINE=InnoDB")
 
 TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
 RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/ratings.csv'
@@ -46,17 +60,26 @@ class Rating:
     A single rating of an aspect
     '''
 
-    def __init__(self, aspect: str, rating: int, obja: str, objb: str):
+    def __init__(self, aspect: str, rating: int, obja: str, objb: str, obj: str, sentex1: str, sentex2: str, sentex3: str):
         self.aspect = aspect
         self.rating = rating
-        self.obja = obja
-        self.objb = objb
+        pairs = [obja, objb]
+        pairs.sort()
+        self.obja = pairs[0]
+        self.objb = pairs[1]
+        self.obj = obj
+        self.sentex1 = sentex1
+        self.sentex2 = sentex2
+        self.sentex3 = sentex3
 
     def get_value(self):
-        return [self.aspect, self.rating, self.obja, self.objb]
+        return [self.aspect, self.rating, self.obja, self.objb, self.obj]
 
     def get_pair(self):
         return [self.obja, self.objb]
+
+    def get_sentexs(self):
+        return [self.obja, self.objb, self.obj, self.aspect, self.sentex1, self.sentex2, self.sentex3]
 
 
 def get_connection():
@@ -70,6 +93,7 @@ def get_connection():
         connection.database = DB_NAME
         create_table(connection, create_ratings_table_sql)
         create_table(connection, create_pairs_table_sql)
+        create_table(connection, create_sentexs_table_sql)
         insert_predefined_pairs(connection, pre_selected_objects)
     return connection
 
@@ -112,11 +136,19 @@ def get_predefined_pairs():
 def insert_rating(rating: Rating):
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO `ratings` (`aspect`,`rating`,`obja`,`objb`) VALUES (%s,%s,%s,%s)",
+    cursor.execute("INSERT INTO `ratings` (`aspect`,`rating`,`obja`,`objb`,`obj`) VALUES (%s,%s,%s,%s,%s)",
                    rating.get_value())
-    raise_value_of_pair(rating.get_pair(), cursor)
+    raise_value_of_pair(rating, cursor)
+    save_sentexs(rating.get_sentexs, cursor)
     close_connection(connection, cursor)
-    export_rating(rating)
+
+
+def get_ratings():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(
+        "SELECT `obja`, `objb`, `aspect`, `obj`, `rating` FROM `ratings`")
+    return cursor.fetchall()
 
 
 def raise_value_of_pair(pair, cursor):
@@ -125,11 +157,61 @@ def raise_value_of_pair(pair, cursor):
         "UPDATE pairs SET amount = amount + 1 WHERE obja = %s AND objb = %s", pair)
 
 
-def export_rating(rating: Rating):
-    with open(RATINGS_FILE_NAME, 'a') as target_file:
-        target_file.write(';'.join([str(col) for col in rating.get_value()]) + '\n')
+def save_sentexs(rating: Rating, cursor):
+    cursor.execute(
+        "INSERT IGNORE INTO `sentexs` (`obja`,`objb`,`aspect`,`obj`,sentex1`,`sentex2`,`sentex3`) VALUES (%s,%s,%s,%s,%s,%s,%s)", rating.get_sentexs())
+
+
+def get_sentexs():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM `sentexs`")
+    return cursor.fetchall()
+
 
 def close_connection(connection, cursor):
     connection.commit()
     cursor.close()
     connection.close()
+
+
+def export_ratings():
+    with open(CONVERTED_RATINGS_FILE_NAME, 'w') as target_file:
+        target_file.write(
+            'OBJECT A;OBJECT B;ASPECT;ASPECT BELONGS TO;MOST FREQUENT RATING;CONFIDENCE;AMOUNT OF GOOD RATINGS;AMOUNT OF BAD RATINGS; EXAMPLE SENTENCE 1; EXAMPLE SENTENCE 2; EXAMPLE SENTENCE 3\n')
+        rating_dict = {}
+
+        for rating in get_ratings():
+            key = ';'.join(rating[:4])
+            if key not in rating_dict.keys():
+                rating_dict[key] = {}
+                rating_dict[key]['ratings'] = []
+            rating_dict[key]['ratings'].append(rating[4])
+
+        for sentexs in get_sentexs():
+            key = ';'.join(sentexs[:4])
+            sentexs_str = ';'.join(sentexs[4:7])
+            rating_dict[key]['sentexs'] = sentexs_str
+
+        for aspect_key in rating_dict.keys():
+            target_file.write(aspect_key + ';')
+
+            good_ratings = rating_dict[aspect_key]['ratings'].count(1)
+            bad_ratings = rating_dict[aspect_key]['ratings'].count(0)
+
+            if good_ratings > bad_ratings:
+                most_frequent_rating = 'GOOD'
+                confidence = good_ratings / \
+                    float(good_ratings + bad_ratings)
+            elif bad_ratings > good_ratings:
+                most_frequent_rating = 'BAD'
+                confidence = bad_ratings / \
+                    float(good_ratings + bad_ratings)
+            else:
+                most_frequent_rating = 'EVEN'
+                confidence = good_ratings / \
+                    float(good_ratings + bad_ratings)
+
+            target_file.write(most_frequent_rating + ';' + str(confidence) +
+                              ';' + str(good_ratings) + ';' + str(bad_ratings))
+            target_file.write(rating_dict[aspect_key]['sentexs'] + '\n')
