@@ -44,7 +44,7 @@ PREDEFINED_PAIRS = [
     ['bmw', 'honda'],
     ['chevrolet', 'ford'],
     ['amazon', 'microsoft'],
-    ['amd', 'samsung']
+    ['amd', 'samsung'],
     ['apple', 'ibm'],
     ['avaya', 'huawei'],
     ['chrysler', 'ford'],
