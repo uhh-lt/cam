@@ -10,6 +10,7 @@ from utils.sentence_clearer import clear_sentences
 
 TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
 CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
+CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/pairs.csv'
 
 pre_selected_objects = [
     ['python', 'java'],
@@ -134,7 +135,9 @@ def read_predefined_pairs_from_file():
 
     with open(dirname(abspath(__file__)) + 'pairs.csv', 'r') as source:
         for line in source:
-            predefined_pairs.append(line.split(';', 1))
+            obj_a, obj_b = line.split(';', 1)
+            obj_b = obj_b[:-2]
+            predefined_pairs.append([obj_a, obj_b])
 
     return predefined_pairs
 
