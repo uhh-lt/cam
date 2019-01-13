@@ -1,17 +1,16 @@
+import re
 from os.path import abspath, dirname
 
 import mysql.connector
 from mysql.connector import errorcode
-import re
 
 from marker_approach.object_comparer import find_winner
+from preselected_pairs import PREDEFINED_PAIRS
 from utils.es_requester import extract_sentences, request_es
 from utils.sentence_clearer import clear_sentences
-from preselected_pairs import PREDEFINED_PAIRS
 
 TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
 CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
-CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/pairs.csv'
 
 DB_NAME = 'cam_aspects'
 create_ratings_table_sql = ("CREATE TABLE `ratings` ("

@@ -272,16 +272,3 @@ PREDEFINED_PAIRS = [
     ['lumber', 'timber'],
     ['android', 'ios']
 ]
-
-
-def getem():
-    with open('pairs.csv', 'r') as source:
-        for line in source:
-            obj_a, obj_b = line.split(';', 1)
-            obj_b = obj_b[:-1]
-            x = [obj_a.lower(), obj_b.lower()]
-            x.sort()
-            if x not in PREDEFINED_PAIRS:
-                PREDEFINED_PAIRS.append(x)
-    for pair in PREDEFINED_PAIRS:
-        print(pair)
