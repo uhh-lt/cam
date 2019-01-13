@@ -45,12 +45,16 @@
           </button>
         </th>
         <th class='align-middle text-center'>
-          <button (click)='start()' mat-raised-button color="primary" [disabled]='objectsEntered()'>
-            Start!
-          </button>
-          <button (click)='exportRatings()' mat-raised-button color="primary">
-            Export ratings to CSV
-          </button>
+          <div>
+            <button (click)='start()' mat-raised-button color="primary" [disabled]='objectsEntered()'>
+              Start!
+            </button>
+          </div>
+          <div>
+            <button (click)='exportRatings()' mat-raised-button color="primary">
+              Export ratings to CSV
+            </button>
+          </div>
         </th>
       </tr>
       </tbody>

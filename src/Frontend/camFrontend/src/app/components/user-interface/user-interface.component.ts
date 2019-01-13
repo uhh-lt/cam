@@ -132,7 +132,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       }
     }
 
-    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLA(this.objectA, this.objectB, aspectListB)).subscribe(_data => {
+    this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLB(this.objectA, this.objectB, aspectListB)).subscribe(_data => {
       this.prepareNextComparison(false);
     });
   }
