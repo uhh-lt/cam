@@ -149,13 +149,13 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
       }
     }
 
-    for (const aspect of Object.keys(aspectDictA)) {
-      const sentexs = this.getSentexs(aspect, this.sentencesA);
+    for (const aspect of Object.keys(aspectDictB)) {
+      const sentexs = this.getSentexs(aspect, this.sentencesB);
 
-      this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLB(this.objectA, this.objectB, aspect, aspectDictA[aspect], sentexs)).subscribe(_data => {
-        this.prepareNextComparison(false);
+      this.httpRequestService.register(this.urlBuilderService.buildSqlAspectSavingURLB(this.objectA, this.objectB, aspect, aspectDictB[aspect], sentexs)).subscribe(_data => {
       });
     }
+    this.prepareNextComparison(false);
   }
 
   getSentexs(aspect: string, sentenceList: Array<string>) {
