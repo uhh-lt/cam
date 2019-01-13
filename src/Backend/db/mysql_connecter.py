@@ -97,7 +97,7 @@ def get_connection():
         create_table(connection, create_pairs_table_sql)
         create_table(connection, create_sentexs_table_sql)
         insert_predefined_pairs(connection, pre_selected_objects)
-        insert_predefined_pairs(connection, read_predefined_pairs_from_file)
+        insert_predefined_pairs(connection, read_predefined_pairs_from_file())
     return connection
 
 
