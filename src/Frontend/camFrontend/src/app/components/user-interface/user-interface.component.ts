@@ -28,6 +28,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   showLastText = false;
   showSkipLastText = false;
   showExportedText = false;
+  showExportingText = false;
   status = '';
 
   object_A = ''; // the first object currently entered
@@ -138,6 +139,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   }
 
   exportRatings() {
+    this.showExportingText = true;
     this.httpRequestService.register(this.urlBuilderService.buildExportRatingsURL()).subscribe(_data => {
       this.prepareComparisonAfterExport();
     });
@@ -208,6 +210,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.showSkipText = false;
     this.showSkipLastText = false;
     this.showExportedText = false;
+    this.showExportingText = false;
   }
 
   resetInput() {

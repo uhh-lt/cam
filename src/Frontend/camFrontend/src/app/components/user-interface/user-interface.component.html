@@ -38,6 +38,10 @@
             All ratings from the data base have been exported to a CSV file that can be accessed in the appropriate
             folder on the server. If you want you can start a new comparison.
           </div>
+          <div *ngIf='showExportingText' class="text-center">
+            All ratings from the data base are being exported to a CSV file that can be accessed in the appropriate
+            folder on the server. This may take a while, please be patient.
+          </div>
         </td>
         <th class='align-middle text-center'>
           <button type="submit" mat-raised-button color="primary" [disabled]='!objectsEntered()'>
