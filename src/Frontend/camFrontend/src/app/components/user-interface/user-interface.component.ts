@@ -139,6 +139,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   }
 
   exportRatings() {
+    this.resetTextsShown();
     this.showExportingText = true;
     this.httpRequestService.register(this.urlBuilderService.buildExportRatingsURL()).subscribe(_data => {
       this.prepareComparisonAfterExport();
@@ -204,6 +205,11 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.showResult = false;
     this.finalAspDict = {};
     this.resultPresentation.reset();
+    this.resetTextsShown();
+  }
+
+
+  resetTextsShown() {
     this.showStartText = false;
     this.showNextText = false;
     this.showLastText = false;
