@@ -25,17 +25,16 @@ export class UrlBuilderService {
     return URL;
   }
 
-  public buildSqlAspectSavingURLA(objA, objB, aspectList) {
-    return this.buildSqlAspectSavingURL(objA, objB, aspectList, objA);
+  public buildSqlAspectSavingURLA(objA, objB, aspect, rating, sentexs) {
+    return this.buildSqlAspectSavingURL(objA, objB, aspect, rating, sentexs, objA);
   }
 
-  public buildSqlAspectSavingURLB(objA, objB, aspectList) {
-    return this.buildSqlAspectSavingURL(objA, objB, aspectList, objB);
+  public buildSqlAspectSavingURLB(objA, objB, aspect, rating, sentexs) {
+    return this.buildSqlAspectSavingURL(objA, objB, aspect, rating, sentexs, objB);
   }
 
-  private buildSqlAspectSavingURL(objA, objB, aspectList, obj) {
-    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objA}&objectB=${objB}&object=${obj}`;
-    URL += this.addAspectURL(aspectList);
+  private buildSqlAspectSavingURL(objA, objB, aspect, rating, sentexs, obj) {
+    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objA}&objectB=${objB}&aspect=${aspect}&rating=${rating}&object=${obj}&sentex1=${sentexs[0]}&sentex2=${sentexs[1]}&sentex3=${sentexs[2]}`;
     return URL;
   }
 

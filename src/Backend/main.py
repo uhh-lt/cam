@@ -99,10 +99,14 @@ def cam():
 def saveRatings():
     obj_a = request.args.get('objectA')
     obj_b = request.args.get('objectB')
+    aspect = request.args.get('aspect')
     obj = request.args.get('object')
-    aspects = extract_aspects(request)
-    for aspect in aspects:
-        insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b, obj))
+    rating = int(request.args.get('rating'))
+    sentex1 = request.args.get('sentex1')
+    sentex2 = request.args.get('sentex2')
+    sentex3 = request.args.get('sentex3')
+    insert_rating(Rating(aspect, rating, obj_a, obj_b,
+                         obj, sentex1, sentex2, sentex3))
     return jsonify(True)
 
 
