@@ -97,6 +97,7 @@ def get_connection():
         create_table(connection, create_pairs_table_sql)
         create_table(connection, create_sentexs_table_sql)
         insert_predefined_pairs(connection, pre_selected_objects)
+        insert_predefined_pairs(connection, read_predefined_pairs_from_file)
     return connection
 
 
@@ -123,9 +124,19 @@ def insert_predefined_pairs(connection, predefined_pairs):
     for pair in predefined_pairs:
         pair.sort()
         cursor.execute(
-            "INSERT INTO `pairs` (`obja`,`objb`,`amount`) VALUES (%s,%s,0)", pair)
+            "INSERT IGNORE INTO `pairs` (`obja`,`objb`,`amount`) VALUES (%s,%s,0)", pair)
     connection.commit()
     cursor.close()
+
+
+def read_predefined_pairs_from_file():
+    predefined_pairs = []
+
+    with open(dirname(abspath(__file__)) + 'pairs.csv', 'r') as source:
+        for line in source:
+            predefined_pairs.append(line.split(';', 1))
+
+    return predefined_pairs
 
 
 def get_predefined_pairs():
