@@ -7,28 +7,11 @@ import re
 from marker_approach.object_comparer import find_winner
 from utils.es_requester import extract_sentences, request_es
 from utils.sentence_clearer import clear_sentences
+from preselected_pairs import PREDEFINED_PAIRS
 
 TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
 CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
 CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/pairs.csv'
-
-pre_selected_objects = [
-    ['python', 'java'],
-    ['php', 'javascript'],
-    ['perl', 'python'],
-    ['ios', 'android'],
-    ['cuda', 'opencl'],
-    ['bluetooth', 'ethernet'],
-    ['bmw', 'toyota'],
-    ['apple', 'microsoft'],
-    ['gamecube', 'ps2'],
-    ['milk', 'beer'],
-    ['motorcycle', 'truck'],
-    ['oregon', 'michigan'],
-    ['pepsi', 'coca-cola'],
-    ['potato', 'steak'],
-    ['tennis', 'golf']
-]
 
 DB_NAME = 'cam_aspects'
 create_ratings_table_sql = ("CREATE TABLE `ratings` ("
@@ -97,8 +80,7 @@ def get_connection():
         create_table(connection, create_ratings_table_sql)
         create_table(connection, create_pairs_table_sql)
         create_table(connection, create_sentexs_table_sql)
-        insert_predefined_pairs(connection, pre_selected_objects)
-        insert_predefined_pairs(connection, read_predefined_pairs_from_file())
+        insert_predefined_pairs(connection, PREDEFINED_PAIRS)
     return connection
 
 
@@ -128,18 +110,6 @@ def insert_predefined_pairs(connection, predefined_pairs):
             "INSERT IGNORE INTO `pairs` (`obja`,`objb`,`amount`) VALUES (%s,%s,0)", pair)
     connection.commit()
     cursor.close()
-
-
-def read_predefined_pairs_from_file():
-    predefined_pairs = []
-
-    with open(dirname(abspath(__file__)) + 'pairs.csv', 'r') as source:
-        for line in source:
-            obj_a, obj_b = line.split(';', 1)
-            obj_b = obj_b[:-2]
-            predefined_pairs.append([obj_a, obj_b])
-
-    return predefined_pairs
 
 
 def get_predefined_pairs():
