@@ -34,7 +34,7 @@ export class UrlBuilderService {
   }
 
   private buildSqlAspectSavingURL(objA, objB, aspectList, obj) {
-    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objA}&objectB=${objB}&objectB=${obj}`;
+    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objA}&objectB=${objB}&object=${obj}`;
     URL += this.addAspectURL(aspectList);
     return URL;
   }
