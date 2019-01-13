@@ -162,10 +162,11 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     const sentexs = new Array<string>();
     const re1 = /;/gi;
     const re2 = /&/gi;
+    const re3 = /\"/gi;
 
     for (const sentence of sentenceList) {
       if (sentence.indexOf(aspect) > -1) {
-        sentexs.push(sentence.replace(re1, ",").replace(re2, " and "));
+        sentexs.push(sentence.replace(re1, ",").replace(re2, " and ").replace(re3, ""));
         if (sentexs.length > 2) {
           break;
         }

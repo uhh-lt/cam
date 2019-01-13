@@ -198,5 +198,5 @@ def export_ratings():
                     float(good_ratings + bad_ratings)
 
             target_file.write(most_frequent_rating + ';' + str(confidence) +
-                              ';' + str(good_ratings) + ';' + str(bad_ratings))
+                              ';' + str(good_ratings) + ';' + str(bad_ratings) + ';')
             target_file.write(rating_dict[aspect_key]['sentexs'] + '\n')
