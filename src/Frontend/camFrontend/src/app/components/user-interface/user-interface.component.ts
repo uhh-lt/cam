@@ -183,7 +183,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.resetTextsShown();
     this.showExportingText = true;
     this.httpRequestService.register(this.urlBuilderService.buildExportRatingsURL()).subscribe(_data => {
-      this.prepareComparisonAfterExport();
+      this.resetTextsShown();
+      this.showExportedText = true;
     });
   }
 
@@ -209,14 +210,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
         this.showLastText = true;
       }
     }
-    this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
-    this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
-  }
-
-  prepareComparisonAfterExport() {
-    this.reset();
-    this.showLoading = false;
-    this.showExportedText = true;
     this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
     this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
   }
