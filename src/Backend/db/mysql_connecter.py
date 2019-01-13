@@ -5,7 +5,7 @@ import mysql.connector
 from mysql.connector import errorcode
 
 from marker_approach.object_comparer import find_winner
-from preselected_pairs import PREDEFINED_PAIRS
+from db.preselected_pairs import PREDEFINED_PAIRS
 from utils.es_requester import extract_sentences, request_es
 from utils.sentence_clearer import clear_sentences
 
