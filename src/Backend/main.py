@@ -11,11 +11,12 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from requests.auth import HTTPBasicAuth
 
+from db.mysql_connecter import (Rating, export_ratings, get_predefined_pairs,
+                                insert_rating)
 from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
-from db.mysql_connecter import Rating, insert_rating, get_predefined_pairs
 from utils.es_requester import (extract_sentences, request_context_sentences,
                                 request_document_by_id, request_es,
                                 request_es_ML, request_es_triple,
@@ -102,6 +103,13 @@ def saveRatings():
     aspects = extract_aspects(request)
     for aspect in aspects:
         insert_rating(Rating(aspect.name, aspect.weight, obj_a, obj_b, obj))
+    return jsonify(True)
+
+
+@app.route('/exportRatings', methods=['GET'])
+@app.route('/cam/exportRatings', methods=['GET'])
+def exportRatings():
+    export_ratings()
     return jsonify(True)
 
 

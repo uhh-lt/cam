@@ -41,9 +41,6 @@ create_pairs_table_sql = ("CREATE TABLE `pairs` ("
                           " PRIMARY KEY (`obja`, `objb`)"
                           ") ENGINE=InnoDB")
 
-TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
-RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/ratings.csv'
-
 
 class Rating:
     '''

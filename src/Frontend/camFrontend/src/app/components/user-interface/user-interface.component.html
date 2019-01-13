@@ -34,6 +34,10 @@
             The last comparison has been skipped. You have gone through all of CAM's predefined pairs but if you want
             you can start all over.
           </div>
+          <div *ngIf='showExportedText' class="text-center">
+            All ratings from the data base have been exported to a CSV file that can be accessed in the appropriate
+            folder on the server. If you want you can start a new comparison.
+          </div>
         </td>
         <th class='align-middle text-center'>
           <button type="submit" mat-raised-button color="primary" [disabled]='!objectsEntered()'>
@@ -43,6 +47,9 @@
         <th class='align-middle text-center'>
           <button (click)='start()' mat-raised-button color="primary" [disabled]='objectsEntered()'>
             Start!
+          </button>
+          <button (click)='exportRatings()' mat-raised-button color="primary">
+            Export ratings to CSV
           </button>
         </th>
       </tr>

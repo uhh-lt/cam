@@ -39,6 +39,11 @@ export class UrlBuilderService {
     return URL;
   }
 
+
+  public buildExportRatingsURL() {
+    return `${this.HOSTNAME_DEFAULT}/exportRatings`;
+  }
+
   /**
    * Adds a URL part containing the aspects entered by the user to an already existing first part
    * of a URL.

@@ -27,6 +27,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   showSkipText = false;
   showLastText = false;
   showSkipLastText = false;
+  showExportedText = false;
   status = '';
 
   object_A = ''; // the first object currently entered
@@ -136,6 +137,12 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     });
   }
 
+  exportRatings() {
+    this.httpRequestService.register(this.urlBuilderService.buildExportRatingsURL()).subscribe(_data => {
+      this.prepareComparisonAfterExport();
+    });
+  }
+
   skipPair() {
     this.prepareNextComparison(true);
   }
@@ -158,6 +165,14 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
         this.showLastText = true;
       }
     }
+    this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
+    this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
+  }
+
+  prepareComparisonAfterExport() {
+    this.reset();
+    this.showLoading = false;
+    this.showExportedText = true;
     this.object_A = this.preSelectedObjects[this.indexOfSelectedObject][0];
     this.object_B = this.preSelectedObjects[this.indexOfSelectedObject][1];
   }
@@ -192,6 +207,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.showLastText = false;
     this.showSkipText = false;
     this.showSkipLastText = false;
+    this.showExportedText = false;
   }
 
   resetInput() {
