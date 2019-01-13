@@ -1,5 +1,12 @@
 <mat-card *ngIf="showResult && sentenceCount == 0">
-  <p class='text-center' style='font-size: 25px'>No sentences were found, please check for typos.</p>
+  <div>
+    <p class='text-center' style='font-size: 25px'>No sentences were found, please check for typos.</p>
+  </div>
+  <div>
+    <button (click)='skip()' mat-raised-button type="button">
+      Skip this
+    </button>
+  </div>
 </mat-card>
 <mat-card *ngIf="showResult && sentenceCount > 0">
 
@@ -8,7 +15,8 @@
   <table style="height: 100%; width: 100%">
     <tr>
       <th class='align-middle text-center'>
-        Please mark (+good+) the aspects that you think are a good description for why that object is better than the other
+        Please mark (+good+) the aspects that you think are a good description for why that object is better than the
+        other
         and after you've done marking, hit Submit.
       </th>
     </tr>
