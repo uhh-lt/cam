@@ -13,7 +13,7 @@ from requests.auth import HTTPBasicAuth
 
 from db.mysql_connecter import (Rating, create_sentence_examples,
                                 export_ratings, get_predefined_pairs,
-                                insert_rating)
+                                get_sentence_examples, insert_rating)
 from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)
@@ -123,8 +123,16 @@ def exportRatings():
 @app.route('/createSentenceExamples', methods=['GET'])
 @app.route('/cam/createSentenceExamples', methods=['GET'])
 def createSentenceExamples():
+    print('starting sentence example creation')
     create_sentence_examples()
+    print('done creating sentence examples')
     return jsonify(True)
+
+
+@app.route('/getSentenceExamples', methods=['GET'])
+@app.route('/cam/getSentenceExamples', methods=['GET'])
+def getSentenceExamples():
+    return get_sentence_examples()
 
 
 @app.route('/getPredefinedPairs', methods=['GET'])
@@ -142,7 +150,6 @@ def getPredefinedPairs():
         current_value += pair_value
     amount_of_pairs = len(pairs)
     pairs_to_return = []
-    print(cumulative_sums)
     for _i in range(0, amount_of_pairs):
         rand = random() * max(cumulative_sums)
         for s in cumulative_sums:

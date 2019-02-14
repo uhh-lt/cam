@@ -176,6 +176,7 @@ def insert_sentenceexamples(sentenceexamples, cursor):
     sql += ") VALUES "
     cursor.execute(
         sql + "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", sentenceexamples)
+    print(sentenceexamples, 'has been inserted')
 
 
 def get_sentenceexamples():
@@ -241,6 +242,7 @@ def create_sentence_examples():
     for pair in PREDEFINED_PAIRS:
         obj_a = Argument(pair[0])
         obj_b = Argument(pair[1])
+        print('requesting ES with', obj_a.name, obj_b.name)
         json_compl = request_es('false', obj_a, obj_b)
         all_sentences = extract_sentences(json_compl)
         all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
@@ -262,3 +264,8 @@ def create_sentence_examples():
                     i += 1
                 insert_sentenceexamples(sentenceexamples, cursor)
     close_connection(connection, cursor)
+
+
+def get_sentence_examples():
+    print(get_sentenceexamples())
+    return get_sentenceexamples()

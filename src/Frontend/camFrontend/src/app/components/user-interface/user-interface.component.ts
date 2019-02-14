@@ -200,6 +200,11 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getSentenceExamples() {
+    this.httpRequestService.register(this.urlBuilderService.buildGetSentenceExamplesURL()).subscribe(_data => {
+    });
+  }
+
   skipPair() {
     this.prepareNextComparison(true);
   }

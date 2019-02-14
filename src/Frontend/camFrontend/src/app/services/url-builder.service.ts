@@ -51,6 +51,10 @@ export class UrlBuilderService {
     return `${this.HOSTNAME_DEFAULT}/createSentenceExamples`;
   }
 
+  public buildGetSentenceExamplesURL() {
+    return `${this.HOSTNAME_DEFAULT}/getSentenceExamples`;
+  }
+
   /**
    * Adds a URL part containing the aspects entered by the user to an already existing first part
    * of a URL.
