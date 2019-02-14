@@ -42,6 +42,12 @@
             All ratings from the data base are being exported to a CSV file that can be accessed in the appropriate
             folder on the server. This may take a while, please be patient.
           </div>
+          <div *ngIf='showCreatingSentenceExamplesText' class="text-center">
+            A table containing all sentence examples is being created. This may take a while, please be patient.
+          </div>
+          <div *ngIf='showCreatedSentenceExamplesText' class="text-center">
+            A table containing all sentence examples has been created. If you want you can start a new comparison.
+          </div>
         </td>
         <th class='align-middle text-center'>
           <button type="submit" mat-raised-button color="primary" [disabled]='!objectsEntered()'>
@@ -57,6 +63,11 @@
           <div>
             <button (click)='exportRatings()' mat-raised-button color="primary">
               Export ratings to CSV
+            </button>
+          </div>
+          <div>
+            <button (click)='createSentenceExamples()' mat-raised-button color="primary">
+              Create sentence examples table
             </button>
           </div>
         </th>

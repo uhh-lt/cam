@@ -11,7 +11,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from requests.auth import HTTPBasicAuth
 
-from db.mysql_connecter import (Rating, export_ratings, get_predefined_pairs,
+from db.mysql_connecter import (Rating, create_sentence_examples,
+                                export_ratings, get_predefined_pairs,
                                 insert_rating)
 from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
@@ -105,8 +106,10 @@ def saveRatings():
     sentex1 = request.args.get('sentex1')
     sentex2 = request.args.get('sentex2')
     sentex3 = request.args.get('sentex3')
+    sentex4 = request.args.get('sentex4')
+    sentex5 = request.args.get('sentex5')
     insert_rating(Rating(aspect, rating, obj_a, obj_b,
-                         obj, sentex1, sentex2, sentex3))
+                         obj, sentex1, sentex2, sentex3, sentex4, sentex5))
     return jsonify(True)
 
 
@@ -114,6 +117,13 @@ def saveRatings():
 @app.route('/cam/exportRatings', methods=['GET'])
 def exportRatings():
     export_ratings()
+    return jsonify(True)
+
+
+@app.route('/createSentenceExamples', methods=['GET'])
+@app.route('/cam/createSentenceExamples', methods=['GET'])
+def createSentenceExamples():
+    create_sentence_examples()
     return jsonify(True)
 
 

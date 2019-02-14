@@ -34,13 +34,21 @@ export class UrlBuilderService {
   }
 
   private buildSqlAspectSavingURL(objA, objB, aspect, rating, sentexs, obj) {
-    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objA}&objectB=${objB}&aspect=${aspect}&rating=${rating}&object=${obj}&sentex1=${sentexs[0]}&sentex2=${sentexs[1]}&sentex3=${sentexs[2]}`;
+    let URL = `${this.HOSTNAME_DEFAULT}/sqlAspectSaving?objectA=${objA}&objectB=${objB}&aspect=${aspect}&rating=${rating}&object=${obj}`;
+    let i = 1;
+    for (const sentex of sentexs) {
+      URL += `&sentex${i}=${sentex}`;
+    } 
     return URL;
   }
 
 
   public buildExportRatingsURL() {
     return `${this.HOSTNAME_DEFAULT}/exportRatings`;
+  }
+
+  public buildCreateSentenceExamplesURL() {
+    return `${this.HOSTNAME_DEFAULT}/createSentenceExamples`;
   }
 
   /**

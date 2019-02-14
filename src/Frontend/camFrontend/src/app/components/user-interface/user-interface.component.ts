@@ -29,6 +29,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   showSkipLastText = false;
   showExportedText = false;
   showExportingText = false;
+  showCreatingSentenceExamplesText = false;
+  showCreatedSentenceExamplesText = false;
   status = '';
 
   object_A = ''; // the first object currently entered
@@ -167,13 +169,13 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     for (const sentence of sentenceList) {
       if (sentence.indexOf(aspect) > -1) {
         sentexs.push(sentence.replace(re1, ",").replace(re2, " and ").replace(re3, ""));
-        if (sentexs.length > 2) {
+        if (sentexs.length > 4) {
           break;
         }
       }
     }
 
-    while (sentexs.length < 3) {
+    while (sentexs.length < 5) {
       sentexs.push("");
     }
 
@@ -186,6 +188,15 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.httpRequestService.register(this.urlBuilderService.buildExportRatingsURL()).subscribe(_data => {
       this.resetTextsShown();
       this.showExportedText = true;
+    });
+  }
+
+  createSentenceExamples() {
+    this.resetTextsShown();
+    this.showCreatingSentenceExamplesText = true;
+    this.httpRequestService.register(this.urlBuilderService.buildCreateSentenceExamplesURL()).subscribe(_data => {
+      this.resetTextsShown();
+      this.showCreatedSentenceExamplesText = true;
     });
   }
 
@@ -252,6 +263,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.showSkipLastText = false;
     this.showExportedText = false;
     this.showExportingText = false;
+    this.showCreatingSentenceExamplesText = false;
+    this.showCreatedSentenceExamplesText = false;
   }
 
   resetInput() {

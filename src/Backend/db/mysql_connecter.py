@@ -2,12 +2,12 @@ import re
 from os.path import abspath, dirname
 
 import mysql.connector
-from mysql.connector import errorcode
 
 from marker_approach.object_comparer import find_winner
 from db.preselected_pairs import PREDEFINED_PAIRS
 from utils.es_requester import extract_sentences, request_es
 from utils.sentence_clearer import clear_sentences
+from utils.objects import Argument
 
 TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
 CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
@@ -28,16 +28,33 @@ create_pairs_table_sql = ("CREATE TABLE `pairs` ("
                           " `amount` int NOT NULL,"
                           " PRIMARY KEY (`obja`, `objb`)"
                           ") ENGINE=InnoDB")
-create_sentexs_table_sql = ("CREATE TABLE `sentexs` ("
-                            " `obja` varchar(200) NOT NULL,"
-                            " `objb` varchar(200) NOT NULL,"
-                            " `obj` varchar(200) NOT NULL,"
-                            " `aspect` varchar(200) NOT NULL,"
-                            " `sentex1` varchar(2000) NOT NULL,"
-                            " `sentex2` varchar(2000) NOT NULL,"
-                            " `sentex3` varchar(2000) NOT NULL,"
-                            " PRIMARY KEY (`obja`, `objb`, `obj`, `aspect`)"
-                            ") ENGINE=InnoDB")
+create_sentenceexamples_table_sql = ("CREATE TABLE `sentenceexamples` ("
+                                     " `obja` varchar(200) NOT NULL,"
+                                     " `objb` varchar(200) NOT NULL,"
+                                     " `obj` varchar(200) NOT NULL,"
+                                     " `aspect` varchar(200) NOT NULL,"
+                                     " `sentex1` varchar(2000) NOT NULL,"
+                                     " `sentex2` varchar(2000) NOT NULL,"
+                                     " `sentex3` varchar(2000) NOT NULL,"
+                                     " `sentex4` varchar(2000) NOT NULL,"
+                                     " `sentex5` varchar(2000) NOT NULL,"
+                                     " `sentex6` varchar(2000) NOT NULL,"
+                                     " `sentex7` varchar(2000) NOT NULL,"
+                                     " `sentex8` varchar(2000) NOT NULL,"
+                                     " `sentex9` varchar(2000) NOT NULL,"
+                                     " `sentex10` varchar(2000) NOT NULL,"
+                                     " `sentex11` varchar(2000) NOT NULL,"
+                                     " `sentex12` varchar(2000) NOT NULL,"
+                                     " `sentex13` varchar(2000) NOT NULL,"
+                                     " `sentex14` varchar(2000) NOT NULL,"
+                                     " `sentex15` varchar(2000) NOT NULL,"
+                                     " `sentex16` varchar(2000) NOT NULL,"
+                                     " `sentex17` varchar(2000) NOT NULL,"
+                                     " `sentex18` varchar(2000) NOT NULL,"
+                                     " `sentex19` varchar(2000) NOT NULL,"
+                                     " `sentex20` varchar(2000) NOT NULL,"
+                                     " PRIMARY KEY (`obja`, `objb`, `obj`, `aspect`)"
+                                     ") ENGINE=InnoDB")
 
 
 class Rating:
@@ -45,7 +62,7 @@ class Rating:
     A single rating of an aspect
     '''
 
-    def __init__(self, aspect: str, rating: int, obja: str, objb: str, obj: str, sentex1: str, sentex2: str, sentex3: str):
+    def __init__(self, aspect: str, rating: int, obja: str, objb: str, obj: str, sentex1: str, sentex2: str, sentex3: str, sentex4: str, sentex5: str):
         self.aspect = aspect
         self.rating = rating
         pairs = [obja, objb]
@@ -56,6 +73,8 @@ class Rating:
         self.sentex1 = sentex1
         self.sentex2 = sentex2
         self.sentex3 = sentex3
+        self.sentex4 = sentex4
+        self.sentex5 = sentex5
 
     def get_value(self):
         return [self.aspect, self.rating, self.obja, self.objb, self.obj]
@@ -63,8 +82,8 @@ class Rating:
     def get_pair(self):
         return [self.obja, self.objb]
 
-    def get_sentexs(self):
-        return [self.obja, self.objb, self.aspect, self.obj, self.sentex1, self.sentex2, self.sentex3]
+    def get_sentenceexamples(self):
+        return [self.obja, self.objb, self.aspect, self.obj, self.sentex1, self.sentex2, self.sentex3, self.sentex4, self.sentex5]
 
 
 def get_connection():
@@ -78,7 +97,7 @@ def get_connection():
         connection.database = DB_NAME
         create_table(connection, create_ratings_table_sql)
         create_table(connection, create_pairs_table_sql)
-        create_table(connection, create_sentexs_table_sql)
+        create_table(connection, create_sentenceexamples_table_sql)
         insert_predefined_pairs(connection, PREDEFINED_PAIRS)
     return connection
 
@@ -124,7 +143,7 @@ def insert_rating(rating: Rating):
     cursor.execute("INSERT INTO `ratings` (`aspect`,`rating`,`obja`,`objb`,`obj`) VALUES (%s,%s,%s,%s,%s)",
                    rating.get_value())
     raise_value_of_pair(rating.get_pair(), cursor)
-    insert_sentexs(rating.get_sentexs(), cursor)
+    insert_sentenceexamples(rating.get_sentenceexamples(), cursor)
     close_connection(connection, cursor)
 
 
@@ -141,16 +160,20 @@ def raise_value_of_pair(pair, cursor):
         "UPDATE pairs SET amount = amount + 1 WHERE obja = %s AND objb = %s", pair)
 
 
-def insert_sentexs(sentexs, cursor):
+def insert_sentenceexamples(sentenceexamples, cursor):
+    sql = "INSERT IGNORE INTO `sentenceexamples` (`obja`,`objb`,`aspect`,`obj`"
+    for i in range(1, 21):
+        sql += ",`sentex" + str(i) + "`"
+    sql += ") VALUES "
     cursor.execute(
-        "INSERT IGNORE INTO `sentexs` (`obja`,`objb`,`aspect`,`obj`,`sentex1`,`sentex2`,`sentex3`) VALUES (%s,%s,%s,%s,%s,%s,%s)", sentexs)
+        sql + "(%s,%s,%s,%s,%s,%s,%s,%s,%s,'','','','','','','','','','','','','','','')", sentenceexamples)
 
 
-def get_sentexs():
+def get_sentenceexamples():
     connection = get_connection()
     cursor = connection.cursor()
     cursor.execute(
-        "SELECT `obja`, `objb`, `aspect`, `obj`,`sentex1`,`sentex2`,`sentex3` FROM `sentexs`")
+        "SELECT `obja`, `objb`, `aspect`, `obj`,`sentex1`,`sentex2`,`sentex3`,`sentex4`,`sentex5` FROM `sentenceexamples`")
     return cursor.fetchall()
 
 
@@ -163,7 +186,7 @@ def close_connection(connection, cursor):
 def export_ratings():
     with open(CONVERTED_RATINGS_FILE_NAME, 'w') as target_file:
         target_file.write(
-            'OBJECT A;OBJECT B;ASPECT;ASPECT BELONGS TO;MOST FREQUENT RATING;CONFIDENCE;AMOUNT OF GOOD RATINGS;AMOUNT OF BAD RATINGS; SENTENCE EXAMPLE 1; SENTENCE EXAMPLE 2; SENTENCE EXAMPLE 3\n')
+            'OBJECT A;OBJECT B;ASPECT;ASPECT BELONGS TO;MOST FREQUENT RATING;CONFIDENCE;AMOUNT OF GOOD RATINGS;AMOUNT OF BAD RATINGS; SENTENCE EXAMPLE 1; SENTENCE EXAMPLE 2; SENTENCE EXAMPLE 3; SENTENCE EXAMPLE 4; SENTENCE EXAMPLE 5\n')
         rating_dict = {}
 
         for rating in get_ratings():
@@ -173,10 +196,10 @@ def export_ratings():
                 rating_dict[key]['ratings'] = []
             rating_dict[key]['ratings'].append(rating[4])
 
-        for sentexs in get_sentexs():
-            key = ';'.join(sentexs[:4])
-            sentexs_str = ';'.join(sentexs[4:7])
-            rating_dict[key]['sentexs'] = sentexs_str
+        for sentenceexamples in get_sentenceexamples():
+            key = ';'.join(sentenceexamples[:4])
+            sentenceexamples_str = ';'.join(sentenceexamples[4:])
+            rating_dict[key]['sentenceexamples'] = sentenceexamples_str
 
         for aspect_key in rating_dict.keys():
             target_file.write(aspect_key + ';')
@@ -199,4 +222,34 @@ def export_ratings():
 
             target_file.write(most_frequent_rating + ';' + str(confidence) +
                               ';' + str(good_ratings) + ';' + str(bad_ratings) + ';')
-            target_file.write(rating_dict[aspect_key]['sentexs'] + '\n')
+            target_file.write(
+                rating_dict[aspect_key]['sentenceexamples'] + '\n')
+
+
+def create_sentence_examples():
+    connection = get_connection()
+    cursor = connection.cursor()
+    create_table(connection, create_sentenceexamples_table_sql)
+    for pair in PREDEFINED_PAIRS:
+        obj_a = Argument(pair[0])
+        obj_b = Argument(pair[1])
+        json_compl = request_es('false', obj_a, obj_b)
+        all_sentences = extract_sentences(json_compl)
+        all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
+        result = find_winner(all_sentences, obj_a, obj_b, [])
+        for o, aspects in zip([obj_a, obj_b], [result['extractedAspectsObject1'], result['extractedAspectsObject2']]):
+            for aspect in aspects:
+                sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
+                i = 0
+                for sentence in o.sentences:
+                    word_list = re.compile('\w+').findall(sentence)
+                    if aspect in word_list:
+                        sentenceexamples.append(sentence)
+                        i += 1
+                    if i > 19:
+                        break
+                while i < 20:
+                    sentenceexamples.append('')
+                    i += 1
+                insert_sentenceexamples(sentenceexamples, cursor)
+    close_connection(connection, cursor)
