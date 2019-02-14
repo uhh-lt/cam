@@ -172,6 +172,7 @@ def insert_sentenceexamples(sentenceexamples, cursor):
     sql += ") VALUES "
     cursor.execute(
         sql + "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", sentenceexamples)
+        print(sentenceexamples, ' has been inserted')
 
 
 def get_sentenceexamples():
@@ -237,7 +238,6 @@ def create_sentence_examples():
     cursor.execute("DROP TABLE sentenceexamples")
     create_table(connection, create_sentenceexamples_table_sql)
     for pair in PREDEFINED_PAIRS:
-        print('starting pair ..', pair)
         obj_a = Argument(pair[0])
         obj_b = Argument(pair[1])
         json_compl = request_es('false', obj_a, obj_b)
@@ -245,26 +245,20 @@ def create_sentence_examples():
         all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
         result = find_winner(all_sentences, obj_a, obj_b, [])
         for o, aspects in zip([obj_a, obj_b], [result['extractedAspectsObject1'], result['extractedAspectsObject2']]):
-            print('starting object ..', o, ' with aspects ', aspects)
             for aspect in aspects:
-                print('starting aspect ..', aspect)
                 sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
                 i = 0
                 for sentence in o.sentences:
-                    txt = sentence['text']
-                    print('starting sentence ..', txt)
-                    word_list = re.compile('\w+').findall(txt)
-                    if aspect in word_list:
-                        sentenceexamples.append(txt[:500])
-                        i += 1
-                    if i > 19:
-                        break
-                    print('sentence done')
+                    while i < 20:
+                        txt = sentence['text']
+                        word_list = re.compile('\w+').findall(txt)
+                        if aspect in word_list:
+                            if len(txt) > 500:
+                                txt = txt[:500]
+                            sentenceexamples.append(txt)
+                            i += 1
                 while i < 20:
                     sentenceexamples.append('')
                     i += 1
                 insert_sentenceexamples(sentenceexamples, cursor)
-                print('aspect done')
-            print('object done')
-        print('pair done')
     close_connection(connection, cursor)
