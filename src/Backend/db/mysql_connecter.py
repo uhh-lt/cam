@@ -33,26 +33,26 @@ create_sentenceexamples_table_sql = ("CREATE TABLE `sentenceexamples` ("
                                      " `objb` varchar(200) NOT NULL,"
                                      " `obj` varchar(200) NOT NULL,"
                                      " `aspect` varchar(200) NOT NULL,"
-                                     " `sentex1` varchar(2000) NOT NULL,"
-                                     " `sentex2` varchar(2000) NOT NULL,"
-                                     " `sentex3` varchar(2000) NOT NULL,"
-                                     " `sentex4` varchar(2000) NOT NULL,"
-                                     " `sentex5` varchar(2000) NOT NULL,"
-                                     " `sentex6` varchar(2000) NOT NULL,"
-                                     " `sentex7` varchar(2000) NOT NULL,"
-                                     " `sentex8` varchar(2000) NOT NULL,"
-                                     " `sentex9` varchar(2000) NOT NULL,"
-                                     " `sentex10` varchar(2000) NOT NULL,"
-                                     " `sentex11` varchar(2000) NOT NULL,"
-                                     " `sentex12` varchar(2000) NOT NULL,"
-                                     " `sentex13` varchar(2000) NOT NULL,"
-                                     " `sentex14` varchar(2000) NOT NULL,"
-                                     " `sentex15` varchar(2000) NOT NULL,"
-                                     " `sentex16` varchar(2000) NOT NULL,"
-                                     " `sentex17` varchar(2000) NOT NULL,"
-                                     " `sentex18` varchar(2000) NOT NULL,"
-                                     " `sentex19` varchar(2000) NOT NULL,"
-                                     " `sentex20` varchar(2000) NOT NULL,"
+                                     " `sentex1` varchar(500) NOT NULL,"
+                                     " `sentex2` varchar(500) NOT NULL,"
+                                     " `sentex3` varchar(500) NOT NULL,"
+                                     " `sentex4` varchar(500) NOT NULL,"
+                                     " `sentex5` varchar(500) NOT NULL,"
+                                     " `sentex6` varchar(500) NOT NULL,"
+                                     " `sentex7` varchar(500) NOT NULL,"
+                                     " `sentex8` varchar(500) NOT NULL,"
+                                     " `sentex9` varchar(500) NOT NULL,"
+                                     " `sentex10` varchar(500) NOT NULL,"
+                                     " `sentex11` varchar(500) NOT NULL,"
+                                     " `sentex12` varchar(500) NOT NULL,"
+                                     " `sentex13` varchar(500) NOT NULL,"
+                                     " `sentex14` varchar(500) NOT NULL,"
+                                     " `sentex15` varchar(500) NOT NULL,"
+                                     " `sentex16` varchar(500) NOT NULL,"
+                                     " `sentex17` varchar(500) NOT NULL,"
+                                     " `sentex18` varchar(500) NOT NULL,"
+                                     " `sentex19` varchar(500) NOT NULL,"
+                                     " `sentex20` varchar(500) NOT NULL,"
                                      " PRIMARY KEY (`obja`, `objb`, `obj`, `aspect`)"
                                      ") ENGINE=InnoDB")
 
@@ -242,9 +242,10 @@ def create_sentence_examples():
                 sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
                 i = 0
                 for sentence in o.sentences:
-                    word_list = re.compile('\w+').findall(sentence)
+                    txt = sentence.text
+                    word_list = re.compile('\w+').findall(txt)
                     if aspect in word_list:
-                        sentenceexamples.append(sentence)
+                        sentenceexamples.append(txt[:500])
                         i += 1
                     if i > 19:
                         break
