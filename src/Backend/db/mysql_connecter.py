@@ -169,7 +169,7 @@ def insert_sentenceexamples_after_rating(sentenceexamples, cursor):
         sql + "(%s,%s,%s,%s,%s,%s,%s,%s,%s,'','','','','','','','','','','','','','','')", sentenceexamples)
 
 
-def insert_sentenceexamples_after_rating(sentenceexamples, cursor):
+def insert_sentenceexamples(sentenceexamples, cursor):
     sql = "INSERT IGNORE INTO `sentenceexamples` (`obja`,`objb`,`aspect`,`obj`"
     for i in range(1, 21):
         sql += ",`sentex" + str(i) + "`"
