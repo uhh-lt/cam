@@ -116,6 +116,8 @@ def create_database(connection):
 def create_table(connection, sql_command):
     cursor = connection.cursor()
     cursor.execute(sql_command)
+    connection.commit()
+    cursor.close()
 
 
 def insert_predefined_pairs(connection, predefined_pairs):
@@ -124,6 +126,8 @@ def insert_predefined_pairs(connection, predefined_pairs):
         pair.sort()
         cursor.execute(
             "INSERT IGNORE INTO `pairs` (`obja`,`objb`,`amount`) VALUES (%s,%s,0)", pair)
+    connection.commit()
+    cursor.close()
 
 
 def get_predefined_pairs():
@@ -235,6 +239,11 @@ def export_ratings():
 def create_sentence_examples():
     connection = get_connection()
     cursor = connection.cursor()
+    cursor.execute("DROP TABLE sentenceexamples")
+    connection.commit()
+    cursor.close()
+    cursor = connection.cursor()
+    create_table(connection, create_sentenceexamples_table_sql)
     for pair in PREDEFINED_PAIRS:
         print('test1')
         pair.sort()
