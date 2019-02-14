@@ -34,10 +34,10 @@ def build_object_urlpart(obj_a, obj_b):
     '''
     Builds the part of the URL containing the host name, the Elastic Search type and the objects to look for.
 
-    obj_a:   Argument
+    obj_a:   String
             an object to be searched via Elastic Search
 
-    obj_b:   Argument
+    obj_b:   String
             another object to be searched via Elastic Search
     '''
     if(obj_a.name == '' or obj_b.name == ''):

@@ -11,13 +11,12 @@ def request_es(fast_search, obj_a, obj_b):
     '''
     Sends a request to Elastic Search and returns the result as a JSON object.
 
-    obj_a:   Argument
+    obj_a:   String
             an object to be searched via Elastic Search
 
-    obj_b:   Argument
+    obj_b:   String
             another object to be searched via Elastic Search
     '''
-    print('requesting ES with', obj_a.name, 'and', obj_b.name)
     url = build_object_urlpart(obj_a, obj_b)
     url = add_marker_urlpart(url, fast_search)
     return send_request(url)

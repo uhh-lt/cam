@@ -142,6 +142,7 @@ def getPredefinedPairs():
         current_value += pair_value
     amount_of_pairs = len(pairs)
     pairs_to_return = []
+    print(cumulative_sums)
     for _i in range(0, amount_of_pairs):
         rand = random() * max(cumulative_sums)
         for s in cumulative_sums:

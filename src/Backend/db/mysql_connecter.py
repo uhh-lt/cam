@@ -176,7 +176,6 @@ def insert_sentenceexamples(sentenceexamples, cursor):
     sql += ") VALUES "
     cursor.execute(
         sql + "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", sentenceexamples)
-    print(sentenceexamples, 'has been inserted')
 
 
 def get_sentenceexamples():
@@ -239,40 +238,25 @@ def export_ratings():
 def create_sentence_examples():
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("DROP TABLE sentenceexamples")
-    connection.commit()
-    cursor.close()
-    cursor = connection.cursor()
-    create_table(connection, create_sentenceexamples_table_sql)
     for pair in PREDEFINED_PAIRS:
-        print('test1')
-        pair.sort()
-        print('test2')
         obj_a = Argument(pair[0])
         obj_b = Argument(pair[1])
-        print('test3')
         json_compl = request_es('false', obj_a, obj_b)
-        print('test4')
         all_sentences = extract_sentences(json_compl)
-        print('test5')
         all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
-        print('test6')
         result = find_winner(all_sentences, obj_a, obj_b, [])
-        print('test7')
         for o, aspects in zip([obj_a, obj_b], [result['extractedAspectsObject1'], result['extractedAspectsObject2']]):
             for aspect in aspects:
-                print('working on aspect', aspect, 'of object', o.name, 'comparing', obj_a.name, 'and', obj_b.name)
                 sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
                 i = 0
                 for sentence in o.sentences:
-                    while i < 20:
-                        txt = sentence['text']
-                        word_list = re.compile('\w+').findall(txt)
-                        if aspect in word_list:
-                            if len(txt) > 500:
-                                txt = txt[:500]
-                            sentenceexamples.append(txt)
-                            i += 1
+                    txt = sentence['text']
+                    word_list = re.compile('\w+').findall(txt)
+                    if aspect in word_list:
+                        sentenceexamples.append(txt[:500])
+                        i += 1
+                    if i > 19:
+                        break
                 while i < 20:
                     sentenceexamples.append('')
                     i += 1
