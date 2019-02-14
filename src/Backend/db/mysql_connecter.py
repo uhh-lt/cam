@@ -242,7 +242,7 @@ def create_sentence_examples():
                 sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
                 i = 0
                 for sentence in o.sentences:
-                    txt = sentence.text
+                    txt = sentence['text']
                     word_list = re.compile('\w+').findall(txt)
                     if aspect in word_list:
                         sentenceexamples.append(txt[:500])

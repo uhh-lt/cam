@@ -52,7 +52,7 @@ def add_points(contained_aspects, winner, sentence, max_score, score_function, t
     score:              Integer
                         The score of the given sentence
 
-    sentence:           String
+    sentence:           Sentence
                         The given sentence to add
 
     max_score:          Integer
