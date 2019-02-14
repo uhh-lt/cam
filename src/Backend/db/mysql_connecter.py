@@ -208,8 +208,9 @@ def export_ratings():
 
         for sentenceexamples in get_sentenceexamples():
             key = ';'.join(sentenceexamples[:4])
-            sentenceexamples_str = ';'.join(sentenceexamples[4:])
-            rating_dict[key]['sentenceexamples'] = sentenceexamples_str
+            if key in rating_dict.keys():
+                sentenceexamples_str = ';'.join(sentenceexamples[4:])
+                rating_dict[key]['sentenceexamples'] = sentenceexamples_str
 
         for aspect_key in rating_dict.keys():
             target_file.write(aspect_key + ';')
