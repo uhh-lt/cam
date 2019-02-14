@@ -235,8 +235,6 @@ def export_ratings():
 def create_sentence_examples():
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("DROP TABLE sentenceexamples")
-    create_table(connection, create_sentenceexamples_table_sql)
     for pair in PREDEFINED_PAIRS:
         pair.sort()
         obj_a = Argument(pair[0])
