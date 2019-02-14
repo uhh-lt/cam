@@ -246,23 +246,24 @@ def create_sentence_examples():
         json_compl = request_es('false', obj_a, obj_b)
         all_sentences = extract_sentences(json_compl)
         all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
-        result = find_winner(all_sentences, obj_a, obj_b, [])
-        for o, aspects in zip([obj_a, obj_b], [result['extractedAspectsObject1'], result['extractedAspectsObject2']]):
-            for aspect in aspects:
-                sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
-                i = 0
-                for sentence in o.sentences:
-                    txt = sentence['text']
-                    word_list = re.compile('\w+').findall(txt)
-                    if aspect in word_list:
-                        sentenceexamples.append(txt[:500])
+        if all_sentences:
+            result = find_winner(all_sentences, obj_a, obj_b, [])
+            for o, aspects in zip([obj_a, obj_b], [result['extractedAspectsObject1'], result['extractedAspectsObject2']]):
+                for aspect in aspects:
+                    sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
+                    i = 0
+                    for sentence in o.sentences:
+                        txt = sentence['text']
+                        word_list = re.compile('\w+').findall(txt)
+                        if aspect in word_list:
+                            sentenceexamples.append(txt[:500])
+                            i += 1
+                        if i > 19:
+                            break
+                    while i < 20:
+                        sentenceexamples.append('')
                         i += 1
-                    if i > 19:
-                        break
-                while i < 20:
-                    sentenceexamples.append('')
-                    i += 1
-                insert_sentenceexamples(sentenceexamples, cursor)
+                    insert_sentenceexamples(sentenceexamples, cursor)
     close_connection(connection, cursor)
 
 

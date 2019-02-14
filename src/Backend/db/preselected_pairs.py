@@ -49,7 +49,6 @@ PREDEFINED_PAIRS = [
     ['avaya', 'huawei'],
     ['chrysler', 'ford'],
     ['microsoft', 'sony'],
-    ['advil', 'ibuprofen'],
     ['advil', 'motrin'],
     ['google', 'intel'],
     ['motorola', 'samsung'],
