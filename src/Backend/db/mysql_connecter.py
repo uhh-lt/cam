@@ -143,7 +143,7 @@ def insert_rating(rating: Rating):
     cursor.execute("INSERT INTO `ratings` (`aspect`,`rating`,`obja`,`objb`,`obj`) VALUES (%s,%s,%s,%s,%s)",
                    rating.get_value())
     raise_value_of_pair(rating.get_pair(), cursor)
-    insert_sentenceexamples(rating.get_sentenceexamples(), cursor)
+    insert_sentenceexamples_after_rating(rating.get_sentenceexamples(), cursor)
     close_connection(connection, cursor)
 
 
@@ -160,13 +160,22 @@ def raise_value_of_pair(pair, cursor):
         "UPDATE pairs SET amount = amount + 1 WHERE obja = %s AND objb = %s", pair)
 
 
-def insert_sentenceexamples(sentenceexamples, cursor):
+def insert_sentenceexamples_after_rating(sentenceexamples, cursor):
     sql = "INSERT IGNORE INTO `sentenceexamples` (`obja`,`objb`,`aspect`,`obj`"
     for i in range(1, 21):
         sql += ",`sentex" + str(i) + "`"
     sql += ") VALUES "
     cursor.execute(
         sql + "(%s,%s,%s,%s,%s,%s,%s,%s,%s,'','','','','','','','','','','','','','','')", sentenceexamples)
+
+
+def insert_sentenceexamples_after_rating(sentenceexamples, cursor):
+    sql = "INSERT IGNORE INTO `sentenceexamples` (`obja`,`objb`,`aspect`,`obj`"
+    for i in range(1, 21):
+        sql += ",`sentex" + str(i) + "`"
+    sql += ") VALUES "
+    cursor.execute(
+        sql + "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", sentenceexamples)
 
 
 def get_sentenceexamples():
