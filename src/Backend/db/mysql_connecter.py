@@ -172,7 +172,7 @@ def insert_sentenceexamples(sentenceexamples, cursor):
     sql += ") VALUES "
     cursor.execute(
         sql + "(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", sentenceexamples)
-        print(sentenceexamples, ' has been inserted')
+    print(sentenceexamples, 'has been inserted')
 
 
 def get_sentenceexamples():
@@ -238,6 +238,7 @@ def create_sentence_examples():
     cursor.execute("DROP TABLE sentenceexamples")
     create_table(connection, create_sentenceexamples_table_sql)
     for pair in PREDEFINED_PAIRS:
+        pair.sort()
         obj_a = Argument(pair[0])
         obj_b = Argument(pair[1])
         json_compl = request_es('false', obj_a, obj_b)
@@ -246,6 +247,7 @@ def create_sentence_examples():
         result = find_winner(all_sentences, obj_a, obj_b, [])
         for o, aspects in zip([obj_a, obj_b], [result['extractedAspectsObject1'], result['extractedAspectsObject2']]):
             for aspect in aspects:
+                print('working on aspect', aspect, 'of object', o.name, 'comparing', obj_a.name, 'and', obj_b.name)
                 sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
                 i = 0
                 for sentence in o.sentences:
