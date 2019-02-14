@@ -239,6 +239,7 @@ def create_sentence_examples():
     connection = get_connection()
     cursor = connection.cursor()
     for pair in PREDEFINED_PAIRS:
+        print('starting pair ..')
         obj_a = Argument(pair[0])
         obj_b = Argument(pair[1])
         json_compl = request_es('false', obj_a, obj_b)
@@ -246,7 +247,9 @@ def create_sentence_examples():
         all_sentences = clear_sentences(all_sentences, obj_a, obj_b)
         result = find_winner(all_sentences, obj_a, obj_b, [])
         for o, aspects in zip([obj_a, obj_b], [result['extractedAspectsObject1'], result['extractedAspectsObject2']]):
+            print('starting object ..')
             for aspect in aspects:
+                print('starting aspect ..')
                 sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
                 i = 0
                 for sentence in o.sentences:
@@ -261,4 +264,7 @@ def create_sentence_examples():
                     sentenceexamples.append('')
                     i += 1
                 insert_sentenceexamples(sentenceexamples, cursor)
+                print('aspect done')
+            print('object done')
+        print('pair done')
     close_connection(connection, cursor)
