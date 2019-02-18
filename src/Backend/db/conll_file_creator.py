@@ -40,8 +40,8 @@ def create_conll_file():
                 else:
                     other_object = first_object
                 rating = parts[4]
-                sentences = [sentence for sentence in parts[8:]
-                             if sentence and '\n' not in sentence]
+                sentences = [sentence.replace('\n', '')
+                             for sentence in parts[8:] if sentence]
 
                 for sentence in sentences:
                     tokens = word_tokenize(sentence)
