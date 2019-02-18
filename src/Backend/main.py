@@ -129,12 +129,6 @@ def createSentenceExamples():
     return jsonify(True)
 
 
-@app.route('/getSentenceExamples', methods=['GET'])
-@app.route('/cam/getSentenceExamples', methods=['GET'])
-def getSentenceExamples():
-    return get_sentence_examples()
-
-
 @app.route('/getPredefinedPairs', methods=['GET'])
 @app.route('/cam/getPredefinedPairs', methods=['GET'])
 def getPredefinedPairs():
