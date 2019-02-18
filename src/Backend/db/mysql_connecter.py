@@ -242,7 +242,13 @@ def create_sentence_examples():
     connection = get_connection()
     cursor = connection.cursor()
     cursor.execute("DROP TABLE `sentenceexamples`")
+    connection.commit()
+    cursor.close()
+    cursor = connection.cursor()
     cursor.execute(create_sentenceexamples_table_sql)
+    connection.commit()
+    cursor.close()
+    cursor = connection.cursor()
     for pair in PREDEFINED_PAIRS:
         obj_a = Argument(pair[0])
         obj_b = Argument(pair[1])
