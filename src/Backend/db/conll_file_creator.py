@@ -26,7 +26,7 @@ def create_conll_file():
     with open(CONVERTED_RATINGS_FILE_NAME, 'r') as csv_file:
         with open(CONLL_FILE_NAME, 'w') as conll_file:
             for line in csv_file:
-                parts = line.split(';')
+                parts = line.lower().split(';')
                 if len(parts) < 9:
                     continue
                 first_object = parts[0]
@@ -57,16 +57,16 @@ def create_conll_file():
                         elif inside_part(token, other_object, tokens, index):
                             conll_file.write(IOO + NEWLINE)
                         elif equals_part(token, aspect) or beginning_of_part(token, aspect, tokens, index):
-                            if rating == 'GOOD':
+                            if rating == 'good':
                                 conll_file.write(BGA + NEWLINE)
-                            elif rating == 'EVEN':
+                            elif rating == 'even':
                                 conll_file.write(BEA + NEWLINE)
                             else:
                                 conll_file.write(BBA + NEWLINE)
                         elif inside_part(token, aspect, tokens, index):
-                            if rating == 'GOOD':
+                            if rating == 'good':
                                 conll_file.write(IGA + NEWLINE)
-                            elif rating == 'EVEN':
+                            elif rating == 'even':
                                 conll_file.write(IEA + NEWLINE)
                             else:
                                 conll_file.write(IBA + NEWLINE)
