@@ -30,7 +30,7 @@ def create_conll_file():
                 parts = line.split(';')
                 first_object = parts[0]
                 if 'OBJECT' in first_object:
-                    break
+                    continue
                 second_object = parts[1]
                 aspect = parts[2]
                 aspect_object = parts[3]
@@ -44,7 +44,7 @@ def create_conll_file():
 
                 for sentence in sentences:
                     if not sentence:
-                        break
+                        continue
                     tokens = word_tokenize(sentence)
                     for index in range(0, len(tokens)):
                         token = tokens[index]
@@ -105,7 +105,7 @@ def inside_part(token, part, tokens, index):
             if equals_part(expanding_token, part):
                 return True
             if beginning_of_part(expanding_token, part, tokens, index):
-                break
+                return True
             if not expanding_token in part:
                 return False
     return False
