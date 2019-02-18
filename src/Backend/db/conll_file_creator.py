@@ -28,6 +28,8 @@ def create_conll_file():
         with open(CONLL_FILE_NAME, 'w') as conll_file:
             for line in csv_file:
                 parts = line.split(';')
+                if len(parts) < 9:
+                    continue
                 first_object = parts[0]
                 if 'OBJECT' in first_object:
                     continue
@@ -39,8 +41,7 @@ def create_conll_file():
                 else:
                     other_object = first_object
                 rating = parts[4]
-                sentences = [parts[8], parts[9],
-                             parts[10], parts[11], parts[12]]
+                sentences = [parts[8:]]
 
                 for sentence in sentences:
                     if not sentence:
