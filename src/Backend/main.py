@@ -14,6 +14,7 @@ from requests.auth import HTTPBasicAuth
 from db.mysql_connecter import (Rating, create_sentence_examples,
                                 export_ratings, get_predefined_pairs,
                                 insert_rating)
+from db.conll_file_creator import create_conll_file
 from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)
@@ -123,9 +124,14 @@ def exportRatings():
 @app.route('/createSentenceExamples', methods=['GET'])
 @app.route('/cam/createSentenceExamples', methods=['GET'])
 def createSentenceExamples():
-    print('starting sentence example creation')
     create_sentence_examples()
-    print('done creating sentence examples')
+    return jsonify(True)
+
+
+@app.route('/createConllFile', methods=['GET'])
+@app.route('/cam/createConllFile', methods=['GET'])
+def createConllFile():
+    create_conll_file()
     return jsonify(True)
 
 

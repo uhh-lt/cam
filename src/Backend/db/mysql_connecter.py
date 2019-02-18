@@ -258,7 +258,8 @@ def create_sentence_examples():
                     for sentence in o.sentences:
                         txt = sentence['text']
                         if aspect in txt:
-                            replaced_txt = txt.replace(';', ',').replace('"', '').replace('\n', '')
+                            replaced_txt = txt.replace(';', ',').replace(
+                                '"', '').replace('\n', '')
                             sentenceexamples.append(replaced_txt[:500])
                             i += 1
                         if i > 19:

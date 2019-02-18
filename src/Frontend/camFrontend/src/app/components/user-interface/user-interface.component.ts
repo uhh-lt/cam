@@ -200,6 +200,11 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     });
   }
 
+  createConllFile() {
+    this.httpRequestService.register(this.urlBuilderService.buildCreateConllFileURL()).subscribe(_data => {
+    });
+  }
+
   skipPair() {
     this.prepareNextComparison(true);
   }
