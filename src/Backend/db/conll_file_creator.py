@@ -22,7 +22,6 @@ SPACE = ' '
 NEWLINE = '\n'
 
 
-
 def create_conll_file():
     with open(CONVERTED_RATINGS_FILE_NAME, 'r') as csv_file:
         with open(CONLL_FILE_NAME, 'w') as conll_file:
@@ -41,11 +40,10 @@ def create_conll_file():
                 else:
                     other_object = first_object
                 rating = parts[4]
-                sentences = [parts[8:]]
+                sentences = [sentence for sentence in parts[8:]
+                             if sentence and '\n' not in sentence]
 
                 for sentence in sentences:
-                    if not sentence:
-                        continue
                     tokens = word_tokenize(sentence)
                     for index in range(0, len(tokens)):
                         token = tokens[index]
