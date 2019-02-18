@@ -84,7 +84,7 @@ def beginning_of_part(token, part, tokens, index):
         expanding_token = token
         i = 1
         while index + i < len(tokens):
-            expanding_token += tokens[index + i]
+            expanding_token += SPACE + tokens[index + i]
             if equals_part(expanding_token, part):
                 return True
             if not part.startswith(expanding_token):
@@ -100,7 +100,7 @@ def inside_part(token, part, tokens, index):
         expanding_token = token
         i = 1
         while part.find(expanding_token) > 0 and index - i >= 0:
-            expanding_token += tokens[index - i]
+            expanding_token = tokens[index - i] + SPACE + expanding_token
             if equals_part(expanding_token, part):
                 return True
             if beginning_of_part(expanding_token, part, tokens, index):
