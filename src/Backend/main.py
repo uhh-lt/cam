@@ -13,7 +13,7 @@ from requests.auth import HTTPBasicAuth
 
 from db.mysql_connecter import (Rating, create_sentence_examples,
                                 export_ratings, get_predefined_pairs,
-                                get_sentence_examples, insert_rating)
+                                insert_rating)
 from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)
