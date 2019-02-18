@@ -241,14 +241,7 @@ def export_ratings():
 def create_sentence_examples():
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("DROP TABLE `sentenceexamples`")
-    connection.commit()
-    cursor.close()
-    cursor = connection.cursor()
-    cursor.execute(create_sentenceexamples_table_sql)
-    connection.commit()
-    cursor.close()
-    cursor = connection.cursor()
+    cursor.execute("DELETE FROM `sentenceexamples`")
     for pair in PREDEFINED_PAIRS:
         obj_a = Argument(pair[0])
         obj_b = Argument(pair[1])
@@ -264,8 +257,7 @@ def create_sentence_examples():
                     i = 0
                     for sentence in o.sentences:
                         txt = sentence['text']
-                        word_list = re.compile('\w+').findall(txt)
-                        if aspect in word_list:
+                        if aspect in txt:
                             replaced_txt = txt.replace(';', ',').replace('"', '').replace('\n', '')
                             sentenceexamples.append(replaced_txt[:500])
                             i += 1
