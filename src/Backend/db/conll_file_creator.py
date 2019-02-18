@@ -107,4 +107,5 @@ def inside_part(token, part, tokens, index):
                 return True
             if not expanding_token in part:
                 return False
+            i += 1
     return False
