@@ -205,6 +205,7 @@ def export_ratings():
                 rating_dict[key] = {}
                 rating_dict[key]['ratings'] = []
             rating_dict[key]['ratings'].append(rating[4])
+            rating_dict[key]['sentenceexamples'] = ''
 
         for sentenceexamples in get_sentenceexamples():
             key = ';'.join(sentenceexamples[:4])
