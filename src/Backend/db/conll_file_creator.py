@@ -30,7 +30,7 @@ def create_conll_file():
                 if len(parts) < 9:
                     continue
                 first_object = parts[0]
-                if 'OBJECT' in first_object:
+                if 'object a' in first_object:
                     continue
                 second_object = parts[1]
                 aspect = parts[2]
