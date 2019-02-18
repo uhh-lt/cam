@@ -257,7 +257,8 @@ def create_sentence_examples():
                         txt = sentence['text']
                         word_list = re.compile('\w+').findall(txt)
                         if aspect in word_list:
-                            sentenceexamples.append(txt[:500])
+                            replaced_txt = txt.replace(';', ',').replace('"', '').replace('\n', '')
+                            sentenceexamples.append(replaced_txt[:500])
                             i += 1
                         if i > 19:
                             break
@@ -266,8 +267,3 @@ def create_sentence_examples():
                         i += 1
                     insert_sentenceexamples(sentenceexamples, cursor)
     close_connection(connection, cursor)
-
-
-def get_sentence_examples():
-    print(get_sentenceexamples())
-    return get_sentenceexamples()
