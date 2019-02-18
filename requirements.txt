@@ -5,3 +5,10 @@ requests
 inflect
 mysql-connector-python
 # From here all dependencies for ml
+scipy
+sklearn
+torch
+numpy
+pandas
+torchvision
+xgboost
