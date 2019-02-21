@@ -256,8 +256,8 @@ def create_sentence_examples():
                     sentenceexamples = [obj_a.name, obj_b.name, aspect, o.name]
                     i = 0
                     for sentence in o.sentences:
-                        txt = sentence['text']
-                        if aspect in txt and obj_a.name in txt and obj_b.name in txt:
+                        txt = sentence['text'].lower()
+                        if aspect.lower() in txt and obj_a.name.lower() in txt and obj_b.name.lower() in txt:
                             replaced_txt = txt.replace(';', ',').replace(
                                 '"', ' ').replace('\n', ' ')
                             sentenceexamples.append(replaced_txt[:500])
