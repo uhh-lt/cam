@@ -25,15 +25,16 @@ NEWLINE = '\n'
 
 def create_conll_file():
     with open(CONVERTED_RATINGS_FILE_NAME, 'r') as csv_file:
-        train_size = int(0.8 * len(csv_file))
+        content = [line.strip() for line in csv_file.readlines()]
+        train_size = int(0.8 * len(content))
         with open(CONLL_FILE_NAME_TRAIN, 'w') as conll_file_train:
-            convert_to_conll(csv_file[:train_size], conll_file_train)
+            convert_to_conll(content[:train_size], conll_file_train)
         with open(CONLL_FILE_NAME_TEST, 'w') as conll_file_test:
-            convert_to_conll(csv_file[train_size:], conll_file_test)
+            convert_to_conll(content[train_size:], conll_file_test)
             
 
-def convert_to_conll(csv_file, conll_file):
-    for line in csv_file:
+def convert_to_conll(csv_content, conll_file):
+    for line in csv_content:
         parts = line.lower().split(';')
         if len(parts) < 9:
             continue
@@ -48,8 +49,7 @@ def convert_to_conll(csv_file, conll_file):
         else:
             other_object = first_object
         rating = parts[4]
-        sentences = [sentence.replace('\n', '')
-                        for sentence in parts[8:] if sentence]
+        sentences = [sentence for sentence in parts[8:] if sentence]
 
         for sentence in sentences:
             tokens = word_tokenize(sentence)
