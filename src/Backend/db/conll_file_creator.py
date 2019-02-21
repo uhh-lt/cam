@@ -1,4 +1,5 @@
 from os.path import abspath, dirname
+from random import shuffle
 
 from nltk import word_tokenize
 
@@ -6,6 +7,7 @@ TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
 CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
 CONLL_FILE_NAME_TRAIN = TARGET_DIR + '/ratingresults/ratingsconlltrain.txt'
 CONLL_FILE_NAME_TEST = TARGET_DIR + '/ratingresults/ratingsconlltest.txt'
+CONLL_FILE_NAME_DEV = TARGET_DIR + '/ratingresults/ratingsconlldev.txt'
 
 BBO = 'BBO'  # Beginning of the object the aspect belongs to
 IBO = 'IBO'  # Inside the object the aspect belongs to
@@ -26,11 +28,15 @@ NEWLINE = '\n'
 def create_conll_file():
     with open(CONVERTED_RATINGS_FILE_NAME, 'r') as csv_file:
         content = [line.strip() for line in csv_file.readlines()]
-        train_size = int(0.8 * len(content))
+        shuffle(content)
+        train_size = int(0.75 * len(content))
+        test_size = int(0.15 * len(content))
         with open(CONLL_FILE_NAME_TRAIN, 'w') as conll_file_train:
             convert_to_conll(content[:train_size], conll_file_train)
         with open(CONLL_FILE_NAME_TEST, 'w') as conll_file_test:
-            convert_to_conll(content[train_size:], conll_file_test)
+            convert_to_conll(content[train_size:train_size + test_size], conll_file_test)
+        with open(CONLL_FILE_NAME_DEV, 'w') as conll_file_dev:
+            convert_to_conll(content[train_size + test_size:], conll_file_dev)
             
 
 def convert_to_conll(csv_content, conll_file):

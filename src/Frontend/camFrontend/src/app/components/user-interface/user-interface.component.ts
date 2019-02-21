@@ -29,6 +29,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   showSkipLastText = false;
   showExportedText = false;
   showExportingText = false;
+  showConlledText = false;
+  showConllingText = false;
   showCreatingSentenceExamplesText = false;
   showCreatedSentenceExamplesText = false;
   status = '';
@@ -201,7 +203,11 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   }
 
   createConllFile() {
+    this.resetTextsShown();
+    this.showConllingText = true;
     this.httpRequestService.register(this.urlBuilderService.buildCreateConllFileURL()).subscribe(_data => {
+      this.resetTextsShown();
+      this.showConlledText = true;
     });
   }
 
@@ -270,6 +276,8 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.showExportingText = false;
     this.showCreatingSentenceExamplesText = false;
     this.showCreatedSentenceExamplesText = false;
+    this.showConlledText = false;
+    this.showConllingText = false;
   }
 
   resetInput() {
