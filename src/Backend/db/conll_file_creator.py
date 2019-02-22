@@ -1,7 +1,7 @@
 from os.path import abspath, dirname
 from random import shuffle
 
-from nltk import word_tokenize
+from nltk import word_tokenize, pos_tag
 
 TARGET_DIR = dirname(dirname(dirname(dirname(abspath(__file__)))))
 CONVERTED_RATINGS_FILE_NAME = TARGET_DIR + '/ratingresults/convertedratings.csv'
@@ -9,16 +9,12 @@ CONLL_FILE_NAME_TRAIN = TARGET_DIR + '/ratingresults/ratingsconlltrain.txt'
 CONLL_FILE_NAME_TEST = TARGET_DIR + '/ratingresults/ratingsconlltest.txt'
 CONLL_FILE_NAME_DEV = TARGET_DIR + '/ratingresults/ratingsconlldev.txt'
 
-BBO = 'BBO'  # Beginning of the object the aspect belongs to
-IBO = 'IBO'  # Inside the object the aspect belongs to
-BOO = 'BOO'  # Beginning of the object the aspect doesn't belong to
-IOO = 'IOO'  # Inside the object the aspect doesn't belong to
-BGA = 'BGA'  # Beginning of a good rated aspect
-IGA = 'IGA'  # Inside a good rated aspect
-BEA = 'BEA'  # Beginning of an even rated aspect
-IEA = 'IEA'  # Inside an even rated aspect
-BBA = 'BBA'  # Beginning of a bad rated aspect
-IBA = 'IBA'  # Inside a bad rated aspect
+BBO = 'B-ASPOBJ'  # Beginning of the object the aspect belongs to
+IBO = 'I-ASPOBJ'  # Inside the object the aspect belongs to
+BOO = 'B-OTHOBJ'  # Beginning of the object the aspect doesn't belong to
+IOO = 'I-OTHOBJ'  # Inside the object the aspect doesn't belong to
+BGA = 'B-ASP'  # Beginning of an aspect
+IGA = 'I-ASP'  # Inside an aspect
 O = 'O'  # Outside of all objects and aspects
 
 SPACE = ' '
@@ -85,17 +81,9 @@ def convert_to_conll(sentence_list, conll_file):
             elif equals_part(token, sentence.aspect) or beginning_of_part(token, sentence.aspect, tokens, index):
                 if sentence.rating == 'good':
                     conll_file.write(BGA + NEWLINE)
-                elif sentence.rating == 'even':
-                    conll_file.write(BEA + NEWLINE)
-                else:
-                    conll_file.write(BBA + NEWLINE)
             elif inside_part(token, sentence.aspect, tokens, index):
                 if sentence.rating == 'good':
                     conll_file.write(IGA + NEWLINE)
-                elif sentence.rating == 'even':
-                    conll_file.write(IEA + NEWLINE)
-                else:
-                    conll_file.write(IBA + NEWLINE)
             else:
                 conll_file.write(O + NEWLINE)
         conll_file.write(NEWLINE)
