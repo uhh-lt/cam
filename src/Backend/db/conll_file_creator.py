@@ -78,12 +78,10 @@ def convert_to_conll(sentence_list, conll_file):
                 conll_file.write(IBO + NEWLINE)
             elif inside_part(token, sentence.other_object, tokens, index):
                 conll_file.write(IOO + NEWLINE)
-            elif equals_part(token, sentence.aspect) or beginning_of_part(token, sentence.aspect, tokens, index):
-                if sentence.rating == 'good':
-                    conll_file.write(BGA + NEWLINE)
-            elif inside_part(token, sentence.aspect, tokens, index):
-                if sentence.rating == 'good':
-                    conll_file.write(IGA + NEWLINE)
+            elif sentence.rating == 'good' and equals_part(token, sentence.aspect) or beginning_of_part(token, sentence.aspect, tokens, index):
+                conll_file.write(BGA + NEWLINE)
+            elif sentence.rating == 'good' and inside_part(token, sentence.aspect, tokens, index):
+                conll_file.write(IGA + NEWLINE)
             else:
                 conll_file.write(O + NEWLINE)
         conll_file.write(NEWLINE)
