@@ -1,154 +1,91 @@
-[![Build Status](https://travis-ci.org/uhh-lt/cam.svg?branch=master)](https://travis-ci.org/uhh-lt/cam)
+[![Build Status](https://travis-ci.org/uhh-lt/cam.svg?branch=sqliteAspectSaving)](https://travis-ci.org/uhh-lt/cam)
 
 # Overview
 
-The Comparative Argument Machine (CAM) project is developed by the Language Technology Group, Department of Informatics, University of Hamburg. As a starting point for a bigger scientific project the current version compares two objects via a large database. The main goal of the CAM project will be the comparison based on understanding of natural language and also to output natural language sentences as a result.
+When comparing two objects, CAM not only generates the scores for both but only extracts up to ten aspects per object. These aspects are supposed to tell the user why the specific object is better than the other. To find out, how CAM currently extracts aspects, have a look at `src/Backend/utils/pos_link_extracter.py`. To further improve on extracting aspects, a machine learning model should be generated that learns from well extracted aspects. To do this, a database containing sentences, their objects and extracted aspects as well as a rating for that aspect (whether it's an extracted aspect that makes sense or not) was needed. Creating this database is the goal of this branch.
 
-If you want to learn more about the project or help to develop it, feel free to contact us. A live demo is [available online](http://ltdemos.informatik.uni-hamburg.de/cam/).
+Note that the name of the branch is sqliteAspectSaving. This is because at the beginning of the CAM aspect rating process, sqlite was used to create the database. This is not true any more. If you want, feel free to rename the branch.
 
-# Install CAM on a new machine
+# Deploy the branch to ltdocker
 
-Currently there are two ways to deploy the CAM project to your own machine: With or without Docker. You will find instructions for both ways here.
+Currently this branch is deployed and running on ltdocker. For instructions on how to deploy it on a new system you can for example look at the readme of CAM's master branch. You can access the system via [http://ltdemos.informatik.uni-hamburg.de/cam3/](http://ltdemos.informatik.uni-hamburg.de/cam3/). On ltdocker you'll find the branch installed on `srv/docker/pan-cam3/`.
 
-## Deployment with Docker
+# Updating existing installation to the newest version
 
-### 1. Install Docker
+To update the version running on ltdocker just run the following commands:
 
-Head to [the download page from Docker](https://docs.docker.com/install/) and find the right installation file for your system. Note that for some operating systems (for example, Windows 10 Home Edition) you can't install Docker itself and have to install [Docker Toolbox](https://docs.docker.com/toolbox/overview/) instead. Deploying with Docker Toolbox also works fine, but makes a difference you'll see later.
-
-If you are on Linux, you have to [install Docker Compose](https://docs.docker.com/compose/install/) separately (installations for other systems already include Compose, the Toolbox also does).
-
-After you've successfully installed Docker (and Compose), start a terminal and head over to the directory that shall contain the project, clone it from GitHub and start the Docker containers:
-
-    git clone https://github.com/uhh-lt/cam.git
-    cd cam
-    docker-compose up -d
-
-Attention: If you're on the Docker Toolbox, you will have to make changes to your files before using `docker-compose up` because Toolbox uses your docker machine ip instead of localhost. Head to `/src/Frontend/camFrontend/src/app/shared/url-builder.service.ts` and change the `HOSTNAME` constants, replacing `localhost` with your machine ip (you can get it via `docker-machine ip`).
-
-After this, CAM is up and running and you can see its front end in your browser via `http://127.0.0.1:10101` or directly receive search results from the backend (provided as a JSON object) via this URL:
-
-    http://127.0.0.1:5000/cam?model=default&fs=FS&objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight1=WEIGHT1
-
-The parameters of this url are desribed in [API explained](https://github.com/uhh-lt/cam#API-explained)
-
-An example for a good URL:
-
-<http://127.0.0.1:5000/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1>
-
-
-## Deployment without Docker
-
-### 1. Installing dependencies
-
-#### Backend
-
-[Download Python 3](https://www.python.org/downloads)
-
-In a terminal, install requirements:
-
-    pip install -r requirements.txt
-    python -m nltk.downloader stopwords
-    python -m nltk.downloader punkt
-    python -m nltk.downloader averaged_perceptron_tagger
-
-To be able to use the machine learning approaches, it is necessary to download the following files and place them in ./src/Backend/data
-
-- Download [Glove Embeddings](http://nlp.stanford.edu/data/glove.840B.300d.zip)
-- Download [InferSent model](https://s3.amazonaws.com/senteval/infersent/infersent.allnli.pickle)
-
-#### Frontend
-
-[Download nodejs with npm](https://nodejs.org/en/)
-
-In a terminal, install Angular:
-
-    cd cam
-    npm install
-    npm start
-
-### 2. Changing the default hostnames and search type
-
-#### Communication between frontend and backend
-
-On default, the backend is running on a localhost. If you want to change this, maybe because you deployed the project to another server, change all HOSTNAME constants (like HOSTNAME_DEFAULT) in ./src/Frontend/camFrontend/src/app/shared/url-builder.service.ts.
-
-#### Communication between backend and search request server; search type
-
-On default, the instance of Elastic Search used is running on <http://ltdemos.informatik.uni-hamburg.de/depcc-index/> as specified in ./src/Backend/constants.py. If you have a different server you want to do the search requests on, change ES_HOSTNAME in that file. The default search type is commoncrawl2 of Elastic Search. If you want to change this, change CRAWL_DATA_REPOS in the same file.
-
-### 3. Launching the program
-
-#### Backend
-
-In a terminal within the Backend directory, start via:
-
-    python main.py
-    
-if the ElasticSearch needs no credentials and via:
-
-    python main.py username password
-    
-for an ElasticSearch instance with credentials.
-
-(a local server is started that can be addressed via <http://127.0.0.1:5000>)
-
-Directly receive search results from the backend (provided as a JSON object) via this URL:
-
-    http://127.0.0.1:5000/cam?model=default&fs=FS&objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight1=WEIGHT1
-
-The parameters of this url are desribed in [API explained](https://github.com/uhh-lt/cam#API-explained)
-
-example for a good URL:
-
-<http://127.0.0.1:5000/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1>
-
-#### Frontend
-
-In a terminal within the Frontend/cam-frontend directory, start via:
-
-    ng serve -o
-
-(the page will automatically be opened in your browser.)
-
-# API explained
-
-To access the API URL parameters can be used, the structure is described underneath:
-
-    BASE_ADDRESS/cam?model=MODEL&fs=FS&objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight1=WEIGHT1
- _The base address is dependen from where the backend is deployed and accessed._
-
-replace `MODEL` with either _default_, _bow_ or _infersent_, to select one of the actually given three models. If the parameter is left out, the default model is selected by default. \
-replace `FS` with false if you want to do the default search, or with true if you want to do a fast search. \
-replace `OBJA` and `OBJB` with the objects you want to compare, e. g. `OBJA` with dog and `OBJB` with cat. These are both mandatory. \
-replace `ASP1` and `WEIGHT1` with an aspect you want to include in the search requests and the weight you want to have it, e. g. `ASP1` with price and `WEIGHT1` with 5.
-add as many aspects/weights as you want as long as you follow these rules:
-
-* you always have to enter both an aspect and its weight. you can't enter one without the other.
-* you always have to start with aspect1 and weight1, then aspect2 and weight2 and so forth. Don't skip a number as all numbers after that will not be read (order doesn't matter, as long as they exist somewhere in the URL).
-* aspects/weights are optional and can be skipped completely if you just want to compare two objects without any aspects added.
-* if you want the results to resemble those you'd get using the Frontend, use values from 1 to 5 for the weights as you can't enter other values in the frontend. The search will also work for other values though. Be careful with entering negative values or values close to an Integer overflow as they can produce unexpected results.
-
-example for a good URL:
-
-<http://127.0.0.1:10100/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1>
-
-
-# Updating existing installations to the newest version
-
-Updating your currently deployed project to the newest version is different depending on if you've deployed it with or without Docker.
-
-## Updating with Docker
-
-    cd cam
+    cd srv/docker/pan-cam3/
     docker-compose down
-    docker rmi cam-frontend cam-backend
+    docker rmi cam-frontend3 cam-backend3
     git pull
     docker-compose up -d
 
-## Updating without Docker
+Note that if you only made changes to the backend you don't need to remove the Docker image of the frontend so `docker rmi cam-backend3` will be enough then. The same is true the other way around if you only made changes to the frontend. Always removing both images by default doesn't hurt though, it just takes a little bit longer to restart the container.
 
-    cd cam
-    git pull
+# Docker volumes
 
-Then start the program exactly like described above.
+On `srv/docker/pan-cam3/` you will not only find everything that's git-related but also two additional directories: `ratingresults` and `camsqlvolume`. **DO NOT DELETE THOSE DIRECTORIES** unless you wish to lose the whole rating database. Those two directories are where the sql database as well as the generated CSVs and CoNLL files are made persistent via Docker volumes. They won't be affected if you stop or restart the Docker container or do a git pull.
+
+# Explanation of currently available features and how to work on them
+
+Currently when you go to [http://ltdemos.informatik.uni-hamburg.de/cam3/](http://ltdemos.informatik.uni-hamburg.de/cam3/) you will find three different features.
+
+## Rate aspects
+
+The aspect rating feature is the foundation of everything this branch and the machine learning models that shall be created with its results is doing. When clicking on `Start!`, one of many predefined comparisons is randomly launched. Mark each aspect that you think makes sense (hit its `+good+` button) and leave out the rest, then hit `Submit`. For each marked aspect a database entry with a positive rating, for all other aspects a database entry with a negative rating will be saved.
+
+### Working on this feature
+
+If you want to add or remove predefined pairs you can do so in `src/Backend/db/preselected_pairs.py`. Please take care to only include pairs that are a) lower-case and b) sorted alphabetically. This shouldn't be necessary as all relevant occurences in the code should do a sort() and lower() themselves but just in case that there's an occurence where this has been forgotten you'll prevent an Error by taking care of this when adding the pairs.
+
+If you want to change the front end you can do so in `src/Frontend/camFrontend/src/app/components/`, specifically in `user-interface/`, `result-presentation/` and `result-presentation/multiselect-chiplist/`. Note that changes regarding the data that's sent to the back end might require you to also change how the URL for communicating with the back end is generated in `src/Frontend/camFrontend/src/app/services/url-builder-service.ts`.
+
+If you want to change how the ratings are saved you can do so in `src/Backend/db/mysql_connecter.py`.
+
+If you want to change the volumes that are used for making the database persistent you can do so in `docker-compose.yml`. Note that you could lose the whole database if you do this.
+
+## Generate a CSV containing the ratings
+
+The second button you'll find to the right is named `Export ratings to CSV` and that's exactly what it does. All ratings that have previously been inserted into the database are collected and then exported to a CSV that contains the following columns:
+
+First Object, Second Object, Aspect, Object the aspect belongs to, most frequent rating, confidence, amount of positive ratings, amount of negative ratings, sentence example 1-5.
+
+You'll find the CSV at `srv/docker/pan-cam3/ratingresults/convertedratings.csv` on ltdocker.
+
+### Working on this feature
+
+If you want to change how the CSV is generated you can do so in `src/Backend/db/mysql_connecter.py`, specifically in the method `export_ratings()`.
+
+## Generate CoNLL files for training the machine learning model
+
+The third button you'll find to the right is named `Create CoNLL files`. When hitting this button, three txt files are generated that are formatted as CoNLL files: For train, test, and dev. The way these files are formatted is specific for the [tagger](https://github.com/achernodub/targer) that's currently used to train the models so it might be necessary to change the formatting if you plan on using a different one.
+
+You'll find the CSV at `srv/docker/pan-cam3/ratingresults/` on ltdocker: `ratingsconlldev.txt`, `ratingsconlltest.txt`, and `ratingsconlltrain.txt`.
+
+**Important note**: With the current implementation, the CoNLL file creation does **not** get its data directly from the database. Instead it takes the CSV as input. That means that before you can create the CoNLL files, you have to create the CSV!
+
+### Working on this feature
+
+If you want to change how the CoNLL files are generated you can do so in `src/Backend/db/conll_file_creator.py`.
+
+## Create a database table containing sentence examples
+
+This feature is currently not available via the front end because it shouldn't be necessary to use it again. It creates a table in the sql database that contains up to 20 sentence examples for each combination of pair of objects (taken from `src/Backend/db/preselected_pairs.py`) and extracted aspect. While doing so it lets CAM create an Elastic Search request for each pair and then looks for all sentences found for each object and for all aspects extracted for each object. Because of this the whole process takes some time to finish.
+
+The resulting table is the foundation for all the other features: Up to five sentence examples are included in the CSV for each pair/aspect combination that will then be used for creating the CoNLL files. As the table already exists in the database you most likely won't need to run this creation process again. It may become necessary though when you decide to change the way these sentence examples are chosen or when you have to create a fresh database.
+
+### Working on this feature
+
+If you want to make this feature available via the front end again you can do so for example just by adding another button below the three existing buttons. You'd have to do this in `src/Frontend/camFrontend/src/app/components/user-interface/user-interface.component.html` and the button would have to have `(click)='createSentenceExamples()'`. All necessary methods for creating the table (communication between front and back end, requesting Elastic Search, creating the table) are still available and will be triggered just by hitting the button. Note that there currently is a known bug: When the table creation process is finished, the text shown on the front end will still say that it's being created and won't switch to saying that it has been created. You might have to check the docker logs of cam-backend3 to see when the process has actually finished.
+
+Of course you could also call the `create_sentence_examples()` method of `src/Backend/db/mysql_connecter.py` directly to start creating the table. Note that you'd have to do this inside the docker container though. This method is also the place to go if you want to change how this table is being created.
+
+# Training a machine learning model
+
+Note that we're currently using [targer](https://github.com/achernodub/targer) for training the models. If you want to use a different tagger, these instructions may not be accurate for you.
+
+When you want to train a model with targer, you have to do the following steps:
+
+1. Clone targer to your system (make sure you are on a UNIX platform -- Windows doesn't seem to work)
+2. Get word embeddings and store them inside `/embeddings`. There's a script inside the directory to download glove embeddings but that script didn't work when we tested it so we downloaded the embeddings manually via [http://nlp.stanford.edu/data/glove.6B.zip](http://nlp.stanford.edu/data/glove.6B.zip) and unzipped them inside `/embeddings`. Feel free to try different embeddings (found on [https://nlp.stanford.edu/projects/glove/](https://nlp.stanford.edu/projects/glove/) for example).
+3. Run the `main.py` with your CoNLL files: `python3 main.py --test PATHTOYOURTESTFILE --train PATHTOYOURTRAINFILE --dev PATHTOYOURDEVFILE`. Note that it may be necessary to add `--gpu -1` if targer cannot operate using your graphics card to make it use the cpu instead. Feel free to try different commands specified on [targer's github page](https://github.com/achernodub/targer), for example to specify the machine learning model that should be used.

@@ -53,16 +53,24 @@ regex = re.compile('[^a-zA-Z0-9+#]+')
 
 def extract_main_links(object_a: Argument, object_b: Argument):
     '''
-    Extract the most common aspects for two lists of strings.
+    Extract the most common aspects for two Arguments.
 
-    object_a:       the first object to be compared
+    object_a:       first Argument
 
-    object_b:       the second object to be compared
+    object_b:       second Argument
     '''
-    # amount of sentences to use for context aspect generation
+    # Note that with setting context_sent_amount and context_size to a number
+    # bigger than 0, you'll make CAM search for aspects not only in the
+    # sentences each Argument contains, but also in the context of each
+    # sentence -- that is, sentences that appear before or after the actual
+    # sentence on the website it was published.
+    # Currently though, both numbers are 0 because searching through the
+    # contexts takes too much time.
+    
+    # for how many sentences should the context be taken into account?
     context_sent_amount = 0
-    # amount of sentences to use within each context (before and after the
-    # actual sentence)
+    # if a sentence's context is taken into account, how many context
+    # sentences (before and after the actual sentence) should be searched?
     context_size = 0
 
     object_a_aspect_dict = {}
