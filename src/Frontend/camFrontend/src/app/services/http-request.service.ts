@@ -12,6 +12,10 @@ export class HTTPRequestService {
     return this.httpClient.get<Result>(url);
   }
 
+  getSuggestions(url: string) {
+    return this.httpClient.get<Result>(url);
+  }
+
   /**
    * Requests the status of answer processing to show the user the progress.
    *
