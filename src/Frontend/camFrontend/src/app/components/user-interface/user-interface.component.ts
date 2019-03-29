@@ -55,10 +55,18 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   constructor(private urlBuilderService: UrlBuilderService, private httpRequestService: HTTPRequestService,
     private snackBar: MatSnackBar, private scrollToService: ScrollToService) { }
 
+  values = '';
+
+  onKeyUp(event: any) { // without type info
+    console.log(this.object_A);
+    }
+
   ngOnInit() {
+    /*
     const index = Math.floor(Math.random() * 15);
     this.object_A = this.preSelectedObjects[index][0];
     this.object_B = this.preSelectedObjects[index][1];
+    */
   }
 
   ngAfterViewInit() {
