@@ -7,6 +7,7 @@ import { TimerObservable } from 'rxjs/observable/TimerObservable';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import 'rxjs/add/operator/takeWhile';
 import { Aspect } from '../../model/aspect';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-user-interface',
@@ -16,6 +17,9 @@ import { Aspect } from '../../model/aspect';
 export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(ResultPresentationComponent) resultPresentation: ResultPresentationComponent;
+
+  myControl = new FormControl();
+  options: string[] = ['One', 'Two', 'Three'];
 
   aspects = new Array<Aspect>(new Aspect('')); // the rows of aspects currently shown in the UI
   private finalAspDict = {}; // holds all aspects after compare() was called

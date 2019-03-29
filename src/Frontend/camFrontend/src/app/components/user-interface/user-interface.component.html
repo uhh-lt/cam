@@ -10,7 +10,13 @@
         <td class='align-middle text-center' style='font-size: 16px'>versus</td>
         <td style='width:38%'>
           <mat-form-field class="object-input">
-            <input matInput placeholder='Second object' #objB [(ngModel)]='object_B' name="objB" style='font-size: 20px'>
+            <input matInput placeholder='Second object' #objB [(ngModel)]='object_B' name="objB" style='font-size: 20px'
+              [formControl]="myControl" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of options" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
         </td>
       </tr>
@@ -22,14 +28,16 @@
       <tr *ngFor='let aspect of aspects; let i = index'>
         <td class='text-right'>
           <mat-form-field>
-            <input matInput placeholder='Aspect' [(ngModel)]='aspect.value' name="i" [ngModelOptions]="{standalone: true}" style='font-size: 17px'>
+            <input matInput placeholder='Aspect' [(ngModel)]='aspect.value' name="i"
+              [ngModelOptions]="{standalone: true}" style='font-size: 17px'>
             <mat-hint align="start">
               e.g. price
             </mat-hint>
           </mat-form-field>
         </td>
         <td class='align-middle text-center'>
-          <button (click)='removeAspect(i)' mat-mini-fab type="button" color="primary" [disabled]='!aspect.value && aspects.length == 1'>
+          <button (click)='removeAspect(i)' mat-mini-fab type="button" color="primary"
+            [disabled]='!aspect.value && aspects.length == 1'>
             <mat-icon aria-hidden='true'>remove
             </mat-icon>
           </button>
@@ -38,8 +46,8 @@
         <td>
           <div class='slidecontainer'>
             <label for="importance">Aspect importance:</label>
-            <mat-slider class='slider' min='1' max='5' step='1' thumb-label="true" tick-interval="1" [(ngModel)]='aspect.weight' [ngModelOptions]="{standalone: true}"
-              (keyup.enter)='compIfEntered()'>
+            <mat-slider class='slider' min='1' max='5' step='1' thumb-label="true" tick-interval="1"
+              [(ngModel)]='aspect.weight' [ngModelOptions]="{standalone: true}" (keyup.enter)='compIfEntered()'>
             </mat-slider>
           </div>
         </td>
