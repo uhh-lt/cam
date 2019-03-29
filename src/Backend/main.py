@@ -49,7 +49,7 @@ def ccr():
         ccr_suggestions_all.append(comparison_object + ' vs ' + candidate)
     # top ten results from ccr
     ccr_suggestions_top_ten = ccr_suggestions_all[0:10]
-    return ccr_suggestions_top_ten
+    return jsonify(ccr_suggestions_top_ten)
 
 @app.route('/cam', methods=['GET'])
 def cam():
