@@ -1,19 +1,20 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { UrlBuilderService } from '../../services/url-builder.service';
 import { HTTPRequestService } from '../../services/http-request.service';
 import { ResultPresentationComponent } from '../result-presentation/result-presentation.component';
-import { MatSnackBar } from '@angular/material';
-import { TimerObservable } from 'rxjs/observable/TimerObservable';
-import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
-import 'rxjs/add/operator/takeWhile';
 import { Aspect } from '../../model/aspect';
-import { FormControl } from '@angular/forms';
+import { TimerObservable } from 'rxjs/observable/TimerObservable';
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: 'app-user-interface',
   templateUrl: './user-interface.component.html',
   styleUrls: ['./user-interface.component.css']
 })
+
 export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(ResultPresentationComponent) resultPresentation: ResultPresentationComponent;

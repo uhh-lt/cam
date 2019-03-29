@@ -2,8 +2,10 @@ import json
 import numbers
 import sys
 import urllib
-
-import requests
+import query_sentences
+import extract_candidates
+import filter_candidates_wordnet
+import query_sentences
 import sklearn
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -27,6 +29,28 @@ CORS(app)
 
 
 @app.route("/")
+
+@app.route('/ccr', methods=['GET'])
+def ccr():
+    '''
+    To bi visited after the keyUp event in first-object-input-field.
+    '''
+    comparison_object = Argument(request.args.get('objectA').lower())
+    # sentences is a list with sentenses that contain the comparison_object AND vs
+    sentences = query_sentences.retrieve_sentences(comparison_object)
+    # candidates are sentences that match the pattern 'comparison_object vs <nounphrase>' or the other way around
+    candidates = extract_candidates.extract_candidates(comparison_object, sentences)
+
+    wordnet_filtered_candidates = filter_candidates_wordnet.filter(comparison_object, candidates)
+    
+    # append comparison object and 'vs' to suggestions to get the same format as suggestions from the keyword tool
+    ccr_suggestions_all = []
+    for candidate in wordnet_filtered_candidates:
+        ccr_suggestions_all.append(comparison_object + ' vs ' + candidate)
+    # top ten results from ccr
+    ccr_suggestions_top_ten = ccr_suggestions_all[0:10]
+    return ccr_suggestions_top_ten
+
 @app.route('/cam', methods=['GET'])
 def cam():
     '''
