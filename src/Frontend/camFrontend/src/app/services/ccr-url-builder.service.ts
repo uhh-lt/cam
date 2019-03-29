@@ -22,9 +22,6 @@ export class CcrUrlBuilderService {
    * @param objA the first object entered by the user
    * @param vs the versus word
    * @returns the URL
-   * 
-   * what really happenes: http://ltdemos.informatik.uni-hamburg.de/depcc-index/depcc/_search?q=text:(%22toyota%22%20AND%20%22vs%22)&from=0&size=10000
-   * what should happen:   http://ltdemos.informatik.uni-hamburg.de/depcc-index/depcc/_search?q=text:("toyota"%20AND%20"vs")&from=0&size=10000
    */
   public buildCcrUrl(objA, vs) {
     return `${this.esHostname + this.index + this.crawlDataRepos}text:(\"${objA + this.and + vs + this.fromSize}`;
