@@ -9,11 +9,13 @@ def extract_candidates(comparison_object, sentences):
     print('number of sentences:')
     print(len(sentences))
     for sentence in sentences:
-
         blob = TextBlob(sentence)
 
         # candidate is a list of nounphrases from the sentence in sentences
         for candidate in blob.noun_phrases:
+            print(candidate)
+
+            # bis hier hin scheint es zu funktionieren..
 
             if candidate not in [comparison_object, 'vs', 'vs.'] and is_candidate(candidate, comparison_object, sentence):
 

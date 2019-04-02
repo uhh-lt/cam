@@ -94,24 +94,17 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   }
 
   onKeyUp(event: any) { // without type info
-    this.requestSuggestions();
+    this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A)).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
     /*
     this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A, 'vs')).subscribe(
       data => {
       console.log(JSON.stringify(data));
     });
     */
-  }
-
-  requestSuggestions() {
-    this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A, 'vs')).subscribe(
-      error => {
-        console.log(error);
-      },
-      data => {
-        console.log(JSON.stringify(data));
-      }
-    )
   }
 
   requestScores() {

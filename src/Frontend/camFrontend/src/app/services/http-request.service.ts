@@ -14,7 +14,10 @@ export class HTTPRequestService {
 
   getSuggestions(url: string) {
     //return this.http.get('https://jsonplaceholder.typicode.com/todos/34', { headers: { 'Authorization': 'Basic cmVhZGVyOnJlYWRlcg==' } });
-    return this.http.get(url, { headers: { 'Authorization': 'Basic cmVhZGVyOnJlYWRlcg==' } });  }
+    console.log(this.http.get<Array<Sentence>>(url));
+
+    return this.http.get<Array<Sentence>>(url);
+  }
 
   /**
    * Requests the status of answer processing to show the user the progress.

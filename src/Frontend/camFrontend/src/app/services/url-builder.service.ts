@@ -9,11 +9,15 @@ export class UrlBuilderService {
     */
   // private HOSTNAME_DEFAULT = 'http://localhost:5000/cam';
   private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
+  private HOSTNAME_CCR = 'http://127.0.0.1:5000/ccr/';
+
+  /*
   private esHostname = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/';
   private index = 'depcc';
   private crawlDataRepos = '/_search?q=text:(';
   private and = '%20AND%20';
   private fromSize = ')&from=0&size=10000'
+  */
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
@@ -34,11 +38,11 @@ export class UrlBuilderService {
    * Builds the URL needed for communicating with the server and requesting the search.
    *esHostname
    * @param objA the first object entered by the user
-   * @param vs the versus word
    * @returns the URL
    */
-  public buildCcrUrl(objA, vs) {
-    let URL = `${this.esHostname + this.index + this.crawlDataRepos + objA + this.and + vs + this.fromSize}`;
+  public buildCcrUrl(objA) {
+    let URL = `${this.HOSTNAME_CCR + objA}`;
+    console.log(URL);
     return URL;
   }
 

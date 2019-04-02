@@ -29,13 +29,19 @@ CORS(app)
 
 
 @app.route("/")
+def helloWorld():
+  return "Hello, cross-origin-world!"
 
-@app.route('/ccr', methods=['GET'])
-def ccr():
+@app.route("/ccrr/<objectA>")
+def helloCcrWorld(objectA):
+  return "Hello, ccr!" + objectA
+
+@app.route('/ccr/<objectA>', methods=['GET'])
+def ccr(objectA):
     '''
     To bi visited after the keyUp event in first-object-input-field.
     '''
-    comparison_object = Argument(request.args.get('objectA').lower())
+    comparison_object = objectA.lower()
     # sentences is a list with sentenses that contain the comparison_object AND vs
     sentences = query_sentences.retrieve_sentences(comparison_object)
     # candidates are sentences that match the pattern 'comparison_object vs <nounphrase>' or the other way around
@@ -49,7 +55,7 @@ def ccr():
         ccr_suggestions_all.append(comparison_object + ' vs ' + candidate)
     # top ten results from ccr
     ccr_suggestions_top_ten = ccr_suggestions_all[0:10]
-    return jsonify(ccr_suggestions_top_ten)
+    #return jsonify(ccr_suggestions_top_ten)
 
 @app.route('/cam', methods=['GET'])
 def cam():
@@ -188,4 +194,5 @@ def load_config():
 if __name__ == "__main__":
     status = {}
     load_config()
-    app.run(host="0.0.0.0", threaded=True)
+    app.run()
+    #app.run(host="0.0.0.0", threaded=True)
