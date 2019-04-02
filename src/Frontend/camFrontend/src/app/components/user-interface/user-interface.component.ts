@@ -3,7 +3,6 @@ import { MatSnackBar } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { UrlBuilderService } from '../../services/url-builder.service';
-import { CcrUrlBuilderService } from '../../services/ccr-url-builder.service';
 import { HTTPRequestService } from '../../services/http-request.service';
 import { ResultPresentationComponent } from '../result-presentation/result-presentation.component';
 import { Aspect } from '../../model/aspect';
@@ -54,7 +53,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     ['tennis', 'golf']
   ];
 
-  constructor(private urlBuilderService: UrlBuilderService, private ccrUrlBuilderService: CcrUrlBuilderService, private httpRequestService: HTTPRequestService,
+  constructor(private urlBuilderService: UrlBuilderService, private httpRequestService: HTTPRequestService,
     private snackBar: MatSnackBar, private scrollToService: ScrollToService) { }
 
   values = '';
@@ -95,16 +94,29 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   }
 
   onKeyUp(event: any) { // without type info
-    console.log(this.object_A);
-    this.httpRequestService.getSentences(this.ccrUrlBuilderService.buildCcrUrl(this.object_A, 'vs')).subscribe(
+    this.requestSuggestions();
+    /*
+    this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A, 'vs')).subscribe(
       data => {
-        // data should be an array with suggestions
-        console.log(data);
+      console.log(JSON.stringify(data));
+    });
+    */
+  }
+
+  requestSuggestions() {
+    this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A, 'vs')).subscribe(
+      error => {
+        console.log(error);
+      },
+      data => {
+        console.log(JSON.stringify(data));
       }
     )
-    }
+  }
 
   requestScores() {
+    console.log(this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict,
+      this.selectedModel, this.fastSearch, this.statusID));
     this.httpRequestService.getScore(this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict,
       this.selectedModel, this.fastSearch, this.statusID)).subscribe(
         data => {

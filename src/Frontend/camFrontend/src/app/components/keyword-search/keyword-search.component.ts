@@ -29,6 +29,7 @@ export class KeywordSearchComponent implements OnInit {
   search(query: string) {
     this.query = query;
     const url = this.urlBuilderService.getKeywordSearchURL(query);
+    console.log(url);
     this.getKeywords(query);
     this.showLoading = true;
     this.httpService.getSentences(url).subscribe(
