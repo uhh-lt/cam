@@ -19,9 +19,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(ResultPresentationComponent) resultPresentation: ResultPresentationComponent;
 
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
-
   aspects = new Array<Aspect>(new Aspect('')); // the rows of aspects currently shown in the UI
   private finalAspDict = {}; // holds all aspects after compare() was called
   selectedModel = 'default'; // the comparison model to be used
@@ -32,6 +29,9 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   object_A = ''; // the first object currently entered
   object_B = ''; // the second object currently entered
+
+  myControl = new FormControl();
+  options: string[] = [];
 
   private statusID = '-1';
 
@@ -93,23 +93,33 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     );
   }
 
-  onKeyUp(event: any) { // without type info
+  focusOutFunction() {
+    this.requestSuggestions()
+    console.log('hallo onFocus!');
+  }
+
+  requestSuggestions() {
     this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A)).subscribe(
       data => {
-        console.log(data);
+        this.options = []
+        for (var i in data) {
+          var item = data[i];
+
+          this.options.push(item);
+          console.log(this.options);
+        }
+      },
+      error => {
+        this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
+          duration: 3500,
+        });
+        this.showLoading = false;
+        console.error(error);
       }
-    )
-    /*
-    this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A, 'vs')).subscribe(
-      data => {
-      console.log(JSON.stringify(data));
-    });
-    */
+    );
   }
 
   requestScores() {
-    console.log(this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict,
-      this.selectedModel, this.fastSearch, this.statusID));
     this.httpRequestService.getScore(this.urlBuilderService.buildURL(this.object_A, this.object_B, this.finalAspDict,
       this.selectedModel, this.fastSearch, this.statusID)).subscribe(
         data => {

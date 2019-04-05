@@ -13,9 +13,6 @@ def extract_candidates(comparison_object, sentences):
 
         # candidate is a list of nounphrases from the sentence in sentences
         for candidate in blob.noun_phrases:
-            print(candidate)
-
-            # bis hier hin scheint es zu funktionieren..
 
             if candidate not in [comparison_object, 'vs', 'vs.'] and is_candidate(candidate, comparison_object, sentence):
 
@@ -32,6 +29,8 @@ def extract_candidates(comparison_object, sentences):
 # returns true if the pattern in the sentence is comparison_object vs candidate or the other way around.
 def is_candidate(candidate, comparison_object, sentence):
     vs = ' (vs|vs.) '
+
+    candidate = candidate.lower().strip()
     candidate = re.escape(candidate)
     pattern = '(' + candidate + vs + comparison_object + '|' + comparison_object + vs + candidate + ')'
     if re.match(pattern, sentence, re.IGNORECASE) is not None:

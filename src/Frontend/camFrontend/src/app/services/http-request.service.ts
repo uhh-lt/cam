@@ -14,9 +14,9 @@ export class HTTPRequestService {
 
   getSuggestions(url: string) {
     //return this.http.get('https://jsonplaceholder.typicode.com/todos/34', { headers: { 'Authorization': 'Basic cmVhZGVyOnJlYWRlcg==' } });
-    console.log(this.http.get<Array<Sentence>>(url));
+    console.log(this.http.get(url));
 
-    return this.http.get<Array<Sentence>>(url);
+    return this.http.get(url);
   }
 
   /**

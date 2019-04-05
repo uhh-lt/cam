@@ -41,8 +41,9 @@ def ccr(objectA):
     '''
     To bi visited after the keyUp event in first-object-input-field.
     '''
-    comparison_object = objectA.lower()
+    comparison_object = objectA.lower().strip()
     # sentences is a list with sentenses that contain the comparison_object AND vs
+    
     sentences = query_sentences.retrieve_sentences(comparison_object)
     # candidates are sentences that match the pattern 'comparison_object vs <nounphrase>' or the other way around
     candidates = extract_candidates.extract_candidates(comparison_object, sentences)
@@ -54,8 +55,12 @@ def ccr(objectA):
     for candidate in wordnet_filtered_candidates:
         ccr_suggestions_all.append(comparison_object + ' vs ' + candidate)
     # top ten results from ccr
-    ccr_suggestions_top_ten = ccr_suggestions_all[0:10]
-    #return jsonify(ccr_suggestions_top_ten)
+    ccr_suggestions_top = ccr_suggestions_all[0:7]
+    # remove the comparison_object and ' vs ' from suggestions
+    ccr_suggestions_top = [suggestion[(len(comparison_object) + 4):] for suggestion in ccr_suggestions_top]
+
+    print('Done with ', comparison_object, '!')
+    return jsonify(ccr_suggestions_top)
 
 @app.route('/cam', methods=['GET'])
 def cam():
