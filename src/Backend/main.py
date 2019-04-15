@@ -52,6 +52,9 @@ def ccr(objectA):
     
     # append comparison object and 'vs' to suggestions to get the same format as suggestions from the keyword tool
     ccr_suggestions_all = []
+    
+    print(ccr_suggestions_all)
+
     for candidate in wordnet_filtered_candidates:
         ccr_suggestions_all.append(comparison_object + ' vs ' + candidate)
     # top ten results from ccr

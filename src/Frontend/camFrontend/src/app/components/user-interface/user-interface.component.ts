@@ -95,19 +95,24 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   focusOutFunction() {
     this.requestSuggestions()
-    console.log('hallo onFocus!');
   }
 
-  requestSuggestions() {
+  keyUpObjectA() {
+    this.options = [];
+  }
+
+  requestSuggestions() {  
+    this.showLodingIconCursor();
     this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A)).subscribe(
       data => {
-        this.options = []
+        this.options = [];
         for (var i in data) {
           var item = data[i];
 
           this.options.push(item);
-          console.log(this.options);
         }
+        this.showDefaultCursor();
+        console.log('Suggestions found: ' + this.options);
       },
       error => {
         this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
@@ -117,6 +122,14 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
         console.error(error);
       }
     );
+  }
+
+  showLodingIconCursor() {
+    console.log('loding');
+  }
+
+  showDefaultCursor() {
+    console.log('default');
   }
 
   requestScores() {

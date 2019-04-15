@@ -5,7 +5,7 @@
         <td class='text-right' style='width:38%'>
           <mat-form-field class="object-input">
             <input matInput placeholder='First object' #objA [(ngModel)]='object_A' name="objA" style='font-size: 20px'
-              (focusout)="focusOutFunction()">
+              (focusout)="focusOutFunction()" (keyup)="keyUpObjectA()">
           </mat-form-field>
         </td>
         <td class='align-middle text-center' style='font-size: 16px'>versus</td>
