@@ -21,3 +21,5 @@ __pycache__
 /data/infersent.allnli.pickle
 test_main.py
 aspect_scores.csv
+
+*.txt
