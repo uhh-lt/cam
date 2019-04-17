@@ -10,6 +10,7 @@ export class UrlBuilderService {
   // private HOSTNAME_DEFAULT = 'http://localhost:5000/cam';
   private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
   private HOSTNAME_CCR = 'http://127.0.0.1:5000/ccr/';
+  private HOSTNAME_ES = 'http://localhost:9200/suggestions-index/suggestions/_search';
 
   /*
   private esHostname = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/';
@@ -40,12 +41,25 @@ export class UrlBuilderService {
    * @param objA the first object entered by the user
    * @returns the URL
    */
+  /*
   public buildCcrUrl(objA) {
     let URL = `${this.HOSTNAME_CCR + objA}`;
     console.log(URL);
     return URL;
   }
+  */
 
+  /**
+   * Builds the URL needed for communicating with the server and requesting the search.
+   *esHostname
+   * @param objA the first object entered by the user
+   * @returns the URL
+   */
+  public buildEsUrl() {
+    let URL = this.HOSTNAME_ES;
+    console.log(URL);
+    return URL;
+  }
 
   /**
    * Adds a URL part containing the aspects entered by the user to an already existing first part

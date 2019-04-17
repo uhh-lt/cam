@@ -7,7 +7,6 @@ import requests
 import json
 
 
-FILE_PATH = "../data/parts/"
 ES_HOST = {"host" : "localhost", "port" : 9200}
 INDEX_NAME = "suggestions-index"
 TYPE_NAME = "suggestions"

@@ -101,8 +101,14 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.options = [];
   }
 
-  requestSuggestions() {  
-    this.showLodingIconCursor();
+  requestSuggestions() {
+    this.httpRequestService.getEsSuggestions(this.urlBuilderService.buildEsUrl(), this.object_A).subscribe(
+      data => {
+        console.log(data);
+      }
+    );
+
+    /*
     this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A)).subscribe(
       data => {
         this.options = [];
@@ -111,7 +117,6 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
           this.options.push(item);
         }
-        this.showDefaultCursor();
         console.log('Suggestions found: ' + this.options);
       },
       error => {
@@ -121,15 +126,7 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
         this.showLoading = false;
         console.error(error);
       }
-    );
-  }
-
-  showLodingIconCursor() {
-    console.log('loding');
-  }
-
-  showDefaultCursor() {
-    console.log('default');
+    );*/
   }
 
   requestScores() {

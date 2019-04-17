@@ -12,11 +12,26 @@ export class HTTPRequestService {
     return this.http.get<Result>(url);
   }
 
+  /*
   getSuggestions(url: string) {
     //return this.http.get('https://jsonplaceholder.typicode.com/todos/34', { headers: { 'Authorization': 'Basic cmVhZGVyOnJlYWRlcg==' } });
     console.log(this.http.get(url));
 
     return this.http.get(url);
+  }
+  */
+
+  getEsSuggestions(url: string, comparison_object: string) {
+    const body = {
+      "query": {
+        "match": {
+          "comparison_object": comparison_object
+        }
+      }
+    }
+    console.log(this.http.post(url, body));
+
+    return this.http.post(url, body);
   }
 
   /**
