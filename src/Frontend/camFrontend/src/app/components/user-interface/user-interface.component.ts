@@ -105,30 +105,9 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
     this.httpRequestService.getEsSuggestions(this.urlBuilderService.buildEsUrl(), this.object_A).subscribe(
       data => {
         this.options = data['hits']['hits'][0]['_source']['suggestions'];
-        //console.log(data['hits']['hits'][0]['_source']['suggestions']);
         console.log('Suggestions found: ' + this.options);
       }
     );
-
-    /*
-    this.httpRequestService.getSuggestions(this.urlBuilderService.buildCcrUrl(this.object_A)).subscribe(
-      data => {
-        this.options = [];
-        for (var i in data) {
-          var item = data[i];
-
-          this.options.push(item);
-        }
-        console.log('Suggestions found: ' + this.options);
-      },
-      error => {
-        this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
-          duration: 3500,
-        });
-        this.showLoading = false;
-        console.error(error);
-      }
-    );*/
   }
 
   requestScores() {
