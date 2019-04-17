@@ -104,7 +104,9 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   requestSuggestions() {
     this.httpRequestService.getEsSuggestions(this.urlBuilderService.buildEsUrl(), this.object_A).subscribe(
       data => {
-        console.log(data);
+        this.options = data['hits']['hits'][0]['_source']['suggestions'];
+        //console.log(data['hits']['hits'][0]['_source']['suggestions']);
+        console.log('Suggestions found: ' + this.options);
       }
     );
 

@@ -13,7 +13,6 @@ TYPE_NAME = "suggestions"
 ID_FIELD = "suggestionsid"
 CCR_BASE_URL = "http://127.0.0.1:5000/ccr/"
 
-header = ["comparison object"]
 
 # Create ES client, create index.
 es = Elasticsearch(hosts = [ES_HOST], timeout=300)
