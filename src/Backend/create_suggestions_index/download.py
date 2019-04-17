@@ -18,5 +18,5 @@ for i in range(0,1,1):
     compressed_file = io.BytesIO(response.read())
     decompressed_file = gzip.GzipFile(fileobj=compressed_file)
 
-    with open('../data/part-{}.txt'.format(index), 'wb') as outfile:
+    with open('../data/parts/part-{}.txt'.format(index), 'wb') as outfile:
         outfile.write(decompressed_file.read())

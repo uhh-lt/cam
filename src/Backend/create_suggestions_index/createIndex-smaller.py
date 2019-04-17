@@ -8,7 +8,7 @@ from evaluation_triples import triples
 
 
 
-FILE_PATH = "../data/"
+FILE_PATH = "../data/parts/"
 ES_HOST = {"host" : "localhost", "port" : 9200}
 INDEX_NAME = 'dt-index'
 TYPE_NAME = 'triple'
@@ -50,8 +50,11 @@ for k in range(0,1,1):
 
     # load file
     triple_df = pandas.read_csv(FILE_PATH + document_name, sep='\t', header=None, names=header, dtype={'first': str, 'second': str}, encoding='utf-8', quoting=csv.QUOTE_NONE)
+    print('eins', triple_df)
     triple_df = triple_df.dropna()
+    print('zwei', triple_df)
     triple_df = triple_df[triple_df['first'].str.contains(first_triples_regex)]
+    print('drei', triple_df)
     
     document_length = len(triple_df.index)
     print('File loaded....(', document_length, ')')
