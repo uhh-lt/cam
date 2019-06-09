@@ -25,12 +25,9 @@ res = es.indices.create(index = INDEX_NAME, body = request_body)
 print(" response: '%s'" % (res))
 
 
-
-#data = []
 counter = 0
-
 for i in range(0,741,1):
-    document_name = 'outfile-{}.json'.format(str('%05d' % i))
+    document_name = './suggestions/outfile-{}.json'.format(str('%05d' % i))
     print(document_name)
 
     with open(document_name) as json_file:

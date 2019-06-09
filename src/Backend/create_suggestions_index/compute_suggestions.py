@@ -30,7 +30,7 @@ for file_counter in range(0,471,1):
         comparison_objects = json.load(json_file)
         co_suggestions_dict = p.map(requestSuggestions, comparison_objects)
 
-    outfilename = 'outfile-{}.json'.format(str('%05d' % file_counter))
+    outfilename = './suggestions/outfile-{}.json'.format(str('%05d' % file_counter))
     with open(outfilename, 'w') as outfile:
         json.dump(co_suggestions_dict, outfile)
 
