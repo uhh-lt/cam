@@ -10,7 +10,7 @@ import sklearn
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from requests.auth import HTTPBasicAuth
-
+#python -m textblob.download_corpora
 from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)

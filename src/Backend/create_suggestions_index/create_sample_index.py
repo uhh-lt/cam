@@ -40,21 +40,21 @@ print(" response: '%s'" % (res))
 # Old version, one by one, locally:
 #total_time_start = time.time()
 
-#index = 0
-#start = time.time()
+index = 0
+start = time.time()
 # do something with each word in the sample_wordlist
-#for comparison_object in comparison_objects:
-#    index += 1
-#    ccr_suggestions = requests.get(CCR_BASE_URL + '{}'.format(comparison_object)).json()
-#
-#    data = {}
-#    data = {
-#        "comparison_object": comparison_object,
-#        "suggestions": ccr_suggestions
-#        }
-#
-#
-#    es.index(index = INDEX_NAME, doc_type = TYPE_NAME, id = index, body = data)
+for comparison_object in comparison_objects:
+    index += 1
+    ccr_suggestions = requests.get(CCR_BASE_URL + '{}'.format(comparison_object)).json()
+
+    data = {}
+    data = {
+        "comparison_object": comparison_object,
+        "suggestions": ccr_suggestions
+        }
+
+
+    es.index(index = INDEX_NAME, doc_type = TYPE_NAME, id = index, body = data)
 
 
 res1 = es.get(index = INDEX_NAME, doc_type = TYPE_NAME, id = 1)
