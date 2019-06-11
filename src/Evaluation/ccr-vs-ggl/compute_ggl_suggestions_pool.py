@@ -4,7 +4,7 @@ from query_ggl_suggestions import get_suggestions
 
 
 def requestGglSuggestions(comparison_object):
-    ggl_suggestions = get_suggestions(comparison_object)
+    ggl_suggestions = get_suggestions('{} vs'.format(comparison_object))
     print(ggl_suggestions)
     data = {
         "comparison_object": comparison_object,
@@ -15,7 +15,7 @@ def requestGglSuggestions(comparison_object):
 co_ggl_suggestions_dict = {}
 p = Pool(4)
 
-for file_counter in range(8,471,1):
+for file_counter in range(4,471,1):
     # https://github.com/dwyl/english-words
     filename = '../../Backend/create_suggestions_index/english_words/wordlist-{}.json'.format(str('%05d' % file_counter))
     with open(filename) as json_file:

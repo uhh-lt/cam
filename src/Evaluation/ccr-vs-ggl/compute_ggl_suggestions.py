@@ -5,7 +5,7 @@ import json
 
 co_ggl_suggestions_dict = []
 
-for file_counter in range(8,471,1):
+for file_counter in range(39,471,1):
     # https://github.com/dwyl/english-words
     filename = '../../Backend/create_suggestions_index/english_words/wordlist-{}.json'.format(str('%05d' % file_counter))
     with open(filename) as json_file:
