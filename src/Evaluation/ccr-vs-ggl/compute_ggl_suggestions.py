@@ -1,22 +1,36 @@
+<<<<<<< HEAD
+=======
+from query_ggl_suggestions import get_detailed_suggestions
+>>>>>>> 413f56534c7334783889962ccbc655d8cfa42617
 from query_ggl_suggestions import get_suggestions
 import json
 
 
 co_ggl_suggestions_dict = []
 
+<<<<<<< HEAD
 for file_counter in range(0,1,1):
+=======
+for file_counter in range(39,471,1):
+>>>>>>> 413f56534c7334783889962ccbc655d8cfa42617
     # https://github.com/dwyl/english-words
     filename = '../../Backend/create_suggestions_index/english_words/wordlist-{}.json'.format(str('%05d' % file_counter))
     with open(filename) as json_file:
         comparison_objects = json.load(json_file)
         for comparison_object in comparison_objects:
+<<<<<<< HEAD
             print(comparison_object)
+=======
+>>>>>>> 413f56534c7334783889962ccbc655d8cfa42617
             ggl_suggestions = get_suggestions(comparison_object)
             data = {
                 "comparison_object": comparison_object,
                 "suggestions": ggl_suggestions
             }
+<<<<<<< HEAD
             print(ggl_suggestions)
+=======
+>>>>>>> 413f56534c7334783889962ccbc655d8cfa42617
             co_ggl_suggestions_dict.append(data)
 
     outfilename = './ggl-suggestions/ggl-outfile-{}.json'.format(str('%05d' % file_counter))

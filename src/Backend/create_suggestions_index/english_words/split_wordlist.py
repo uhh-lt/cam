@@ -1,8 +1,11 @@
 import json
 
+<<<<<<< HEAD
 # this is used if handeling the whole english_words.json creates problems.
 # it is split in many smaller files and if it crashes not all progress is lost.
 
+=======
+>>>>>>> 413f56534c7334783889962ccbc655d8cfa42617
 counter = 0
 data = {}
 file_counter = 0
