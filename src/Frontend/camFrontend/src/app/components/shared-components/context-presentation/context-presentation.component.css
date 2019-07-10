@@ -1,0 +1,37 @@
+.sentence-mark {
+    background-color: rgba(255, 252, 16, 0.4);
+}
+
+mat-button-toggle {
+    /* width: 30px; */
+    height: 30px; 
+    font-size: 12px;
+}
+
+.mat-button-toggle-label-content {
+    padding: 0 0;
+}
+
+::ng-deep .mat-dialog-container{
+    padding-top: 0px;
+    padding-right: 0px;
+}
+
+.padding-right {
+    padding-right: 24px
+}
+
+.toggle-button {
+    text-align: right;
+}
+
+.context {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    max-height: 400px;
+    overflow-y:auto
+}
+
+.url-break {
+    word-break: break-all;
+}

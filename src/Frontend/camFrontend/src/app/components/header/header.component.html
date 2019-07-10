@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+
+    <span *ngIf="selectedTab != 'search'">Comparative Argumentative Machine</span>
+    <span *ngIf="selectedTab == 'search'">Keyword Search</span>
+    <span class="spacer"></span>
+    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+      <button mat-menu-item routerLink='' [ngClass]="{'nav-selected': selectedTab == 'cam'}" (click)="setSelectedTab('cam')">
+        CAM </button>
+      <button mat-menu-item routerLink='/search' [ngClass]="{'nav-selected': selectedTab == 'search'}" (click)="setSelectedTab('search')">
+        Search </button>
+      <div style="margin-left: 10%"></div>
+      <button mat-menu-item routerLink='/about' [ngClass]="{'nav-selected': selectedTab == 'about'}" (click)="setSelectedTab('about')">
+        About </button>
+      <button mat-menu-item (click)='goToGit()'> GitHub </button>
+      <button mat-menu-item routerLink='/api-info' [ngClass]="{'nav-selected': selectedTab == 'api-info'}" (click)="setSelectedTab('api-info')">
+        API </button>
+      <button mat-menu-item routerLink='/contact' [ngClass]="{'nav-selected': selectedTab == 'contact'}" (click)="setSelectedTab('contact')">
+        Contact </button>
+    </div>
+    <button mat-icon-button [matMenuTriggerFor]="menu" fxHide="false" fxHide.gt-sm>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
+<mat-menu x-position="before" #menu="matMenu">
+  <button mat-menu-item routerLink='' (click)="setSelectedTab('cam')"> CAM </button>
+  <button mat-menu-item routerLink='' (click)="setSelectedTab('search')"> Search </button>
+  <button mat-menu-item routerLink='/about' (click)="setSelectedTab('about')"> About </button>
+  <button mat-menu-item (click)='goToGit()'> GitHub </button>
+  <button mat-menu-item routerLink='/api-info' (click)="setSelectedTab('api-info')"> API </button>
+  <button mat-menu-item routerLink='/contact' (click)="setSelectedTab('contact')"> Contact </button>
+</mat-menu>

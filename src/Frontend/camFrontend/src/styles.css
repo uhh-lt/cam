@@ -1,0 +1,27 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+/* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
+/* @import '~@angular/material/prebuilt-themes/pink-bluegrey.css'; */
+/* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
+
+.winner {
+    /* background-color: rgba(24, 226, 51, 0.4); */
+    background-color: #a3f3ad;
+}
+  
+.looser {
+  /* background-color: rgba(49,130,189, 0.4); */
+  background-color: #adcde5;
+}
+  
+.aspect {
+  /* background-color: rgba(254,178,76, 0.4); */
+  background-color: #ffe0b7;
+}
+  
+.link {
+  background-color: rgba(119, 117, 117, 0.4);
+}
+
+.filteredAspect {
+  background-color: rgba(250,159,181, 0.4)
+}

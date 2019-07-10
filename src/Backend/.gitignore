@@ -1,0 +1,29 @@
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Pycache
+__pycache__
+
+/data/glove.840B.300d.txt
+/data/infersent.allnli.pickle
+test_main.py
+aspect_scores.csv
+
+*.txt
+*.zip
+
+wordlist*
+

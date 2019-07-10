@@ -1,0 +1,17 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.mat-menu-item {
+    text-overflow: clip;
+    text-align: center;
+    color: inherit;
+}
+
+.nav-selected {
+    color:  rgba(255, 255, 255, 0.5);
+}
+
+button.mat-menu-item {
+    width: auto;
+}

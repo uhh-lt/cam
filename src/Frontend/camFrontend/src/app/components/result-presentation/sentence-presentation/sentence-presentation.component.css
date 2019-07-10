@@ -1,0 +1,8 @@
+::ng-deep .mat-tooltip {
+    font-size: 13px;
+}
+
+#sentence-hover:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
