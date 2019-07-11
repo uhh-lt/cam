@@ -1,0 +1,571 @@
+[{
+    "comparison_object": "Word",
+    "suggestions": ["latex", "pages", "letterpress", "photo", "inflection", "advertising", "paper"]
+}, {
+    "comparison_object": "AMD",
+    "suggestions": ["champ", "dell", "mac"]
+}, {
+    "comparison_object": "AWK",
+    "suggestions": []
+}, {
+    "comparison_object": "Adidas",
+    "suggestions": []
+}, {
+    "comparison_object": "Advil",
+    "suggestions": ["tylenol", "aleve"]
+}, {
+    "comparison_object": "Amazon",
+    "suggestions": ["apple", "bookstores", "publishers", "norse", "target", "android", "borders"]
+}, {
+    "comparison_object": "Apple",
+    "suggestions": ["android", "amazon", "windows", "adobe", "dell", "pc", "ms"]
+}, {
+    "comparison_object": "Apple TV",
+    "suggestions": []
+}, {
+    "comparison_object": "Asus",
+    "suggestions": []
+}, {
+    "comparison_object": "Audi",
+    "suggestions": []
+}, {
+    "comparison_object": "Avaya",
+    "suggestions": []
+}, {
+    "comparison_object": "BMW",
+    "suggestions": []
+}, {
+    "comparison_object": "Bash",
+    "suggestions": ["franklin", "fish", "icons", "bourne"]
+}, {
+    "comparison_object": "Bluetooth",
+    "suggestions": []
+}, {
+    "comparison_object": "Buick",
+    "suggestions": []
+}, {
+    "comparison_object": "CUDA",
+    "suggestions": []
+}, {
+    "comparison_object": "Cadillac",
+    "suggestions": []
+}, {
+    "comparison_object": "Chevrolet",
+    "suggestions": []
+}, {
+    "comparison_object": "Chrysler",
+    "suggestions": []
+}, {
+    "comparison_object": "Coca-Cola",
+    "suggestions": []
+}, {
+    "comparison_object": "Dell",
+    "suggestions": ["apple", "hp", "acer", "dad", "sun", "amd", "mac"]
+}, {
+    "comparison_object": "Direct3D",
+    "suggestions": []
+}, {
+    "comparison_object": "Eclipse",
+    "suggestions": ["quantum", "cougar", "coda", "core", "asylum", "net", "idea"]
+}, {
+    "comparison_object": "Ethernet",
+    "suggestions": ["wifi", "slip", "wireless", "ppp", "fibre", "serial", "gigabit"]
+}, {
+    "comparison_object": "Ferrari",
+    "suggestions": []
+}, {
+    "comparison_object": "Floating-point",
+    "suggestions": []
+}, {
+    "comparison_object": "Ford",
+    "suggestions": ["gm", "carter", "dodge", "firestone", "collins", "windows", "grey"]
+}, {
+    "comparison_object": "Gigabyte",
+    "suggestions": []
+}, {
+    "comparison_object": "Google",
+    "suggestions": ["mapquest"]
+}, {
+    "comparison_object": "Groovy",
+    "suggestions": []
+}, {
+    "comparison_object": "Haskell",
+    "suggestions": []
+}, {
+    "comparison_object": "Hewlett-Packard",
+    "suggestions": []
+}, {
+    "comparison_object": "Honda",
+    "suggestions": []
+}, {
+    "comparison_object": "Huawei",
+    "suggestions": []
+}, {
+    "comparison_object": "IBM",
+    "suggestions": []
+}, {
+    "comparison_object": "Ibuprofen",
+    "suggestions": ["acetaminophen", "naproxen", "tylenol", "aleve", "aspirin", "celebrex", "codeine"]
+}, {
+    "comparison_object": "Integer",
+    "suggestions": ["floating", "string", "date", "identifiers", "decimal"]
+}, {
+    "comparison_object": "Intel",
+    "suggestions": []
+}, {
+    "comparison_object": "Java",
+    "suggestions": ["net", "python", "ruby", "script", "flash", "android", "oracle"]
+}, {
+    "comparison_object": "JavaScript",
+    "suggestions": []
+}, {
+    "comparison_object": "Kingston",
+    "suggestions": []
+}, {
+    "comparison_object": "Leica",
+    "suggestions": []
+}, {
+    "comparison_object": "Lexus",
+    "suggestions": []
+}, {
+    "comparison_object": "Lisp",
+    "suggestions": ["ml", "ruby", "prolog", "unix", "python", "java"]
+}, {
+    "comparison_object": "MSI",
+    "suggestions": []
+}, {
+    "comparison_object": "Mercedes-Benz",
+    "suggestions": []
+}, {
+    "comparison_object": "Microsoft",
+    "suggestions": []
+}, {
+    "comparison_object": "Motorola",
+    "suggestions": []
+}, {
+    "comparison_object": "Motrin",
+    "suggestions": ["celebrex", "tylenol", "aleve"]
+}, {
+    "comparison_object": "MySQL",
+    "suggestions": []
+}, {
+    "comparison_object": "NetBeans",
+    "suggestions": []
+}, {
+    "comparison_object": "Nike",
+    "suggestions": []
+}, {
+    "comparison_object": "Nikon",
+    "suggestions": []
+}, {
+    "comparison_object": "Nissan",
+    "suggestions": ["jeep", "tesla", "corvette", "ford", "volt"]
+}, {
+    "comparison_object": "Nokia",
+    "suggestions": []
+}, {
+    "comparison_object": "Nvidia",
+    "suggestions": []
+}, {
+    "comparison_object": "Objective-C",
+    "suggestions": []
+}, {
+    "comparison_object": "OpenCL",
+    "suggestions": []
+}, {
+    "comparison_object": "OpenGL",
+    "suggestions": []
+}, {
+    "comparison_object": "Oracle",
+    "suggestions": ["sap", "java", "hp", "net", "docker", "apple", "android"]
+}, {
+    "comparison_object": "PHP",
+    "suggestions": []
+}, {
+    "comparison_object": "Pepsi",
+    "suggestions": ["coke", "cola", "apple", "bud"]
+}, {
+    "comparison_object": "Perl",
+    "suggestions": []
+}, {
+    "comparison_object": "PostgreSQL",
+    "suggestions": []
+}, {
+    "comparison_object": "Python",
+    "suggestions": ["ruby", "java", "boa", "alligator", "net", "cat", "gator"]
+}, {
+    "comparison_object": "Renault",
+    "suggestions": []
+}, {
+    "comparison_object": "Ruby",
+    "suggestions": ["python", "java", "net", "sapphire", "cocoa", "rails", "lisp"]
+}, {
+    "comparison_object": "SQLite",
+    "suggestions": []
+}, {
+    "comparison_object": "Samsung",
+    "suggestions": []
+}, {
+    "comparison_object": "Scala",
+    "suggestions": []
+}, {
+    "comparison_object": "Sed",
+    "suggestions": []
+}, {
+    "comparison_object": "Siemens",
+    "suggestions": ["ge", "at"]
+}, {
+    "comparison_object": "Sigma",
+    "suggestions": ["canon", "mac", "pi", "cobra", "zero"]
+}, {
+    "comparison_object": "Smalltalk",
+    "suggestions": []
+}, {
+    "comparison_object": "Sony",
+    "suggestions": []
+}, {
+    "comparison_object": "Swift",
+    "suggestions": ["objective", "sniper", "android", "cinder", "ritz", "underwood", "silvertips"]
+}, {
+    "comparison_object": "Toshiba",
+    "suggestions": []
+}, {
+    "comparison_object": "Toyota",
+    "suggestions": []
+}, {
+    "comparison_object": "USB",
+    "suggestions": []
+}, {
+    "comparison_object": "Windows 7",
+    "suggestions": []
+}, {
+    "comparison_object": "Windows 8",
+    "suggestions": []
+}, {
+    "comparison_object": "Windows 98",
+    "suggestions": []
+}, {
+    "comparison_object": "Windows Vista",
+    "suggestions": []
+}, {
+    "comparison_object": "Windows XP",
+    "suggestions": []
+}, {
+    "comparison_object": "aluminum",
+    "suggestions": ["plastic", "stainless", "titanium", "carbon", "wood", "vinyl", "iron"]
+}, {
+    "comparison_object": "amazon",
+    "suggestions": ["apple", "bookstores", "publishers", "norse", "target", "android", "borders"]
+}, {
+    "comparison_object": "baseball",
+    "suggestions": ["neb", "softball", "michigan", "cricket", "soccer", "zombies", "alabama"]
+}, {
+    "comparison_object": "basketball",
+    "suggestions": ["hockey", "brains", "soccer", "cinderella", "volleyball", "trinity", "pollard"]
+}, {
+    "comparison_object": "beer",
+    "suggestions": ["wine", "men", "coffee", "soda", "ale", "art", "pot"]
+}, {
+    "comparison_object": "birthday",
+    "suggestions": ["bathing"]
+}, {
+    "comparison_object": "bread",
+    "suggestions": ["matzah", "soul", "pizza", "cake", "tortilla", "jewellery", "milk"]
+}, {
+    "comparison_object": "bus",
+    "suggestions": ["car", "rail", "train", "streetcar", "bolt", "bike", "van"]
+}, {
+    "comparison_object": "cafe",
+    "suggestions": []
+}, {
+    "comparison_object": "california",
+    "suggestions": []
+}, {
+    "comparison_object": "camping",
+    "suggestions": ["survival", "hotels", "spaniels", "lodges"]
+}, {
+    "comparison_object": "cardboard",
+    "suggestions": ["plastic", "binders", "wood"]
+}, {
+    "comparison_object": "carolina",
+    "suggestions": []
+}, {
+    "comparison_object": "cement",
+    "suggestions": ["concrete", "suv"]
+}, {
+    "comparison_object": "chalk",
+    "suggestions": ["markers", "cheese", "straps", "barb"]
+}, {
+    "comparison_object": "champagne",
+    "suggestions": ["caffeine", "burgundy", "wine", "sparkling", "leopard", "chardonnay", "beer"]
+}, {
+    "comparison_object": "chocolate",
+    "suggestions": ["vanilla", "carob", "kiss", "bacon", "cocoa", "wine", "original"]
+}, {
+    "comparison_object": "cider",
+    "suggestions": ["beer", "wine"]
+}, {
+    "comparison_object": "cnn",
+    "suggestions": []
+}, {
+    "comparison_object": "coffee",
+    "suggestions": ["tea", "espresso", "brains", "beer", "volunteer", "latte", "brandy"]
+}, {
+    "comparison_object": "concrete",
+    "suggestions": ["abstract", "asphalt", "cement", "wood", "fiberglass", "bullshit", "brick"]
+}, {
+    "comparison_object": "cornell",
+    "suggestions": []
+}, {
+    "comparison_object": "dartmouth",
+    "suggestions": []
+}, {
+    "comparison_object": "ds",
+    "suggestions": ["rs", "smoke", "ps", "knobs", "ab", "blueprint", "hex"]
+}, {
+    "comparison_object": "espn",
+    "suggestions": []
+}, {
+    "comparison_object": "facebook",
+    "suggestions": []
+}, {
+    "comparison_object": "fishing",
+    "suggestions": ["creativity", "cooking", "hunting", "sex", "nature", "farming", "catching"]
+}, {
+    "comparison_object": "foam",
+    "suggestions": ["wool", "bubbles", "cellulose", "honeycomb", "gel", "gauze", "liquid"]
+}, {
+    "comparison_object": "football",
+    "suggestions": ["soccer", "hockey", "rugby", "michigan", "chardonnay", "cricket", "miami"]
+}, {
+    "comparison_object": "forest",
+    "suggestions": ["trees", "cave", "jungle", "blackburn", "vanguard", "wolves", "reading"]
+}, {
+    "comparison_object": "fox",
+    "suggestions": ["cyborg", "duck", "trump", "ness", "abc", "link", "dish"]
+}, {
+    "comparison_object": "gamecube",
+    "suggestions": []
+}, {
+    "comparison_object": "georgia",
+    "suggestions": []
+}, {
+    "comparison_object": "golf",
+    "suggestions": ["focus", "bowling", "yoga", "vehicle", "mini", "firearms", "paintball"]
+}, {
+    "comparison_object": "google",
+    "suggestions": ["mapquest"]
+}, {
+    "comparison_object": "halloween",
+    "suggestions": ["purim", "christmas", "exorcist", "finger", "thunderbird", "electroshock", "baby"]
+}, {
+    "comparison_object": "harvard",
+    "suggestions": []
+}, {
+    "comparison_object": "hockey",
+    "suggestions": ["michigan", "miami", "providence", "ph.d.s", "windsor", "surfing", "baseball"]
+}, {
+    "comparison_object": "holiday",
+    "suggestions": ["vacation", "christmas", "saving", "pontoon", "hotels", "weddings", "wall"]
+}, {
+    "comparison_object": "hulu",
+    "suggestions": []
+}, {
+    "comparison_object": "iOS",
+    "suggestions": []
+}, {
+    "comparison_object": "iphone",
+    "suggestions": []
+}, {
+    "comparison_object": "ipod",
+    "suggestions": ["walkman", "dj", "flash", "blackberry", "android", "magnet", "beer"]
+}, {
+    "comparison_object": "itunes",
+    "suggestions": []
+}, {
+    "comparison_object": "jeep",
+    "suggestions": ["nissan", "hummer", "ranger", "penetration", "ford", "semi", "homer"]
+}, {
+    "comparison_object": "juice",
+    "suggestions": ["milk", "supernatural", "soda", "blend", "smoothies", "smoothie", "concentrate"]
+}, {
+    "comparison_object": "kennedy",
+    "suggestions": []
+}, {
+    "comparison_object": "knife",
+    "suggestions": ["gun", "finger", "stick", "id", "hand", "flesh", "striker"]
+}, {
+    "comparison_object": "lacrosse",
+    "suggestions": ["impala", "muck", "tennis", "smith", "tl", "soccer", "blood"]
+}, {
+    "comparison_object": "laptop",
+    "suggestions": ["desktop", "tablet", "phone", "notebook", "edge", "pc", "tablets"]
+}, {
+    "comparison_object": "lumber",
+    "suggestions": ["automatic"]
+}, {
+    "comparison_object": "metal",
+    "suggestions": ["plastic", "wood", "metalhead", "pvc", "polymer", "ceramic", "folk"]
+}, {
+    "comparison_object": "michigan",
+    "suggestions": ["indiana", "iowa", "illinois", "alabama", "duke", "butler", "delaware"]
+}, {
+    "comparison_object": "milk",
+    "suggestions": ["silk", "dark", "whey", "meat", "juice", "cream", "soda"]
+}, {
+    "comparison_object": "minivan",
+    "suggestions": ["suv", "crossover", "motorcycle"]
+}, {
+    "comparison_object": "missouri",
+    "suggestions": ["iowa", "kansas", "illinois", "alabama", "arizona", "state", "au"]
+}, {
+    "comparison_object": "mit",
+    "suggestions": []
+}, {
+    "comparison_object": "mobile",
+    "suggestions": ["desktop", "photographer", "console", "web", "pc", "email", "internet"]
+}, {
+    "comparison_object": "motorcycle",
+    "suggestions": ["car", "vehicle", "deer", "snowmobile", "scooter", "shogun", "lincoln"]
+}, {
+    "comparison_object": "mouse",
+    "suggestions": ["cat", "rat", "keyboard", "touch", "pen", "controllers", "fingers"]
+}, {
+    "comparison_object": "nixon",
+    "suggestions": []
+}, {
+    "comparison_object": "oregon",
+    "suggestions": []
+}, {
+    "comparison_object": "paint",
+    "suggestions": ["stain", "wallpaper", "galvanized", "primer", "stickers", "mask", "dye"]
+}, {
+    "comparison_object": "pasta",
+    "suggestions": ["pesach", "potatoes", "noodles", "mac", "rice"]
+}, {
+    "comparison_object": "pen",
+    "suggestions": ["pencil", "sword", "stroke", "brush", "finger", "pc", "keyboard"]
+}, {
+    "comparison_object": "pennsylvania",
+    "suggestions": []
+}, {
+    "comparison_object": "phone",
+    "suggestions": ["tablet", "e-mail", "pc", "text", "email", "desktop", "marathon"]
+}, {
+    "comparison_object": "pistol",
+    "suggestions": ["rifle", "revolver", "nra", "puppy", "carbine", "winter", "watch"]
+}, {
+    "comparison_object": "pizza",
+    "suggestions": ["skeletons", "burrito", "burritos", "fireplace", "bread", "catfish", "doughnuts"]
+}, {
+    "comparison_object": "plastic",
+    "suggestions": ["aluminum", "paper", "wood", "clay", "stainless", "elastic", "mylar"]
+}, {
+    "comparison_object": "playstation",
+    "suggestions": []
+}, {
+    "comparison_object": "plywood",
+    "suggestions": ["slats", "melamine", "timber"]
+}, {
+    "comparison_object": "potato",
+    "suggestions": ["tomato", "rice", "ricotta", "malanga", "eggbeaters", "coleslaw", "tortilla"]
+}, {
+    "comparison_object": "princeton",
+    "suggestions": []
+}, {
+    "comparison_object": "ps2",
+    "suggestions": []
+}, {
+    "comparison_object": "ps3",
+    "suggestions": []
+}, {
+    "comparison_object": "psp",
+    "suggestions": []
+}, {
+    "comparison_object": "rat",
+    "suggestions": ["pigeon", "hawk", "rats", "squirrel", "bandicoot", "fish", "hamster"]
+}, {
+    "comparison_object": "reagan",
+    "suggestions": []
+}, {
+    "comparison_object": "restaurant",
+    "suggestions": ["cinema", "pharmaceutics", "tailgate", "deer", "catering", "musician", "restaurateur"]
+}, {
+    "comparison_object": "rifle",
+    "suggestions": ["shotgun", "pistol", "handgun", "buckeye", "carbine", "neb", "pencil"]
+}, {
+    "comparison_object": "rubber",
+    "suggestions": ["antifreeze", "leather", "polyurethane", "silicone", "poison", "carpet", "wood"]
+}, {
+    "comparison_object": "sandwich",
+    "suggestions": ["taco", "nun", "wave", "burrito"]
+}, {
+    "comparison_object": "sausage",
+    "suggestions": ["bacon", "pepperoni", "hotdogs", "bratwurst", "baguette", "meatballs"]
+}, {
+    "comparison_object": "skiing",
+    "suggestions": ["snowboarding", "running"]
+}, {
+    "comparison_object": "soda",
+    "suggestions": ["pop", "beer", "juice", "abrasive", "coffee", "tonic", "fed"]
+}, {
+    "comparison_object": "softball",
+    "suggestions": ["michigan", "iowa", "illinois", "indiana", "neb", "miami", "appalachian"]
+}, {
+    "comparison_object": "soup",
+    "suggestions": ["stew", "juice", "beans", "grapes", "earth"]
+}, {
+    "comparison_object": "stanford",
+    "suggestions": []
+}, {
+    "comparison_object": "steak",
+    "suggestions": ["sizzle", "spaghetti", "girl", "hamburger", "lamb", "bacon", "broccoli"]
+}, {
+    "comparison_object": "steel",
+    "suggestions": ["aluminum", "wood", "cedar", "brass", "porter", "alloy", "alum"]
+}, {
+    "comparison_object": "stone",
+    "suggestions": ["graham", "rock", "wood", "flint", "pan", "walker", "brick"]
+}, {
+    "comparison_object": "suv",
+    "suggestions": ["minivan", "minivans", "bike", "motorcycle", "bicyclists", "cruiser", "pickup"]
+}, {
+    "comparison_object": "swimming",
+    "suggestions": ["running", "centre", "catawba", "treading", "breakdown", "guns", "walking"]
+}, {
+    "comparison_object": "tea",
+    "suggestions": ["coffee", "establishment", "terrorism", "prosecutors", "infusion", "soda", "tincture"]
+}, {
+    "comparison_object": "tennis",
+    "suggestions": ["badminton", "smith", "wesleyan", "lacrosse", "amelia", "cricket", "appalachian"]
+}, {
+    "comparison_object": "thanksgiving",
+    "suggestions": ["bart", "black", "christmas", "sovereignty", "jets"]
+}, {
+    "comparison_object": "timber",
+    "suggestions": ["aluminum", "plywood", "manufacturing", "snappers", "concrete", "timbre"]
+}, {
+    "comparison_object": "truck",
+    "suggestions": ["bus", "car", "train", "trailer", "grenade", "rail", "bike"]
+}, {
+    "comparison_object": "virginia",
+    "suggestions": []
+}, {
+    "comparison_object": "volleyball",
+    "suggestions": ["miami", "missouri", "buffalo", "ball", "alabama", "modeling", "mt"]
+}, {
+    "comparison_object": "wallet",
+    "suggestions": ["pocket", "principles", "backpack", "passbook", "environment", "style", "isis"]
+}, {
+    "comparison_object": "wedding",
+    "suggestions": ["weight", "tech", "elopement", "shark", "holidays", "ipod", "mourners"]
+}, {
+    "comparison_object": "wii",
+    "suggestions": []
+}, {
+    "comparison_object": "wood",
+    "suggestions": ["propane", "plastic", "aluminum", "vinyl", "carpet", "stone", "fiberglass"]
+}, {
+    "comparison_object": "youtube",
+    "suggestions": []
+}]

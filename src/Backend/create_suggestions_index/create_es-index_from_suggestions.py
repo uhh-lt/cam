@@ -26,8 +26,8 @@ print(" response: '%s'" % (res))
 
 
 counter = 0
-document_name = './suggestions/cam-suggestions-all.json'
-#document_name = './suggestions/cam-suggestions-all_vocab.json'
+document_name = './suggestions/cam-suggestions-dict-A.json'
+#document_name = './suggestions/cam-suggestions-dict-B.json'
 
 with open(document_name) as json_file:
     data = json.load(json_file)

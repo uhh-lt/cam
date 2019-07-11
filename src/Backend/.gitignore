@@ -23,12 +23,5 @@ test_main.py
 aspect_scores.csv
 
 *.txt
-<<<<<<< HEAD
-*.zip
 
 wordlist*
-
-=======
-
-wordlist*
->>>>>>> 413f56534c7334783889962ccbc655d8cfa42617
