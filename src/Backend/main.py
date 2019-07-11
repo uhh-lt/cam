@@ -57,11 +57,7 @@ def ccr(objectA):
 
     for candidate in wordnet_filtered_candidates:
         ccr_suggestions_all.append(comparison_object + ' vs ' + candidate)
-<<<<<<< HEAD
     # top seven results from ccr
-=======
-    # top ten results from ccr
->>>>>>> 413f56534c7334783889962ccbc655d8cfa42617
     ccr_suggestions_top = ccr_suggestions_all[0:7]
     # remove the comparison_object and ' vs ' from suggestions
     ccr_suggestions_top = [suggestion[(len(comparison_object) + 4):] for suggestion in ccr_suggestions_top]
