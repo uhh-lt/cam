@@ -10,6 +10,8 @@ ADD . /app
 # Install any needed packages specified in requirements.txt
 RUN pip install --upgrade pip
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
+#RUN pip install -U textblob
+#RUN pip install -U pandas
 RUN python -m nltk.downloader stopwords
 RUN python -m nltk.downloader punkt
 RUN python -m nltk.downloader averaged_perceptron_tagger
