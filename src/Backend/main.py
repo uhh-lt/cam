@@ -2,13 +2,15 @@ import json
 import numbers
 import sys
 import urllib
-
-import requests
+import query_sentences
+import extract_candidates
+import filter_candidates_wordnet
+import query_sentences
 import sklearn
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from requests.auth import HTTPBasicAuth
-
+#python -m textblob.download_corpora
 from marker_approach.object_comparer import find_winner
 from ml_approach.classify import (classify_sentences, evaluate,
                                   set_use_heuristics)
@@ -27,6 +29,42 @@ CORS(app)
 
 
 @app.route("/")
+def helloWorld():
+  return "Hello, cross-origin-world!"
+
+@app.route("/ccrr/<objectA>")
+def helloCcrWorld(objectA):
+  return "Hello, ccr!" + objectA
+
+@app.route('/ccr/<objectA>', methods=['GET'])
+def ccr(objectA):
+    '''
+    To bi visited after the keyUp event in first-object-input-field.
+    '''
+    comparison_object = objectA.lower().strip()
+    # sentences is a list with sentenses that contain the comparison_object AND vs
+    
+    sentences = query_sentences.retrieve_sentences(comparison_object)
+    # candidates are sentences that match the pattern 'comparison_object vs <nounphrase>' or the other way around
+    candidates = extract_candidates.extract_candidates(comparison_object, sentences)
+
+    wordnet_filtered_candidates = filter_candidates_wordnet.filter(comparison_object, candidates)
+    
+    # append comparison object and 'vs' to suggestions to get the same format as suggestions from the keyword tool
+    ccr_suggestions_all = []
+    
+    print(ccr_suggestions_all)
+
+    for candidate in wordnet_filtered_candidates:
+        ccr_suggestions_all.append(comparison_object + ' vs ' + candidate)
+    # top seven results from ccr
+    ccr_suggestions_top = ccr_suggestions_all[0:7]
+    # remove the comparison_object and ' vs ' from suggestions
+    ccr_suggestions_top = [suggestion[(len(comparison_object) + 4):] for suggestion in ccr_suggestions_top]
+
+    print('Done with ', comparison_object, '!')
+    return jsonify(ccr_suggestions_top)
+
 @app.route('/cam', methods=['GET'])
 def cam():
     '''
@@ -164,4 +202,5 @@ def load_config():
 if __name__ == "__main__":
     status = {}
     load_config()
-    app.run(host="0.0.0.0", threaded=True)
+    app.run()
+    #app.run(host="0.0.0.0", threaded=True)

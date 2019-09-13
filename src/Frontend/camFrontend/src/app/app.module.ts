@@ -1,6 +1,6 @@
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -27,6 +27,7 @@ import { SentencePresentationComponent } from './components/result-presentation/
 import { ContextPresentationComponent } from './components/shared-components/context-presentation/context-presentation.component';
 import { KeywordSearchComponent } from './components/keyword-search/keyword-search.component';
 import { MarkQueryWordsPipe } from './components/keyword-search/mark-query-words.pipe';
+import { MatFormField, MatFormFieldModule, MatInputModule, MatAutocompleteModule } from '@angular/material';
 
 const appRoute: Routes = [
   { path: '', component: UserInterfaceComponent },
@@ -60,6 +61,11 @@ const appRoute: Routes = [
     BrowserAnimationsModule,
     FlexLayoutModule,
     HttpClientModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
     FormsModule,
     RouterModule.forRoot(appRoute, { useHash: false }),
     MaterialModule,

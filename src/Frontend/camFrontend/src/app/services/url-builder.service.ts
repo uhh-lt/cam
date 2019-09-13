@@ -9,6 +9,8 @@ export class UrlBuilderService {
     */
   // private HOSTNAME_DEFAULT = 'http://localhost:5000/cam';
   private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
+  private HOSTNAME_ES = 'http://localhost:9200/suggestions-index/suggestions/_search';
+
 
   /**
    * Builds the URL needed for communicating with the server and requesting the search.
@@ -22,6 +24,17 @@ export class UrlBuilderService {
   public buildURL(objA, objB, aspectList, model, fastSearch, statusID) {
     let URL = `${this.getUrlBase(model)}fs=${fastSearch}&objectA=${objA}&objectB=${objB}&statusID=${statusID}`;
     URL += this.addAspectURL(aspectList);
+    return URL;
+  }
+
+  /**
+   * Provides the URL needed for communicating with the server and requesting the search.
+   *
+   * @returns the URL
+   */
+  public buildEsUrl() {
+    let URL = this.HOSTNAME_ES;
+    console.log(URL);
     return URL;
   }
 

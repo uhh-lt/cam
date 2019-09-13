@@ -1,18 +1,20 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
 import { UrlBuilderService } from '../../services/url-builder.service';
 import { HTTPRequestService } from '../../services/http-request.service';
 import { ResultPresentationComponent } from '../result-presentation/result-presentation.component';
-import { MatSnackBar } from '@angular/material';
-import { TimerObservable } from 'rxjs/observable/TimerObservable';
-import { ScrollToService, ScrollToConfigOptions } from '@nicky-lenaers/ngx-scroll-to';
-import 'rxjs/add/operator/takeWhile';
 import { Aspect } from '../../model/aspect';
+import { TimerObservable } from 'rxjs/observable/TimerObservable';
+import 'rxjs/add/operator/takeWhile';
 
 @Component({
   selector: 'app-user-interface',
   templateUrl: './user-interface.component.html',
   styleUrls: ['./user-interface.component.css']
 })
+
 export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   @ViewChild(ResultPresentationComponent) resultPresentation: ResultPresentationComponent;
@@ -27,6 +29,9 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
 
   object_A = ''; // the first object currently entered
   object_B = ''; // the second object currently entered
+
+  myControl = new FormControl();
+  options: string[] = [];
 
   private statusID = '-1';
 
@@ -51,16 +56,21 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
   constructor(private urlBuilderService: UrlBuilderService, private httpRequestService: HTTPRequestService,
     private snackBar: MatSnackBar, private scrollToService: ScrollToService) { }
 
+  values = '';
+
+
   ngOnInit() {
+    /*
     const index = Math.floor(Math.random() * 15);
     this.object_A = this.preSelectedObjects[index][0];
     this.object_B = this.preSelectedObjects[index][1];
+    */
   }
 
   ngAfterViewInit() {
   }
 
-  /**
+    /**
    * Reads the input from the UI, starts the search request and calls the save method.
    */
   compare() {
@@ -80,6 +90,23 @@ export class UserInterfaceComponent implements OnInit, AfterViewInit {
         this.getStatus();
       },
       error => { console.error(error); }
+    );
+  }
+
+  focusOutFunction() {
+    this.requestSuggestions()
+  }
+
+  keyUpObjectA() {
+    this.options = [];
+  }
+
+  requestSuggestions() {
+    this.httpRequestService.getEsSuggestions(this.urlBuilderService.buildEsUrl(), this.object_A).subscribe(
+      data => {
+        this.options = data['hits']['hits'][0]['_source']['suggestions'];
+        console.log('Suggestions found: ' + this.options);
+      }
     );
   }
 
