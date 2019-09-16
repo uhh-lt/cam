@@ -12,5 +12,5 @@ pandas
 torchvision
 xgboost
 textblob
-
+elasticsearch
 
