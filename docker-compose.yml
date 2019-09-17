@@ -4,6 +4,13 @@ networks:
   cam:
 
 services:
+  elasticsearch:
+    build: ./src/Elasticsearch/
+    image: eslasticsearch
+    ports:
+      - 9200:9200
+    networks:
+      - cam
   frontend:
     build: ./src/Frontend/camFrontend/
     image: cam-frontend
@@ -18,3 +25,4 @@ services:
       - 10100:5000
     networks:
       - cam
+
