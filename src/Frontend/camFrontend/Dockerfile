@@ -20,5 +20,3 @@ COPY . /usr/src/app
 # start app
 CMD ng serve --host 0.0.0.0 --public-host ltdemos.informatik.uni-hamburg.de
 
-# forward port
-#CMD ssh -L 10100:localhost:10100 ltcpu1

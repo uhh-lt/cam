@@ -4,39 +4,6 @@ networks:
   cam:
 
 services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.2
-    container_name: elasticsearch
-    environment:
-#      - discovery.type=single-node
-#      - cluster.name=docker-cluster
-#      - bootstrap.memory_lock=true
-#      - transport.host=127.0.0.1
-#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-#      - http.host=0.0.0.0
-#      - http.port=9200
-#      - "http.cors.allow-origin=http://localhost:1358"
-#      - "http.cors.enabled=true"
-#      - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
-#      - "http.cors.allow-credentials=true"
-#      - "network.host=0.0.0.0"
-      - "http.cors.enabled=true"
-      - "http.cors.allow-origin=*"
-#      - "http.cors.allow-credentials=true"
-#      - "http.cors.allow-methods=OPTIONS, HEAD, GET, POST, PUT, DELETE"
-#      - "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Access-Control-Allow-Headers, Accept"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    networks:
-      - cam
-  
   frontend:
     build: ./src/Frontend/camFrontend/
     image: cam-frontend
@@ -52,6 +19,25 @@ services:
       - 10100:5000
     networks:
       - cam
+
+  # This should run an elasticsarch container where cors is enabled.
+  # This might be a dead-end as I did not finde a way to extract the es-nodes.tar into the
+  # elasticsearch container built from the image. Maybe just write own Dockerfile..
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
+    container_name: elasticsearch
+    environment:
+      - "node.name=suggestions"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "http.cors.enabled=true"
+      - "http.cors.allow-origin=*"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    command: ["tar", "-C", "/var/lib/elasticsearch/", "-zxvf", "es-nodes.tar.gz"]
+    networks:
+      - cam
+  
 volumes:
   esdata:
     driver: local
