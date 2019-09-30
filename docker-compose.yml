@@ -20,9 +20,7 @@ services:
     networks:
       - cam
 
-  # This should run an elasticsarch container where cors is enabled.
-  # This might be a dead-end as I did not finde a way to extract the es-nodes.tar into the
-  # elasticsearch container built from the image. Maybe just write own Dockerfile..
+  # This should run an elasticsarch container
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
     container_name: elasticsearch
