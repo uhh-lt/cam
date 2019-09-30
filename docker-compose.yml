@@ -11,6 +11,7 @@ services:
       - 10101:4200
     networks:
       - cam
+
   backend:
     build: ./src/Backend/
     image: cam-backend
@@ -18,3 +19,25 @@ services:
       - 10100:5000
     networks:
       - cam
+
+  # This should run an elasticsarch container where cors is enabled.
+  # This might be a dead-end as I did not finde a way to extract the es-nodes.tar into the
+  # elasticsearch container built from the image. Maybe just write own Dockerfile..
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.2
+    container_name: elasticsearch
+    environment:
+      - "node.name=suggestions"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "http.cors.enabled=true"
+      - "http.cors.allow-origin=*"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    command: ["tar", "-C", "/var/lib/elasticsearch/", "-zxvf", "es-nodes.tar.gz"]
+    networks:
+      - cam
+  
+volumes:
+  esdata:
+    driver: local

@@ -29,13 +29,24 @@ Attention: If you're on the Docker Toolbox, you will have to make changes to you
 After this, CAM is up and running and you can see its front end in your browser via `http://127.0.0.1:10101` or directly receive search results from the backend (provided as a JSON object) via this URL:
 
     http://127.0.0.1:5000/cam?model=default&fs=FS&objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight1=WEIGHT1
-
+http://127.0.0.1:10101
 The parameters of this url are desribed in [API explained](https://github.com/uhh-lt/cam#API-explained)
 
 An example for a good URL:
 
 <http://127.0.0.1:5000/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1>
 
+http://127.0.0.1:10101
+
+### Elasticserach
+
+Preferably, Elasticsearch should also get it's own Dockerfile or should be build from a Docker-image with docker-compose. In order for the suggestions-feature to be able to run, cross-origin resource sharing must be enabled all origins musst be allowed by adding 
+
+    http.cors.enabled: true
+    http.cors.allow-origin: "*"
+
+to the `elasticsearch.yml`.
+With elasticsearch setup, the suggestion-feature's index can be created by running `create_es-index_from_suggestions.py` from `/cam/src/Backend/create_suggestoins_index/` or by extracting `es-nodes.tar.gz` to elasticsearchs's default nodes location, which is `/var/lib/elasticsearch/`.
 
 ## Deployment without Docker
 
