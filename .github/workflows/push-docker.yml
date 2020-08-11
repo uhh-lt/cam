@@ -23,7 +23,7 @@ jobs:
         registry: docker.pkg.github.com
         username: ${{ github.actor }}
         password: ${{ github.token }}
-        repository: ${{ github.repository }}/frontend
+        repository: ${{ github.repository }}/cam-frontend
         tag_with_ref: true
         path: src/Frontend/camFrontend
         labels: org.opencontainers.image.url=https://github.com/${{ github.repository }},org.opencontainers.image.documentation=https://github.com/${{ github.repository }},org.opencontainers.image.title=CAM,org.opencontainers.image.description=The Comparative Argument Machine
@@ -50,7 +50,7 @@ jobs:
         registry: docker.pkg.github.com
         username: ${{ github.actor }}
         password: ${{ github.token }}
-        repository: ${{ github.repository }}/backend
+        repository: ${{ github.repository }}/cam-backend
         tag_with_ref: true
         path: src/Backend
         labels: org.opencontainers.image.url=https://github.com/${{ github.repository }},org.opencontainers.image.documentation=https://github.com/${{ github.repository }},org.opencontainers.image.title=CAM,org.opencontainers.image.description=The Comparative Argument Machine
