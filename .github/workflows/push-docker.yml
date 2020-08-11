@@ -1,0 +1,67 @@
+name: "Docker push"
+
+on:
+  push:
+    branches:
+    - master
+    tags: # Push events to new versions, e.g., 1.0, 20.15.10
+    - "[0-9]+.[0-9]+"
+    - "[0-9]+.[0-9]+.[0-9]+"
+    - "[0-9]+.[0-9]+-*"
+    - "[0-9]+.[0-9]+.[0-9]+-*"
+
+jobs:
+  push-frontend:
+    name: "🚀 Push frontend image"
+    runs-on: ubuntu-18.04
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "🚀 Build & push to GitHub Packages"
+      uses: docker/build-push-action@v1
+      with:
+        registry: docker.pkg.github.com
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+        repository: ${{ github.repository }}/frontend
+        tag_with_ref: true
+        path: src/Frontend/camFrontend
+        labels: org.opencontainers.image.url=https://github.com/${{ github.repository }},org.opencontainers.image.documentation=https://github.com/${{ github.repository }},org.opencontainers.image.title=CAM,org.opencontainers.image.description=The Comparative Argument Machine
+        add_git_labels: true
+    - name: "🚀 Build & push to Docker Hub"
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+        repository: webis/cam-frontend
+        tag_with_ref: true
+        path: src/Frontend/camFrontend
+        labels: org.opencontainers.image.url=https://github.com/${{ github.repository }},org.opencontainers.image.documentation=https://github.com/${{ github.repository }},org.opencontainers.image.title=CAM,org.opencontainers.image.description=The Comparative Argument Machine
+        add_git_labels: true
+  push-backend:
+    name: "🚀 Push backend image"
+    runs-on: ubuntu-18.04
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "🚀 Build & push to GitHub Packages"
+      uses: docker/build-push-action@v1
+      with:
+        registry: docker.pkg.github.com
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+        repository: ${{ github.repository }}/backend
+        tag_with_ref: true
+        path: src/Backend
+        labels: org.opencontainers.image.url=https://github.com/${{ github.repository }},org.opencontainers.image.documentation=https://github.com/${{ github.repository }},org.opencontainers.image.title=CAM,org.opencontainers.image.description=The Comparative Argument Machine
+        add_git_labels: true
+    - name: "🚀 Build & push to Docker Hub"
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+        repository: webis/cam-backend
+        tag_with_ref: true
+        path: src/Backend
+        labels: org.opencontainers.image.url=https://github.com/${{ github.repository }},org.opencontainers.image.documentation=https://github.com/${{ github.repository }},org.opencontainers.image.title=CAM,org.opencontainers.image.description=The Comparative Argument Machine
+        add_git_labels: true

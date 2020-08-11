@@ -1,0 +1,27 @@
+name: "Docker build"
+
+on: push
+
+jobs:
+  build-frontend:
+    name: "🚀 Build frontend image"
+    runs-on: ubuntu-18.04
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "🚀 Build Docker image"
+      uses: docker/build-push-action@v1
+      with:
+        path: src/Frontend/camFrontend
+        push: false
+  build-backend:
+    name: "🚀 Build backend image"
+    runs-on: ubuntu-18.04
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "🚀 Build Docker image"
+      uses: docker/build-push-action@v1
+      with:
+        path: src/Backend
+        push: false
