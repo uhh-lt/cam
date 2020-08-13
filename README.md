@@ -70,16 +70,20 @@ Alternatively, extract [`es-nodes.tar.gz`](es-nodes.tar.gz) to Elasticsearchs' d
 
 ### Backend
 
-1. Download [Python 3](https://www.python.org/downloads)
+1. Go to the backend folder:
+    ```shell script
+    cd src/Backend
+    ```
+1. Download [Python](https://www.python.org/downloads/release/python-361/) and install [Pipenv](https://pipenv.pypa.io/).
 1. Install requirements:
     ```shell script
-    pip install -r requirements.txt
-    python -m nltk.downloader stopwords
-    python -m nltk.downloader punkt
-    python -m nltk.downloader averaged_perceptron_tagger
+    pipenv install
+    pipenv run python -m nltk.downloader stopwords
+    pipenv run python -m nltk.downloader punkt
+    pipenv run python -m nltk.downloader averaged_perceptron_tagger
     ```
-1. Download the following files and place them in [`src/Backend/data`](src/Backend/data):
-    - [Glove Embeddings](http://nlp.stanford.edu/data/glove.840B.300d.zip)
+1. Download the following files and place them in [`src/Backend/data`](src/Backend/data) (needed for the InferSent model):
+    - [Glove Embeddings](https://nlp.stanford.edu/data/glove.840B.300d.zip)
     - [InferSent model](https://s3.amazonaws.com/senteval/infersent/infersent.allnli.pickle)
 1. Change default hostnames and search type:
     - On default, Elasticsearch should be running on http://ltdemos.informatik.uni-hamburg.de/depcc-index/ as specified in [`url_builder.py`](src/Backend/utils/url_builder.py).
@@ -88,10 +92,9 @@ Alternatively, extract [`es-nodes.tar.gz`](es-nodes.tar.gz) to Elasticsearchs' d
         If you want to change this, change `CRAWL_DATA_REPOS` in [`url_builder.py`](src/Backend/utils/url_builder.py).
 1. Start the backend API:
     ```shell script
-    cd src/Backend
-    python main.py
+    pipenv run python main.py
     ```
-   (If the Elasticsearch needs authentication run `python main.py <username> <password>` instead.)
+   (If the Elasticsearch needs authentication run `pipenv run python main.py <username> <password>` instead.)
 
 Now the backend is up and running.
 You should be able to receive search results from the backend (as JSON objects):  
