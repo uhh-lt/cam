@@ -1,10 +1,38 @@
-[{
+[
+  {
     "comparison_object": "python",
-    "suggestions": ["ruby", "java", "boa", "alligator", "net", "cat", "gator"]
-}, {
+    "suggestions": [
+      "ruby",
+      "java",
+      "boa",
+      "alligator",
+      "net",
+      "cat",
+      "gator"
+    ]
+  },
+  {
     "comparison_object": "gold",
-    "suggestions": ["silver", "black", "platinum", "maroon", "stocks", "purple", "wagner"]
-}, {
+    "suggestions": [
+      "silver",
+      "black",
+      "platinum",
+      "maroon",
+      "stocks",
+      "purple",
+      "wagner"
+    ]
+  },
+  {
     "comparison_object": "bus",
-    "suggestions": ["car", "rail", "train", "streetcar", "bolt", "bike", "van"]
-}]
+    "suggestions": [
+      "car",
+      "rail",
+      "train",
+      "streetcar",
+      "bolt",
+      "bike",
+      "van"
+    ]
+  }
+]
