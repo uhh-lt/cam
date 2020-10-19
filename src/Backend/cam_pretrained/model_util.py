@@ -1,11 +1,13 @@
-from sklearn.externals import joblib
-import os, sys
+import os
+import sys
+
+import joblib
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "infersent"))
 
 
-
-def load_model(model='data/model.pkl', glove_path='data/glove.840B.300d.txt', infersent_path='data/infersent.allnli.pickle'):
+def load_model(model='data/model.pkl', glove_path='data/glove.840B.300d.txt',
+               infersent_path='data/infersent.allnli.pickle'):
     """
     :param model:  path to the model which should be loaded
     :param glove_path:  path to the glove embeddings
@@ -18,4 +20,3 @@ def load_model(model='data/model.pkl', glove_path='data/glove.840B.300d.txt', in
         model.named_steps['infersentfeature'].infersent_path = infersent_path
 
     return model
-

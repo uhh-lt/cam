@@ -1,5 +1,3 @@
-from pandas import DataFrame
-import json
 from utils.pos_link_extracter import extract_main_links
 
 
@@ -38,7 +36,8 @@ def sentences_to_JSON(sentences):
     return [sentence.__dict__ for sentence in sentences]
 
 
-def add_points(contained_aspects, winner, sentence, max_score, score_function, threshold_sentences=0, threshold_score=0):
+def add_points(contained_aspects, winner, sentence, max_score, score_function, threshold_sentences=0,
+               threshold_score=0):
     '''
     Adds the points of the won sentence to the points of the winner.
 

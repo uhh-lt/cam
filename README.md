@@ -86,15 +86,15 @@ Alternatively, extract [`es-nodes.tar.gz`](es-nodes.tar.gz) to Elasticsearchs' d
     - [Glove Embeddings](https://nlp.stanford.edu/data/glove.840B.300d.zip)
     - [InferSent model](https://s3.amazonaws.com/senteval/infersent/infersent.allnli.pickle)
 1. Change default hostnames and search type:
-    - On default, Elasticsearch should be running on http://ltdemos.informatik.uni-hamburg.de/depcc-index/ as specified in [`url_builder.py`](src/Backend/utils/url_builder.py).
-        If you host the Index on a different cluster, change `ES_HOSTNAME` in that file.
-    - The default search type is `commoncrawl2`.
-        If you want to change this, change `CRAWL_DATA_REPOS` in [`url_builder.py`](src/Backend/utils/url_builder.py).
+    - On default, Elasticsearch should be running on https://ltdemos.informatik.uni-hamburg.de/depcc-index/ as specified in [`config.json`](src/Backend/config.json).
+        If you host the Index on a different cluster, change `elasticsearch.url` in that file.
+    - The default search index is `depcc`.
+        If you want to change this, change `elasticsearch.index` in [`config.json`](src/Backend/config.json).
 1. Start the backend API:
     ```shell script
     pipenv run python main.py
     ```
-   (If the Elasticsearch needs authentication run `pipenv run python main.py <username> <password>` instead.)
+   (If the Elasticsearch needs authentication, specify `ES_USERNAME` and `ES_PASSWORD` environment variables.)
 
 Now the backend is up and running.
 You should be able to receive search results from the backend (as JSON objects):  

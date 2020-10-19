@@ -1,10 +1,12 @@
-import requests
+import os
 import sys
+
+import requests
 from requests.auth import HTTPBasicAuth
-import json
-import re
-from utils.url_builder import build_object_urlpart, add_marker_urlpart, build_context_url, build_document_getter_url, get_query_range, build_keyword_search_url
+
 from utils.objects import Sentence
+from utils.url_builder import build_object_urlpart, add_marker_urlpart, build_context_url, build_document_getter_url, \
+    get_query_range, build_keyword_search_url
 
 
 def request_es(fast_search, obj_a, obj_b):
@@ -44,14 +46,17 @@ def request_es_ML(fast_search, obj_a, obj_b):
     url += get_query_range(size)
     return send_request(url)
 
+
 def request_keyword_query(query, size):
     url = build_keyword_search_url(query, size)
     return send_request(url)
 
 
 def send_request(url):
-    if(len(sys.argv) > 1):
+    if len(sys.argv) >= 2:
         return requests.get(url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
+    elif os.getenv("ES_USERNAME") and os.getenv("ES_PASSWORD"):
+        return requests.get(url, auth=HTTPBasicAuth(os.getenv("ES_USERNAME"), os.getenv("ES_PASSWORD")))
     else:
         return requests.get(url)
 

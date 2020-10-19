@@ -1,8 +1,9 @@
-from nltk.corpus import wordnet as wn
 import queue
 
+from nltk.corpus import wordnet as wn
 
-def filter(comparison_object, candidates):
+
+def filter_candidates(comparison_object, candidates):
     hypernyms_comparison_object = get_all_hypernyms(comparison_object)
     filtered_candidates = []
     for candidate in candidates:

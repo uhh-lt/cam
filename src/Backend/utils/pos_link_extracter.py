@@ -1,4 +1,3 @@
-import operator
 import re
 
 import nltk
@@ -174,9 +173,9 @@ def successor_is_useful(successor):
     '''
     Check if a successor is useful for the comparative aspects with successors.
     '''
-    return not(len(successor[1]) == 1
-               or successor[1] in UNUSED_COMPARATIVE_SUCCESSOR_POS_TAGS
-               or successor[0] == 'than')
+    return not (len(successor[1]) == 1
+                or successor[1] in UNUSED_COMPARATIVE_SUCCESSOR_POS_TAGS
+                or successor[0] == 'than')
 
 
 def get_comparative_aspects(aspect_dict, tag_list,
@@ -292,7 +291,7 @@ def get_index_for_reason(tag_list, a_name, b_name):
     try:
         # example: "... reason object is better than object ..."
         if (tag_list[index + 1][0] == a_name
-                or tag_list[index + 1][0] == b_name) \
+            or tag_list[index + 1][0] == b_name) \
                 and 'VB' in tag_list[index + 2][1] \
                 and tag_list[index + 3][1] in COMP_TAGS \
                 and tag_list[index + 4][0] == 'than' \
@@ -334,7 +333,7 @@ def remove_not_aspect_conjunction_indices(aspect_conjunction_indices,
     for aspect_conjunction_index in aspect_conjunction_indices:
         if aspect_conjunction_index > 0 \
                 and clean_word(
-                    tag_list[aspect_conjunction_index - 1][0]) == 'not':
+            tag_list[aspect_conjunction_index - 1][0]) == 'not':
             indices_to_remove.append(aspect_conjunction_index)
     for index in indices_to_remove:
         aspect_conjunction_indices.remove(index)
@@ -368,12 +367,12 @@ def is_useful(word, a_name, b_name):
     compared.
     '''
     return word not in STOPWORDS \
-        and word != a_name \
-        and word != b_name \
-        and word not in NON_LINKS \
-        and word not in NUMBER_STRINGS \
-        and word not in UNUSED_ASPECTS \
-        and len(word) > 1
+           and word != a_name \
+           and word != b_name \
+           and word not in NON_LINKS \
+           and word not in NUMBER_STRINGS \
+           and word not in UNUSED_ASPECTS \
+           and len(word) > 1
 
 
 def clean_word(word):

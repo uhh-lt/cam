@@ -1,16 +1,11 @@
+import json
+
 from pandas import DataFrame
+
+from heuristics.negation_dissolve_heuristic import negation_dissolve_heuristic
 from utils.answer_preparation import add_points, prepare_sentence_list, build_final_dict
 from utils.regex_service import find_aspects
-from heuristics.negation_dissolve_heuristic import negation_dissolve_heuristic
-
-import re
-import os
-import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), "cam_pretrained"))
-
 from cam_pretrained.model_util import load_model
-
-USE_HEURISTICS = True
 
 
 def classify_sentences(sentences, model):
@@ -54,11 +49,10 @@ def count_confindences(prepared_sentences, classification_results, aspects):
     medium += good
     ok += medium
 
-    return (excellent, good, medium, ok)
+    return excellent, good, medium, ok
 
 
 def find_threshold(counted_confidences, sentence_threshold):
-
     threshold = 0
     if counted_confidences[0] > sentence_threshold:
         threshold = 0.8
@@ -74,7 +68,6 @@ def find_threshold(counted_confidences, sentence_threshold):
 
 
 def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b, aspects):
-
     if len(sentences) > 0:
         max_sentscore = max(sentence.ES_score for sentence in sentences)
 
@@ -97,16 +90,20 @@ def evaluate(sentences, prepared_sentences, classification_results, obj_a, obj_b
                 break
         sentences.remove(sentence)
         sentence.set_confidence(classification_confidence.item())
-        
+
         contained_aspects = find_aspects(sentence.text, aspects)
-        if (label == 'BETTER' and row['object_a'] == obj_a.name) or (label == 'WORSE' and row['object_b'] == obj_a.name):
+        if (label == 'BETTER' and row['object_a'] == obj_a.name) or (
+                label == 'WORSE' and row['object_b'] == obj_a.name):
             add_points(contained_aspects, obj_a, sentence,
                        max_sentscore, score_function, threshold_sentences, threshold_score)
         else:
             add_points(contained_aspects, obj_b, sentence,
                        max_sentscore, score_function, threshold_sentences, threshold_score)
 
-    if USE_HEURISTICS:
+    with open('../config.json') as json_data_file:
+        config = json.load(json_data_file)
+
+    if config['use_heuristics']:
         for aspect in aspects:
             negation_dissolve_heuristic(obj_a, obj_b, aspect.name, aspects, threshold_score)
             negation_dissolve_heuristic(obj_b, obj_a, aspect.name, aspects, threshold_score)
@@ -129,8 +126,3 @@ def score_function(sentence, max_sentscore, weight, threshold):
     return score + sentence.ES_score + max_sentscore * weight
     # return sentence_score * weight
     # return confidence * weight
-
-
-def set_use_heuristics(use_heuristics):
-    global USE_HEURISTICS
-    USE_HEURISTICS = use_heuristics

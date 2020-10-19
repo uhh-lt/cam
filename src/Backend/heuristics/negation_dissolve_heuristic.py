@@ -1,4 +1,5 @@
 import re
+
 from utils.regex_service import find_aspects
 
 positive_contrary_comparatives = {
@@ -43,7 +44,6 @@ positive_contrary_comparatives = {
 
 
 def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects, threshold_score):
-
     points_to_move = 0
     points_for_multiple = 0
 
@@ -66,14 +66,14 @@ def move_assignment(sentences_to_move, from_object, to_object, aspect, aspects, 
         sentence for sentence in from_object.sentences if sentence not in sentences_to_move]
     from_object.points[aspect] = from_object.points[aspect] - points_to_move
     from_object.totalPoints = from_object.totalPoints - \
-        (points_to_move + points_for_multiple)
+                              (points_to_move + points_for_multiple)
 
     to_object.sentences.extend(sentences_to_move)
     to_object.add_points(aspect, points_to_move)
 
     if points_for_multiple > 0:
         from_object.points['multiple'] = from_object.points['multiple'] - \
-            points_for_multiple
+                                         points_for_multiple
         to_object.add_points('multiple', points_for_multiple)
 
     print((points_to_move / (to_object.totalPoints +
@@ -116,7 +116,8 @@ def get_matching_sentences(object_a, object_b, aspect, sentences, markers, is_po
     re_markers = '|'.join([re.escape(x) for x in markers])
 
     regex = re.compile(r'(?=.*(?:\b' + re.escape(object_a) + r'\b.*\b' + re.escape(aspect) +
-                       r'\b.*\b' + re.escape(object_b) + r'\b))(?=.*(?:\b' + re_markers + r'\b))(?!.*(?:\b' + re_locked_out_markers + r'\b))', re.IGNORECASE)
+                       r'\b.*\b' + re.escape(
+        object_b) + r'\b))(?=.*(?:\b' + re_markers + r'\b))(?!.*(?:\b' + re_locked_out_markers + r'\b))', re.IGNORECASE)
 
     filtered_sentences = [
         x for x in sentences if regex.search(x.text) != None]

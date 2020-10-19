@@ -19,6 +19,7 @@ class Sentence:
 
     def add_context_aspects(self, context_aspects):
         self.context_aspects += context_aspects
+
     def set_CAM_score(self, CAM_score):
         self.CAM_score = CAM_score
 

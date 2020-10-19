@@ -52,7 +52,7 @@ def remove_wrong_structures(sentences, obj_a, obj_b):
                 the second object to be compared
     '''
     sentences_to_delete = []
-    for sentence in sentences:   
+    for sentence in sentences:
         a_pos = find_pos_in_sentence(obj_a.name, sentence.text)
         b_pos = find_pos_in_sentence(obj_b.name, sentence.text)
         if a_pos == -1 and b_pos == -1:

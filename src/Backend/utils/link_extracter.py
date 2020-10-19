@@ -1,6 +1,8 @@
 import re
+
 import nltk
 from nltk import word_tokenize
+
 from marker_approach.constants import STOPWORDS, POSITIVE_MARKERS, NEGATIVE_MARKERS, NON_LINKS, NUMBER_STRINGS
 
 
@@ -80,8 +82,8 @@ def is_useful(word, a_name, b_name):
             the second object
     '''
     return word not in STOPWORDS and word not in POSITIVE_MARKERS and word not in NEGATIVE_MARKERS \
-        and word not in a_name and word not in b_name and word not in NON_LINKS and word not in \
-        NUMBER_STRINGS
+           and word not in a_name and word not in b_name and word not in NON_LINKS and word not in \
+           NUMBER_STRINGS
 
 
 def tag_sentence(sentence):
