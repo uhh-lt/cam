@@ -40,8 +40,8 @@ Now CAM is up and running.
 You should be able to access the frontend app in your browser:  
 http://localhost:10101  
 Or directly receive search results from the backend (as JSON objects):  
-http://localhost:5000/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1  
-(The parameters of this URL are described [below](#API).
+http://localhost:10100/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1  
+(The parameters of this URL are described [below](#API).)
 
 
 ### Elasticserach
@@ -99,7 +99,7 @@ Alternatively, extract [`es-nodes.tar.gz`](es-nodes.tar.gz) to Elasticsearchs' d
 Now the backend is up and running.
 You should be able to receive search results from the backend (as JSON objects):  
 http://localhost:5000/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1  
-(The parameters of this URL are described [below](#API).
+(The parameters of this URL are described [below](#API).)
 
 #### Frontend
 
@@ -168,4 +168,4 @@ BASE_ADDRESS/cam?model=MODEL&fs=FS&objectA=OBJA&objectB=OBJB&aspect1=ASP1&weight
         Be careful with negative values or values close to an integer overflow.
 
 Example URL:
-http://localhost:10100/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1
+http://localhost:5000/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect1=size&weight1=3&aspect2=food&weight2=1
