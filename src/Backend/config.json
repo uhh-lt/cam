@@ -1,7 +1,6 @@
 {
-    "index": {
-        "name": "depcc"
-        
-    },
-    "use_heuristics": "True"
+  "index": {
+    "name": "depcc"
+  },
+  "use_heuristics": true
 }
