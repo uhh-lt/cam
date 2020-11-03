@@ -32,9 +32,11 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-    command: ["tar", "-C", "/var/lib/elasticsearch/", "-zxvf", "es-nodes.tar.gz"]
+    command: bash -c "mkdir -p /var/lib/elasticsearch && tar -C /var/lib/elasticsearch/ -zxvf /es-nodes.tar.gz && bin/elasticsearch"
     networks:
       - cam
+    volumes:
+      - ./es-nodes.tar.gz:/es-nodes.tar.gz
   
 volumes:
   esdata:
