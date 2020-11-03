@@ -2,6 +2,7 @@
   "use_heuristics": true,
   "elasticsearch": {
     "url": "https://ltdemos.informatik.uni-hamburg.de/depcc-index/",
-    "index": "depcc"
+    "index_arguments": "depcc",
+    "index_suggestions": "suggestions"
   }
 }

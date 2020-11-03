@@ -13,10 +13,16 @@ def escape_query_part(query_part):
     return query_part
 
 
+def build_url_suggestions():
+    with open('../config.json') as json_data_file:
+        config = json.load(json_data_file)
+    return config['elasticsearch']['url'] + config['elasticsearch']['index_suggestions'] + '/_search'
+
+
 def build_url_base():
     with open('../config.json') as json_data_file:
         config = json.load(json_data_file)
-    return config['elasticsearch']['url'] + config['elasticsearch']['index'] + '/_search?q='
+    return config['elasticsearch']['url'] + config['elasticsearch']['index_arguments'] + '/_search?q='
 
 
 def build_context_url(document_id, sentence_id, context_size):

@@ -11,10 +11,11 @@ from ml_approach.classify import (classify_sentences, evaluate)
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
 from utils.es_requester import (extract_sentences, request_es,
                                 request_es_ML, request_es_triple,
-                                request_keyword_query)
+                                request_keyword_query, send_request)
 from utils.objects import Argument, Aspect
 from utils.sentence_clearer import clear_sentences, remove_questions
 from utils.sentence_context_getter import get_sentence_context
+from utils.url_builder import build_url_suggestions
 
 app = Flask(__name__)
 CORS(app)
@@ -23,6 +24,16 @@ CORS(app)
 @app.route("/")
 def hello_world():
     return "Hello, cross-origin-world!"
+
+
+@app.route("/suggestions", methods = ['POST', 'GET'])
+def suggestions_proxy():
+    """
+    Proxy suggestions requests to Elasticsearch and authenticate.
+    This proxy should be used by the frontend to query suggestions,
+    as it should not store Elasticsearch credentials itself.
+    """
+    return send_request(build_url_suggestions() + "?" + request.query_string, method=request.method)
 
 
 @app.route("/ccrr/<object_a>")

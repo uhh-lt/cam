@@ -52,13 +52,13 @@ def request_keyword_query(query, size):
     return send_request(url)
 
 
-def send_request(url):
+def send_request(url, method="GET"):
     if len(sys.argv) >= 2:
-        return requests.get(url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
+        return requests.request(method, url, auth=HTTPBasicAuth(sys.argv[1], sys.argv[2]))
     elif os.getenv("ES_USERNAME") and os.getenv("ES_PASSWORD"):
-        return requests.get(url, auth=HTTPBasicAuth(os.getenv("ES_USERNAME"), os.getenv("ES_PASSWORD")))
+        return requests.request(method, url, auth=HTTPBasicAuth(os.getenv("ES_USERNAME"), os.getenv("ES_PASSWORD")))
     else:
-        return requests.get(url)
+        return requests.request(method, url)
 
 
 def extract_sentences(es_json, aggregate_duplicates=True):
