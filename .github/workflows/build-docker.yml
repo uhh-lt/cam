@@ -17,7 +17,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: src/Frontend/camFrontend
-        file: ./Dockerfile
+        file: src/Frontend/camFrontend/Dockerfile
         push: false
   build-backend:
     name: "🚀 Build backend image"
@@ -33,5 +33,5 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: src/Backend
-        file: ./Dockerfile
+        file: src/Backend/Dockerfile
         push: false
