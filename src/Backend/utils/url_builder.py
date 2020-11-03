@@ -1,3 +1,4 @@
+import os
 import re
 import json
 
@@ -14,13 +15,13 @@ def escape_query_part(query_part):
 
 
 def build_url_suggestions():
-    with open(__file__ + '/../config.json') as json_data_file:
+    with open(os.path.dirname(__file__) + '/../config.json') as json_data_file:
         config = json.load(json_data_file)
     return config['elasticsearch']['url'] + config['elasticsearch']['index_suggestions'] + '/_search'
 
 
 def build_url_base():
-    with open(__file__ + '/../config.json') as json_data_file:
+    with open(os.path.dirname(__file__) + '/../config.json') as json_data_file:
         config = json.load(json_data_file)
     return config['elasticsearch']['url'] + config['elasticsearch']['index_arguments'] + '/_search?q='
 
