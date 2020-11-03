@@ -170,9 +170,9 @@ class Test(unittest.TestCase):
         obj_b = Argument('gorilla')
         url = build_object_urlpart(obj_a, obj_b)
         self.assertTrue(
-            url == 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/depcc/_search?q=text:"ape"%20AND%20"gorilla"'
+            url == 'https://ltdemos.informatik.uni-hamburg.de/depcc-index/depcc/_search?q=text:"ape"%20AND%20"gorilla"'
             or url ==
-            'http://ltdemos.informatik.uni-hamburg.de/depcc-index/commoncrawl2/_search?q=text:"ape"%20AND%20"gorilla"')
+            'https://ltdemos.informatik.uni-hamburg.de/depcc-index/commoncrawl2/_search?q=text:"ape"%20AND%20"gorilla"')
 
     def test_build_object_urlpart2(self):
         obj_a = Argument('')
