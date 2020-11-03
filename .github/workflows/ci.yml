@@ -26,4 +26,7 @@ jobs:
         python -m nltk.downloader punkt
         python -m nltk.downloader averaged_perceptron_tagger
     - name: "✔️ Test API"
-      run: python ./src/Backend/test.py reader reader
+      run: python ./src/Backend/test.py
+      env:
+        ES_USERNAME: reader
+        ES_PASSWORD: reader
