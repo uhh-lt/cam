@@ -16,11 +16,7 @@ flask-cors = "*"
 scikit-learn = "*"
 elasticsearch = "*"
 future = "*"
-# Manually specify URLs to download PyTorch (workaround)
-# Pipenv currently doesn't support PyTorch itself: https://github.com/pypa/pipenv/issues/4121
-torch-win32 = {file = "https://download.pytorch.org/whl/cpu/torch-1.6.0%252Bcpu-cp36-cp36m-win_amd64.whl", sys_platform = "=='win32'"}
-torch-linux = {file = "https://download.pytorch.org/whl/cpu/torch-1.6.0%252Bcpu-cp36-cp36m-linux_x86_64.whl", sys_platform = "=='linux'"}
-torch-darwin = {file = "https://download.pytorch.org/whl/cpu/torch-1.6.0-cp36-none-macosx_10_9_x86_64.whl", sys_platform = "=='darwin'"}
+torch = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3"
