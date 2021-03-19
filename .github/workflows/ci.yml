@@ -5,12 +5,12 @@ on: push
 jobs:
   test-backend:
     name: "✔️ Test backend API"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         python-version:
-        - '3.5'
         - '3.6'
+        - '3.8'
     steps:
     - name: "📥 Check-out"
       uses: actions/checkout@v2
@@ -19,14 +19,18 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: "🧰 Install Python requirements"
-      run: pip install -r requirements.txt --quiet
-    - name: "📥 Download NLTK tools"
+      working-directory: ./src/Backend
       run: |
-        python -m nltk.downloader stopwords
-        python -m nltk.downloader punkt
-        python -m nltk.downloader averaged_perceptron_tagger
+        pip install "pipenv>=2020.8.13"
+    - name: "📥 Download NLTK tools"
+      working-directory: ./src/Backend
+      run: |
+        pipenv run python -m nltk.downloader stopwords
+        pipenv run python -m nltk.downloader punkt
+        pipenv run python -m nltk.downloader averaged_perceptron_tagger
     - name: "✔️ Test API"
-      run: python ./src/Backend/test.py
+      working-directory: ./src/Backend
+      run: pipenv run python test.py
       env:
         ES_USERNAME: reader
         ES_PASSWORD: reader
