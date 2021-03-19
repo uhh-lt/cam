@@ -22,6 +22,7 @@ jobs:
       working-directory: ./src/Backend
       run: |
         pip install "pipenv>=2020.8.13"
+        pipenv install
     - name: "📥 Download NLTK tools"
       working-directory: ./src/Backend
       run: |
