@@ -1,6 +1,7 @@
-from sklearn.base import TransformerMixin, BaseEstimator
 import re
-import numpy as np
+
+from sklearn.base import TransformerMixin, BaseEstimator
+
 from utils.regex_service import find_pos_in_sentence
 
 
@@ -8,11 +9,11 @@ def process(text, a, b, mode=None, rep_a='OBJECT_A', rep_b='OBJECT_B'):
     if mode == 'remove':
         _a = re.sub(a, '', text, flags=re.IGNORECASE)
         _b = re.sub(b, '', _a, flags=re.IGNORECASE)
-        return re.sub('  ', ' ', _b)  # dunno why python adds a space with the regex?
+        return re.sub(' {2}', ' ', _b)  # dunno why python adds a space with the regex?
     elif mode == 'replace':
         _a = re.sub(a, 'OBJECT', text, flags=re.IGNORECASE)
         _b = re.sub(b, 'OBJECT', _a, flags=re.IGNORECASE)
-        return re.sub('  ', ' ', _b)
+        return re.sub(' {2}', ' ', _b)
     elif mode == 'replace_dist':
         if b not in text:
             first = a
@@ -28,16 +29,14 @@ def process(text, a, b, mode=None, rep_a='OBJECT_A', rep_b='OBJECT_B'):
             second = a
         _a = re.sub(first, rep_a, text, flags=re.IGNORECASE)
         _b = re.sub(second, rep_b, _a, flags=re.IGNORECASE)
-        return re.sub('  ', ' ', _b)
+        return re.sub(' {2}', ' ', _b)
     return text
-
-
 
 
 class ExtractMiddlePart(TransformerMixin, BaseEstimator):
     """returns all words between the first and the second object"""
 
-    def __init__(self, processing=None,rep_a='OBJECT_A', rep_b='OBJECT_B'):
+    def __init__(self, processing=None, rep_a='OBJECT_A', rep_b='OBJECT_B'):
         self.processing = processing
         self.rep_a = rep_a
         self.rep_b = rep_b
@@ -51,7 +50,7 @@ class ExtractMiddlePart(TransformerMixin, BaseEstimator):
                 begin, end = a_index, b_index + len(b)
             else:
                 begin, end = b_index, a_index + len(a)
-            res = process(text[begin:end], a, b, self.processing,rep_a=self.rep_a,rep_b=self.rep_b)
+            res = process(text[begin:end], a, b, self.processing, rep_a=self.rep_a, rep_b=self.rep_b)
 
             results.append(res)
 

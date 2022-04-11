@@ -1,6 +1,7 @@
-import nltk
-import re
 import operator
+import re
+
+import nltk
 from textblob import TextBlob
 
 
@@ -14,7 +15,8 @@ def extract_candidates(comparison_object, sentences):
         # candidate is a list of nounphrases from the sentence in sentences
         for candidate in blob.noun_phrases:
 
-            if candidate not in [comparison_object, 'vs', 'vs.'] and is_candidate(candidate, comparison_object, sentence):
+            if candidate not in [comparison_object, 'vs', 'vs.'] and is_candidate(candidate, comparison_object,
+                                                                                  sentence):
 
                 if candidate in unique_candidates:
                     unique_candidates[candidate] += 1

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-backend-config-map
+data:
+  config.json: |
+    {
+      "use_heuristics": {{ .Values.backend.useHeuristics }},
+      "elasticsearch": {
+        "url": "https://{{ .Values.elasticsearch.host }}:{{ .Values.elasticsearch.port }}",
+        "index_arguments": "{{ .Values.elasticsearch.indices.arguments }}"
+        "index_suggestions": "{{ .Values.elasticsearch.indices.suggestions }}"
+      }
+    }

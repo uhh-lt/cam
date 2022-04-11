@@ -1,13 +1,11 @@
 from marker_approach.constants import OPPOSITE_MARKERS, POSITIVE_MARKERS, NEGATIVE_MARKERS, NEGATIONS
 from marker_approach.marker_searcher import get_marker_count, get_marker_pos
-
-from utils.regex_service import find_aspects, find_pos_in_sentence
 from utils.answer_preparation import add_points, prepare_sentence_list, build_final_dict
-
+from utils.regex_service import find_aspects, find_pos_in_sentence
 
 
 def find_winner(sentences, obj_a, obj_b, aspects):
-    '''
+    """
     Finds the winner of two objects for given sentences and aspects. Returns a dictionary
     containing all the information of the comparison (winner, sentences for each object, score for
     each object and more).
@@ -23,7 +21,7 @@ def find_winner(sentences, obj_a, obj_b, aspects):
 
     aspects:    List
                 list of Aspects
-    '''
+    """
     if len(sentences) > 0:
         max_sentscore = max(sentence.ES_score for sentence in sentences)
     for sentence in sentences:
@@ -42,11 +40,8 @@ def find_winner(sentences, obj_a, obj_b, aspects):
     return build_final_dict(obj_a, obj_b, sentences)
 
 
-
-
 def score_function(sentence, max_sentscore, weight, threshold):
     return (sentence.ES_score / max_sentscore) * (weight + sentence.confidence)
-
 
 
 def what_is_better(sentence, obj_a, obj_b):

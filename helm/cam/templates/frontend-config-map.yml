@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-frontend-config-map
+data:
+  environment.ts: |
+    export const environment = {
+      production: true,
+      apiUrl: '{{ .Values.backend.url }}cam',
+      suggestionsElasticsearchUrl: '{{ .Values.backend.url }}suggestions'
+    };

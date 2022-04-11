@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleLocalSettings">
+    <option name="projectSyncType">
+      <map>
+        <entry key="$USER_HOME$/Desktop/song-analysis" value="PREVIEW" />
+        <entry key="$USER_HOME$/Software/Development/Projects/knjigica-client" value="PREVIEW" />
+        <entry key="$USER_HOME$/Software/Development/Projects/pod-backend" value="PREVIEW" />
+        <entry key="$USER_HOME$/Software/Development/Projects/websearch" value="PREVIEW" />
+      </map>
+    </option>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+</project>

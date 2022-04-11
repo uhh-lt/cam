@@ -51,9 +51,10 @@ def get_marker_count(sentence, pos_first, pos_second, markers):
     '''
     cnt = 0
     for m in markers:
-        if(marker_pos(sentence, pos_first, pos_second, m) != -1):
+        if (marker_pos(sentence, pos_first, pos_second, m) != -1):
             cnt += 1
     return cnt
+
 
 def marker_pos(sentence, pos_first, pos_second, marker):
     '''
@@ -64,4 +65,3 @@ def marker_pos(sentence, pos_first, pos_second, marker):
     if pos_marker != -1 and pos_first < pos_marker < pos_second:
         return pos_marker  # found a marker between the objects
     return -1
-

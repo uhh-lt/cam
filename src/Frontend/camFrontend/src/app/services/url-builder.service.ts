@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class UrlBuilderService {
@@ -8,8 +9,8 @@ export class UrlBuilderService {
     *  The name of the backend server.
     */
   // private HOSTNAME_DEFAULT = 'http://localhost:5000/cam';
-  private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
-  private HOSTNAME_ES = 'http://localhost:9200/suggestions-index/suggestions/_search';
+  private HOSTNAME_DEFAULT = environment.apiUrl;
+  private HOSTNAME_ES = environment.suggestionsElasticsearchUrl;
 
 
   /**
@@ -33,7 +34,7 @@ export class UrlBuilderService {
    * @returns the URL
    */
   public buildEsUrl() {
-    let URL = this.HOSTNAME_ES;
+    const URL = this.HOSTNAME_ES;
     console.log(URL);
     return URL;
   }

@@ -1,0 +1,37 @@
+name: "Python CI"
+
+on: push
+
+jobs:
+  test-backend:
+    name: "✔️ Test backend API"
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python-version:
+        - '3.6'
+        - '3.8'
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "🧰 Install Python"
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: "🧰 Install Python requirements"
+      working-directory: ./src/Backend
+      run: |
+        pip install "pipenv>=2020.8.13"
+        pipenv install
+    - name: "📥 Download NLTK tools"
+      working-directory: ./src/Backend
+      run: |
+        pipenv run python -m nltk.downloader stopwords
+        pipenv run python -m nltk.downloader punkt
+        pipenv run python -m nltk.downloader averaged_perceptron_tagger
+    - name: "✔️ Test API"
+      working-directory: ./src/Backend
+      run: pipenv run python test.py
+      env:
+        ES_USERNAME: reader
+        ES_PASSWORD: reader

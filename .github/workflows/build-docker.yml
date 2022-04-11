@@ -1,0 +1,37 @@
+name: "Docker build"
+
+on: push
+
+jobs:
+  build-frontend:
+    name: "🚀 Build frontend image"
+    runs-on: ubuntu-20.04
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "🧰 Set up QEMU"
+      uses: docker/setup-qemu-action@v1
+    - name: "🧰 Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "🚀 Build Docker image"
+      uses: docker/build-push-action@v2
+      with:
+        context: src/Frontend/camFrontend
+        file: src/Frontend/camFrontend/Dockerfile
+        push: false
+  build-backend:
+    name: "🚀 Build backend image"
+    runs-on: ubuntu-18.04
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "🧰 Set up QEMU"
+      uses: docker/setup-qemu-action@v1
+    - name: "🧰 Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "🚀 Build Docker image"
+      uses: docker/build-push-action@v2
+      with:
+        context: src/Backend
+        file: src/Backend/Dockerfile
+        push: false

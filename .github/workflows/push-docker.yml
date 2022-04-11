@@ -1,0 +1,92 @@
+name: "Docker push"
+
+on:
+  push:
+    branches:
+    - master
+    tags: # Push events to new versions, e.g., 1.0, 20.15.10
+    - "[0-9]+.[0-9]+"
+    - "[0-9]+.[0-9]+.[0-9]+"
+    - "[0-9]+.[0-9]+-*"
+    - "[0-9]+.[0-9]+.[0-9]+-*"
+
+jobs:
+  push-frontend:
+    name: "🚀 Push frontend image"
+    runs-on: ubuntu-20.04
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "📄 Parse Docker metadata"
+      id: docker_meta
+      uses: crazy-max/ghaction-docker-meta@v1
+      with:
+        images: ${{ github.repository }}/cam-frontend
+        tag-match: "v(.*)"
+        tag-match-group: 1
+    - name: "🧰 Set up QEMU"
+      uses: docker/setup-qemu-action@v1
+    - name: "🧰 Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "🔑 Login to Docker Hub"
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+    - name: "🔑 Login to GitHub Packages"
+      uses: docker/login-action@v1
+      with:
+        registry: docker.pkg.github.com
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+    - name: "🚀 Build & push to Docker Hub & GitHub Packages"
+      uses: docker/build-push-action@v2
+      with:
+        context: src/Frontend/camFrontend
+        file: src/Frontend/camFrontend/Dockerfile
+        tags: ${{ steps.docker_meta.outputs.tags }}
+        labels: |
+          ${{ steps.docker_meta.outputs.labels }}
+          org.opencontainers.image.documentation=https://github.com/${{ github.repository }}
+          org.opencontainers.image.title=CAM
+          org.opencontainers.image.description=The Comparative Argument Machine
+  push-backend:
+    name: "🚀 Push backend image"
+    runs-on: ubuntu-18.04
+    steps:
+    - name: "📥 Check-out"
+      uses: actions/checkout@v2
+    - name: "📄 Parse Docker metadata"
+      id: docker_meta
+      uses: crazy-max/ghaction-docker-meta@v1
+      with:
+        images: ${{ github.repository }}/cam-backend
+        tag-match: "v(.*)"
+        tag-match-group: 1
+    - name: "🧰 Set up QEMU"
+      uses: docker/setup-qemu-action@v1
+    - name: "🧰 Set up Docker Buildx"
+      uses: docker/setup-buildx-action@v1
+    - name: "🔑 Login to Docker Hub"
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+    - name: "🔑 Login to GitHub Packages"
+      uses: docker/login-action@v1
+      with:
+        registry: docker.pkg.github.com
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+    - name: "🚀 Build & push to Docker Hub & GitHub Packages"
+      uses: docker/build-push-action@v2
+      with:
+        context: src/Backend
+        file: src/Backend/Dockerfile
+        tags: ${{ steps.docker_meta.outputs.tags }}
+        labels: |
+          ${{ steps.docker_meta.outputs.labels }}
+          org.opencontainers.image.url=https://github.com/${{ github.repository }}
+          org.opencontainers.image.documentation=https://github.com/${{ github.repository }}
+          org.opencontainers.image.title=CAM
+          org.opencontainers.image.description=The Comparative Argument Machine

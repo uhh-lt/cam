@@ -1,46 +1,43 @@
-# encoding=utf8
-
 import unittest
-from main import Argument, Aspect
+
+from main import Argument
 from marker_approach.object_comparer import what_is_better, find_winner
 from ml_approach.sentence_preparation_ML import prepare_sentence_DF
-from utils.sentence_clearer import clear_sentences, remove_wrong_structures
-from utils.regex_service import find_aspects
-from utils.url_builder import build_object_urlpart
 from utils.link_extracter import extract_main_links
 from utils.objects import Sentence
+from utils.sentence_clearer import clear_sentences
+from utils.url_builder import build_object_urlpart
 
 
 class Test(unittest.TestCase):
-
-    '''
-    Testing different cases of possible object positioning as well as the presense 
+    """
+    Testing different cases of possible object positioning as well as the presense
     of the better/worse markers and negation (not excluded case)of the what_is_better
     method
-    '''
+    """
 
     objA = Argument('dog')
     objB = Argument('cat')
 
     def test_what_is_better1(self):
         self.assertEqual(what_is_better('Dog is better than cat', self.objA, self.objB), {
-                         'winner': self.objA, 'marker_cnt': 1})
+            'winner': self.objA, 'marker_cnt': 1})
 
     def test_what_is_better2(self):
         self.assertEqual(what_is_better('not Dog is better than cat ', self.objA, self.objB), {
-                         'winner': self.objA, 'marker_cnt': 1})
+            'winner': self.objA, 'marker_cnt': 1})
 
     def test_what_is_better3(self):
         self.assertEqual(what_is_better('Dog is not better than cat ', self.objA, self.objB), {
-                         'winner': self.objB, 'marker_cnt': 1})
+            'winner': self.objB, 'marker_cnt': 1})
 
     def test_what_is_better5(self):
-        self.assertEqual(what_is_better('Dog is a cat', self.objA, self.objB),  {
-                         'winner': self.objB, 'marker_cnt': 0})
+        self.assertEqual(what_is_better('Dog is a cat', self.objA, self.objB), {
+            'winner': self.objB, 'marker_cnt': 0})
 
     def test_what_is_better6(self):
         self.assertEqual(what_is_better('Dog is worse than cat', self.objA, self.objB), {
-                         'winner': self.objB, 'marker_cnt': 1})
+            'winner': self.objB, 'marker_cnt': 1})
 
     def test_what_is_better7(self):
         self.assertTrue(what_is_better(
@@ -48,11 +45,12 @@ class Test(unittest.TestCase):
 
     def test_what_is_better8(self):
         self.assertEqual(what_is_better('Dog is a cat solid', self.objB, self.objA), {
-                         'marker_cnt': 0, 'winner': self.objB})
+            'marker_cnt': 0, 'winner': self.objB})
 
     def test_what_is_better9(self):
-        self.assertEqual(what_is_better('This tortoise sculpture is made of hammer formed copper sheet metal and filled solid with concrete.',
-                                        self.objB, self.objA), {'marker_cnt': 0, 'winner': self.objA})
+        self.assertEqual(what_is_better(
+            'This tortoise sculpture is made of hammer formed copper sheet metal and filled solid with concrete.',
+            self.objB, self.objA), {'marker_cnt': 0, 'winner': self.objA})
 
     def test_what_is_better10(self):
         obj_a = Argument('coca-cola light')
@@ -85,7 +83,7 @@ class Test(unittest.TestCase):
             'Dog didn\'t look better than cat', 20, '', '')]
         s = clear_sentences(s, self.objA, self.objB)
         self.assertTrue('Dog didn\'t look better than cat' in [
-                        sentence.text for sentence in s])
+            sentence.text for sentence in s])
 
     def test_clear_sentences3(self):
         s = [Sentence(
@@ -98,7 +96,7 @@ class Test(unittest.TestCase):
              Sentence('Cat are worse than dog', 20, '', '')]
         s = clear_sentences(s, self.objA, self.objB)
         self.assertFalse('A better cat is still no dog' in [
-                         sentence.text for sentence in s])
+            sentence.text for sentence in s])
         self.assertTrue(s)
 
     def test_clear_sentences5(self):
@@ -106,7 +104,7 @@ class Test(unittest.TestCase):
              Sentence('Cat are worse than dog', 20, '', '')]
         s = clear_sentences(s, self.objA, self.objB)
         self.assertFalse('Cats and dogs work well together' in [
-                         sentence.text for sentence in s])
+            sentence.text for sentence in s])
         self.assertTrue(s)
 
     def test_clear_sentences6(self):
@@ -145,7 +143,8 @@ class Test(unittest.TestCase):
     '''
 
     def test_find_winner1(self):
-        s = [Sentence('Dog is better than cat', 10, 'http://test.com', 5), Sentence('Cat is beautiful better than dog', 10, 'http://test2.com', 7),
+        s = [Sentence('Dog is better than cat', 10, 'http://test.com', 5),
+             Sentence('Cat is beautiful better than dog', 10, 'http://test2.com', 7),
              Sentence('Dogs are way better than cat', 10, 'http://test3.com', 6)]
         result = find_winner(s, self.objA, self.objB, [])
         obj_1 = result['object1']
@@ -170,8 +169,10 @@ class Test(unittest.TestCase):
         obj_a = Argument('ape')
         obj_b = Argument('gorilla')
         url = build_object_urlpart(obj_a, obj_b)
-        self.assertTrue(url == 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/depcc/_search?q=text:"ape"%20AND%20"gorilla"' or url ==
-                        'http://ltdemos.informatik.uni-hamburg.de/depcc-index/commoncrawl2/_search?q=text:"ape"%20AND%20"gorilla"')
+        self.assertTrue(
+            url == 'https://ltdemos.informatik.uni-hamburg.de/depcc-index/depcc/_search?q=text:"ape"%20AND%20"gorilla"'
+            or url ==
+            'https://ltdemos.informatik.uni-hamburg.de/depcc-index/commoncrawl2/_search?q=text:"ape"%20AND%20"gorilla"')
 
     def test_build_object_urlpart2(self):
         obj_a = Argument('')
@@ -182,44 +183,44 @@ class Test(unittest.TestCase):
         self.assertTrue('Please enter both objects!' in str(context.exception))
 
     def test_extract_main_links(self):
-        sentencesA = [
+        sentences_a = [
             Sentence('ObjA is better than ObjB because of more time', 10, '', '')]
-        sentencesB = [
+        sentences_b = [
             Sentence('ObjA is worse than ObjB because of less power', 10, '', '')]
         obj_a = Argument('ObjA')
         obj_b = Argument('ObjB')
-        self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
-                         'A': ['time'], 'B': ['power']})
+        self.assertEqual(extract_main_links(sentences_a, sentences_b, obj_a, obj_b), {
+            'A': ['time'], 'B': ['power']})
 
     def test_extract_main_links2(self):
-        sentencesA = [Sentence(
+        sentences_a = [Sentence(
             'Coca Cola tastes better than pepsi, because of its ingredients', 20, '', '')]
-        sentencesB = [Sentence(
+        sentences_b = [Sentence(
             'Pepsi is worse than Coca-cola, because of the better sweeteners', 20, '', '')]
         obj_a = Argument('coca-cola')
         obj_b = Argument('pepsi light')
-        self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
-                         'A': ['ingredients'], 'B': ['sweeteners']})
+        self.assertEqual(extract_main_links(sentences_a, sentences_b, obj_a, obj_b), {
+            'A': ['ingredients'], 'B': ['sweeteners']})
 
     def test_extract_main_links3(self):
-        sentencesA = [Sentence(
+        sentences_a = [Sentence(
             'Coca-Cola™ tastes better than pepsi, because of its ingredients', 20, '', '')]
-        sentencesB = [Sentence(
+        sentences_b = [Sentence(
             'Pepsi is worse than Coca-cola™, because of the better sweeteners', 20, '', '')]
         obj_a = Argument('coca-cola')
         obj_b = Argument('pepsi light')
-        self.assertEqual(extract_main_links(sentencesA, sentencesB, obj_a, obj_b), {
-                         'A': ['ingredients'], 'B': ['sweeteners']})
+        self.assertEqual(extract_main_links(sentences_a, sentences_b, obj_a, obj_b), {
+            'A': ['ingredients'], 'B': ['sweeteners']})
 
     '''
     Test the ML parts
     '''
 
     def test_sentence_preparation_ML(self):
-        sentenceA = [Sentence('Coca-Cola tastes better than pepsi, because of its ingredients', 20, '', ''),
-                     Sentence('Pepsi is worse than Coca-cola, because of the better sweeteners', 20, '', '')]
+        sentence_a = [Sentence('Coca-Cola tastes better than pepsi, because of its ingredients', 20, '', ''),
+                      Sentence('Pepsi is worse than Coca-cola, because of the better sweeteners', 20, '', '')]
 
-        df = prepare_sentence_DF(sentenceA, Argument(
+        df = prepare_sentence_DF(sentence_a, Argument(
             'coca-cola'), Argument('pepsi'))
         self.assertNotEqual(df.loc[0]['object_a'], df.loc[1]['object_a'])
 

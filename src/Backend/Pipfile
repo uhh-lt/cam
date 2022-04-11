@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[packages]
+inflect = "*"
+matplotlib = "*"
+nltk = "*"
+numpy = "*"
+pandas = "*"
+requests = "*"
+textblob = "*"
+flask = "*"
+flask-cors = "*"
+scikit-learn = "*"
+elasticsearch = "*"
+future = "*"
+torch = "*"
+
+[requires]
+python_version = "3"

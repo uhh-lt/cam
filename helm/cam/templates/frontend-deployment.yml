@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: {{ .Release.Name }}-frontend
+  name: {{ .Release.Name }}-frontend
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-frontend
+  replicas: {{ .Values.frontend.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-frontend
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-frontend
+        image: {{ .Values.frontend.image }}
+        volumeMounts:
+        - name: {{ .Release.Name }}-frontend-config
+          mountPath: /usr/src/app/src/environments/environment.ts
+          subPath: environment.ts
+      restartPolicy: Always
+      volumes:
+      - name: {{ .Release.Name }}-frontend-config
+        configMap:
+          name: {{ .Release.Name }}-frontend-config-map

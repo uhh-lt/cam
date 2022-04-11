@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Release.Name }}-backend
+  name: {{ .Release.Name }}-backend
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-backend
+  replicas: {{ .Values.backend.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-backend
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-backend
+        image: {{ .Values.backend.image }}
+        resources:
+          requests:
+            memory: 15Gi
+        env:
+        - name: ES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-elasticsearch-login
+              key: username
+        - name: ES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-elasticsearch-login
+              key: password
+        volumeMounts:
+        - name: {{ .Release.Name }}-backend-models
+          mountPath: /app/data/glove.840B.300d.txt
+          subPath: glove.840B.300d.txt
+          readOnly: true
+        - name: {{ .Release.Name }}-backend-models
+          mountPath: /app/data/infersent.allnli.pickle
+          subPath: infersent.allnli.pickle
+          readOnly: true
+        - name: {{ .Release.Name }}-backend-config
+          mountPath: /app/config.json
+          subPath: config.json
+      restartPolicy: Always
+      volumes:
+      - name: {{ .Release.Name }}-backend-models
+        hostPath:
+          path: {{ .Values.backend.modelsPath }}
+          type: Directory
+      - name: {{ .Release.Name }}-backend-config
+        configMap:
+          name: {{ .Release.Name }}-backend-config-map

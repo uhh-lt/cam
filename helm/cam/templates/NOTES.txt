@@ -1,0 +1,4 @@
+# TODO: Add instructions on how to get service IP addresses.
+
+# You may overwrite the `{{ .Release.Name }}-elasticsearch-login` secret:
+kubectl create secret generic {{ .Release.Name }}-elasticsearch-login --from-literal=username=USERNAME --from-literal=password=PASSWORD

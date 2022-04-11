@@ -1,0 +1,21 @@
+apiVersion: v2
+name: cam
+description: "CAM: The Comparative Argument Machine"
+type: application
+home: https://demo.webis.de/cam/
+sources:
+- https://github.com/webis-de/cam
+icon: https://assets.webis.de/img/webis-logo-gray.svg
+maintainers: # (optional)
+- name: Jan Heinrich Reimer
+  email: jan.reimer@student.uni-halle.de
+- name: Alexander Bondarenko
+  email: alexander.bondarenko@informatik.uni-halle.de
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application.
+appVersion: 0.1.0
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+version: 0.1.0
