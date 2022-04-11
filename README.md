@@ -1,4 +1,4 @@
-[![GitHub Actions](https://img.shields.io/github/workflow/status/webis-de/cam/Docker%20build?style=flat-square)](https://github.com/webis-de/cam/actions?query=workflow%3A%22Docker+build%22)
+[![GitHub Actions](https://img.shields.io/github/workflow/status/uhh-lt/cam/Docker%20build?style=flat-square)](https://github.com/uhh-lt/cam/actions?query=workflow%3A%22Docker+build%22)
 [![Docker Hub frontend tags](https://img.shields.io/docker/v/webis/cam-frontend?style=flat-square&label=frontend+version)](https://hub.docker.com/repository/docker/webis/cam-frontend/tags)
 [![Docker Hub frontend](https://img.shields.io/docker/pulls/webis/cam-frontend?style=flat-square&label=frontend+pulls)](https://hub.docker.com/repository/docker/webis/cam-frontend)
 [![Docker Hub backend tags](https://img.shields.io/docker/v/webis/cam-backend?style=flat-square&label=backend+version)](https://hub.docker.com/repository/docker/webis/cam-backend/tags)
@@ -44,7 +44,7 @@ http://localhost:10100/cam?model=default&fs=false&objectA=dog&objectB=cat&aspect
 (The parameters of this URL are described [below](#API).)
 
 
-### Elasticserach
+### Elasticsearch
 
 Preferably, Elasticsearch should also get its own Dockerfile or should be build from a Docker image with Docker Compose.
 To use the suggestions feature, cross-origin resource sharing must be enabled for all origins in the `elasticsearch.yml` config:
