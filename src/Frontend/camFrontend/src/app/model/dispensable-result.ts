@@ -13,6 +13,16 @@ export class DispensableResult {
         this.looser = '';
         this.winnerTotalScore = '';
         this.looserTotalScore = '';
+
+        /* Author: Ali
+        Changes: introduced new variables to be used in score-presentation.component for in-order presentation of objects
+        */  
+        this.obj1 = '';
+        this.obj2 = '';
+        this.LinksObj1 = new Array<string>();
+        this.LinksObj2 = new Array<string>();
+        this.winnerSentencesObj1 = new Array<Sentence>();
+        this.looserSentencesObj2 = new Array<Sentence>();
     }
 
     winnerLinks: Array<string>; // stores the main links of the first object
@@ -25,4 +35,13 @@ export class DispensableResult {
     looser: string; // the losing object of the results shown
     winnerTotalScore: string;
     looserTotalScore: string;
+
+    // Author: Ali
+    obj1: string;
+    obj2: string;
+    LinksObj1: Array<string>;
+    LinksObj2: Array<string>;
+    winnerSentencesObj1: Array<Sentence>;
+    looserSentencesObj2: Array<Sentence>;
 }
+

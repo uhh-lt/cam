@@ -46,18 +46,14 @@ export class ResultPresentationComponent {
     // count the number of sentences used for comparison
     this.sentenceCount = result.sentenceCount;
 
-    if (result.winner === result.object1.name) {
-      this.saveWinner(result.object1.name, result.object2.name);
-      this.saveScores(result.object1.points, result.object2.points, result.object1.totalPoints, result.object2.totalPoints);
-      this.saveExtractedAspects(result.extractedAspectsObject1, result.extractedAspectsObject2);
-      this.saveSentences(result.object1.sentences, result.object2.sentences);
+    this.saveWinner(result.object1.name, result.object2.name);
+    this.saveScores(result.object1.points, result.object2.points, result.object1.totalPoints, result.object2.totalPoints);
+    this.saveExtractedAspects(result.extractedAspectsObject1, result.extractedAspectsObject2, result);
+    this.saveSentences(result.object1.sentences, result.object2.sentences);
+    
+    // Author: Ali
+    this.saveObjectnames(result.object1.name, result.object2.name);
 
-    } else {
-      this.saveWinner(result.object2.name, result.object1.name);
-      this.saveScores(result.object2.points, result.object1.points, result.object2.totalPoints, result.object1.totalPoints);
-      this.saveExtractedAspects(result.extractedAspectsObject2, result.extractedAspectsObject1);
-      this.saveSentences(result.object2.sentences, result.object1.sentences);
-    }
     this.showResult = true;
   }
 
@@ -81,6 +77,17 @@ export class ResultPresentationComponent {
     this.dispensableResult.winner = winner;
     this.dispensableResult.looser = looser;
   }
+
+   /** Author: Ali
+   * Save the object1 and object2 names.
+   *
+   * @param objecy1 object 1
+   * @param object2 object 2
+   */
+    private saveObjectnames(object1: string, object2: string) {
+      this.dispensableResult.obj1 = object1;
+      this.dispensableResult.obj2 = object2;
+    }
 
   /**
    * Save the percentage of the scores for each object.
@@ -130,9 +137,13 @@ export class ResultPresentationComponent {
    * @param winnerAspects aspects of the object that won the comparation
    * @param looserAspects aspects of the object that lost the comparation
    */
-  private saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>) {
-    this.dispensableResult.winnerLinks = winnerAspects;
-    this.dispensableResult.looserLinks = looserAspects;
+  private saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>, result: Result) {
+
+    /* Author: Ali 
+      aspects are assignment based on the order of the objects entered in the UI rather then based on winner and looser
+    */
+    this.dispensableResult.LinksObj1 = winnerAspects;
+    this.dispensableResult.LinksObj2 =  looserAspects;
   }
 
   /**
@@ -142,8 +153,12 @@ export class ResultPresentationComponent {
    * @param looserSentences sentences of the object that lost
    */
   private saveSentences(winnerSentences: Array<Sentence>, looserSentences: Array<Sentence>) {
-    this.dispensableResult.winnerSentences = winnerSentences;
-    this.dispensableResult.looserSentences = looserSentences;
+
+    /* Author: Ali 
+      aspects are assignment based on the order of the objects entered in the UI
+    */
+    this.dispensableResult.winnerSentencesObj1 = winnerSentences;
+    this.dispensableResult.looserSentencesObj2 = looserSentences;
   }
 
 

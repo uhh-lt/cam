@@ -24,10 +24,13 @@ export class SentencePresentationComponent implements OnInit {
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
+    /* @changes, Author: Ali
+    */
+   
     if (this.isWinner) {
-      this.sentences = this.dispensableResult.winnerSentences;
+      this.sentences = this.dispensableResult.winnerSentencesObj1;
     } else {
-      this.sentences = this.dispensableResult.looserSentences;
+      this.sentences = this.dispensableResult.looserSentencesObj2;
     }
   }
 
