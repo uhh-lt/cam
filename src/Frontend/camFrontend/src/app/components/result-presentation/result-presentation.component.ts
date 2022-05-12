@@ -43,11 +43,19 @@ export class ResultPresentationComponent {
   saveResult(result: Result, finalAspectList: Array<string>) {
     this.finalAspectList = finalAspectList;
 
-    // count the number of sentences used for comparison
+    // counts the number of sentences used for comparison
     this.sentenceCount = result.sentenceCount;
 
-    this.saveWinner(result.object1.name, result.object2.name);
-    this.saveScores(result.object1.points, result.object2.points, result.object1.totalPoints, result.object2.totalPoints);
+    // allocates the winner or looser object. The first parameter will be the winner and second will be looser 
+    if (result.winner === result.object1.name){
+      this.saveWinner(result.object1.name, result.object2.name);
+      this.saveScores(result.object1.points, result.object2.points, result.object1.totalPoints, result.object2.totalPoints);
+    }else{
+      this.saveWinner(result.object2.name, result.object1.name);
+      this.saveScores(result.object2.points, result.object1.points, result.object2.totalPoints, result.object1.totalPoints);
+    }
+    
+    
     this.saveExtractedAspects(result.extractedAspectsObject1, result.extractedAspectsObject2, result);
     this.saveSentences(result.object1.sentences, result.object2.sentences);
     
@@ -134,31 +142,31 @@ export class ResultPresentationComponent {
   /**
    * Save the extracted aspects for each object.
    *
-   * @param winnerAspects aspects of the object that won the comparation
-   * @param looserAspects aspects of the object that lost the comparation
+   * @param obj1Aspects aspects of the first object 
+   * @param obj2Aspects aspects of the second object
    */
-  private saveExtractedAspects(winnerAspects: Array<string>, looserAspects: Array<string>, result: Result) {
+  private saveExtractedAspects(obj1Aspects: Array<string>, obj2Aspects: Array<string>, result: Result) {
 
     /* Author: Ali 
       aspects are assignment based on the order of the objects entered in the UI rather then based on winner and looser
     */
-    this.dispensableResult.LinksObj1 = winnerAspects;
-    this.dispensableResult.LinksObj2 =  looserAspects;
+    this.dispensableResult.obj1Links = obj1Aspects;
+    this.dispensableResult.obj2Links =  obj2Aspects;
   }
 
   /**
    * Save the clustered sentences each object has won.
    *
-   * @param winnerSentences sentences of the object that won
-   * @param looserSentences sentences of the object that lost
+   * @param obj1Sentences sentences of the object that won
+   * @param obj2Sentences sentences of the object that lost
    */
-  private saveSentences(winnerSentences: Array<Sentence>, looserSentences: Array<Sentence>) {
+  private saveSentences(obj1Sentences: Array<Sentence>, obj2Sentences: Array<Sentence>) {
 
     /* Author: Ali 
       aspects are assignment based on the order of the objects entered in the UI
     */
-    this.dispensableResult.winnerSentencesObj1 = winnerSentences;
-    this.dispensableResult.looserSentencesObj2 = looserSentences;
+    this.dispensableResult.obj1Sentences = obj1Sentences;
+    this.dispensableResult.obj2Sentences = obj2Sentences;
   }
 
 

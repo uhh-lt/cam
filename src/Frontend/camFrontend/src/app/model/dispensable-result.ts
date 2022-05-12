@@ -19,10 +19,10 @@ export class DispensableResult {
         */  
         this.obj1 = '';
         this.obj2 = '';
-        this.LinksObj1 = new Array<string>();
-        this.LinksObj2 = new Array<string>();
-        this.winnerSentencesObj1 = new Array<Sentence>();
-        this.looserSentencesObj2 = new Array<Sentence>();
+        this.obj1Links = new Array<string>();
+        this.obj2Links = new Array<string>();
+        this.obj1Sentences = new Array<Sentence>();
+        this.obj2Sentences = new Array<Sentence>();
     }
 
     winnerLinks: Array<string>; // stores the main links of the first object
@@ -39,9 +39,9 @@ export class DispensableResult {
     // Author: Ali
     obj1: string;
     obj2: string;
-    LinksObj1: Array<string>;
-    LinksObj2: Array<string>;
-    winnerSentencesObj1: Array<Sentence>;
-    looserSentencesObj2: Array<Sentence>;
+    obj1Links: Array<string>;
+    obj2Links: Array<string>;
+    obj1Sentences: Array<Sentence>;
+    obj2Sentences: Array<Sentence>;
 }
 

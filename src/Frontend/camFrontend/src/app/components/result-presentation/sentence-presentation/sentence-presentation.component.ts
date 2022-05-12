@@ -28,9 +28,9 @@ export class SentencePresentationComponent implements OnInit {
     */
    
     if (this.isWinner) {
-      this.sentences = this.dispensableResult.winnerSentencesObj1;
+      this.sentences = this.dispensableResult.obj1Sentences;
     } else {
-      this.sentences = this.dispensableResult.looserSentencesObj2;
+      this.sentences = this.dispensableResult.obj2Sentences;
     }
   }
 
