@@ -124,24 +124,45 @@ export class ScorePresentationComponent implements AfterViewInit {
       }
     );
 
-    this.headlineChart = new Chart(this.headlineCTX, {
-      type: 'horizontalBar',
-      data: {
-        datasets: [{
-          data: [this.dispensableResult.winnerTotalScore],
-          object: this.dispensableResult.winner,
-          backgroundColor: 'rgba(24, 226, 51, 0.4)',
-          hoverBackgroundColor: 'rgba(24, 226, 51, 0.1)'
-        }, {
-          data: [this.dispensableResult.looserTotalScore],
-          object: this.dispensableResult.looser,
-          backgroundColor: 'rgba(49,130,189, 0.4)',
-          hoverBackgroundColor: 'rgba(49,130,189, 0.1)'
-        }]
-      },
-
-      options: barOptions_stacked
-    });
+  /* Author: Ali
+  Changes: introduced if statements for diplaying the score-card in order with objects-entered
+  */
+    if (this.dispensableResult.obj1 == this.dispensableResult.winner){
+      this.headlineChart = new Chart(this.headlineCTX, {
+        type: 'horizontalBar',
+        data: {
+          datasets: [{
+            data: [this.dispensableResult.winnerTotalScore],
+            object: this.dispensableResult.winner,
+            backgroundColor: 'rgba(24, 226, 51, 0.4)',
+            hoverBackgroundColor: 'rgba(24, 226, 51, 0.1)'
+          }, {
+            data: [this.dispensableResult.looserTotalScore],
+            object: this.dispensableResult.looser,
+            backgroundColor: 'rgba(49,130,189, 0.4)',
+            hoverBackgroundColor: 'rgba(49,130,189, 0.1)'
+          }]
+        },
+        options: barOptions_stacked
+      });}
+    else{
+      this.headlineChart = new Chart(this.headlineCTX, {
+        type: 'horizontalBar',
+        data: {
+          datasets: [{
+            data: [this.dispensableResult.looserTotalScore],
+            object: this.dispensableResult.looser,
+            backgroundColor: 'rgba(49,130,189, 0.4)',
+            hoverBackgroundColor: 'rgba(49,130,189, 0.1)'
+          },{
+            data: [this.dispensableResult.winnerTotalScore],
+            object: this.dispensableResult.winner,
+            backgroundColor: 'rgba(24, 226, 51, 0.4)',
+            hoverBackgroundColor: 'rgba(24, 226, 51, 0.1)'
+          }]
+        },
+        options: barOptions_stacked
+      });}
   }
 
   getOptions(barThickness, onComplete) {

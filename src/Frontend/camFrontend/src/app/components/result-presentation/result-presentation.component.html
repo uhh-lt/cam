@@ -8,7 +8,7 @@
   <table style="height: 100%; width: 100%">
     <tr style="height: 100%">
       <td  [ngStyle]="{'width': finalAspectList.length > 0 ? '40%' : '50%'}">
-        <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.winner" [extractedAspects]="dispensableResult.winnerLinks"
+        <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.obj1" [extractedAspects]="dispensableResult.obj1Links"
           [arrange]="'flex-start'" (updatedSelection)="updatedSelection($event, true)"></app-multiselect-chiplist>
 
       </td>
@@ -17,7 +17,7 @@
 
       </td>
       <td [ngStyle]="{'width': finalAspectList.length > 0 ? '40%' : '50%'}">
-        <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.looser" [extractedAspects]="dispensableResult.looserLinks"
+        <app-multiselect-chiplist [title]="'Generated Aspects for ' + dispensableResult.obj2" [extractedAspects]="dispensableResult.obj2Links"
           [arrange]="'flex-end'" (updatedSelection)="updatedSelection($event, false)"></app-multiselect-chiplist>
       </td>
     </tr>
@@ -25,11 +25,11 @@
 
   <table class="table table-borderless">
     <tr>
-      <td style="width: 50%">
+      <td >
         <app-sentence-presentation [dispensableResult]="dispensableResult" [isWinner]="true" [selectedAspects]="selectedWinnerAspects"
           [selectedEnteredAspects]="selectedEnteredAspects" [trigger]="trigger" [finalAspectList]="finalAspectList"></app-sentence-presentation>
       </td>
-      <td>
+      <td style="width: 50%">
         <app-sentence-presentation [dispensableResult]="dispensableResult" [isWinner]="false" [selectedAspects]="selectedLooserAspects"
           [selectedEnteredAspects]="selectedEnteredAspects" [trigger]="trigger" [finalAspectList]="finalAspectList"></app-sentence-presentation>
       </td>
