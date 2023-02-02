@@ -30,7 +30,7 @@
     "elasticsearch": "^15.4.1",
     "hammerjs": "^2.0.8",
     "jquery": "^3.5.1",
-    "npm": "^6.14.7",
+    "npm": "^9.4.1",
     "popper.js": "^1.14.3",
     "rxjs": "6.2.1",
     "rxjs-compat": "^6.2.0",
