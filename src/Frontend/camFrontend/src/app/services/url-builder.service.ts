@@ -38,11 +38,11 @@ export class UrlBuilderService {
    *
    * @returns the URL
    */
-  public buildEsUrl() {
-    const URL = this.HOSTNAME_ES;
-    console.log(URL);
-    return URL;
-  }
+  // public buildEsUrl() {
+  //   const URL = this.HOSTNAME_ES;
+  //   console.log(URL);
+  //   return URL;
+  // }
 
   /**
    * Adds a URL part containing the aspects entered by the user to an already existing first part
