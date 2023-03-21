@@ -11,10 +11,10 @@ export class UrlBuilderService {
   // private HOSTNAME_DEFAULT = 'http://localhost:4200/cam';
 
   // @Author: Ali: Uncomment following line if you want test the code locally 
-  // private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
+  private HOSTNAME_DEFAULT = 'http://ltdemos.informatik.uni-hamburg.de/cam-api';
 
   // and comment the following 
-  private HOSTNAME_DEFAULT = environment.apiUrl;
+  // private HOSTNAME_DEFAULT = environment.apiUrl;
   private HOSTNAME_ES = environment.suggestionsElasticsearchUrl;
 
 
