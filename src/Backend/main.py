@@ -21,9 +21,9 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/")
-def hello_world():
-    return "Hello, cross-origin-world!"
+# @app.route("/")
+# def hello_world():
+#     return "Hello, cross-origin-world!"
 
 
 @app.route("/suggestions", methods = ['POST', 'GET'])
@@ -70,7 +70,7 @@ def ccr(object_a):
     print('Done with ', comparison_object, '!')
     return jsonify(ccr_suggestions_top)
 
-
+@app.route("/")
 @app.route('/cam', methods=['GET'])
 def cam():
     """
