@@ -18,7 +18,10 @@ export class ResultPresentationComponent {
   private multiple = 'multiple';  // label for sentences with multiple aspects
   private categoryLabels = {};
 
-  private sentenceCount: number; // total amount of sentences used for comparison
+  // changed to public after dependency update by @Ali
+  public sentenceCount: number; // total amount of sentences used for comparison
+
+  // private sentenceCount: number; // total amount of sentences used for comparison
 
   public selectedWinnerAspects = new Array<string>();
   public selectedLooserAspects = new Array<string>();
