@@ -3,7 +3,8 @@
     <mat-card-title class="title-style">{{title}}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-chip-list #chipList [(ngModel)]="selectedFruits" multiple>
+    <!-- <mat-chip-list #chipList [(ngModel)]="selectedFruits" multiple> -->
+    <mat-chip-list #chipList [(ngModel)]="selectedAspects" multiple>
       <mat-chip *ngFor="let aspect of extractedAspects" [selected]="isSelected(aspect)" (click)="selectAspect(aspect)">
         {{aspect}}
       </mat-chip>
