@@ -22,9 +22,9 @@ app.config['CORS_HEADERS'] = 'Content-type'
 CORS(app, resources={r"/cam-api/*": {"origins":"*"}})
 
 
-@app.route("/")
-def hello_world():
-    return "Hello, cross-origin-world!"
+# @app.route("/")
+# def hello_world():
+#     return "Hello, cross-origin-world!"
 
 
 @app.route("/suggestions", methods = ['POST', 'GET'])
