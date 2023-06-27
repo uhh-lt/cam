@@ -21,9 +21,9 @@ app = Flask(__name__)
 CORS(app, resources={r"/cam-api/*": {"origins":"*"}})
 
 
-# @app.route("/")
-# def hello_world():
-#     return "Hello, cross-origin-world!"
+@app.route("/")
+def hello_world():
+    return "Hello, cross-origin-world!"
 
 
 @app.route("/suggestions", methods = ['POST', 'GET'])
