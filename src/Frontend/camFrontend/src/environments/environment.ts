@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5000/cam',
-  suggestionsElasticsearchUrl: 'http://localhost:9200/suggestions-index/suggestions/_search'
+  apiUrl: 'https://localhost:5000/cam',
+  suggestionsElasticsearchUrl: 'https://localhost:9200/suggestions-index/suggestions/_search'
 };
