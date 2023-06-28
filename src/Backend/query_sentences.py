@@ -18,7 +18,7 @@ def retrieve_sentences(comparison_object, vs='vs'):
 
 
 def build_url(comparison_object, vs):
-    es_hostname = 'http://ltdemos.informatik.uni-hamburg.de/depcc-index/'
+    es_hostname = 'https://ltdemos.informatik.uni-hamburg.de/depcc-index/'
     index = 'depcc'
     crawl_data_repos = '/_search?q='
     url = es_hostname + index + crawl_data_repos + 'text:(\"{}\"%20AND%20\"{}\")&from=0&size=10000'.format(
