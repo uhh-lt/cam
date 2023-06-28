@@ -19,7 +19,7 @@ from utils.url_builder import build_url_suggestions
 
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-type'
-CORS(app, resources={r"/cam-api/*": {"origins":"*"}})
+CORS(app, resources={r"/cam/*": {"origins":"*"}})
 
 
 # @app.route("/")
