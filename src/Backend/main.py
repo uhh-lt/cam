@@ -1,7 +1,9 @@
 import urllib.parse
+import os
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_wtf.csrf import CSRFProtect
 
 import extract_candidates
 import filter_candidates_wordnet
@@ -18,14 +20,31 @@ from utils.sentence_context_getter import get_sentence_context
 from utils.url_builder import build_url_suggestions
 
 app = Flask(__name__)
-app.config['CORS_HEADERS'] = 'Content-type'
-CORS(app, resources={r"/cam/*": {"origins":"*"}})
+app.config['SECRET_KEY'] = os.urandom(24)
+CORS(app)
+csrf = CSRFProtect(app)
 
+@app.before_request
+def csrf_protect():
+    if request.method == 'POST':
+        csrf.protect()
+
+@app.route('/cam/csrf-token', method=['GET'])
+def get_csrf_tpken():
+    token = csrf.generate_scrf()
+    response = jsonify({'csrf_token': token})
+    return response
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
 
 # @app.route("/")
 # def hello_world():
 #     return "Hello, cross-origin-world!"
-
 
 @app.route("/suggestions", methods = ['POST', 'GET'])
 def suggestions_proxy():
