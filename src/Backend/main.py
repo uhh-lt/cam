@@ -98,7 +98,10 @@ def cam():
 
         # find the winner of the two objects
         set_status(statusID, 'Find winner')
-        return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
+        response = jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+        # return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
 
     else:
         set_status(statusID, 'Request all sentences containing the objects')
