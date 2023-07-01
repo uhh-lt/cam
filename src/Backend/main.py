@@ -1,7 +1,7 @@
 import urllib.parse
 
 from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 import extract_candidates
 import filter_candidates_wordnet
@@ -20,6 +20,12 @@ from utils.url_builder import build_url_suggestions
 app = Flask(__name__)
 CORS(app)
 
+@app.after_request
+def handle_options(response):
+    response.headers['Access-Control-Allow-Origin'] = "*"
+    response.headers['Access-Control-Allow-Methods'] = "GET, POST, DELETE, OPTIONS"
+    response.headers['Access-Control-Allow-Headers'] = "Content-Type, X-Requested-With"
+    return response
 
 # @app.route("/")
 # def hello_world():
@@ -71,7 +77,8 @@ def ccr(object_a):
     return jsonify(ccr_suggestions_top)
 
 # @app.route("/")
-@app.route('/cam', methods=['GET'])
+@app.route('/cam', methods=['GET', 'POST', 'OPTIONS'])
+@cross_origin()
 def cam():
     """
     to be visited after a user clicked the 'compare' button.
@@ -98,9 +105,6 @@ def cam():
 
         # find the winner of the two objects
         set_status(statusID, 'Find winner')
-        response = jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
-        # response.headers.add('Access-Control-Allow-Origin', '*')
-        # return response
         return jsonify(find_winner(all_sentences, obj_a, obj_b, aspects))
 
     else:
