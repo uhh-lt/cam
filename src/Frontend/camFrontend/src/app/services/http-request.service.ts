@@ -48,7 +48,7 @@ export class HTTPRequestService {
   }
 
   getSentences(url: string) {
-    console.log(this.http.get<Array<Sentence>>(url));
+    console.log(this.http.get<Array<Sentence>>(url, { withCredentials: true }));
 
     return this.http.get<Array<Sentence>>(url);
   }
