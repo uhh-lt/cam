@@ -20,12 +20,6 @@ from utils.url_builder import build_url_suggestions
 app = Flask(__name__)
 CORS(app)
 
-@app.after_request
-def handle_options(response):
-    response.headers['Access-Control-Allow-Origin'] = "*"
-    response.headers['Access-Control-Allow-Methods'] = "GET, POST, DELETE, OPTIONS"
-    response.headers['Access-Control-Allow-Headers'] = "Content-Type, X-Requested-With"
-    return response
 
 # @app.route("/")
 # def hello_world():
