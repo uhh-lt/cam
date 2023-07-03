@@ -36,6 +36,7 @@ export class KeywordSearchComponent implements OnInit {
       data => {
         this.sentences = data;
         this.hits = this.sentences.length;
+        console.log(data);
       },
       error => {
         this.snackBar.open('The API-Service seems to be unavailable at the moment :/', '', {
