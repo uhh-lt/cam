@@ -76,9 +76,8 @@ def ccr(object_a):
     print('Done with ', comparison_object, '!')
     return jsonify(ccr_suggestions_top)
 
-# @app.route("/")
+@app.route("/")
 @app.route('/cam', methods=['GET', 'POST', 'OPTIONS'])
-@cross_origin()
 def cam():
     """
     to be visited after a user clicked the 'compare' button.
