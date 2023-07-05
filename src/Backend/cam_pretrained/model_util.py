@@ -1,4 +1,5 @@
-from sklearn.externals import joblib
+# from sklearn.externals import joblib
+import joblib
 import os, sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "infersent"))
