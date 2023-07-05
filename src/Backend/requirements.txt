@@ -11,5 +11,6 @@ numpy
 pandas
 torchvision
 xgboost
-
+scikit-learn
+joblib
 
