@@ -23,6 +23,9 @@ CORS(app)
 
 
 @app.route("/")
+def home():
+    return cam()
+
 @app.route('/cam', methods=['GET'])
 def cam():
     '''
