@@ -35,16 +35,16 @@ def get_csrf_tpken():
     response = jsonify({'csrf_token': token})
     return response
 
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
-    return response
+# @app.after_request
+# def after_request(response):
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+#     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+#     return response
 
-# @app.route("/")
-# def hello_world():
-#     return "Hello, cross-origin-world!"
+@app.route("/")
+def home():
+    return cam()
 
 @app.route("/suggestions", methods = ['POST', 'GET'])
 def suggestions_proxy():
@@ -90,7 +90,7 @@ def ccr(object_a):
     print('Done with ', comparison_object, '!')
     return jsonify(ccr_suggestions_top)
 
-@app.route("/")
+# @app.route("/")
 @app.route('/cam', methods=['GET'])
 def cam():
     """
