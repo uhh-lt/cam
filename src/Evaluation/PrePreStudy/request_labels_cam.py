@@ -73,10 +73,10 @@ def buildURL(objA, objB, aspectDict, model, fastSearch):
     '''
     hostname = ''
     if model == 'default':
-        hostname = 'https://ltdemos.informatik.uni-hamburg.de/cam-api'
+        hostname = 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
         # hostname = 'http://127.0.0.1:5000/cam'
     elif model == 'machine_learning':
-        hostname = 'https://ltdemos.informatik.uni-hamburg.de/cam-api'
+        hostname = 'http://ltdemos.informatik.uni-hamburg.de/cam-api'
         # hostname = 'http://127.0.0.1:5000/cam'
     URL = hostname + '?fs=' + fastSearch + '&objectA=' + objA + '&objectB=' + objB
     URL += addAspectURL(aspectDict)
