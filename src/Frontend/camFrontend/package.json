@@ -15,7 +15,7 @@
     "@angular/cdk": "7.3.7",
     "@angular/common": "^9.1.13",
     "@angular/compiler": "^9.1.13",
-    "@angular/core": "^6.0.0",
+    "@angular/core": "^9.1.13",
     "@angular/flex-layout": "^7.0.0-beta.19",
     "@angular/forms": "^9.1.13",
     "@angular/localize": "^9.1.13",
@@ -35,7 +35,7 @@
     "rxjs": "^6.5.5",
     "rxjs-compat": "^6.6.7",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.15",
