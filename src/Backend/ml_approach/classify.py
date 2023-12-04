@@ -16,10 +16,8 @@ USE_HEURISTICS = True
 
 def classify_sentences(sentences, model="lilaspourpre/roberta-stance-compqa"):
     pipe = pipeline("text-classification", model=model)
-    result = pipe(sentences, return_all_scores=True)
-    print(result)
-    print(df = DataFrame(result, columns=list(model.config.label2id.keys())))
-    df = DataFrame(result, columns=model.list(model.config.label2id.keys()))
+    result = [[j['score']for j in i] for i in pipe(sentences, return_all_scores=True)]
+    df = DataFrame(result, columns=list(pipe.model.config.label2id.keys()))
     df['max'] = df.idxmax(axis=1)
     return df
 
